@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "HL debug",
+            "type": "hxml",
+            "file": "hl.debug.hxml",
+            "presentation": {
+                "reveal": "never",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+
+        {
+            "label": "HL release",
+            "type": "hxml",
+            "file": "hl.hxml",
+            "presentation": {
+                "reveal": "never",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
+        },
+        {
+            "label": "JS release",
+            "type": "hxml",
+            "file": "js.hxml",
+            "presentation": {
+                "reveal": "never",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
+        },
+        {
+            "label": "Flash release",
+            "type": "hxml",
+            "file": "flash.hxml",
+            "presentation": {
+                "reveal": "never",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
+        }
+    ]
+}

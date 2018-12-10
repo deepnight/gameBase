@@ -1,0 +1,332 @@
+{
+	"sheets": [
+		{
+			"name": "room",
+			"columns": [
+				{
+					"name": "id",
+					"typeStr": "0"
+				},
+				{
+					"typeStr": "17",
+					"name": "params"
+				},
+				{
+					"name": "width",
+					"typeStr": "3"
+				},
+				{
+					"name": "height",
+					"typeStr": "3"
+				},
+				{
+					"name": "props",
+					"typeStr": "16"
+				},
+				{
+					"name": "tileProps",
+					"typeStr": "8"
+				},
+				{
+					"name": "layers",
+					"typeStr": "8"
+				},
+				{
+					"typeStr": "8",
+					"name": "markers",
+					"display": null
+				}
+			],
+			"lines": [],
+			"separators": [],
+			"props": {
+				"level": {
+					"tileSets": {
+						"levelTiles.png": {
+							"stride": 16,
+							"sets": [],
+							"props": []
+						}
+					}
+				},
+				"hasIndex": true
+			}
+		},
+		{
+			"name": "room@tileProps",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": []
+		},
+		{
+			"name": "room@layers",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"name": "name",
+					"typeStr": "1"
+				},
+				{
+					"name": "data",
+					"typeStr": "15"
+				}
+			]
+		},
+		{
+			"name": "marker",
+			"columns": [
+				{
+					"typeStr": "11",
+					"name": "color",
+					"display": null
+				},
+				{
+					"typeStr": "14",
+					"name": "icon"
+				},
+				{
+					"typeStr": "0",
+					"name": "id"
+				}
+			],
+			"lines": [
+				{
+					"color": 65287,
+					"id": "Hero1",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 0,
+						"y": 30
+					}
+				},
+				{
+					"color": 62719,
+					"id": "Hero2",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				},
+				{
+					"color": 12779775,
+					"id": "Hero3",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				},
+				{
+					"color": 16711680,
+					"id": "Demon",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 0,
+						"y": 30
+					}
+				},
+				{
+					"color": 16757760,
+					"id": "Bomber",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 4,
+						"y": 30
+					}
+				},
+				{
+					"color": 16713409,
+					"id": "Peon",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 1,
+						"y": 30
+					}
+				},
+				{
+					"color": 7573661,
+					"id": "Touchplate",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				},
+				{
+					"color": 9983007,
+					"id": "Door",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				},
+				{
+					"color": 16764956,
+					"id": "Light",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 31
+					}
+				},
+				{
+					"color": 16711680,
+					"id": "Spikes",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 1,
+						"y": 31
+					}
+				},
+				{
+					"color": 16777215,
+					"id": "Exit",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 3,
+						"y": 30
+					}
+				},
+				{
+					"color": 6313029,
+					"id": "Cinematic",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				},
+				{
+					"color": 65355,
+					"id": "FreeMarker",
+					"icon": {
+						"file": "levelTiles.png",
+						"size": 16,
+						"x": 2,
+						"y": 30
+					}
+				}
+			],
+			"separators": [],
+			"props": {
+				"displayIcon": "icon"
+			}
+		},
+		{
+			"name": "room@markers",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:marker",
+					"name": "marker",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "x"
+				},
+				{
+					"typeStr": "3",
+					"name": "y",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "width",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "height",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "id",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "room@collisionsOld",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "3",
+					"name": "x",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "y",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "width",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "height",
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "room@params",
+			"props": {
+				"hide": true,
+				"isProps": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "2",
+					"name": "fastPeons",
+					"opt": true,
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "sheet",
+			"columns": [],
+			"lines": [],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

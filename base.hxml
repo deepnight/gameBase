@@ -1,0 +1,6 @@
+-cp src
+-lib castle
+-lib heaps
+-lib hxbit
+-main Boot
+-dce full

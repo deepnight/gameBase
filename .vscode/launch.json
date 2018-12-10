@@ -1,0 +1,43 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "HL debug",
+            "request": "launch",
+            "type": "hl",
+            "hxml": "hl.debug.hxml",
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "HL debug"
+        },
+        {
+            "name": "JS",
+            "type": "hl",
+            "request": "launch",
+            "hxml": "js.hxml",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "JS release"
+        },
+
+        // {
+        //     "name": "HL release",
+        //     "request": "launch",
+        //     "type": "hl",
+        //     "hxml": "hl.hxml",
+        //     "cwd": "${workspaceRoot}",
+        //     "preLaunchTask": "HL release"
+        // },
+
+        // {
+        //     "name": "HashLink (attach)",
+        //     "request": "attach",
+        //     "port": 6112,
+        //     "type": "hl",
+        //     "hxml": "build.hxml",
+        //     "cwd": "${workspaceRoot}",
+        //     "preLaunchTask": "Build"
+        // }
+    ]
+}

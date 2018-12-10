@@ -1,0 +1,4 @@
+base.hxml
+-swf bin/client.swf
+-swf-header 1400:700:60:000000
+-swf-version 24.0

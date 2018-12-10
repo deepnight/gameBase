@@ -1,0 +1,66 @@
+{
+    "skipTerminateQuickPick": true,
+    "skipSwitchToOutput": false,
+    "skipErrorMessage": true,
+    "commands": [
+      {
+        "text": "Make redist",
+        "color": "lightgreen",
+        "command": "makeRedist.bat",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 10
+      },
+      {
+        "text": "✪ Build HL",
+        "color": "orange",
+        "commandType":"palette",
+        "command": "workbench.action.tasks.runTask|HL release",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 5
+      },
+      {
+        "text": "(Run)",
+        "color": "orange",
+        "command": "hl bin/client.hl",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 4
+      },
+      {
+        "text": "⛴ Build JS",
+        "color": "yellow",
+        "commandType":"palette",
+        "command": "workbench.action.tasks.runTask|JS release",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 3
+      },
+      {
+        "text": "(Run)",
+        "color": "yellow",
+        "command": "start js.html",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 2
+      },
+      {
+        "text": "⛴ Build Flash",
+        "color": "cyan",
+        "commandType":"palette",
+        "command": "workbench.action.tasks.runTask|Flash release",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 1
+      },
+      {
+        "text": "(Run)",
+        "color": "cyan",
+        "command": "start bin/client.swf",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": 0
+      }
+    ]
+  }
