@@ -11,33 +11,6 @@
             "hxml": "hl.debug.hxml",
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "HL debug"
-        },
-        {
-            "name": "JS",
-            "type": "hl",
-            "request": "launch",
-            "hxml": "js.hxml",
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "JS release"
-        },
-
-        // {
-        //     "name": "HL release",
-        //     "request": "launch",
-        //     "type": "hl",
-        //     "hxml": "hl.hxml",
-        //     "cwd": "${workspaceRoot}",
-        //     "preLaunchTask": "HL release"
-        // },
-
-        // {
-        //     "name": "HashLink (attach)",
-        //     "request": "attach",
-        //     "port": 6112,
-        //     "type": "hl",
-        //     "hxml": "build.hxml",
-        //     "cwd": "${workspaceRoot}",
-        //     "preLaunchTask": "Build"
-        // }
+        }
     ]
 }
