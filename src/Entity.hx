@@ -11,7 +11,7 @@ class Entity {
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var cd : mt.Cooldown;
-	public var tmod : Float;
+	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 
 	public var uid : Int;
     public var cx = 0;
@@ -22,17 +22,10 @@ class Entity {
     public var dx = 0.;
     public var dy = 0.;
 	public var frict = 0.82;
-	public var gravity = 0.024;
-	public var hasGravity = true;
-	public var weight = 1.;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
-	public var lifter = false;
 
 	public var dir(default,set) = 1;
-	public var hasColl = true;
-	public var isAffectBySlowMo = true;
-	public var lastHitDir = 0;
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
 
@@ -40,8 +33,8 @@ class Entity {
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
 	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
-	public var headX(get,never) : Float; inline function get_headX() return (cx+xr)*Const.GRID;
-	public var headY(get,never) : Float; inline function get_headY() return (cy+yr)*Const.GRID-hei;
+	public var headX(get,never) : Float; inline function get_headX() return footX;
+	public var headY(get,never) : Float; inline function get_headY() return footY-hei;
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
 
@@ -121,8 +114,7 @@ class Entity {
 		cd = null;
     }
 
-    public function preUpdate(tmod:Float) {
-        this.tmod = tmod;
+    public function preUpdate() {
 		cd.update(tmod);
     }
 

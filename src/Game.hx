@@ -46,7 +46,7 @@ class Game extends mt.Process {
 		super.update();
 
 		// Updates
-		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate(dt);
+		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
 		gc();
