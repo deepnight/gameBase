@@ -1,12 +1,19 @@
 @echo off
 
 set redist=redist
-set game=CatsAreAssholes
+set game=%1
+
+if "%game%"=="" goto help
 
 echo Cleaning...
 rmdir /Q/S "%redist%" >nul
 mkdir "%redist%\" >nul
 mkdir "%redist%\%game%\" >nul
+
+REM echo Building...
+REM haxe hl.hxml
+REM haxe js.hxml
+REM haxe flash.hxml
 
 echo Copying hl.exe files...
 copy %haxepath%\hl.exe "%redist%\%game%"
@@ -35,17 +42,16 @@ REM copy %haxepath%\mod_tora2.ndll "%redist%\%game%"
 
 ren "%redist%\%game%"\*.exe "%game%.exe"
 
-echo HL...
-haxe hl.hxml
-
-echo Flash...
-haxe flash.hxml
-
-echo JS...
-haxe js.hxml
-
 echo Copying binaries...
 copy bin\client.hl "%redist%\%game%\hlboot.dat" >nul
-copy bin\client.swf "%redist%" >nul
-copy bin\client.js "%redist%" >nul
+copy bin\*.swf "%redist%" >nul
+copy bin\*.js "%redist%" >nul
 echo Done!
+goto end
+
+:help
+echo Missing parameter "game name".
+pause
+goto end
+
+:end

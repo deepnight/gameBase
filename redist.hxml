@@ -1,0 +1,10 @@
+hl.hxml
+
+--next
+js.hxml
+
+--next
+flash.hxml
+
+--next
+--cmd _redist.bat MyGame
