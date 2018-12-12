@@ -9,6 +9,8 @@ class Console extends h2d.Console {
 	public function new(f:h2d.Font, p:h2d.Object) {
 		super(f, p);
 
+		scale(2); // TODO smarter scaling for 4k screens
+
 		// Settings
 		ME = this;
 		h2d.Console.HIDE_LOG_TIMEOUT = 30;
