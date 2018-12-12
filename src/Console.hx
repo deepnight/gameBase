@@ -9,11 +9,12 @@ class Console extends h2d.Console {
 	public function new(f:h2d.Font, p:h2d.Object) {
 		super(f, p);
 
-		h2d.Console.HIDE_LOG_TIMEOUT = 30;
+		// Settings
 		ME = this;
+		h2d.Console.HIDE_LOG_TIMEOUT = 30;
 		mt.deepnight.Lib.redirectTracesToH2dConsole(this);
 
-		// Console flags
+		// Debug flags
 		#if debug
 		flags = new Map();
 		this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
@@ -38,5 +39,7 @@ class Console extends h2d.Console {
 	#if debug
 	public function setFlag(k:String,v) return flags.set(k,v);
 	public function hasFlag(k:String) return flags.get(k)==true;
+	#else
+	public function hasFlag(k:String) return false;
 	#end
 }

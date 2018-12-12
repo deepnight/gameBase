@@ -8,7 +8,6 @@ class Game extends mt.Process {
 
 	public var ca : mt.heaps.Controller.ControllerAccess;
 	public var fx : Fx;
-	// public var level : Level;
 
 	public function new() {
 		super(Main.ME);
@@ -51,13 +50,15 @@ class Game extends mt.Process {
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
 		gc();
 
-		#if hl
-		if( ca.isKeyboardPressed(Key.ESCAPE) )
-			if( !cd.hasSetS("exitWarn",3) )
-				trace("Press ESCAPE again to exit.");
-			else
-				hxd.System.exit();
-		#end
+		if( !Console.ME.isActive() ) {
+			#if hl
+			if( ca.isKeyboardPressed(Key.ESCAPE) )
+				if( !cd.hasSetS("exitWarn",3) )
+					trace("Press ESCAPE again to exit.");
+				else
+					hxd.System.exit();
+			#end
+		}
 	}
 }
 
