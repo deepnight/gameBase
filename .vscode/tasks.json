@@ -44,7 +44,7 @@
         {
             "label": "Flash release",
             "type": "hxml",
-            "file": "flash.hxml",
+            "file": "swf.hxml",
             "presentation": {
                 "reveal": "never",
                 "panel": "dedicated",
