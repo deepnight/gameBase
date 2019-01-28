@@ -6,7 +6,7 @@
       {
         "text": "Make redist",
         "color": "lightgreen",
-        "command": "haxe redist.hxml",
+        "command": "haxelib run redistHelper hl.hxml js.hxml swf.hxml -P MyGame",
         "alignment": "right",
         "skipTerminateQuickPick": false,
         "priority": 10
