@@ -1,7 +1,8 @@
 class Const {
 	public static var FPS = 60;
-	public static var AUTO_SCALE_TARGET_HEIGHT = 256; // -1 to disable auto-scaling
-	public static var SCALE = 2.0; // ignored if auto-scaling
+	public static var AUTO_SCALE_TARGET_WID = -1; // -1 to disable auto-scaling on width
+	public static var AUTO_SCALE_TARGET_HEI = 256; // -1 to disable auto-scaling on height
+	public static var SCALE = 1.0; // ignored if auto-scaling
 	public static var GRID = 16;
 
 	static var _uniq = 0;

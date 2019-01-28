@@ -148,6 +148,6 @@ class Fx extends mt.Process {
 	override function update() {
 		super.update();
 
-		pool.update(game.dt);
+		pool.update(game.tmod);
 	}
 }

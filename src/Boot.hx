@@ -9,7 +9,6 @@ class Boot extends hxd.App {
 	// Engine ready
 	override function init() {
 		ME = this;
-		hxd.Timer.wantedFPS = Const.FPS;
 		new Main(s2d);
 		mt.Process.resizeAll();
 	}
@@ -20,8 +19,8 @@ class Boot extends hxd.App {
 	}
 
 	var speed = 1.0;
-	override function update(dt:Float) {
-		super.update(dt);
+	override function update(deltaTime:Float) {
+		super.update(deltaTime);
 
 		// Bullet time
 		#if debug

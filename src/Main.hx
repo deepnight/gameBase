@@ -16,6 +16,7 @@ class Main extends mt.Process {
         root.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
 		// Engine settings
+		hxd.Timer.wantedFPS = Const.FPS;
 		engine.backgroundColor = 0xff<<24|0x111133;
         #if( hl && !debug )
         engine.fullScreen = true;
@@ -62,7 +63,8 @@ class Main extends mt.Process {
 		controller.bind(START, Key.N);
 
 		// Start
-        startGame();
+		new mt.deepnight.GameFocusHelper(Boot.ME.s2d, Assets.font);
+		delayer.addF( startGame, 1 );
 	}
 
 	public function startGame() {
@@ -80,8 +82,10 @@ class Main extends mt.Process {
 		super.onResize();
 
 		// Auto scaling
-		if( Const.AUTO_SCALE_TARGET_HEIGHT>0 )
-			Const.SCALE = MLib.ceil( h()/Const.AUTO_SCALE_TARGET_HEIGHT );
+		if( Const.AUTO_SCALE_TARGET_WID>0 )
+			Const.SCALE = MLib.ceil( h()/Const.AUTO_SCALE_TARGET_WID );
+		else if( Const.AUTO_SCALE_TARGET_HEI>0 )
+			Const.SCALE = MLib.ceil( h()/Const.AUTO_SCALE_TARGET_HEI );
 		root.setScale(Const.SCALE);
 	}
 
