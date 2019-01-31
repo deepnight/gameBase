@@ -10,8 +10,9 @@ class Entity {
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
-	public var cd : mt.Cooldown;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
+
+	public var cd : mt.Cooldown;
 
 	public var uid : Int;
     public var cx = 0;

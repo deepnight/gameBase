@@ -10,7 +10,7 @@ class Boot extends hxd.App {
 	override function init() {
 		ME = this;
 		new Main(s2d);
-		mt.Process.resizeAll();
+		onResize();
 	}
 
 	override function onResize() {
