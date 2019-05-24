@@ -4,63 +4,63 @@
     "skipErrorMessage": true,
     "commands": [
       {
-        "text": "Make redist",
-        "color": "lightgreen",
-        "command": "haxelib run redistHelper hl.hxml js.hxml swf.hxml -P MyGame",
-        "alignment": "right",
-        "skipTerminateQuickPick": false,
-        "priority": 10
-      },
-      {
-        "text": "✪ Build HL",
+        "text": "🍊 Build HL",
         "color": "orange",
         "commandType":"palette",
         "command": "workbench.action.tasks.runTask|HL release",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 5
+        "priority": -10
       },
       {
-        "text": "(Run)",
+        "text": "Run HL",
         "color": "orange",
         "command": "hl bin/client.hl",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 4
+        "priority": -11
       },
       {
-        "text": "⛴ Build JS",
+        "text": "☕ Build JS",
         "color": "yellow",
         "commandType":"palette",
         "command": "workbench.action.tasks.runTask|JS release",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 3
+        "priority": -20
       },
       {
-        "text": "(Run)",
+        "text": "Run JS",
         "color": "yellow",
         "command": "start js.html",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 2
+        "priority": -21
       },
       {
-        "text": "⛴ Build Flash",
+        "text": "⏩ Build Flash",
         "color": "cyan",
         "commandType":"palette",
         "command": "workbench.action.tasks.runTask|Flash release",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 1
+        "priority": -30
       },
       {
-        "text": "(Run)",
+        "text": "Run Flash",
         "color": "cyan",
         "command": "start bin/client.swf",
         "alignment": "right",
         "skipTerminateQuickPick": false,
-        "priority": 0
+        "priority": -31
+      },
+      {
+        "text": "📦 Redist",
+        "color": "lightgreen",
+        "command": "haxelib run redistHelper hl.dx.hxml hl.sdl.hxml js.hxml swf.hxml -o redist.$ -P MyGame",
+        "alignment": "right",
+        "skipTerminateQuickPick": false,
+        "priority": -50
       }
     ]
   }
