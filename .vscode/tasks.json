@@ -51,6 +51,17 @@
                 "clear": true
             },
             "problemMatcher": ["$haxe"],
+        },
+        {
+            "label": "Lang",
+            "type": "hxml",
+            "file": "langParser.hxml",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
         }
     ]
 }

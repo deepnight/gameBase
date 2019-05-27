@@ -1,0 +1,8 @@
+-cp src.langParser
+-main LangParser
+-lib castle
+-D potools
+-hl bin/langParser.hl
+
+--next
+-cmd hl bin/langParser.hl

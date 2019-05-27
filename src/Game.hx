@@ -16,7 +16,7 @@ class Game extends mt.Process {
 		createRootInLayers(Main.ME.root, Const.DP_BG);
 
 		fx = new Fx();
-		trace("Game is ready.");
+		trace(Lang.t._("Game is ready."));
 	}
 
 	public function onCdbReload() {
@@ -54,7 +54,7 @@ class Game extends mt.Process {
 			#if hl
 			if( ca.isKeyboardPressed(Key.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
-					trace("Press ESCAPE again to exit.");
+					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
 					hxd.System.exit();
 			#end
