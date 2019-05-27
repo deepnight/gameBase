@@ -10,7 +10,7 @@ class Assets {
 			return;
 		initDone = true;
 
-		font = hxd.Res.minecraftiaOutline.toFont();
-		gameElements = mt.heaps.slib.assets.Atlas.load("gameElements.atlas");
+		font = hxd.Res.fonts.minecraftiaOutline.toFont();
+		gameElements = mt.heaps.slib.assets.Atlas.load("atlas/gameElements.atlas");
 	}
 }
