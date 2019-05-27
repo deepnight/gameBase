@@ -49,7 +49,7 @@ class Main extends mt.Process {
 		Data.load( hxd.Res.data.entry.getText() );
 
 		// Console
-		new Console(Assets.font, s);
+		new Console(Assets.fontTiny, s);
 
 		// Game controller
 		controller = new mt.heaps.Controller(s);
@@ -63,7 +63,7 @@ class Main extends mt.Process {
 		controller.bind(START, Key.N);
 
 		// Start
-		new mt.deepnight.GameFocusHelper(Boot.ME.s2d, Assets.font);
+		new mt.deepnight.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
 		delayer.addF( startGame, 1 );
 	}
 

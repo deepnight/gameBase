@@ -119,7 +119,7 @@ class Fx extends mt.Process {
 
 	public function markerText(cx:Int, cy:Int, txt:String, ?t=1.0) {
 		#if debug
-		var tf = new h2d.Text(Assets.font, topNormalSb);
+		var tf = new h2d.Text(Assets.fontTiny, topNormalSb);
 		tf.text = txt;
 
 		var p = allocTopAdd(getTile("circle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);

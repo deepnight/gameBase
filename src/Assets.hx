@@ -1,7 +1,11 @@
 import mt.heaps.slib.*;
 
 class Assets {
-	public static var font : h2d.Font;
+	public static var fontPixel : h2d.Font;
+	public static var fontTiny : h2d.Font;
+	public static var fontSmall : h2d.Font;
+	public static var fontMedium : h2d.Font;
+	public static var fontLarge : h2d.Font;
 	public static var gameElements : SpriteLib;
 
 	static var initDone = false;
@@ -10,7 +14,11 @@ class Assets {
 			return;
 		initDone = true;
 
-		font = hxd.Res.fonts.minecraftiaOutline.toFont();
+		fontPixel = hxd.Res.fonts.minecraftiaOutline.toFont();
+		fontTiny = hxd.Res.fonts.barlow_condensed_medium_regular_9.toFont();
+		fontSmall = hxd.Res.fonts.barlow_condensed_medium_regular_11.toFont();
+		fontMedium = hxd.Res.fonts.barlow_condensed_medium_regular_17.toFont();
+		fontLarge = hxd.Res.fonts.barlow_condensed_medium_regular_32.toFont();
 		gameElements = mt.heaps.slib.assets.Atlas.load("atlas/gameElements.atlas");
 	}
 }
