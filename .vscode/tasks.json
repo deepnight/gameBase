@@ -22,7 +22,7 @@
         {
             "label": "HL release",
             "type": "hxml",
-            "file": "hl.hxml",
+            "file": "hl.dx.hxml",
             "presentation": {
                 "reveal": "never",
                 "panel": "dedicated",
