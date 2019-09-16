@@ -4,7 +4,7 @@ import hxd.Key;
 class Game extends Process {
 	public static var ME : Game;
 
-	public var ca : mt.heaps.Controller.ControllerAccess;
+	public var ca : dn.heaps.Controller.ControllerAccess;
 	public var fx : Fx;
 
 	public function new() {

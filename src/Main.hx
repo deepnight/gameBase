@@ -3,8 +3,8 @@ import hxd.Key;
 
 class Main extends dn.Process {
 	public static var ME : Main;
-	public var controller : mt.heaps.Controller;
-	public var ca : mt.heaps.Controller.ControllerAccess;
+	public var controller : dn.heaps.Controller;
+	public var ca : dn.heaps.Controller.ControllerAccess;
 
 	public function new(s:h2d.Scene) {
 		super();
@@ -50,7 +50,7 @@ class Main extends dn.Process {
 		new Console(Assets.fontTiny, s);
 
 		// Game controller
-		controller = new mt.heaps.Controller(s);
+		controller = new dn.heaps.Controller(s);
 		ca = controller.createAccess("main");
 		controller.bind(AXIS_LEFT_X_NEG, Key.LEFT, Key.Q, Key.A);
 		controller.bind(AXIS_LEFT_X_POS, Key.RIGHT, Key.D);
