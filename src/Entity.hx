@@ -1,7 +1,3 @@
-import mt.MLib;
-import mt.deepnight.Lib;
-import mt.heaps.slib.*;
-
 class Entity {
     public static var ALL : Array<Entity> = [];
     public static var GC : Array<Entity> = [];
@@ -12,7 +8,7 @@ class Entity {
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 
-	public var cd : mt.Cooldown;
+	public var cd : dn.Cooldown;
 
 	public var uid : Int;
     public var cx = 0;
@@ -43,7 +39,7 @@ class Entity {
         uid = Const.NEXT_UNIQ;
         ALL.push(this);
 
-		cd = new mt.Cooldown(Const.FPS);
+		cd = new dn.Cooldown(Const.FPS);
         setPosCase(x,y);
 
         spr = new HSprite();
@@ -129,7 +125,7 @@ class Entity {
 
     public function update() {
 		// X
-		var steps = MLib.ceil( MLib.fabs(dx*tmod) );
+		var steps = M.ceil( M.fabs(dx*tmod) );
 		var step = dx*tmod / steps;
 		while( steps>0 ) {
 			xr+=step;
@@ -138,11 +134,11 @@ class Entity {
 			steps--;
 		}
 		dx*=Math.pow(frict,tmod);
-		if( MLib.fabs(dx)<=0.0005*tmod )
+		if( M.fabs(dx)<=0.0005*tmod )
 			dx = 0;
 
 		// Y
-		var steps = MLib.ceil( MLib.fabs(dy*tmod) );
+		var steps = M.ceil( M.fabs(dy*tmod) );
 		var step = dy*tmod / steps;
 		while( steps>0 ) {
 			yr+=step;
@@ -151,7 +147,7 @@ class Entity {
 			steps--;
 		}
 		dy*=Math.pow(frict,tmod);
-		if( MLib.fabs(dy)<=0.0005*tmod )
+		if( M.fabs(dy)<=0.0005*tmod )
 			dy = 0;
     }
 }

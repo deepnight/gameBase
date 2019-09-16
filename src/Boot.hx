@@ -15,7 +15,7 @@ class Boot extends hxd.App {
 
 	override function onResize() {
 		super.onResize();
-		mt.Process.resizeAll();
+		dn.Process.resizeAll();
 	}
 
 	var speed = 1.0;
@@ -33,7 +33,7 @@ class Boot extends hxd.App {
 		tmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
 		#end
 		mt.heaps.Controller.beforeUpdate();
-		mt.Process.updateAll(tmod);
+		dn.Process.updateAll(tmod);
 	}
 }
 

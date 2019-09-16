@@ -2,5 +2,6 @@
 -lib castle
 -lib heaps
 -lib hxbit
+-lib deepnightLibs
 -main Boot
 -dce full

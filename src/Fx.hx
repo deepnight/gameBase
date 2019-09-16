@@ -1,12 +1,9 @@
 import h2d.Sprite;
-import mt.heaps.HParticle;
-import mt.deepnight.Lib;
-import mt.deepnight.Color;
-import mt.deepnight.Tweenie;
-import mt.MLib;
+import dn.heaps.HParticle;
+import dn.Tweenie;
 
 
-class Fx extends mt.Process {
+class Fx extends dn.Process {
 	public var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;

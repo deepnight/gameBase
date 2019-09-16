@@ -1,5 +1,3 @@
-import mt.MLib;
-
 class Console extends h2d.Console {
 	public static var ME : Console;
 	#if debug
@@ -14,7 +12,7 @@ class Console extends h2d.Console {
 		// Settings
 		ME = this;
 		h2d.Console.HIDE_LOG_TIMEOUT = 30;
-		mt.deepnight.Lib.redirectTracesToH2dConsole(this);
+		Lib.redirectTracesToH2dConsole(this);
 
 		// Debug flags
 		#if debug

@@ -1,9 +1,7 @@
-import mt.Process;
-import mt.MLib;
 import Data;
 import hxd.Key;
 
-class Main extends mt.Process {
+class Main extends dn.Process {
 	public static var ME : Main;
 	public var controller : mt.heaps.Controller;
 	public var ca : mt.heaps.Controller.ControllerAccess;
@@ -63,7 +61,7 @@ class Main extends mt.Process {
 		controller.bind(START, Key.N);
 
 		// Start
-		new mt.deepnight.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
+		new dn.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
 		delayer.addF( startGame, 1 );
 	}
 
@@ -83,14 +81,14 @@ class Main extends mt.Process {
 
 		// Auto scaling
 		if( Const.AUTO_SCALE_TARGET_WID>0 )
-			Const.SCALE = MLib.ceil( h()/Const.AUTO_SCALE_TARGET_WID );
+			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_WID );
 		else if( Const.AUTO_SCALE_TARGET_HEI>0 )
-			Const.SCALE = MLib.ceil( h()/Const.AUTO_SCALE_TARGET_HEI );
+			Const.SCALE = M.ceil( h()/Const.AUTO_SCALE_TARGET_HEI );
 		root.setScale(Const.SCALE);
 	}
 
     override function update() {
-		SpriteLib.TMOD = tmod;
+		dn.heaps.slib.SpriteLib.TMOD = tmod;
         super.update();
     }
 }

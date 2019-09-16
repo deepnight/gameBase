@@ -1,4 +1,4 @@
-import mt.heaps.slib.*;
+import dn.heaps.slib.*;
 
 class Assets {
 	public static var fontPixel : h2d.Font;
@@ -19,6 +19,6 @@ class Assets {
 		fontSmall = hxd.Res.fonts.barlow_condensed_medium_regular_11.toFont();
 		fontMedium = hxd.Res.fonts.barlow_condensed_medium_regular_17.toFont();
 		fontLarge = hxd.Res.fonts.barlow_condensed_medium_regular_32.toFont();
-		gameElements = mt.heaps.slib.assets.Atlas.load("atlas/gameElements.atlas");
+		gameElements = dn.heaps.slib.assets.Atlas.load("atlas/gameElements.atlas");
 	}
 }

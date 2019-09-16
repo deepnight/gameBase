@@ -1,9 +1,7 @@
-import mt.Process;
-import mt.MLib;
-import mt.deepnight.CdbHelper;
+import dn.Process;
 import hxd.Key;
 
-class Game extends mt.Process {
+class Game extends Process {
 	public static var ME : Game;
 
 	public var ca : mt.heaps.Controller.ControllerAccess;
