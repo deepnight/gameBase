@@ -22,7 +22,7 @@ class Game extends Process {
 
 
 	function gc() {
-		if( Entity.GC==null )
+		if( Entity.GC==null || Entity.GC.length==0 )
 			return;
 
 		for(e in Entity.GC)
