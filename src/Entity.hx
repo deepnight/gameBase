@@ -4,6 +4,7 @@ class Entity {
 
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
+	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
