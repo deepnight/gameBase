@@ -61,7 +61,6 @@ class Camera extends dn.Process {
 
 		y += dy*tmod;
 		dy *= Math.pow(frict,tmod);
-		Game.ME.fx.markerFree(x,y, 0.1);
 	}
 
 
