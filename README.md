@@ -12,7 +12,7 @@ Just fork it, feel free to adapt to your own usage (see LICENSE)
 
 This method is mostly for my own usage, as GitHub doesn't allow me to fork my own projects.
 
-- Make a **new repo** on GitHub
+- Make a **new repo** on GitHub (**WARNING**: do not add any license or don't commit anything in it for now)
 - **Clone it** somewhere
 - on a command line:
   - `git remote add gameBase https://github.com/deepnight/gameBase.git`
