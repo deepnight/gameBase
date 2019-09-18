@@ -25,7 +25,6 @@ class Game extends Process {
 		level = new Level();
 		fx = new Fx();
 
-
 		trace(Lang.t._("Game is ready."));
 	}
 
