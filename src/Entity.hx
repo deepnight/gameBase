@@ -80,6 +80,11 @@ class Entity {
 		yr = (y-cy*Const.GRID)/Const.GRID;
 	}
 
+	public function bump(x:Float,y:Float) {
+		bdx+=x;
+		bdy+=y;
+	}
+
 	public function is<T:Entity>(c:Class<T>) return Std.is(this, c);
 	public function as<T:Entity>(c:Class<T>) : T return Std.instance(this, c);
 
