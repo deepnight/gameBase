@@ -42,7 +42,7 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.003;
+			var s = 0.006;
 			var deadZone = 5;
 			var tx = target.footX;
 			var ty = target.footY;
@@ -50,8 +50,8 @@ class Camera extends dn.Process {
 			var d = Lib.distance(x,y, tx, ty);
 			if( d>=deadZone ) {
 				var a = Math.atan2( ty-y, tx-x );
-				dx += Math.cos(a) * (d-deadZone) * s;
-				dy += Math.sin(a) * (d-deadZone) * s;
+				dx += Math.cos(a) * (d-deadZone) * s * tmod;
+				dy += Math.sin(a) * (d-deadZone) * s * tmod;
 			}
 		}
 
@@ -61,6 +61,7 @@ class Camera extends dn.Process {
 
 		y += dy*tmod;
 		dy *= Math.pow(frict,tmod);
+		Game.ME.fx.markerFree(x,y, 0.1);
 	}
 
 
@@ -73,11 +74,11 @@ class Camera extends dn.Process {
 
 			// Update scroller
 			if( wid<level.wid*Const.GRID)
-				scroller.x = -x/Const.SCALE + wid*0.5;
+				scroller.x = -x + wid*0.5;
 			else
 				scroller.x = wid*0.5 - level.wid*0.5*Const.GRID;
 			if( hei<level.hei*Const.GRID)
-				scroller.y = -y/Const.SCALE + hei*0.5;
+				scroller.y = -y + hei*0.5;
 			else
 				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
 			if( cd.has("shaking") ) {
