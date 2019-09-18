@@ -33,6 +33,7 @@ class Entity {
 	public var sprScaleY = 1.0;
 
     public var spr : HSprite;
+	var debugLabel : Null<h2d.Text>;
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
 	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
@@ -115,9 +116,28 @@ class Entity {
 		spr.remove();
 		spr = null;
 
+		if( debugLabel!=null ) {
+			debugLabel.remove();
+			debugLabel = null;
+		}
+
 		cd.destroy();
 		cd = null;
     }
+
+	public inline function debug(?v:Dynamic) {
+		#if debug
+		if( v==null && debugLabel!=null ) {
+			debugLabel.remove();
+			debugLabel = null;
+		}
+		if( v!=null ) {
+			if( debugLabel==null )
+				debugLabel = new h2d.Text(Assets.fontTiny, Game.ME.scroller);
+			debugLabel.text = Std.string(v);
+		}
+		#end
+	}
 
     public function preUpdate() {
 		cd.update(tmod);
@@ -128,6 +148,11 @@ class Entity {
         spr.y = (cy+yr)*Const.GRID;
         spr.scaleX = dir*sprScaleX;
         spr.scaleY = sprScaleY;
+
+		if( debugLabel!=null ) {
+			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
+			debugLabel.y = Std.int(footY+1);
+		}
     }
 
 
