@@ -67,7 +67,7 @@ class Camera extends dn.Process {
 	override function postUpdate() {
 		super.postUpdate();
 
-		if( !Console.ME.hasFlag("scroll") ) {
+		if( !ui.Console.ME.hasFlag("scroll") ) {
 			var level = Game.ME.level;
 			var scroller = Game.ME.scroller;
 

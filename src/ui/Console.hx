@@ -1,3 +1,5 @@
+package ui;
+
 class Console extends h2d.Console {
 	public static var ME : Console;
 	#if debug

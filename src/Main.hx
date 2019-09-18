@@ -47,7 +47,7 @@ class Main extends dn.Process {
 		Data.load( hxd.Res.data.entry.getText() );
 
 		// Console
-		new Console(Assets.fontTiny, s);
+		new ui.Console(Assets.fontTiny, s);
 
 		// Game controller
 		controller = new dn.heaps.Controller(s);

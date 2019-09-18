@@ -59,7 +59,7 @@ class Game extends Process {
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
 		gc();
 
-		if( !Console.ME.isActive() ) {
+		if( !ui.Console.ME.isActive() ) {
 			#if hl
 			if( ca.isKeyboardPressed(Key.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
