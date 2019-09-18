@@ -22,6 +22,13 @@ class Modal extends ui.Window {
 		dn.Process.resizeAll();
 	}
 
+	public static function hasAny() {
+		for(e in ALL)
+			if( !e.destroyed )
+				return true;
+		return false;
+	}
+
 	override function onDispose() {
 		super.onDispose();
 		ca.dispose();
