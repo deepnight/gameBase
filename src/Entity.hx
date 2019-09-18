@@ -85,6 +85,11 @@ class Entity {
 		bdy+=y;
 	}
 
+	public function cancelVelocities() {
+		dx = bdx = 0;
+		dy = bdy = 0;
+	}
+
 	public function is<T:Entity>(c:Class<T>) return Std.is(this, c);
 	public function as<T:Entity>(c:Class<T>) : T return Std.instance(this, c);
 
