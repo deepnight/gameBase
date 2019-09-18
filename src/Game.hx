@@ -17,13 +17,15 @@ class Game extends Process {
 		createRootInLayers(Main.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();
+		if( Const.SCALE>1 )
+			scroller.filter = new h2d.filter.ColorMatrix(); // force pixel render
 		root.add(scroller, Const.DP_BG);
+
 		camera = new Camera();
 		level = new Level();
-		if( Const.SCALE>1 )
-			scroller.filter = new h2d.filter.ColorMatrix();
-
 		fx = new Fx();
+
+
 		trace(Lang.t._("Game is ready."));
 	}
 
