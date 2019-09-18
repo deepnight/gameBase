@@ -93,6 +93,5 @@ class Camera extends dn.Process {
 			scroller.x = Std.int(scroller.x);
 			scroller.y = Std.int(scroller.y);
 		}
-		Game.ME.fx.markerFree(x, y, 0.1, 0xffff00);
 	}
 }

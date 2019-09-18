@@ -12,8 +12,8 @@ class Level extends dn.Process {
 
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 
-		wid = 40;
-		hei = 40;
+		wid = 16;
+		hei = 16;
 	}
 
 	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
@@ -23,6 +23,7 @@ class Level extends dn.Process {
 	public function render() {
 		invalidated = false;
 
+		// Debug level render
 		root.removeChildren();
 		for(cx in 0...wid)
 		for(cy in 0...hei) {
