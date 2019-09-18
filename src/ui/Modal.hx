@@ -2,7 +2,7 @@ package ui;
 
 class Modal extends ui.Window {
 	public static var ALL : Array<Modal> = [];
-	public static var COUNT = 0;
+	static var COUNT = 0;
 
 	var ca : dn.heaps.Controller.ControllerAccess;
 	var mask : h2d.Bitmap;
@@ -33,7 +33,8 @@ class Modal extends ui.Window {
 		super.onDispose();
 		ca.dispose();
 		ALL.remove(this);
-		if( --COUNT==0 )
+		COUNT--;
+		if( !hasAny() )
 			Game.ME.resume();
 	}
 
