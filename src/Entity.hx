@@ -19,7 +19,12 @@ class Entity {
 
     public var dx = 0.;
     public var dy = 0.;
+    public var bdx = 0.;
+    public var bdy = 0.;
+	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
+	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
 	public var frict = 0.82;
+	public var bumpFrict = 0.93;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
 
@@ -128,8 +133,8 @@ class Entity {
 
     public function update() {
 		// X
-		var steps = M.ceil( M.fabs(dx*tmod) );
-		var step = dx*tmod / steps;
+		var steps = M.ceil( M.fabs(dxTotal*tmod) );
+		var step = dxTotal*tmod / steps;
 		while( steps>0 ) {
 			xr+=step;
 			while( xr>1 ) { xr--; cx++; }
@@ -137,12 +142,13 @@ class Entity {
 			steps--;
 		}
 		dx*=Math.pow(frict,tmod);
-		if( M.fabs(dx)<=0.0005*tmod )
-			dx = 0;
+		bdx*=Math.pow(bumpFrict,tmod);
+		if( M.fabs(dx)<=0.0005*tmod ) dx = 0;
+		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
 
 		// Y
-		var steps = M.ceil( M.fabs(dy*tmod) );
-		var step = dy*tmod / steps;
+		var steps = M.ceil( M.fabs(dyTotal*tmod) );
+		var step = dyTotal*tmod / steps;
 		while( steps>0 ) {
 			yr+=step;
 			while( yr>1 ) { yr--; cy++; }
@@ -150,7 +156,8 @@ class Entity {
 			steps--;
 		}
 		dy*=Math.pow(frict,tmod);
-		if( M.fabs(dy)<=0.0005*tmod )
-			dy = 0;
+		bdy*=Math.pow(bumpFrict,tmod);
+		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
+		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
     }
 }
