@@ -94,6 +94,8 @@ class Entity {
 		return Lib.distance(footX, footY, x, y);
 	}
 
+	public function makePoint() return new CPoint(cx,cy, xr,yr);
+
     public inline function destroy() {
         if( !destroyed ) {
             destroyed = true;
