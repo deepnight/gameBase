@@ -43,7 +43,7 @@ class Entity {
         setPosCase(x,y);
 
         spr = new HSprite();
-        Game.ME.root.add(spr, Const.DP_MAIN);
+        Game.ME.scroller.add(spr, Const.DP_MAIN);
 		spr.setCenterRatio(0.5,1);
     }
 

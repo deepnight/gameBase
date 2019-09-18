@@ -6,12 +6,22 @@ class Game extends Process {
 
 	public var ca : dn.heaps.Controller.ControllerAccess;
 	public var fx : Fx;
+	public var camera : Camera;
+	public var scroller : h2d.Layers;
+	public var level : Level;
 
 	public function new() {
 		super(Main.ME);
 		ME = this;
 		ca = Main.ME.controller.createAccess("game");
 		createRootInLayers(Main.ME.root, Const.DP_BG);
+
+		scroller = new h2d.Layers();
+		root.add(scroller, Const.DP_BG);
+		camera = new Camera();
+		level = new Level();
+		if( Const.SCALE>1 )
+			scroller.filter = new h2d.filter.ColorMatrix();
 
 		fx = new Fx();
 		trace(Lang.t._("Game is ready."));
