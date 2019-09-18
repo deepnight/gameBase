@@ -11,29 +11,35 @@ class CPoint {
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-Const.GRID*0.5;
 
-	public function new(x,y, ?xr=0.5, ?yr=1.0) {
+	public function new(x,y, ?xr=0.5, ?yr=0.5) {
 		cx = x;
 		cy = y;
 		this.xr = xr;
 		this.yr = yr;
 	}
 
-	public function set(x,y,?xr=0.5,?yr=1.0) {
+	public function set(x,y,?xr=0.5,?yr=0.5) {
 		this.cx = x;
 		this.cy = y;
 		this.xr = xr;
 		this.yr = yr;
 	}
 
-	public inline function distCase(e:Entity) {
-		return Lib.distance(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
+	public inline function distCase(?e:Entity, ?pt:CPoint, ?cx=0, ?cy=0, ?xr=0.5, ?yr=0.5) {
+		if( e!=null )
+			return Lib.distance(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
+		else if( pt!=null )
+			return Lib.distance(cx+xr, cy+yr, pt.cx+pt.xr, pt.cy+pt.yr);
+		else
+			return Lib.distance(this.cx+this.xr, this.cy+this.yr, cx+xr, cy+yr);
 	}
 
-	public inline function distCasePt(pt:CPoint) {
-		return Lib.distance(cx+xr, cy+yr, pt.cx+pt.xr, pt.cy+pt.yr);
-	}
-
-	public inline function distPx(e:Entity) {
-		return Lib.distance(footX, footY, e.footX, e.footY);
+	public inline function distPx(?e:Entity, ?pt:CPoint, ?x=0., ?y=0.) {
+		if( e!=null )
+			return Lib.distance(footX, footY, e.footX, e.footY);
+		else if( pt!=null )
+			return Lib.distance(footX, footY, pt.footX, pt.footY);
+		else
+			return Lib.distance(footX, footY, x, y);
 	}
 }
