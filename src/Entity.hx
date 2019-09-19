@@ -95,7 +95,7 @@ class Entity {
 
 	public inline function rnd(min,max,?sign) return Lib.rnd(min,max,sign);
 	public inline function irnd(min,max,?sign) return Lib.irnd(min,max,sign);
-	public inline function pretty(v,?p=1) return Lib.prettyFloat(v,p);
+	public inline function pretty(v,?p=1) return M.pretty(v,p);
 
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
 
