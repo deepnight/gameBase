@@ -47,7 +47,7 @@ class Camera extends dn.Process {
 			var tx = target.footX;
 			var ty = target.footY;
 
-			var d = Lib.distance(x,y, tx, ty);
+			var d = M.dist(x,y, tx, ty);
 			if( d>=deadZone ) {
 				var a = Math.atan2( ty-y, tx-x );
 				dx += Math.cos(a) * (d-deadZone) * s * tmod;

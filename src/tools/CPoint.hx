@@ -27,19 +27,19 @@ class CPoint {
 
 	public inline function distCase(?e:Entity, ?pt:CPoint, ?cx=0, ?cy=0, ?xr=0.5, ?yr=0.5) {
 		if( e!=null )
-			return Lib.distance(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
+			return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
 		else if( pt!=null )
-			return Lib.distance(cx+xr, cy+yr, pt.cx+pt.xr, pt.cy+pt.yr);
+			return M.dist(cx+xr, cy+yr, pt.cx+pt.xr, pt.cy+pt.yr);
 		else
-			return Lib.distance(this.cx+this.xr, this.cy+this.yr, cx+xr, cy+yr);
+			return M.dist(this.cx+this.xr, this.cy+this.yr, cx+xr, cy+yr);
 	}
 
 	public inline function distPx(?e:Entity, ?pt:CPoint, ?x=0., ?y=0.) {
 		if( e!=null )
-			return Lib.distance(footX, footY, e.footX, e.footY);
+			return M.dist(footX, footY, e.footX, e.footY);
 		else if( pt!=null )
-			return Lib.distance(footX, footY, pt.footX, pt.footY);
+			return M.dist(footX, footY, pt.footX, pt.footY);
 		else
-			return Lib.distance(footX, footY, x, y);
+			return M.dist(footX, footY, x, y);
 	}
 }
