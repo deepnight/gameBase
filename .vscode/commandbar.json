@@ -38,24 +38,7 @@
 			"priority": -21
 		},
 		{
-			"text": "⏩ Build Flash",
-			"color": "cyan",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|Flash release",
-			"alignment": "right",
-			"skipTerminateQuickPick": false,
-			"priority": -30
-		},
-		{
-			"text": "Run Flash",
-			"color": "cyan",
-			"command": "start bin/client.swf",
-			"alignment": "right",
-			"skipTerminateQuickPick": false,
-			"priority": -31
-		},
-		{
-			"text": "⏩ POT",
+			"text": "🅰️ Build POT",
 			"color": "white",
 			"commandType":"palette",
 			"command": "workbench.action.tasks.runTask|Lang",
