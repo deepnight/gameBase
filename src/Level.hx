@@ -4,7 +4,7 @@ class Level extends dn.Process {
 
 	public var wid(get,never) : Int; inline function get_wid() return tmap.wid;
 	public var hei(get,never) : Int; inline function get_hei() return tmap.hei;
-	var tmap : h2dTiled.TiledMap;
+	var tmap : tiled.TMap;
 
 	var invalidated = true;
 
@@ -12,7 +12,7 @@ class Level extends dn.Process {
 		super(Game.ME);
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 
-		tmap = new h2dTiled.TiledMap(hxd.Res.map.level);
+		tmap = new tiled.TMap(hxd.Res.map.level);
 	}
 
 	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
