@@ -80,6 +80,8 @@ class Camera extends dn.Process {
 				scroller.y = -y + hei*0.5;
 			else
 				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
+
+			// Shakes
 			if( cd.has("shaking") ) {
 				scroller.x += Math.cos(ftime*1.1)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
 				scroller.y += Math.sin(0.3+ftime*0.33)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
@@ -90,6 +92,8 @@ class Camera extends dn.Process {
 				scroller.x = M.fclamp(scroller.x, wid-level.wid*Const.GRID, 0);
 			if( hei<level.hei*Const.GRID)
 				scroller.y = M.fclamp(scroller.y, hei-level.hei*Const.GRID, 0);
+
+			// Rounding
 			scroller.x = Std.int(scroller.x);
 			scroller.y = Std.int(scroller.y);
 		}
