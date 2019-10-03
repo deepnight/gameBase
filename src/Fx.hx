@@ -16,22 +16,22 @@ class Fx extends dn.Process {
 	public function new() {
 		super(Game.ME);
 
-		pool = new ParticlePool(Assets.gameElements.tile, 2048, Const.FPS);
+		pool = new ParticlePool(Assets.tiles.tile, 2048, Const.FPS);
 
-		bgAddSb = new h2d.SpriteBatch(Assets.gameElements.tile);
+		bgAddSb = new h2d.SpriteBatch(Assets.tiles.tile);
 		game.scroller.add(bgAddSb, Const.DP_FX_BG);
 		bgAddSb.blendMode = Add;
 		bgAddSb.hasRotationScale = true;
 
-		bgNormalSb = new h2d.SpriteBatch(Assets.gameElements.tile);
+		bgNormalSb = new h2d.SpriteBatch(Assets.tiles.tile);
 		game.scroller.add(bgNormalSb, Const.DP_FX_BG);
 		bgNormalSb.hasRotationScale = true;
 
-		topNormalSb = new h2d.SpriteBatch(Assets.gameElements.tile);
+		topNormalSb = new h2d.SpriteBatch(Assets.tiles.tile);
 		game.scroller.add(topNormalSb, Const.DP_FX_TOP);
 		topNormalSb.hasRotationScale = true;
 
-		topAddSb = new h2d.SpriteBatch(Assets.gameElements.tile);
+		topAddSb = new h2d.SpriteBatch(Assets.tiles.tile);
 		game.scroller.add(topAddSb, Const.DP_FX_TOP);
 		topAddSb.blendMode = Add;
 		topAddSb.hasRotationScale = true;
@@ -68,7 +68,7 @@ class Fx extends dn.Process {
 	}
 
 	public inline function getTile(id:String) : h2d.Tile {
-		return Assets.gameElements.getTileRandom(id);
+		return Assets.tiles.getTileRandom(id);
 	}
 
 	public function killAll() {
@@ -86,12 +86,12 @@ class Fx extends dn.Process {
 
 	public function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile("circle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile("fxCircle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.lifeS = sec;
 
-		var p = allocTopAdd(getTile("dot"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile("pixel"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.setScale(2);
@@ -101,7 +101,7 @@ class Fx extends dn.Process {
 
 	public function markerFree(x:Float, y:Float, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile("dot"), x,y);
+		var p = allocTopAdd(getTile("fxDot"), x,y);
 		p.setCenterRatio(0.5,0.5);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
@@ -115,7 +115,7 @@ class Fx extends dn.Process {
 		var tf = new h2d.Text(Assets.fontTiny, topNormalSb);
 		tf.text = txt;
 
-		var p = allocTopAdd(getTile("circle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile("fxCircle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.colorize(0x0080FF);
 		p.alpha = 0.6;
 		p.lifeS = 0.3;
