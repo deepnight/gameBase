@@ -1,4 +1,4 @@
 res/.tmp
-art/export
+art/export*
 redist.*
 bin/*.*
