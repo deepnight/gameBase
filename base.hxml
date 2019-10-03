@@ -3,6 +3,5 @@
 -lib heaps
 -lib hxbit
 -lib deepnightLibs
--lib heapsTiled
 -main Boot
 -dce full
