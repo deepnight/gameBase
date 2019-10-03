@@ -89,14 +89,12 @@ class Fx extends dn.Process {
 		var p = allocTopAdd(getTile("circle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
-		p.frict = 0.92;
 		p.lifeS = sec;
 
 		var p = allocTopAdd(getTile("dot"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.setScale(2);
-		p.frict = 0.92;
 		p.lifeS = sec;
 		#end
 	}
@@ -108,8 +106,6 @@ class Fx extends dn.Process {
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.setScale(3);
-		// p.dr = 0.3;
-		p.frict = 0.92;
 		p.lifeS = sec;
 		#end
 	}
@@ -121,7 +117,6 @@ class Fx extends dn.Process {
 
 		var p = allocTopAdd(getTile("circle"), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.colorize(0x0080FF);
-		p.frict = 0.92;
 		p.alpha = 0.6;
 		p.lifeS = 0.3;
 		p.fadeOutSpeed = 0.4;
