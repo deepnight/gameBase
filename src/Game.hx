@@ -14,6 +14,8 @@ class Game extends Process {
 		super(Main.ME);
 		ME = this;
 		ca = Main.ME.controller.createAccess("game");
+		ca.leftDeadZone = 0.2;
+		ca.rightDeadZone = 0.2;
 		createRootInLayers(Main.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();
