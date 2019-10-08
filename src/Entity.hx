@@ -8,6 +8,7 @@ class Entity {
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
+	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 
 	public var cd : dn.Cooldown;
 
@@ -33,6 +34,7 @@ class Entity {
 	public var sprScaleY = 1.0;
 
     public var spr : HSprite;
+	public var colorAdd : h3d.Vector;
 	var debugLabel : Null<h2d.Text>;
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
@@ -49,8 +51,9 @@ class Entity {
 		cd = new dn.Cooldown(Const.FPS);
         setPosCase(x,y);
 
-        spr = new HSprite();
+        spr = new HSprite(Assets.tiles);
         Game.ME.scroller.add(spr, Const.DP_MAIN);
+		spr.colorAdd = colorAdd = new h3d.Vector();
 		spr.setCenterRatio(0.5,1);
     }
 
@@ -98,6 +101,7 @@ class Entity {
 	public inline function pretty(v,?p=1) return M.pretty(v,p);
 
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
+	public inline function dirToAng() return dir==1 ? 0. : M.PI;
 
 	public inline function distCase(e:Entity) {
 		return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
@@ -122,6 +126,8 @@ class Entity {
 
     public function dispose() {
         ALL.remove(this);
+
+		colorAdd = null;
 
 		spr.remove();
 		spr = null;

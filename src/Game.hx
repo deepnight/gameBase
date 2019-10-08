@@ -9,6 +9,7 @@ class Game extends Process {
 	public var camera : Camera;
 	public var scroller : h2d.Layers;
 	public var level : Level;
+	public var hud : ui.Hud;
 
 	public function new() {
 		super(Main.ME);
@@ -24,6 +25,7 @@ class Game extends Process {
 		camera = new Camera();
 		level = new Level();
 		fx = new Fx();
+		hud = new ui.Hud();
 
 		trace(Lang.t._("Game is ready."));
 	}
