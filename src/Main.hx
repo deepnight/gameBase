@@ -68,9 +68,9 @@ class Main extends dn.Process {
 	public function startGame() {
 		if( Game.ME!=null ) {
 			Game.ME.destroy();
-			delayer.addS(function() {
+			delayer.addF(function() {
 				new Game();
-			},0.1);
+			}, 1);
 		}
 		else
 			new Game();
