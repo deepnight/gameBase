@@ -17,8 +17,6 @@ class Level extends dn.Process {
 
 
 	public function render() {
-		invalidated = false;
-
 		// Debug level render
 		root.removeChildren();
 		for(cx in 0...wid)
@@ -31,7 +29,10 @@ class Level extends dn.Process {
 
 	override function postUpdate() {
 		super.postUpdate();
-		if( invalidated )
+
+		if( invalidated ) {
+			invalidated = false;
 			render();
+		}
 	}
 }
