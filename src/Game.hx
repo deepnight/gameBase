@@ -70,6 +70,10 @@ class Game extends Process {
 				else
 					hxd.System.exit();
 			#end
+
+			// Restart
+			if( ca.selectPressed() )
+				Main.ME.startGame();
 		}
 	}
 }
