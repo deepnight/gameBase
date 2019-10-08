@@ -6,6 +6,8 @@ class Camera extends dn.Process {
 	public var dy : Float;
 	public var wid(get,never) : Int;
 	public var hei(get,never) : Int;
+	var bumpOffX = 0.;
+	var bumpOffY = 0.;
 
 	public function new() {
 		super(Game.ME);
@@ -63,6 +65,16 @@ class Camera extends dn.Process {
 		dy *= Math.pow(frict,tmod);
 	}
 
+	public inline function bumpAng(a, dist) {
+		bumpOffX+=Math.cos(a)*dist;
+		bumpOffY+=Math.sin(a)*dist;
+	}
+
+	public inline function bump(x,y) {
+		bumpOffX+=x;
+		bumpOffY+=y;
+	}
+
 
 	override function postUpdate() {
 		super.postUpdate();
@@ -93,9 +105,13 @@ class Camera extends dn.Process {
 				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
 			}
 
+			// Bumps friction
+			bumpOffX *= Math.pow(0.75, tmod);
+			bumpOffY *= Math.pow(0.75, tmod);
+
 			// Rounding
-			scroller.x = Std.int(scroller.x);
-			scroller.y = Std.int(scroller.y);
+			scroller.x = Std.int(scroller.x + bumpOffX);
+			scroller.y = Std.int(scroller.y + bumpOffY);
 		}
 	}
 }
