@@ -35,3 +35,30 @@ The game has various elements:
 - **Const**: contains a set of constant values I use to tweak my game, like the standard FPS, your starting health points or stuff like that.
 
 All your assets (art, sound, other data files) that are meant to be loaded/used by the game should be put in the **res/** folder.
+
+# A quick guide to installing Haxe
+
+## Getting all the necessary files
+
+ - **Haxe compiler**: https://haxe.org/download/list/ (latest stable or RC, unzip the files in a folder somewhere on your harddrive, like `c:\haxe`)
+ - **NekoVM**: https://nekovm.org/download/ (unzip all files in the *same* folder as Haxe, ie. `c:\haxe`)
+ - **HashLink**: https://hashlink.haxe.org/#download (unzip the files in a separate folder, somewhere else, like `c:\hl`)
+ - Add *Haxe* folder (eg. `c:\haxe`) to the **PATH** environment variable
+ - Add *HashLink* folder (eg. `c:\hl`) to the **PATH** environment variable
+
+## Installing important haxe libs
+
+- Open a command line
+- Run the following commands:
+    - `haxelib install hldx`
+    - `haxelib install hlsdl`
+    - `haxelib install format`
+    - `haxelib install castle`
+    - `haxelib install heaps`
+    - `haxelib install deepnightLibs`
+
+- Optionaly, you may need the following:
+    - For OGMO3 level editor: `haxelib install heapsOgmo`
+    - For Tiled level editor: `haxelib install heapsTiled`
+
+That's it.
