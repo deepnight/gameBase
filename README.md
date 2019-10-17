@@ -56,6 +56,7 @@ All your assets (art, sound, other data files) that are meant to be loaded/used 
     - `haxelib install castle`
     - `haxelib install heaps`
     - `haxelib install deepnightLibs`
+    - `haxelib install redistHelper`
 
 - Optionaly, you may need the following:
     - For OGMO3 level editor: `haxelib install heapsOgmo`
