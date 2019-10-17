@@ -13,7 +13,7 @@ class Window extends dn.Process {
 		win.backgroundTile = h2d.Tile.fromColor(0xffffff, 32,32);
 		win.borderWidth = 7;
 		win.borderHeight = 7;
-		win.isVertical = true;
+		win.layout = Vertical;
 		win.verticalSpacing = 2;
 
 		dn.Process.resizeAll();

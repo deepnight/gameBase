@@ -94,7 +94,7 @@ class Entity {
 	}
 
 	public function is<T:Entity>(c:Class<T>) return Std.is(this, c);
-	public function as<T:Entity>(c:Class<T>) : T return Std.instance(this, c);
+	public function as<T:Entity>(c:Class<T>) : T return Std.downcast(this, c);
 
 	public inline function rnd(min,max,?sign) return Lib.rnd(min,max,sign);
 	public inline function irnd(min,max,?sign) return Lib.irnd(min,max,sign);
