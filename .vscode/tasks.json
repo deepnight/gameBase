@@ -12,7 +12,7 @@
                 "panel": "dedicated",
                 "clear": true
             },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -28,7 +28,7 @@
                 "panel": "dedicated",
                 "clear": true
             },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
         {
             "label": "JS release",
@@ -39,7 +39,7 @@
                 "panel": "dedicated",
                 "clear": true
             },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
         {
             "label": "Flash release",
@@ -50,7 +50,7 @@
                 "panel": "dedicated",
                 "clear": true
             },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
         {
             "label": "Lang",
@@ -61,7 +61,7 @@
                 "panel": "shared",
                 "clear": true
             },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         }
     ]
 }
