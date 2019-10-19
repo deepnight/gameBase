@@ -50,6 +50,7 @@ All your assets (art, sound, other data files) that are meant to be loaded/used 
 
 - Open a command line
 - Run the following commands:
+    - `haxelib setup` (keep default folder)
     - `haxelib install hldx`
     - `haxelib install hlsdl`
     - `haxelib install format`
