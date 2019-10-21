@@ -40,17 +40,18 @@ All your assets (art, sound, other data files) that are meant to be loaded/used 
 
 ## Getting all the necessary files
 
- - **Haxe compiler**: https://haxe.org/download/list/ (latest stable or RC, unzip the files in a folder somewhere on your harddrive, like `c:\haxe`)
- - **NekoVM**: https://nekovm.org/download/ (unzip all files in the *same* folder as Haxe, ie. `c:\haxe`)
- - **HashLink**: https://hashlink.haxe.org/#download (unzip the files in a separate folder, somewhere else, like `c:\hl`)
- - Add *Haxe* folder (eg. `c:\haxe`) to the **PATH** environment variable
- - Add *HashLink* folder (eg. `c:\hl`) to the **PATH** environment variable
+ - **Haxe compiler**: https://haxe.org/download/list/ (latest stable or RC, unzip the files in a folder somewhere on your harddrive, like `c:\haxeTools\haxe`)
+ - **NekoVM**: https://nekovm.org/download/ (unzip all files in another folder, ie. `c:\haxeTools\neko`)
+ - **HashLink**: https://hashlink.haxe.org/#download (unzip the files in a separate folder, somewhere else, like `c:\haxeTools\hl`)
+ - Add *Haxe* folder (eg. `c:\haxeTools\haxe`) to the **PATH** environment variable
+ - Add *Neko* folder (eg. `c:\haxeTools\neko`) to the **PATH** environment variable
+ - Add *HashLink* folder (eg. `c:\haxeTools\hl`) to the **PATH** environment variable
 
 ## Installing important haxe libs
 
 - Open a command line
 - Run the following commands:
-    - `haxelib setup` (keep default folder)
+    - **`haxelib setup`** (when prompted, point to a /lib folder in your Haxe folder, ie. `c:\haxeTools\haxe\lib`)
     - `haxelib install hldx`
     - `haxelib install hlsdl`
     - `haxelib install format`
