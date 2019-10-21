@@ -29,12 +29,11 @@ Everything starts in **Boot.hx**, in the method `main()`. From here, I instancia
 The game has various elements:
 - **Entities**: the base class for everything that moves in the game (player, enemies, bullets, items etc.). Everything except particles, see below.
 - **Level**: your world, level, room or whatever is your environment. Some games might even have none of these.
-- **Camera**: a basic camera which can optionaly tracks an Entity (say, the player)
+- **Camera**: a basic camera which can optionaly track an Entity (say, the player)
 - **Fx**: a simple particle system
-- **Lang**: a neat way to automatically extract your texts directly from your code to generate PO files compatible with the popular GetText translation ecosystem (https://en.wikipedia.org/wiki/Gettext). The standard way to do things is to write "dev English" sentences in your code, then use this "dev English" to kind-of translate to "proper English" (which will be used in the release version of your game), or translated to "proper whatever-language" you might want.
+- **Lang**: a neat way to automatically extract your texts directly from your code to generate PO files compatible with the popular GetText translation ecosystem (https://en.wikipedia.org/wiki/Gettext). To use it, just use calls like: `Lang._("Some translatable sentence");` in your code somewhere. You can then run `haxe langParser.hxml` from the command line to update your POT file (this script will extract all `Lang._("something")` calls). The "classic" way to do things is to write "dev English" sentences in your code, then use this "dev English" to kind-of translate to "proper English" (which will be used in the release version of your game), or translated to "proper whatever-language" you might want.
 - **Const**: contains a set of constant values I use to tweak my game, like the standard FPS, your starting health points or stuff like that.
-
-All your assets (art, sound, other data files) that are meant to be loaded/used by the game should be put in the **res/** folder.
+- **Assets**: a single class to access assets like tilesets or sounds. All your assets (art, sound, other data files) that are meant to be loaded/used by the game should be put in the **res/** folder. You can access them in your code using the `hxd.Res.myAsset` API.
 
 # A quick guide to installing Haxe
 
