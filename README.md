@@ -45,6 +45,12 @@ The game has various elements:
  - Add *Haxe* folder (eg. `c:\haxeTools\haxe`) to the **PATH** environment variable
  - Add *Neko* folder (eg. `c:\haxeTools\neko`) to the **PATH** environment variable
  - Add *HashLink* folder (eg. `c:\haxeTools\hl`) to the **PATH** environment variable
+ 
+## Does it work?
+Open a command line and type:
+ - `haxe`: you should see the Haxe command help
+ - `neko`: you should see the Neko help
+ - `hl`: you should see the Hashlink help
 
 ## Installing important haxe libs
 
@@ -62,5 +68,10 @@ The game has various elements:
 - Optionaly, you may need the following:
     - For OGMO3 level editor: `haxelib install heapsOgmo`
     - For Tiled level editor: `haxelib install heapsTiled`
+    
+## Does it work?
 
-That's it.
+ - Open a command line
+ - run `haxelib list`
+ - you should get a listing of all the libs previously installed.
+ - well done!
