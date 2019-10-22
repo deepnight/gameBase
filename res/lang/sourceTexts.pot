@@ -4,11 +4,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "MIME-Version: 1.0\n"
 
-#: src/Game.hx:19
+#: src/Game.hx:30
 msgid "Game is ready."
 msgstr ""
 
-#: src/Game.hx:57
+#: src/Game.hx:69
 msgid "Press ESCAPE again to exit."
 msgstr ""
 
