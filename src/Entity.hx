@@ -104,17 +104,11 @@ class Entity {
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
 	public inline function dirToAng() return dir==1 ? 0. : M.PI;
 
-	public inline function distCase(e:Entity) {
-		return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
-	}
+	public inline function distCase(e:Entity) return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
+	public inline function distCaseFree(tcx:Int, tcy:Int, ?txr=0.5, ?tyr=0.5) return M.dist(cx+xr, cy+yr, tcx+txr, tcy+tyr);
 
-	public inline function distPx(e:Entity) {
-		return M.dist(footX, footY, e.footX, e.footY);
-	}
-
-	public inline function distPxFree(x:Float, y:Float) {
-		return M.dist(footX, footY, x, y);
-	}
+	public inline function distPx(e:Entity) return M.dist(footX, footY, e.footX, e.footY);
+	public inline function distPxFree(x:Float, y:Float) return M.dist(footX, footY, x, y);
 
 	public function makePoint() return new CPoint(cx,cy, xr,yr);
 
@@ -180,6 +174,9 @@ class Entity {
 		var step = dxTotal*tmod / steps;
 		while( steps>0 ) {
 			xr+=step;
+
+			// [ add X collisions checks here ]
+
 			while( xr>1 ) { xr--; cx++; }
 			while( xr<0 ) { xr++; cx--; }
 			steps--;
@@ -194,6 +191,9 @@ class Entity {
 		var step = dyTotal*tmod / steps;
 		while( steps>0 ) {
 			yr+=step;
+
+			// [ add Y collisions checks here ]
+
 			while( yr>1 ) { yr--; cy++; }
 			while( yr<0 ) { yr++; cy--; }
 			steps--;
