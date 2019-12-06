@@ -32,6 +32,7 @@ class Entity {
 	public var dir(default,set) = 1;
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
+	public var entityVisible = true;
 
     public var spr : HSprite;
 	public var colorAdd : h3d.Vector;
@@ -164,6 +165,7 @@ class Entity {
         spr.y = (cy+yr)*Const.GRID;
         spr.scaleX = dir*sprScaleX;
         spr.scaleY = sprScaleY;
+		spr.visible = entityVisible;
 
 		if( debugLabel!=null ) {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
