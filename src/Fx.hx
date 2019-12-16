@@ -128,7 +128,7 @@ class Fx extends dn.Process {
 
 	public function flashBangS(c:UInt, a:Float, ?t=0.1) {
 		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
-		game.scroller.add(e, Const.DP_FX_FRONT);
+		game.root.add(e, Const.DP_FX_FRONT);
 		e.scaleX = game.w();
 		e.scaleY = game.h();
 		e.blendMode = Add;
