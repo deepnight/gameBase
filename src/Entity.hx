@@ -45,6 +45,8 @@ class Entity {
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
 
+	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+
     public function new(x:Int, y:Int) {
         uid = Const.NEXT_UNIQ;
         ALL.push(this);
@@ -136,7 +138,10 @@ class Entity {
 		cd = null;
     }
 
-	public inline function debug(?v:Dynamic) {
+	public inline function debugFloat(v:Float, ?c=0xffffff) {
+		debug( pretty(v), c );
+	}
+	public inline function debug(?v:Dynamic, ?c=0xffffff) {
 		#if debug
 		if( v==null && debugLabel!=null ) {
 			debugLabel.remove();
@@ -146,12 +151,64 @@ class Entity {
 			if( debugLabel==null )
 				debugLabel = new h2d.Text(Assets.fontTiny, Game.ME.scroller);
 			debugLabel.text = Std.string(v);
+			debugLabel.textColor = c;
 		}
 		#end
 	}
 
+	function chargeAction(id:String, sec:Float, cb:Void->Void) {
+		if( isChargingAction(id) )
+			cancelAction(id);
+		if( sec<=0 )
+			cb();
+		else
+			actions.push({ id:id, cb:cb, t:sec});
+	}
+
+	public function isChargingAction(?id:String) {
+		if( id==null )
+			return actions.length>0;
+
+		for(a in actions)
+			if( a.id==id )
+				return true;
+
+		return false;
+	}
+
+	public function cancelAction(?id:String) {
+		if( id==null )
+			actions = [];
+		else {
+			var i = 0;
+			while( i<actions.length ) {
+				if( actions[i].id==id )
+					actions.splice(i,1);
+				else
+					i++;
+			}
+		}
+	}
+
+	function updateActions() {
+		var i = 0;
+		while( i<actions.length ) {
+			var a = actions[i];
+			a.t -= tmod/Const.FPS;
+			if( a.t<=0 ) {
+				actions.splice(i,1);
+				if( isAlive() )
+					a.cb();
+			}
+			else
+				i++;
+		}
+	}
+
+
     public function preUpdate() {
 		cd.update(tmod);
+		updateActions();
     }
 
     public function postUpdate() {
