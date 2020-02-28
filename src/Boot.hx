@@ -24,7 +24,7 @@ class Boot extends hxd.App {
 
 		// Bullet time
 		#if debug
-		if( hxd.Key.isPressed(hxd.Key.NUMPAD_SUB) )
+		if( hxd.Key.isPressed(hxd.Key.NUMPAD_SUB) || Main.ME.ca.dpadDownPressed() )
 			speed = speed>=1 ? 0.33 : 1;
 		#end
 
