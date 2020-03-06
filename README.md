@@ -4,4 +4,4 @@ Base structure for my games, using **Heaps** framework (https://heaps.io) and **
 
 # Installation & usage
 
-Please check the wiki for every details: https://github.com/deepnight/gameBase/wiki
+Please check this documentation for every details: https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/
