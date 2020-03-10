@@ -52,14 +52,23 @@ class Game extends Process {
 		gc();
 	}
 
+	override function preUpdate() {
+		super.preUpdate();
+
+		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
+
+		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
+		gc();
+	}
+
 	override function update() {
 		super.update();
 
-		// Updates
-		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
-		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
-		gc();
 
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {
 			#if hl
