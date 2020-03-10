@@ -99,12 +99,6 @@ class Camera extends dn.Process {
 			if( hei<level.hei*Const.GRID)
 				scroller.y = M.fclamp(scroller.y, hei-level.hei*Const.GRID, 0);
 
-			// Shakes
-			if( cd.has("shaking") ) {
-				scroller.x += Math.cos(ftime*1.10)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
-				scroller.y += Math.sin(0.3+ftime*1.33)*1*Const.SCALE*shakePower * cd.getRatio("shaking");
-			}
-
 			// Bumps friction
 			bumpOffX *= Math.pow(0.75, tmod);
 			bumpOffY *= Math.pow(0.75, tmod);
@@ -112,6 +106,12 @@ class Camera extends dn.Process {
 			// Rounding
 			scroller.x = Std.int(scroller.x + bumpOffX);
 			scroller.y = Std.int(scroller.y + bumpOffY);
+
+			// Shakes
+			if( cd.has("shaking") ) {
+				scroller.x += Math.cos(ftime*1.1)*2.5*shakePower * cd.getRatio("shaking");
+				scroller.y += Math.sin(0.3+ftime*1.7)*2.5*shakePower * cd.getRatio("shaking");
+			}
 		}
 	}
 }
