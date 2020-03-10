@@ -222,10 +222,11 @@ class Entity {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
 			debugLabel.y = Std.int(footY+1);
 		}
-    }
+	}
 
+	public function fixedUpdate() {} // runs at a "guaranteed" 30 fps
 
-    public function update() {
+    public function update() { // runs at an unknown fps
 		// X
 		var steps = M.ceil( M.fabs(dxTotal*tmod) );
 		var step = dxTotal*tmod / steps;

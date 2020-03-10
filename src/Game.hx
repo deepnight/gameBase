@@ -65,6 +65,12 @@ class Game extends Process {
 		gc();
 	}
 
+	override function fixedUpdate() {
+		super.fixedUpdate();
+
+		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
+	}
+
 	override function update() {
 		super.update();
 
