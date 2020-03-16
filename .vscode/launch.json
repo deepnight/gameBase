@@ -11,6 +11,20 @@
             "hxml": "hl.debug.hxml",
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "HL debug"
+        },
+        {
+            "name": "Chrome JS debug",
+            "request": "launch",
+            "type": "chrome",
+            "file": "${workspaceFolder}/js.html",
+            "preLaunchTask": "JS debug"
+        },
+        {
+            "name": "Firefox JS debug",
+            "request": "launch",
+            "type": "firefox",
+            "file": "${workspaceFolder}/js.html",
+            "preLaunchTask": "JS debug"
         }
     ]
 }

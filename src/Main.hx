@@ -21,7 +21,7 @@ class Main extends dn.Process {
         #end
 
 		// Resources
-		#if debug
+		#if(hl && debug)
 		hxd.Res.initLocal();
         #else
         hxd.Res.initEmbed();

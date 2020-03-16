@@ -30,6 +30,7 @@
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
+
         {
             "label": "JS release",
             "type": "hxml",
@@ -41,6 +42,7 @@
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
+
         {
             "label": "Flash release",
             "type": "hxml",
@@ -52,6 +54,7 @@
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
         },
+
         {
             "label": "Lang",
             "type": "hxml",
@@ -62,6 +65,18 @@
                 "clear": true
             },
             "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
+        },
+
+        {
+            "label": "JS debug",
+            "type": "hxml",
+            "file": "js.debug.hxml",
+            "presentation": {
+                "reveal": "never",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": ["$haxe"],
         }
     ]
 }
