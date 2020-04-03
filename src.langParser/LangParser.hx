@@ -16,7 +16,7 @@ class LangParser {
 		}
 		catch(e:String) {
 			Sys.println("");
-			Sys.println("ERR: "+e);
+			Sys.println(e);
 			Sys.println("Extraction failed: fatal error!");
 			Sys.println("");
 			Sys.exit(1);
