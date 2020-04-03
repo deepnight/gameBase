@@ -42,12 +42,10 @@ class Main extends dn.Process {
 		#end
 
 		// Assets & data init
-		Lang.init("en");
 		Assets.init();
-		Data.load( hxd.Res.data.entry.getText() );
-
-		// Console
 		new ui.Console(Assets.fontTiny, s);
+		Lang.init("en");
+		Data.load( hxd.Res.data.entry.getText() );
 
 		// Game controller
 		controller = new dn.heaps.Controller(s);
