@@ -5,13 +5,22 @@ class LangParser {
 		var name = "sourceTexts";
 		Sys.println("Building "+name+" file...");
 		var cdbs = findAll("res", "cdb");
-		var data = GetText.doParseGlobal({
-			codePath: "src",
-			codeIgnore: null,
-			cdbFiles: cdbs,
-			cdbSpecialId: [],
-			potFile: "res/lang/"+name+".pot",
-		});
+		try {
+			var data = GetText.doParseGlobal({
+				codePath: "src",
+				codeIgnore: null,
+				cdbFiles: cdbs,
+				cdbSpecialId: [],
+				potFile: "res/lang/"+name+".pot",
+			});
+		}
+		catch(e:String) {
+			Sys.println("");
+			Sys.println("ERR: "+e);
+			Sys.println("Extraction failed: fatal error!");
+			Sys.println("");
+			Sys.exit(1);
+		}
 		Sys.println("Done.");
 	}
 
