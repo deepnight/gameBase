@@ -26,7 +26,8 @@ class Console extends h2d.Console {
 		this.addCommand("unset", [{ name:"k", t:AString, opt:true } ], function(?k:String) {
 			if( k==null ) {
 				log("Reset all.",0xFF0000);
-				flags = new Map();
+				for(k in flags.keys())
+					setFlag(k,false);
 			}
 			else {
 				log("- "+k,0xFF8000);
@@ -39,9 +40,22 @@ class Console extends h2d.Console {
 	}
 
 	#if debug
-	public function setFlag(k:String,v) return flags.set(k,v);
+	public function setFlag(k:String,v) {
+		var hadBefore = hasFlag(k);
+
+		if( v )
+			flags.set(k,v);
+		else
+			flags.remove(k);
+
+		if( v && !hadBefore || !v && hadBefore )
+			onFlagChange(k,v);
+		return v;
+	}
 	public function hasFlag(k:String) return flags.get(k)==true;
 	#else
 	public function hasFlag(k:String) return false;
 	#end
+
+	public function onFlagChange(k:String, v:Bool) {}
 }
