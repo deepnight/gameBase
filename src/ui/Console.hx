@@ -21,7 +21,7 @@ class Console extends h2d.Console {
 		flags = new Map();
 		this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
 			setFlag(k,true);
-			log("+ "+k, 0x80FF00);
+			log("+ "+k.toLowerCase(), 0x80FF00);
 		});
 		this.addCommand("unset", [{ name:"k", t:AString, opt:true } ], function(?k:String) {
 			if( k==null ) {
@@ -34,13 +34,23 @@ class Console extends h2d.Console {
 				setFlag(k,false);
 			}
 		});
+		this.addCommand("list", [], function() {
+			for(k in flags.keys())
+				log(k, 0x80ff00);
+		});
 		this.addAlias("+","set");
 		this.addAlias("-","unset");
 		#end
 	}
 
+	override function handleCommand(command:String) {
+		var flagReg = ~/[\/ \t]*\+[ \t]*([\w]+)/g; // cleanup missing spaces
+		super.handleCommand( flagReg.replace(command, "/+ $1") );
+	}
+
 	#if debug
 	public function setFlag(k:String,v) {
+		k = k.toLowerCase();
 		var hadBefore = hasFlag(k);
 
 		if( v )
@@ -52,7 +62,7 @@ class Console extends h2d.Console {
 			onFlagChange(k,v);
 		return v;
 	}
-	public function hasFlag(k:String) return flags.get(k)==true;
+	public function hasFlag(k:String) return flags.get( k.toLowerCase() )==true;
 	#else
 	public function hasFlag(k:String) return false;
 	#end
