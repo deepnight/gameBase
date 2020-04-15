@@ -27,7 +27,8 @@ class Entity {
     public var bdy = 0.;
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
-	public var frict = 0.82;
+	public var frictX = 0.82;
+	public var frictY = 0.82;
 	public var bumpFrict = 0.93;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
@@ -298,7 +299,7 @@ class Entity {
 			while( xr<0 ) { xr++; cx--; }
 			steps--;
 		}
-		dx*=Math.pow(frict,tmod);
+		dx*=Math.pow(frictX,tmod);
 		bdx*=Math.pow(bumpFrict,tmod);
 		if( M.fabs(dx)<=0.0005*tmod ) dx = 0;
 		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
@@ -315,7 +316,7 @@ class Entity {
 			while( yr<0 ) { yr++; cy--; }
 			steps--;
 		}
-		dy*=Math.pow(frict,tmod);
+		dy*=Math.pow(frictY,tmod);
 		bdy*=Math.pow(bumpFrict,tmod);
 		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
 		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
