@@ -50,6 +50,8 @@ class Entity {
 	public var headY(get,never) : Float; inline function get_headY() return footY-hei;
 	public var centerX(get,never) : Float; inline function get_centerX() return footX;
 	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
+	public var prevFrameFootX : Float = -Const.INFINITE;
+	public var prevFrameFootY : Float = -Const.INFINITE;
 
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 
@@ -87,6 +89,7 @@ class Entity {
 		cy = y;
 		xr = 0.5;
 		yr = 1;
+		onPosManuallyChanged();
 	}
 
 	public function setPosPixel(x:Float, y:Float) {
@@ -94,6 +97,14 @@ class Entity {
 		cy = Std.int(y/Const.GRID);
 		xr = (x-cx*Const.GRID)/Const.GRID;
 		yr = (y-cy*Const.GRID)/Const.GRID;
+		onPosManuallyChanged();
+	}
+
+	function onPosManuallyChanged() {
+		if( M.dist(footX,footY,prevFrameFootX,prevFrameFootY) > Const.GRID*2 ) {
+			prevFrameFootX = footX;
+			prevFrameFootY = footY;
+		}
 	}
 
 	public function bump(x:Float,y:Float) {
@@ -308,6 +319,11 @@ class Entity {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
 			debugLabel.y = Std.int(footY+1);
 		}
+	}
+
+	public function finalUpdate() {
+		prevFrameFootX = footX;
+		prevFrameFootY = footY;
 	}
 
 	public function fixedUpdate() {} // runs at a "guaranteed" 30 fps

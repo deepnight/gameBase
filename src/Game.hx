@@ -101,6 +101,7 @@ class Game extends Process {
 
 
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
+		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
 		gc();
 
 		// Update slow-motions
