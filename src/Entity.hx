@@ -40,7 +40,10 @@ class Entity {
 	public var dir(default,set) = 1;
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
+	public var sprSquashX = 1.0;
+	public var sprSquashY = 1.0;
 	public var entityVisible = true;
+
 	public var life(default,null) : Int;
 	public var maxLife(default,null) : Int;
 	public var lastDmgSource(default,null) : Null<Entity>;
@@ -379,6 +382,15 @@ class Entity {
 	}
 
 
+	public function setSquashX(v:Float) {
+		sprSquashX = v;
+		sprSquashY = 2-v;
+	}
+	public function setSquashY(v:Float) {
+		sprSquashX = 2-v;
+		sprSquashY = v;
+	}
+
     public function preUpdate() {
 		ucd.update(utmod);
 		cd.update(tmod);
@@ -389,9 +401,12 @@ class Entity {
     public function postUpdate() {
         spr.x = (cx+xr)*Const.GRID;
         spr.y = (cy+yr)*Const.GRID;
-        spr.scaleX = dir*sprScaleX;
-        spr.scaleY = sprScaleY;
+        spr.scaleX = dir*sprScaleX * sprSquashX;
+        spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
+
+		sprSquashX += (1-sprSquashX) * 0.2;
+		sprSquashY += (1-sprSquashY) * 0.2;
 
 		// Blink
 		if( !cd.has("keepBlink") ) {
