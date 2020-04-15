@@ -11,6 +11,7 @@ class Entity {
 	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 
 	public var cd : dn.Cooldown;
+	var affects : Map<Affect,Float> = new Map();
 
 	public var uid : Int;
     public var cx = 0;
@@ -206,8 +207,62 @@ class Entity {
 	}
 
 
+	public inline function hasAffect(k:Affect) {
+		return affects.exists(k) && affects.get(k)>0;
+	}
+
+	public inline function getAffectDurationS(k:Affect) {
+		return hasAffect(k) ? affects.get(k) : 0.;
+	}
+
+	public function setAffectS(k:Affect, t:Float, ?allowLower=false) {
+		if( affects.exists(k) && affects.get(k)>t && !allowLower )
+			return;
+
+		if( t<=0 )
+			clearAffect(k);
+		else {
+			var isNew = !hasAffect(k);
+			affects.set(k,t);
+			if( isNew )
+				onAffectStart(k);
+		}
+	}
+
+	public function mulAffectS(k:Affect, f:Float) {
+		if( hasAffect(k) )
+			setAffectS(k, getAffectDurationS(k)*f, true);
+	}
+
+	public function clearAffect(k:Affect) {
+		if( hasAffect(k) ) {
+			affects.remove(k);
+			onAffectEnd(k);
+		}
+	}
+
+	function updateAffects() {
+		for(k in affects.keys()) {
+			var t = affects.get(k);
+			t-=1/Const.FPS * tmod;
+			if( t<=0 )
+				clearAffect(k);
+			else
+				affects.set(k,t);
+		}
+	}
+
+	function onAffectStart(k:Affect) {}
+	function onAffectEnd(k:Affect) {}
+
+	public function isConscious() {
+		return !hasAffect(Stun) && isAlive();
+	}
+
+
     public function preUpdate() {
 		cd.update(tmod);
+		updateAffects();
 		updateActions();
     }
 
@@ -260,5 +315,15 @@ class Entity {
 		bdy*=Math.pow(bumpFrict,tmod);
 		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
 		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
+
+
+		#if debug
+		if( ui.Console.ME.hasFlag("affect") ) {
+			var all = [];
+			for(k in affects.keys())
+				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
+			debug(all);
+		}
+		#end
     }
 }
