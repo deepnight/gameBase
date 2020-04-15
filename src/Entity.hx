@@ -30,8 +30,12 @@ class Entity {
 	public var frictX = 0.82;
 	public var frictY = 0.82;
 	public var bumpFrict = 0.93;
-	public var hei : Float = Const.GRID;
-	public var radius = Const.GRID*0.5;
+
+	public var hei(default,set) : Float = Const.GRID;
+	inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
+
+	public var radius(default,set) = Const.GRID*0.5;
+	inline function set_radius(v) { invalidateDebugBounds=true;  return radius=v; }
 
 	public var dir(default,set) = 1;
 	public var sprScaleX = 1.0;
@@ -42,7 +46,10 @@ class Entity {
 	public var baseColor : h3d.Vector;
 	public var blinkColor : h3d.Vector;
 	public var colorMatrix : h3d.Matrix;
+
 	var debugLabel : Null<h2d.Text>;
+	var debugBounds : Null<h2d.Graphics>;
+	var invalidateDebugBounds = false;
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
 	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
@@ -70,6 +77,9 @@ class Entity {
 		blinkColor = new h3d.Vector();
 		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
 		spr.setCenterRatio(0.5,1);
+
+		if( ui.Console.ME.hasFlag("bounds") )
+			enableBounds();
     }
 
 	inline function set_dir(v) {
@@ -157,6 +167,11 @@ class Entity {
 			debugLabel = null;
 		}
 
+		if( debugBounds!=null ) {
+			debugBounds.remove();
+			debugBounds = null;
+		}
+
 		cd.destroy();
 		cd = null;
     }
@@ -177,6 +192,51 @@ class Entity {
 			debugLabel.textColor = c;
 		}
 		#end
+	}
+
+	public function disableBounds() {
+		if( debugBounds!=null ) {
+			debugBounds.remove();
+			debugBounds = null;
+		}
+	}
+
+
+	public function enableBounds() {
+		if( debugBounds==null ) {
+			debugBounds = new h2d.Graphics();
+			game.scroller.add(debugBounds, Const.DP_TOP);
+		}
+		invalidateDebugBounds = true;
+	}
+
+	function renderBounds() {
+		var c = Color.makeColorHsl((uid%20)/20, 1, 1);
+		debugBounds.clear();
+
+		// Radius
+		debugBounds.lineStyle(1, c, 0.8);
+		debugBounds.drawCircle(0,-radius,radius);
+
+		// Hei
+		debugBounds.lineStyle(1, c, 0.5);
+		debugBounds.drawRect(-radius,-hei,radius*2,hei);
+
+		// Feet
+		debugBounds.lineStyle(1, 0xffffff, 1);
+		var d = Const.GRID*0.2;
+		debugBounds.moveTo(-d,0);
+		debugBounds.lineTo(d,0);
+		debugBounds.moveTo(0,-d);
+		debugBounds.lineTo(0,0);
+
+		// Center
+		debugBounds.lineStyle(1, c, 0.3);
+		debugBounds.drawCircle(0, -hei*0.5, 3);
+
+		// Head
+		debugBounds.lineStyle(1, c, 0.3);
+		debugBounds.drawCircle(0, headY-footY, 3);
 	}
 
 	function chargeAction(id:String, sec:Float, cb:Void->Void) {
@@ -314,10 +374,20 @@ class Entity {
 		spr.colorAdd.g += blinkColor.g;
 		spr.colorAdd.b += blinkColor.b;
 
-
+		// Debug label
 		if( debugLabel!=null ) {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
 			debugLabel.y = Std.int(footY+1);
+		}
+
+		// Debug bounds
+		if( debugBounds!=null ) {
+			if( invalidateDebugBounds ) {
+				invalidateDebugBounds = false;
+				renderBounds();
+			}
+			debugBounds.x = footX;
+			debugBounds.y = footY;
 		}
 	}
 
@@ -371,6 +441,12 @@ class Entity {
 				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
 			debug(all);
 		}
+
+		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
+			enableBounds();
+
+		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
+			disableBounds();
 		#end
     }
 }
