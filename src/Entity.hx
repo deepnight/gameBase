@@ -41,6 +41,15 @@ class Entity {
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
 	public var entityVisible = true;
+	public var life(default,null) : Int;
+	public var maxLife(default,null) : Int;
+	public var lastDmgSource(default,null) : Null<Entity>;
+
+	public var lastHitDirFromSource(get,never) : Int;
+	inline function get_lastHitDirFromSource() return lastDmgSource==null ? -dir : -dirTo(lastDmgSource);
+
+	public var lastHitDirToSource(get,never) : Int;
+	inline function get_lastHitDirToSource() return lastDmgSource==null ? dir : dirTo(lastDmgSource);
 
     public var spr : HSprite;
 	public var baseColor : h3d.Vector;
@@ -82,16 +91,39 @@ class Entity {
 			enableBounds();
     }
 
+	public function initLife(v) {
+		life = maxLife = v;
+	}
+
+	public function hit(dmg:Int, from:Null<Entity>) {
+		if( !isAlive() || dmg<=0 )
+			return;
+
+		life = M.iclamp(life-dmg, 0, maxLife);
+		lastDmgSource = from;
+		onDamage(dmg, from);
+		if( life<=0 )
+			onDie();
+	}
+
+	public function kill(by:Null<Entity>) {
+		if( isAlive() )
+			hit(life,by);
+	}
+
+	function onDamage(dmg:Int, from:Entity) {
+	}
+
+	function onDie() {
+		destroy();
+	}
+
 	inline function set_dir(v) {
 		return dir = v>0 ? 1 : v<0 ? -1 : dir;
 	}
 
 	public inline function isAlive() {
 		return !destroyed;
-	}
-
-	public function kill(by:Null<Entity>) {
-		destroy();
 	}
 
 	public function setPosCase(x:Int, y:Int) {
