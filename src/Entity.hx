@@ -39,7 +39,9 @@ class Entity {
 	public var entityVisible = true;
 
     public var spr : HSprite;
-	public var colorAdd : h3d.Vector;
+	public var baseColor : h3d.Vector;
+	public var blinkColor : h3d.Vector;
+	public var colorMatrix : h3d.Matrix;
 	var debugLabel : Null<h2d.Text>;
 
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
@@ -60,8 +62,11 @@ class Entity {
         setPosCase(x,y);
 
         spr = new HSprite(Assets.tiles);
-        Game.ME.scroller.add(spr, Const.DP_MAIN);
-		spr.colorAdd = colorAdd = new h3d.Vector();
+		Game.ME.scroller.add(spr, Const.DP_MAIN);
+		spr.colorAdd = new h3d.Vector();
+		baseColor = new h3d.Vector();
+		blinkColor = new h3d.Vector();
+		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
 		spr.setCenterRatio(0.5,1);
     }
 
@@ -129,7 +134,9 @@ class Entity {
     public function dispose() {
         ALL.remove(this);
 
-		colorAdd = null;
+		baseColor = null;
+		blinkColor = null;
+		colorMatrix = null;
 
 		spr.remove();
 		spr = null;
@@ -263,6 +270,11 @@ class Entity {
 		return !hasAffect(Stun) && isAlive();
 	}
 
+	public function blink(c:UInt) {
+		blinkColor.setColor(c);
+		cd.setS("keepBlink",0.06);
+	}
+
 
     public function preUpdate() {
 		ucd.update(utmod);
@@ -277,6 +289,20 @@ class Entity {
         spr.scaleX = dir*sprScaleX;
         spr.scaleY = sprScaleY;
 		spr.visible = entityVisible;
+
+		// Blink
+		if( !cd.has("keepBlink") ) {
+			blinkColor.r*=Math.pow(0.60, tmod);
+			blinkColor.g*=Math.pow(0.55, tmod);
+			blinkColor.b*=Math.pow(0.50, tmod);
+		}
+
+		// Color adds
+		spr.colorAdd.load(baseColor);
+		spr.colorAdd.r += blinkColor.r;
+		spr.colorAdd.g += blinkColor.g;
+		spr.colorAdd.b += blinkColor.b;
+
 
 		if( debugLabel!=null ) {
 			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
