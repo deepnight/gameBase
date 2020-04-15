@@ -48,6 +48,11 @@ class Console extends h2d.Console {
 		super.handleCommand( flagReg.replace(command, "/+ $1") );
 	}
 
+	public function error(msg:Dynamic) {
+		log("[ERROR] "+Std.string(msg), 0xff0000);
+		h2d.Console.HIDE_LOG_TIMEOUT = Const.INFINITE;
+	}
+
 	#if debug
 	public function setFlag(k:String,v) {
 		k = k.toLowerCase();
