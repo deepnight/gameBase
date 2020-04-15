@@ -11,6 +11,9 @@ class Game extends Process {
 	public var level : Level;
 	public var hud : ui.Hud;
 
+	var curGameSpeed = 1.0;
+	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
+
 	public function new() {
 		super(Main.ME);
 		ME = this;
@@ -52,6 +55,41 @@ class Game extends Process {
 		gc();
 	}
 
+
+	public function addSlowMo(id:String, sec:Float, speedFactor=0.3) {
+		if( slowMos.exists(id) ) {
+			var s = slowMos.get(id);
+			s.f = speedFactor;
+			s.t = M.fmax(s.t, sec);
+		}
+		else
+			slowMos.set(id, { id:id, t:sec, f:speedFactor });
+	}
+
+
+	function updateSlowMos() {
+		// Timeout active slow-mos
+		for(s in slowMos) {
+			s.t -= utmod * 1/Const.FPS;
+			if( s.t<=0 )
+				slowMos.remove(s.id);
+		}
+
+		// Update game speed
+		var targetGameSpeed = 1.0;
+		for(s in slowMos)
+			targetGameSpeed*=s.f;
+		curGameSpeed += (targetGameSpeed-curGameSpeed) * (targetGameSpeed>curGameSpeed ? 0.2 : 0.6);
+
+		if( M.fabs(curGameSpeed-targetGameSpeed)<=0.001 )
+			curGameSpeed = targetGameSpeed;
+	}
+
+
+	public inline function stopFrame() {
+		ucd.setS("stopFrame", 0.2);
+	}
+
 	override function preUpdate() {
 		super.preUpdate();
 
@@ -61,8 +99,14 @@ class Game extends Process {
 	override function postUpdate() {
 		super.postUpdate();
 
+
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
 		gc();
+
+		// Update slow-motions
+		updateSlowMos();
+		timeMultiplier = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
+		dn.heaps.slib.SpriteLib.TMOD = tmod;
 	}
 
 	override function fixedUpdate() {
