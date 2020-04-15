@@ -5,6 +5,7 @@ class Level extends dn.Process {
 	public var wid(get,never) : Int; inline function get_wid() return 16;
 	public var hei(get,never) : Int; inline function get_hei() return 16;
 
+	var marks : Map< LevelMark, Map<Int,Bool> > = new Map();
 	var invalidated = true;
 
 	public function new() {
@@ -14,6 +15,24 @@ class Level extends dn.Process {
 
 	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
 	public inline function coordId(cx,cy) return cx + cy*wid;
+
+
+	public inline function hasMark(mid:LevelMark, cx:Int, cy:Int) {
+		return !isValid(cx,cy) || !marks.exists(mid) ? false : marks.get(mid).exists( coordId(cx,cy) );
+	}
+
+	public function setMark(mid:LevelMark, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && !hasMark(mid,cx,cy) ) {
+			if( !marks.exists(mid) )
+				marks.set(mid, new Map());
+			marks.get(mid).set( coordId(cx,cy), true );
+		}
+	}
+
+	public function removeMark(mid:LevelMark, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && hasMark(mid,cx,cy) )
+			marks.get(mid).remove( coordId(cx,cy) );
+	}
 
 
 	public function render() {
