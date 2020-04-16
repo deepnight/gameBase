@@ -2,5 +2,6 @@
 -lib castle
 -lib heaps
 -lib deepnightLibs
+-lib heapsOgmo
 -main Boot
 -dce full
