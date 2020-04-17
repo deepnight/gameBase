@@ -4,14 +4,15 @@ import dn.Tweenie;
 
 
 class Fx extends dn.Process {
+	var game(get,never) : Game; inline function get_game() return Game.ME;
+	var level(get,never) : Level; inline function get_level() return Game.ME.level;
+
 	public var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
 	public var bgNormalSb    : h2d.SpriteBatch;
 	public var topAddSb       : h2d.SpriteBatch;
 	public var topNormalSb    : h2d.SpriteBatch;
-
-	var game(get,never) : Game; inline function get_game() return Game.ME;
 
 	public function new() {
 		super(Game.ME);
@@ -124,6 +125,10 @@ class Fx extends dn.Process {
 
 		tf.setPosition(p.x-tf.textWidth*0.5, p.y-tf.textHeight*0.5);
 		#end
+	}
+
+	inline function collides(p:HParticle, offX=0., offY=0.) {
+		return level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
 
 	public function flashBangS(c:UInt, a:Float, ?t=0.1) {
