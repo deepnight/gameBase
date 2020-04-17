@@ -23,6 +23,16 @@ class Camera extends dn.Process {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
+	public function trackTarget(e:Entity, immediate:Bool) {
+		target = e;
+		if( immediate )
+			recenter();
+	}
+
+	public inline function stopTracking() {
+		target = null;
+	}
+
 	public function recenter() {
 		if( target!=null ) {
 			x = target.centerX;
