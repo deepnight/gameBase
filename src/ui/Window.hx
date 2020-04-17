@@ -4,10 +4,10 @@ class Window extends dn.Process {
 	public var win: h2d.Flow;
 
 	public function new() {
-		super(Main.ME);
+		super(Game.ME);
 
-		createRootInLayers(Boot.ME.s2d, Const.DP_UI);
-		root.scale(Const.UI_SCALE);
+		createRootInLayers(Game.ME.root, Const.DP_UI);
+		root.filter = new h2d.filter.ColorMatrix(); // force pixel perfect rendering
 
 		win = new h2d.Flow(root);
 		win.backgroundTile = h2d.Tile.fromColor(0xffffff, 32,32);
@@ -30,6 +30,9 @@ class Window extends dn.Process {
 
 	override function onResize() {
 		super.onResize();
+
+		root.scale(Const.UI_SCALE);
+
 		var w = M.ceil( w()/Const.UI_SCALE );
 		var h = M.ceil( h()/Const.UI_SCALE );
 		win.x = Std.int( w*0.5 - win.outerWidth*0.5 );
