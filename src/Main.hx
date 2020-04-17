@@ -11,7 +11,6 @@ class Main extends dn.Process {
 		ME = this;
 
         createRoot(s);
-        root.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
 		// Engine settings
 		hxd.Timer.wantedFPS = Const.FPS;
