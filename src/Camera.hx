@@ -103,15 +103,25 @@ class Camera extends dn.Process {
 			bumpOffX *= Math.pow(0.75, tmod);
 			bumpOffY *= Math.pow(0.75, tmod);
 
-			// Rounding
-			scroller.x = Std.int(scroller.x + bumpOffX);
-			scroller.y = Std.int(scroller.y + bumpOffY);
+			// Bump
+			scroller.x += bumpOffX;
+			scroller.y += bumpOffY;
+			// scroller.x = Std.int(scroller.x + bumpOffX);
+			// scroller.y = Std.int(scroller.y + bumpOffY);
 
 			// Shakes
 			if( cd.has("shaking") ) {
 				scroller.x += Math.cos(ftime*1.1)*2.5*shakePower * cd.getRatio("shaking");
 				scroller.y += Math.sin(0.3+ftime*1.7)*2.5*shakePower * cd.getRatio("shaking");
 			}
+
+			// Scaling
+			scroller.x*=Const.SCALE;
+			scroller.y*=Const.SCALE;
+
+			// Rounding
+			scroller.x = M.round(scroller.x);
+			scroller.y = M.round(scroller.y);
 		}
 	}
 }

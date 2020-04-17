@@ -21,16 +21,23 @@ class Game extends Process {
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
+		scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
 		camera = new Camera();
 		level = new Level();
 		fx = new Fx();
 		hud = new ui.Hud();
 
+		Process.resizeAll();
 		trace(Lang.t._("Game is ready."));
 	}
 
 	public function onCdbReload() {
+	}
+
+	override function onResize() {
+		super.onResize();
+		scroller.setScale(Const.SCALE);
 	}
 
 
