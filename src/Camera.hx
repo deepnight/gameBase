@@ -116,8 +116,6 @@ class Camera extends dn.Process {
 			// Bump
 			scroller.x += bumpOffX;
 			scroller.y += bumpOffY;
-			// scroller.x = Std.int(scroller.x + bumpOffX);
-			// scroller.y = Std.int(scroller.y + bumpOffY);
 
 			// Shakes
 			if( cd.has("shaking") ) {
