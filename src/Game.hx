@@ -27,10 +27,16 @@ class Game extends Process {
 		fx = new Fx();
 		hud = new ui.Hud();
 
+		Process.resizeAll();
 		trace(Lang.t._("Game is ready."));
 	}
 
 	public function onCdbReload() {
+	}
+
+	override function onResize() {
+		super.onResize();
+		scroller.setScale(Const.SCALE);
 	}
 
 

@@ -16,8 +16,9 @@ class Hud extends dn.Process {
 		flow = new h2d.Flow(root);
 	}
 
-	override function onDispose() {
-		super.onDispose();
+	override function onResize() {
+		super.onResize();
+		root.setScale(Const.UI_SCALE);
 	}
 
 	public inline function invalidate() invalidated = true;
