@@ -105,6 +105,7 @@ class Entity {
 
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
 	public inline function dirToAng() return dir==1 ? 0. : M.PI;
+	public inline function getMoveAng() return Math.atan2(dyTotal,dxTotal);
 
 	public inline function distCase(e:Entity) return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
 	public inline function distCaseFree(tcx:Int, tcy:Int, ?txr=0.5, ?tyr=0.5) return M.dist(cx+xr, cy+yr, tcx+txr, tcy+tyr);
