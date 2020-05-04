@@ -114,7 +114,7 @@ class Game extends Process {
 		// Update slow-motions
 		updateSlowMos();
 		timeMultiplier = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
-		dn.heaps.slib.SpriteLib.TMOD = tmod;
+		Assets.tiles.tmod = tmod;
 	}
 
 	override function fixedUpdate() {
