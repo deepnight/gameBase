@@ -31,7 +31,7 @@ class Bar extends h2d.Object {
 		bg = new h2d.ScaleGrid( Assets.tiles.getTile("uiBarBg"), 2, 2, this );
 		bg.colorAdd = blinkColor = new h3d.Vector();
 
-		bar = new h2d.ScaleGrid( Assets.tiles.getTile("uiBar"), 2,2, this );
+		bar = new h2d.ScaleGrid( Assets.tiles.getTile("uiBar"), 1,1, this );
 
 		setSize(wid,hei,1);
 		defaultColor = color = c;
@@ -83,8 +83,8 @@ class Bar extends h2d.Object {
 		return color = c;
 	}
 
-	inline function get_innerBarMaxWidth() return outerWidth-6;
-	inline function get_innerBarHeight() return outerHeight-6;
+	inline function get_innerBarMaxWidth() return outerWidth-padding*2;
+	inline function get_innerBarHeight() return outerHeight-padding*2;
 
 	inline function get_outerWidth() return bg.width;
 	inline function get_outerHeight() return bg.height;
