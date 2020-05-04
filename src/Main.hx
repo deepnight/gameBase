@@ -86,7 +86,7 @@ class Main extends dn.Process {
 	}
 
     override function update() {
-		dn.heaps.slib.SpriteLib.TMOD = tmod;
+		Assets.tiles.tmod = tmod;
         super.update();
     }
 }
