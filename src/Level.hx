@@ -18,32 +18,51 @@ class Level extends dn.Process {
 		tilesetSource = hxd.Res.world.tiles.toTile();
 	}
 
+	/**
+		Mark the level for re-render at the end of current frame (before display)
+	**/
+	public inline function invalidate() {
+		invalidated = true;
+	}
+
+	/**
+		Return TRUE if given coordinates are in level bounds
+	**/
 	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
+
+	/**
+		Transform coordinates into a coordId
+	**/
 	public inline function coordId(cx,cy) return cx + cy*wid;
 
 
-	public inline function hasMark(mid:LevelMark, cx:Int, cy:Int) {
-		return !isValid(cx,cy) || !marks.exists(mid) ? false : marks.get(mid).exists( coordId(cx,cy) );
+	/** Return TRUE if mark is present at coordinates **/
+	public inline function hasMark(mark:LevelMark, cx:Int, cy:Int) {
+		return !isValid(cx,cy) || !marks.exists(mark) ? false : marks.get(mark).exists( coordId(cx,cy) );
 	}
 
-	public function setMark(mid:LevelMark, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && !hasMark(mid,cx,cy) ) {
-			if( !marks.exists(mid) )
-				marks.set(mid, new Map());
-			marks.get(mid).set( coordId(cx,cy), true );
+	/** Enable mark at coordinates **/
+	public function setMark(mark:LevelMark, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && !hasMark(mark,cx,cy) ) {
+			if( !marks.exists(mark) )
+				marks.set(mark, new Map());
+			marks.get(mark).set( coordId(cx,cy), true );
 		}
 	}
 
-	public function removeMark(mid:LevelMark, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && hasMark(mid,cx,cy) )
-			marks.get(mid).remove( coordId(cx,cy) );
+	/** Remove mark at coordinates **/
+	public function removeMark(mark:LevelMark, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && hasMark(mark,cx,cy) )
+			marks.get(mark).remove( coordId(cx,cy) );
 	}
 
+	/** Return TRUE if "Collisions" layer contains a collision value **/
 	public inline function hasCollision(cx,cy) : Bool {
 		return !isValid(cx,cy) ? true : level.l_Collisions.getInt(cx,cy)==0;
 	}
 
-	public function render() {
+	/** Render current level**/
+	function render() {
 		root.removeChildren();
 
 		var tg = new h2d.TileGroup(tilesetSource, root);
