@@ -4,11 +4,22 @@ import hxd.Key;
 class Game extends Process {
 	public static var ME : Game;
 
+	/** Game controller (pad or keyboard) **/
 	public var ca : dn.heaps.Controller.ControllerAccess;
+
+	/** Particles **/
 	public var fx : Fx;
+
+	/** Basic viewport control **/
 	public var camera : Camera;
+
+	/** Container of all visual game objects. Ths wrapper is moved around by Camera. **/
 	public var scroller : h2d.Layers;
+
+	/** Level data **/
 	public var level : Level;
+
+	/** UI **/
 	public var hud : ui.Hud;
 
 	public function new() {
