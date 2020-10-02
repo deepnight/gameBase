@@ -13,6 +13,7 @@ class Boot extends hxd.App {
 		onResize();
 	}
 
+	// Window resized
 	override function onResize() {
 		super.onResize();
 		dn.Process.resizeAll();
@@ -22,16 +23,23 @@ class Boot extends hxd.App {
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 
-		// Bullet time
+		var boost = 1.0;
+
 		#if debug
-		if( hxd.Key.isPressed(hxd.Key.NUMPAD_SUB) || Main.ME.ca.dpadDownPressed() )
-			speed = speed>=1 ? 0.33 : 1;
+		// Debug time controls
+		if( Main.ME!=null && !Main.ME.destroyed ) {
+			// Manual debug slow-mo when pressing SUBSTRACT key, HOME key or DPAD-DOWN on a gamepad
+			var ca = Main.ME.ca;
+			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed() )
+				speed = speed>=1 ? 0.25 : 1;
+
+			// Manual debug turbo when holding ADD key, END key or LEFT STICK on a gamepad
+			boost = ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
+		}
 		#end
 
-		var tmod = hxd.Timer.tmod * speed;
-		#if debug
-		tmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
-		#end
+		var tmod = hxd.Timer.tmod * boost * speed;
+
 		dn.heaps.Controller.beforeUpdate();
 		dn.Process.updateAll(tmod);
 	}
