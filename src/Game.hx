@@ -26,6 +26,8 @@ class Game extends Process {
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
 
+	/** LEd world data **/
+	public var world : World;
 
 	public function new() {
 		super(Main.ME);
@@ -39,10 +41,11 @@ class Game extends Process {
 		root.add(scroller, Const.DP_BG);
 		scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
+		world = new World();
 		camera = new Camera();
-		level = new Level();
 		fx = new Fx();
 		hud = new ui.Hud();
+		level = new Level(world.all_levels.Level);
 
 		Process.resizeAll();
 		trace(Lang.t._("Game is ready."));

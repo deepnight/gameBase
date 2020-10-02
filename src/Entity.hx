@@ -171,14 +171,6 @@ class Entity {
 		onPosManuallyChanged();
 	}
 
-	public function setPosUsingOgmoEnt(oe:ogmo.Entity) {
-		cx = Std.int(oe.x/Const.GRID);
-		cy = Std.int(oe.y/Const.GRID);
-		xr = ( oe.x-cx*Const.GRID ) / Const.GRID;
-		yr = ( oe.y-cy*Const.GRID ) / Const.GRID;
-		onPosManuallyChanged();
-	}
-
 	function onPosManuallyChanged() {
 		if( M.dist(footX,footY,prevFrameFootX,prevFrameFootY) > Const.GRID*2 ) {
 			prevFrameFootX = footX;
