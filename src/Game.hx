@@ -45,7 +45,7 @@ class Game extends Process {
 		camera = new Camera();
 		fx = new Fx();
 		hud = new ui.Hud();
-		level = new Level(world.all_levels.Level);
+		level = new Level(world.all_levels.FirstLevel);
 
 		Process.resizeAll();
 		trace(Lang.t._("Game is ready."));
