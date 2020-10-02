@@ -1,0 +1,22 @@
+language: haxe
+
+os: linux
+dist: trusty
+
+haxe:
+  - development
+  - "4.1.4"
+
+install:
+  - yes | haxelib install js.hxml
+  - haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
+  - haxelib git heaps https://github.com/HeapsIO/heaps.git
+  - haxelib list
+
+script:
+  - haxe js.hxml
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
