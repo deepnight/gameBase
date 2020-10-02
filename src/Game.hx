@@ -35,6 +35,9 @@ class Game extends Process {
 		trace(Lang.t._("Game is ready."));
 	}
 
+	/**
+		Called when the CastleDB changes on the disk, if hot-reloading is enabled in Boot.hx
+	**/
 	public function onCdbReload() {
 	}
 
@@ -63,6 +66,13 @@ class Game extends Process {
 	}
 
 
+	/**
+		Start a cumulative slow-motion effect that will affect `tmod` value in this Process
+		and its children.
+
+		@param sec Realtime second duration of this slowmo
+		@param speedFactor Cumulative multiplier to the Process `tmod`
+	**/
 	public function addSlowMo(id:String, sec:Float, speedFactor=0.3) {
 		if( slowMos.exists(id) ) {
 			var s = slowMos.get(id);
@@ -93,6 +103,10 @@ class Game extends Process {
 	}
 
 
+	/**
+		Pause briefly the game for 1 frame: very useful for impactful moments,
+		like when hitting an opponent in Street Fighter ;)
+	**/
 	public inline function stopFrame() {
 		ucd.setS("stopFrame", 0.2);
 	}
@@ -113,7 +127,7 @@ class Game extends Process {
 
 		// Update slow-motions
 		updateSlowMos();
-		timeMultiplier = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
+		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
 	}
 
