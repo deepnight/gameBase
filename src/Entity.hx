@@ -2,6 +2,7 @@ class Entity {
     public static var ALL : Array<Entity> = [];
     public static var GC : Array<Entity> = [];
 
+	// Various getters to access all important stuff easily
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
@@ -10,26 +11,44 @@ class Entity {
 	public var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 
+	/** Cooldowns **/
 	public var cd : dn.Cooldown;
 
-	public var uid : Int;
+	/** Unique identifier **/
+	public var uid(default,null) : Int;
+
+	// Position in the game world
     public var cx = 0;
     public var cy = 0;
     public var xr = 0.5;
     public var yr = 1.0;
 
+	// Velocities
     public var dx = 0.;
-    public var dy = 0.;
+	public var dy = 0.;
+
+	// Uncontrollable bump velocities, usually applied by external
+	// factors (think of a bumper in Sonic for example)
     public var bdx = 0.;
-    public var bdy = 0.;
+	public var bdy = 0.;
+
+	// Velocities + bump velocities
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
-	public var frict = 0.82;
+
+	// Multipliers applied on each frame to normal velocities
+	public var frictX = 0.82;
+	public var frictY = 0.82;
+
+	// Multiplier applied on each frame to bump velocities
 	public var bumpFrict = 0.93;
 	public var hei : Float = Const.GRID;
 	public var radius = Const.GRID*0.5;
 
+	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
+
+	// Sprite transformations
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
 	public var entityVisible = true;
@@ -38,6 +57,7 @@ class Entity {
 	public var colorAdd : h3d.Vector;
 	var debugLabel : Null<h2d.Text>;
 
+	// Coordinates getters, for easier gameplay coding
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
 	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
 	public var headX(get,never) : Float; inline function get_headX() return footX;
@@ -49,7 +69,7 @@ class Entity {
 
     public function new(x:Int, y:Int) {
         uid = Const.NEXT_UNIQ;
-        ALL.push(this);
+		ALL.push(this);
 
 		cd = new dn.Cooldown(Const.FPS);
         setPosCase(x,y);
@@ -240,7 +260,7 @@ class Entity {
 			while( xr<0 ) { xr++; cx--; }
 			steps--;
 		}
-		dx*=Math.pow(frict,tmod);
+		dx*=Math.pow(frictX,tmod);
 		bdx*=Math.pow(bumpFrict,tmod);
 		if( M.fabs(dx)<=0.0005*tmod ) dx = 0;
 		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
@@ -257,7 +277,7 @@ class Entity {
 			while( yr<0 ) { yr++; cy--; }
 			steps--;
 		}
-		dy*=Math.pow(frict,tmod);
+		dy*=Math.pow(frictY,tmod);
 		bdy*=Math.pow(bumpFrict,tmod);
 		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
 		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
