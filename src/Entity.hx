@@ -2,6 +2,7 @@ class Entity {
     public static var ALL : Array<Entity> = [];
     public static var GC : Array<Entity> = [];
 
+	// Various getters to access all important stuff easily
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
@@ -11,24 +12,42 @@ class Entity {
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;
 	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 
+	/** Cooldowns **/
 	public var cd : dn.Cooldown;
+
+	/** Cooldowns, unaffected by slowmo (ie. always in realtime) **/
 	public var ucd : dn.Cooldown;
+
+	/** Temporary gameplay affects **/
 	var affects : Map<Affect,Float> = new Map();
 
+	/** Unique identifier **/
 	public var uid : Int;
+
+	// Position in the game world
     public var cx = 0;
     public var cy = 0;
     public var xr = 0.5;
     public var yr = 1.0;
 
+	// Velocities
     public var dx = 0.;
-    public var dy = 0.;
+	public var dy = 0.;
+
+	// Uncontrollable bump velocities, usually applied by external
+	// factors (think of a bumper in Sonic for example)
     public var bdx = 0.;
-    public var bdy = 0.;
+	public var bdy = 0.;
+
+	// Velocities + bump velocities
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
+
+	// Multipliers applied on each frame to normal velocities
 	public var frictX = 0.82;
 	public var frictY = 0.82;
+
+	// Multiplier applied on each frame to bump velocities
 	public var bumpFrict = 0.93;
 
 	public var hei(default,set) : Float = Const.GRID;
@@ -37,13 +56,17 @@ class Entity {
 	public var radius(default,set) = Const.GRID*0.5;
 	inline function set_radius(v) { invalidateDebugBounds=true;  return radius=v; }
 
+	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
+
+	// Sprite transformations
 	public var sprScaleX = 1.0;
 	public var sprScaleY = 1.0;
 	public var sprSquashX = 1.0;
 	public var sprSquashY = 1.0;
 	public var entityVisible = true;
 
+	// Hit points
 	public var life(default,null) : Int;
 	public var maxLife(default,null) : Int;
 	public var lastDmgSource(default,null) : Null<Entity>;
@@ -54,15 +77,18 @@ class Entity {
 	public var lastHitDirToSource(get,never) : Int;
 	inline function get_lastHitDirToSource() return lastDmgSource==null ? dir : dirTo(lastDmgSource);
 
+	// Visual components
     public var spr : HSprite;
 	public var baseColor : h3d.Vector;
 	public var blinkColor : h3d.Vector;
 	public var colorMatrix : h3d.Matrix;
 
+	// Debug stuff
 	var debugLabel : Null<h2d.Text>;
 	var debugBounds : Null<h2d.Graphics>;
 	var invalidateDebugBounds = false;
 
+	// Coordinates getters, for easier gameplay coding
 	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
 	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
 	public var headX(get,never) : Float; inline function get_headX() return footX;
@@ -76,7 +102,7 @@ class Entity {
 
     public function new(x:Int, y:Int) {
         uid = Const.NEXT_UNIQ;
-        ALL.push(this);
+		ALL.push(this);
 
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
