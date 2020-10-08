@@ -3,19 +3,34 @@
 		"fileType": "LEd Project JSON",
 		"app": "LEd",
 		"appAuthor": "Sebastien Benard",
-		"appVersion": "0.3.1-beta-debug",
+		"appVersion": "0.3.2-beta",
 		"url": "https://deepnight.net/tools/led-2d-level-editor/"
 	},
-	"jsonVersion": "0.3.1",
+	"jsonVersion": "0.3.2",
 	"defaultPivotX": 0.5,
 	"defaultPivotY": 1,
 	"defaultGridSize": 16,
 	"bgColor": "#1A212E",
-	"nextUid": 20,
+	"nextUid": 22,
 	"minifyJson": false,
 	"exportTiled": false,
 	"defs": {
 		"layers": [
+			{
+				"__type": "Entities",
+				"identifier": "Entities",
+				"type": "Entities",
+				"uid": 20,
+				"gridSize": 16,
+				"displayOpacity": 1,
+				"intGridValues": [ { "identifier": null, "color": "#000000" } ],
+				"autoTilesetDefUid": null,
+				"autoRuleGroups": [],
+				"autoSourceLayerDefUid": null,
+				"tilesetDefUid": null,
+				"tilePivotX": 0,
+				"tilePivotY": 0
+			},
 			{
 				"__type": "IntGrid",
 				"identifier": "Collisions",
@@ -209,7 +224,24 @@
 				"tilePivotY": 0
 			}
 		],
-		"entities": [],
+		"entities": [
+			{
+				"identifier": "Hero",
+				"uid": 21,
+				"width": 16,
+				"height": 16,
+				"color": "#94D9B3",
+				"renderMode": "Ellipse",
+				"tilesetId": null,
+				"tileId": null,
+				"tileRenderMode": "Stretch",
+				"maxPerLevel": 0,
+				"limitBehavior": "DiscardOldOnes",
+				"pivotX": 0.5,
+				"pivotY": 1,
+				"fieldDefs": []
+			}
+		],
 		"tilesets": [
 			{
 				"identifier": "Tiles",
@@ -232,6 +264,22 @@
 		"pxWid": 272,
 		"pxHei": 272,
 		"layerInstances": [
+			{
+				"__identifier": "Entities",
+				"__type": "Entities",
+				"__cWid": 17,
+				"__cHei": 17,
+				"__gridSize": 16,
+				"levelId": 0,
+				"layerDefUid": 20,
+				"pxOffsetX": 0,
+				"pxOffsetY": 0,
+				"intGrid": [],
+				"autoTiles": [],
+				"seed": 9923454,
+				"gridTiles": [],
+				"entityInstances": [ { "__identifier": "Hero", "__cx": 13, "__cy": 6, "defUid": 21, "x": 216, "y": 112, "fieldInstances": [] } ]
+			},
 			{
 				"__identifier": "Collisions",
 				"__type": "IntGrid",

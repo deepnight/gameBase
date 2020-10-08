@@ -11,13 +11,24 @@ class Level extends dn.Process {
 	var marks : Map< LevelMark, Map<Int,Bool> > = new Map();
 	var invalidated = true;
 
+	var ledHooks : Map< World.EntityEnum, Class<Entity> > = [];
+
 	public function new(l:World.World_Level) {
 		super(Game.ME);
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 		level = l;
 		tilesetSource = hxd.Res.world.tiles.toTile();
+
+		registerType(Hero, Entity);
+
+		for (e in l.l_Entities.getAllUntyped()) {
+			Type.createInstance(ledHooks[e.entityType], [e.cx, e.cy, e]);
+		}
 	}
 
+	public function registerType(e: World.EntityEnum, c: Class<Entity>) {
+		ledHooks[e] = c;
+	}
 	/**
 		Mark the level for re-render at the end of current frame (before display)
 	**/
