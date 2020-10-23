@@ -6,6 +6,8 @@ Base structure for my games, using **Heaps** framework (https://heaps.io) and **
 
 Please check this documentation for every details: https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/
 
+For localization, you can check the following guide: https://deepnight.net/tutorial/part-4-localize-texts-using-po-files/
+
 If you need some extra "advanced features", you can also give a try to the **advancedBase** branch: https://github.com/deepnight/gameBase/tree/advancedBase
 
  * Status effects on Entity.hx (like Stun or whatever you could think of)
