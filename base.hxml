@@ -2,6 +2,6 @@
 -lib castle
 -lib heaps
 -lib deepnightLibs
--lib led-haxe-api
+-lib ldtk-haxe-api
 -main Boot
 -dce full
