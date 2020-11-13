@@ -2,8 +2,8 @@
 
 Base structure for my games, using **Heaps** framework (https://heaps.io) and **Haxe** language (https://haxe.org).
 
-![Travis (.org) branch](https://img.shields.io/travis/deepnight/gameBase/master?label=master)
-![Travis (.org) branch](https://img.shields.io/travis/deepnight/gameBase/advancedBase?label=advancedBase)
+[![Travis (.com) branch](https://img.shields.io/travis/com/deepnight/gameBase/master?label=master)](https://travis-ci.com/github/deepnight/gameBase)
+[![Travis (.com) branch](https://img.shields.io/travis/com/deepnight/gameBase/advancedBase?label=advancedBase)](https://travis-ci.com/github/deepnight/gameBase)
 
 # Installation & usage
 
