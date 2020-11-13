@@ -2,6 +2,9 @@
 
 Base structure for my games, using **Heaps** framework (https://heaps.io) and **Haxe** language (https://haxe.org).
 
+![Travis (.org) branch](https://img.shields.io/travis/deepnight/gameBase/master?label=master)
+![Travis (.org) branch](https://img.shields.io/travis/deepnight/gameBase/advancedBase?label=advancedBase)
+
 # Installation & usage
 
 Please check this documentation for every details: https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/
