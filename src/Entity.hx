@@ -205,7 +205,7 @@ class Entity {
 	public inline function distPx(e:Entity) return M.dist(footX, footY, e.footX, e.footY);
 	public inline function distPxFree(x:Float, y:Float) return M.dist(footX, footY, x, y);
 
-	public function makePoint() return new CPoint(cx,cy, xr,yr);
+	public function makePoint() return LPoint.fromCase(cx+xr,cy+yr);
 
     public inline function destroy() {
         if( !destroyed ) {
