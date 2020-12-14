@@ -1,4 +1,4 @@
 res/.tmp
-redist.*
+redist
 bin/*.*
 .vscode/settings.json
