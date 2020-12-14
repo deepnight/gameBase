@@ -22,7 +22,10 @@ class Level extends dn.Process {
 		for(cx in 0...wid)
 		for(cy in 0...hei) {
 			var g = new h2d.Graphics(root);
-			g.beginFill(Color.randomColor(rnd(0,1), 0.5, 0.4), 1);
+			if( cx==0 || cy==0 || cx==wid-1 || cy==hei-1 )
+				g.beginFill( 0xffcc00 );
+			else
+				g.beginFill( Color.randomColor(rnd(0,1), 0.5, 0.4) );
 			g.drawRect(cx*Const.GRID, cy*Const.GRID, Const.GRID, Const.GRID);
 		}
 	}
