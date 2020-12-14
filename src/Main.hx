@@ -57,13 +57,13 @@ class Main extends dn.Process {
 		controller.bind(SELECT, Key.R);
 		controller.bind(START, Key.N);
 
-		// Start
 		#if js
+		// Optional helper that shows a "Click to start/continue" message when the game looses focus
 		new dn.heaps.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
-		delayer.addF( startGame, 1 );
-		#else
-		startGame();
 		#end
+
+		// Start with 1 frame delay, to avoid 1st frame freezing from the game perspective
+		delayer.addF( startGame, 1 );
 	}
 
 	public function startGame() {
