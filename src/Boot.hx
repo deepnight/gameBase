@@ -1,6 +1,9 @@
 class Boot extends hxd.App {
 	public static var ME : Boot;
 
+	var ca(get,never) : dn.heaps.Controller.ControllerAccess;
+		inline function get_ca() return Main.ME.ca;
+
 	// Boot
 	static function main() {
 		new Boot();
@@ -19,29 +22,31 @@ class Boot extends hxd.App {
 		dn.Process.resizeAll();
 	}
 
-	var speed = 1.0;
+	var tmodSpeedMul = 1.0;
+	/** Main app loop **/
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 
-		var boost = 1.0;
-
-		#if debug
-		// Debug time controls
-		if( Main.ME!=null && !Main.ME.destroyed ) {
-			// Manual debug slow-mo when pressing SUBSTRACT key, HOME key or DPAD-DOWN on a gamepad
-			var ca = Main.ME.ca;
-			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed() )
-				speed = speed>=1 ? 0.25 : 1;
-
-			// Manual debug turbo when holding ADD key, END key or LEFT STICK on a gamepad
-			boost = ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
-		}
-		#end
-
-		var tmod = hxd.Timer.tmod * boost * speed;
-
+		// Controller update
 		dn.heaps.Controller.beforeUpdate();
-		dn.Process.updateAll(tmod);
+
+		var adjustedTmod = hxd.Timer.tmod;
+		if( Main.ME!=null && !Main.ME.destroyed ) {
+			// Debug slow-mo (toggled with a key)
+			#if debug
+			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed()  )
+				tmodSpeedMul = tmodSpeedMul>=1 ? 0.2 : 1;
+			#end
+			adjustedTmod*=tmodSpeedMul;
+
+			// Debug turbo (by holding a key)
+			#if debug
+			adjustedTmod *= ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
+			#end
+		}
+
+		// Update all Processes
+		dn.Process.updateAll(adjustedTmod);
 	}
 }
 

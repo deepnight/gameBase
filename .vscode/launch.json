@@ -8,23 +8,22 @@
             "name": "HL debug",
             "request": "launch",
             "type": "hl",
-            "hxml": "hl.debug.hxml",
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "HL debug"
+            "preLaunchTask": "HaxeActiveConf"
         },
         {
             "name": "Chrome JS debug",
             "request": "launch",
             "type": "chrome",
             "file": "${workspaceFolder}/js.html",
-            "preLaunchTask": "JS debug"
+            "preLaunchTask": "HaxeActiveConf"
         },
         {
             "name": "Firefox JS debug",
             "request": "launch",
             "type": "firefox",
             "file": "${workspaceFolder}/js.html",
-            "preLaunchTask": "JS debug"
+            "preLaunchTask": "HaxeActiveConf"
         }
     ]
 }

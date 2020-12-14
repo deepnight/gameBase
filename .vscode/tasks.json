@@ -4,57 +4,28 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "HL debug",
-            "type": "hxml",
-            "file": "hl.debug.hxml",
+            "type": "haxe",
+            "args": "active configuration",
+            "problemMatcher": [
+                "$haxe-absolute",
+                "$haxe",
+                "$haxe-error",
+                "$haxe-trace"
+            ],
             "presentation": {
+                "echo": true,
                 "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
             },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
-        },
-
-        {
-            "label": "HL release",
-            "type": "hxml",
-            "file": "hl.dx.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
             },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
+            "label": "HaxeActiveConf"
         },
-
-        {
-            "label": "JS release",
-            "type": "hxml",
-            "file": "js.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        },
-
-        {
-            "label": "Flash release",
-            "type": "hxml",
-            "file": "swf.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        },
-
         {
             "label": "Lang",
             "type": "hxml",
@@ -64,19 +35,12 @@
                 "panel": "shared",
                 "clear": true
             },
-            "problemMatcher": [ "$haxe-absolute", "$haxe", "$haxe-error", "$haxe-trace" ],
-        },
-
-        {
-            "label": "JS debug",
-            "type": "hxml",
-            "file": "js.debug.hxml",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "clear": true
-            },
-            "problemMatcher": ["$haxe"],
+            "problemMatcher": [
+                "$haxe-absolute",
+                "$haxe",
+                "$haxe-error",
+                "$haxe-trace"
+            ]
         }
     ]
 }
