@@ -63,6 +63,7 @@ class Main extends dn.Process {
 		#end
 
 		// Start with 1 frame delay, to avoid 1st frame freezing from the game perspective
+		hxd.Timer.skip();
 		delayer.addF( startGame, 1 );
 	}
 
