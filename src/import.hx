@@ -8,3 +8,4 @@ import dn.data.GetText;
 import dn.heaps.slib.*;
 import ui.Console;
 import tools.*;
+import tools.LPoint as P;
