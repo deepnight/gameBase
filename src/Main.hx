@@ -41,6 +41,7 @@ class Main extends dn.Process {
 		#end
 
 		// Assets & data init
+		hxd.snd.Manager.get(); // force sound manager init on startup
 		Assets.init();
 		new ui.Console(Assets.fontTiny, s);
 		Lang.init("en");
