@@ -22,7 +22,7 @@ class Camera extends dn.Process {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
-	public function trackTarget(e:Entity, immediate:Bool) {
+	public function trackEntity(e:Entity, immediate:Bool) {
 		target = e;
 		if( immediate )
 			recenter();
@@ -39,8 +39,8 @@ class Camera extends dn.Process {
 		}
 	}
 
-	public inline function scrollerToGlobalX(v:Float) return v*Const.SCALE + Game.ME.scroller.x;
-	public inline function scrollerToGlobalY(v:Float) return v*Const.SCALE + Game.ME.scroller.y;
+	public inline function levelToGlobalX(v:Float) return v*Const.SCALE + Game.ME.scroller.x;
+	public inline function levelToGlobalY(v:Float) return v*Const.SCALE + Game.ME.scroller.y;
 
 	var shakePower = 1.0;
 	public function shakeS(t:Float, ?pow=1.0) {
