@@ -1,7 +1,6 @@
 class Camera extends dn.Process {
 	public var target : Null<Entity>;
-	public var x : Float;
-	public var y : Float;
+	public var pos : LPoint;
 	public var dx : Float;
 	public var dy : Float;
 	public var wid(get,never) : Int;
@@ -11,7 +10,7 @@ class Camera extends dn.Process {
 
 	public function new() {
 		super(Game.ME);
-		x = y = 0;
+		pos = LPoint.fromCase(0,0);
 		dx = dy = 0;
 	}
 
@@ -35,8 +34,8 @@ class Camera extends dn.Process {
 
 	public function recenter() {
 		if( target!=null ) {
-			x = target.centerX;
-			y = target.centerY;
+			pos.levelX = target.centerX;
+			pos.levelY = target.centerY;
 		}
 	}
 
@@ -59,19 +58,20 @@ class Camera extends dn.Process {
 			var tx = target.footX;
 			var ty = target.footY;
 
-			var d = M.dist(x,y, tx, ty);
+			var d = pos.distPx(tx,ty);
+			// var d = M.dist(x,y, tx, ty);
 			if( d>=deadZone ) {
-				var a = Math.atan2( ty-y, tx-x );
+				var a = pos.angTo(tx,ty);
 				dx += Math.cos(a) * (d-deadZone) * s * tmod;
 				dy += Math.sin(a) * (d-deadZone) * s * tmod;
 			}
 		}
 
 		var frict = 0.89;
-		x += dx*tmod;
+		pos.levelX += dx*tmod;
 		dx *= Math.pow(frict,tmod);
 
-		y += dy*tmod;
+		pos.levelY += dy*tmod;
 		dy *= Math.pow(frict,tmod);
 	}
 
@@ -95,11 +95,11 @@ class Camera extends dn.Process {
 
 			// Update scroller
 			if( wid<level.wid*Const.GRID)
-				scroller.x = -x + wid*0.5;
+				scroller.x = -pos.levelX + wid*0.5;
 			else
 				scroller.x = wid*0.5 - level.wid*0.5*Const.GRID;
 			if( hei<level.hei*Const.GRID)
-				scroller.y = -y + hei*0.5;
+				scroller.y = -pos.levelY + hei*0.5;
 			else
 				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
 
