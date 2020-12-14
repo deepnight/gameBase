@@ -18,22 +18,30 @@ class Boot extends hxd.App {
 		dn.Process.resizeAll();
 	}
 
-	var speed = 1.0;
+	var tmodSpeedMul = 1.0;
+	/** Main app loop **/
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 
-		// Bullet time
+		var adjustedTmod = hxd.Timer.tmod;
+
+		// Controller update
+		dn.heaps.Controller.beforeUpdate();
+
+		// Debug slow-mo (toggled with a key)
 		#if debug
 		if( hxd.Key.isPressed(hxd.Key.NUMPAD_SUB) || Main.ME.ca.dpadDownPressed() )
-			speed = speed>=1 ? 0.33 : 1;
+			tmodSpeedMul = tmodSpeedMul>=1 ? 0.33 : 1;
+		#end
+		adjustedTmod*=tmodSpeedMul;
+
+		// Debug turbo (by holding a key)
+		#if debug
+		adjustedTmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
 		#end
 
-		var tmod = hxd.Timer.tmod * speed;
-		#if debug
-		tmod *= hxd.Key.isDown(hxd.Key.NUMPAD_ADD) || Main.ME!=null && Main.ME.ca.ltDown() ? 5 : 1;
-		#end
-		dn.heaps.Controller.beforeUpdate();
-		dn.Process.updateAll(tmod);
+		// Update all Processes
+		dn.Process.updateAll(adjustedTmod);
 	}
 }
 

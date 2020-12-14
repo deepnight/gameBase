@@ -13,26 +13,25 @@ class Main extends dn.Process {
         createRoot(s);
 
 		// Engine settings
-		hxd.Timer.wantedFPS = Const.FPS;
 		engine.backgroundColor = 0xff<<24|0x111133;
         #if( hl && !debug )
         engine.fullScreen = true;
         #end
 
-		// Resources
-		#if(hl && debug)
-		hxd.Res.initLocal();
+		// Heaps resources
+		#if( hl && debug )
+			hxd.Res.initLocal();
         #else
-        hxd.Res.initEmbed();
+      		hxd.Res.initEmbed();
         #end
 
-        // Hot reloading
+        // CastleDB hot reloading
 		#if debug
         hxd.res.Resource.LIVE_UPDATE = true;
         hxd.Res.data.watch(function() {
             delayer.cancelById("cdb");
-
             delayer.addS("cdb", function() {
+				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
             	Data.load( hxd.Res.data.entry.getBytes().toString() );
             	if( Game.ME!=null )
                     Game.ME.onCdbReload();
@@ -41,13 +40,13 @@ class Main extends dn.Process {
 		#end
 
 		// Assets & data init
-		hxd.snd.Manager.get(); // force sound manager init on startup
-		Assets.init();
-		new ui.Console(Assets.fontTiny, s);
-		Lang.init("en");
-		Data.load( hxd.Res.data.entry.getText() );
+		hxd.snd.Manager.get(); // force sound manager init on startup instead of first sound play
+		Assets.init(); // init assets
+		new ui.Console(Assets.fontTiny, s); // init debug console
+		Lang.init("en"); // init Lang
+		Data.load( hxd.Res.data.entry.getText() ); // read castleDB json
 
-		// Game controller
+		// Game controller & default key bindings
 		controller = new dn.heaps.Controller(s);
 		ca = controller.createAccess("main");
 		controller.bind(AXIS_LEFT_X_NEG, Key.LEFT, Key.Q, Key.A);
@@ -64,10 +63,12 @@ class Main extends dn.Process {
 		#end
 
 		// Start with 1 frame delay, to avoid 1st frame freezing from the game perspective
+		hxd.Timer.wantedFPS = Const.FPS;
 		hxd.Timer.skip();
 		delayer.addF( startGame, 1 );
 	}
 
+	/** Start game process **/
 	public function startGame() {
 		if( Game.ME!=null ) {
 			Game.ME.destroy();
@@ -78,6 +79,7 @@ class Main extends dn.Process {
 		else
 			new Game();
 	}
+
 
     override function update() {
 		Assets.tiles.tmod = tmod;
