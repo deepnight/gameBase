@@ -95,6 +95,7 @@ class LPoint {
 		return new LPoint().setLevelPixel(x,y);
 	}
 
+	/** Init using level grid coords **/
 	public inline function setLevelCase(x,y,?xr=0.5,?yr=0.5) {
 		this.cx = x;
 		this.cy = y;
@@ -103,24 +104,26 @@ class LPoint {
 		return this;
 	}
 
+	/** Init using level pixels coords **/
 	public inline function setLevelPixel(x:Float,y:Float) {
 		setLevelPixelX(x);
 		setLevelPixelY(y);
 		return this;
 	}
 
-	public inline function setLevelPixelX(x:Float) {
+	inline function setLevelPixelX(x:Float) {
 		cx = Std.int(x/Const.GRID);
 		this.xr = ( x % Const.GRID ) / Const.GRID;
 		return this;
 	}
 
-	public inline function setLevelPixelY(y:Float) {
+	inline function setLevelPixelY(y:Float) {
 		cy = Std.int(y/Const.GRID);
 		this.yr = ( y % Const.GRID ) / Const.GRID;
 		return this;
 	}
 
+	/** Return distance to something else, in grid unit **/
 	public inline function distCase(?e:Entity, ?pt:LPoint, ?cx=0, ?cy=0, ?xr=0.5, ?yr=0.5) {
 		if( e!=null )
 			return M.dist(this.cx+this.xr, this.cy+this.yr, e.cx+e.xr, e.cy+e.yr);
@@ -130,6 +133,7 @@ class LPoint {
 			return M.dist(this.cx+this.xr, this.cy+this.yr, cx+xr, cy+yr);
 	}
 
+	/** Return distance to something else, in level pixels **/
 	public inline function distPx(?e:Entity, ?pt:LPoint, ?x=0., ?y=0.) {
 		if( e!=null )
 			return M.dist(levelX, levelY, e.footX, e.footY);
@@ -137,5 +141,14 @@ class LPoint {
 			return M.dist(levelX, levelY, pt.levelX, pt.levelY);
 		else
 			return M.dist(levelX, levelY, x, y);
+	}
+	/** Return distance to something else, in level pixels **/
+	public inline function angTo(?e:Entity, ?pt:LPoint, ?x=0., ?y=0.) {
+		if( e!=null )
+			return Math.atan2((e.cy+e.yr)-cyf, (e.cx+e.xr)-cxf );
+		else if( pt!=null )
+			return Math.atan2(pt.cyf-cyf, pt.cxf-cxf);
+		else
+			return Math.atan2(y-levelY, x-levelX);
 	}
 }
