@@ -1,9 +1,9 @@
 class Level extends dn.Process {
-	public var game(get,never) : Game; inline function get_game() return Game.ME;
-	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
+	var game(get,never) : Game; inline function get_game() return Game.ME;
+	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 
-	public var cWid(get,never) : Int; inline function get_cWid() return 48;
-	public var cHei(get,never) : Int; inline function get_cHei() return cWid;
+	public var cWid(get,never) : Int; inline function get_cWid() return 16;
+	public var cHei(get,never) : Int; inline function get_cHei() return 16;
 
 	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
 	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
@@ -15,12 +15,19 @@ class Level extends dn.Process {
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 	}
 
+	/** TRUE if given coords are in level bounds **/
 	public inline function isValid(cx,cy) return cx>=0 && cx<cWid && cy>=0 && cy<cHei;
+
+	/** Gets the integer ID of a given level grid coord **/
 	public inline function coordId(cx,cy) return cx + cy*cWid;
 
+	/** Ask for a level render that will only happen at the end of the current frame. **/
+	public inline function invalidate() {
+		invalidated = true;
+	}
 
-	public function render() {
-		// Debug level render
+	function render() {
+		// Placeholder level render
 		root.removeChildren();
 		for(cx in 0...cWid)
 		for(cy in 0...cHei) {
