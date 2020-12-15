@@ -2,10 +2,16 @@ class Level extends dn.Process {
 	var game(get,never) : Game; inline function get_game() return Game.ME;
 	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 
+	/** Level grid-based width**/
 	public var cWid(get,never) : Int; inline function get_cWid() return 16;
+
+	/** Level grid-based height **/
 	public var cHei(get,never) : Int; inline function get_cHei() return 16;
 
+	/** Level pixel width**/
 	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
+
+	/** Level pixel height**/
 	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
 
 	var invalidated = true;
