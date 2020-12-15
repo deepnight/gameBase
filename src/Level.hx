@@ -2,8 +2,11 @@ class Level extends dn.Process {
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
 	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 
-	public var wid(get,never) : Int; inline function get_wid() return level.l_Collisions.cWid;
-	public var hei(get,never) : Int; inline function get_hei() return level.l_Collisions.cHei;
+	public var cWid(get,never) : Int; inline function get_cWid() return level.l_Collisions.cWid;
+	public var cHei(get,never) : Int; inline function get_cHei() return level.l_Collisions.cHei;
+
+	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
+	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
 
 	public var level : World.World_Level;
 	var tilesetSource : h2d.Tile;
@@ -28,12 +31,12 @@ class Level extends dn.Process {
 	/**
 		Return TRUE if given coordinates are in level bounds
 	**/
-	public inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
+	public inline function isValid(cx,cy) return cx>=0 && cx<cWid && cy>=0 && cy<cHei;
 
 	/**
 		Transform coordinates into a coordId
 	**/
-	public inline function coordId(cx,cy) return cx + cy*wid;
+	public inline function coordId(cx,cy) return cx + cy*cWid;
 
 
 	/** Return TRUE if mark is present at coordinates **/

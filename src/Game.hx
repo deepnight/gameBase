@@ -42,10 +42,10 @@ class Game extends Process {
 		scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
 		world = new World();
-		camera = new Camera();
 		fx = new Fx();
 		hud = new ui.Hud();
 		level = new Level(world.all_levels.FirstLevel);
+		camera = new Camera();
 
 		Process.resizeAll();
 		trace(Lang.t._("Game is ready."));
