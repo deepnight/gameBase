@@ -51,18 +51,18 @@ class Game extends Process {
 		trace(Lang.t._("Game is ready."));
 	}
 
-	/**
-		Called when the CastleDB changes on the disk, if hot-reloading is enabled in Boot.hx
-	**/
-	public function onCdbReload() {
-	}
+	/** CDB file changed on disk**/
+	public function onCdbReload() {}
 
+
+	/** Window/app resize event **/
 	override function onResize() {
 		super.onResize();
 		scroller.setScale(Const.SCALE);
 	}
 
 
+	/** Garbage collect any Entity marked for destruction **/
 	function gc() {
 		if( Entity.GC==null || Entity.GC.length==0 )
 			return;
@@ -72,6 +72,7 @@ class Game extends Process {
 		Entity.GC = [];
 	}
 
+	/** Called if game is destroyed, but only at the end of the frame **/
 	override function onDispose() {
 		super.onDispose();
 
@@ -127,12 +128,15 @@ class Game extends Process {
 		ucd.setS("stopFrame", 0.2);
 	}
 
+	
+	/** Loop that happens at the beginning of the frame **/
 	override function preUpdate() {
 		super.preUpdate();
 
 		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
 	}
 
+	/** Loop that happens at the end of the frame **/
 	override function postUpdate() {
 		super.postUpdate();
 
@@ -147,12 +151,14 @@ class Game extends Process {
 		Assets.tiles.tmod = tmod;
 	}
 
+	/** Main loop but limited to 30fps (so it might not be called during some frames) **/
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
+	/** Main loop **/
 	override function update() {
 		super.update();
 

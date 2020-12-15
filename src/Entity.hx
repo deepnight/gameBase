@@ -22,7 +22,7 @@ class Entity {
 	var affects : Map<Affect,Float> = new Map();
 
 	/** Unique identifier **/
-	public var uid : Int;
+	public var uid(default,null) : Int;
 
 	// Position in the game world
     public var cx = 0;

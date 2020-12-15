@@ -1,11 +1,17 @@
 class Level extends dn.Process {
-	public var game(get,never) : Game; inline function get_game() return Game.ME;
-	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
+	var game(get,never) : Game; inline function get_game() return Game.ME;
+	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 
+	/** Level grid-based width**/
 	public var cWid(get,never) : Int; inline function get_cWid() return level.l_Collisions.cWid;
+
+	/** Level grid-based height **/
 	public var cHei(get,never) : Int; inline function get_cHei() return level.l_Collisions.cHei;
 
+	/** Level pixel width**/
 	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
+
+	/** Level pixel height**/
 	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
 
 	public var level : World.World_Level;
@@ -21,23 +27,16 @@ class Level extends dn.Process {
 		tilesetSource = hxd.Res.world.tiles.toTile();
 	}
 
-	/**
-		Mark the level for re-render at the end of current frame (before display)
-	**/
+	/** TRUE if given coords are in level bounds **/
+	public inline function isValid(cx,cy) return cx>=0 && cx<cWid && cy>=0 && cy<cHei;
+
+	/** Gets the integer ID of a given level grid coord **/
+	public inline function coordId(cx,cy) return cx + cy*cWid;
+
+	/** Ask for a level render that will only happen at the end of the current frame. **/
 	public inline function invalidate() {
 		invalidated = true;
 	}
-
-	/**
-		Return TRUE if given coordinates are in level bounds
-	**/
-	public inline function isValid(cx,cy) return cx>=0 && cx<cWid && cy>=0 && cy<cHei;
-
-	/**
-		Transform coordinates into a coordId
-	**/
-	public inline function coordId(cx,cy) return cx + cy*cWid;
-
 
 	/** Return TRUE if mark is present at coordinates **/
 	public inline function hasMark(mark:LevelMark, cx:Int, cy:Int) {
@@ -66,6 +65,7 @@ class Level extends dn.Process {
 
 	/** Render current level**/
 	function render() {
+		// Placeholder level render
 		root.removeChildren();
 
 		var tg = new h2d.TileGroup(tilesetSource, root);
