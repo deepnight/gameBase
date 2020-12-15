@@ -1,24 +1,57 @@
 class Camera extends dn.Process {
-	public var target : Null<Entity>;
-	public var pos : LPoint;
-	public var dx : Float;
-	public var dy : Float;
-	public var wid(get,never) : Int;
-	public var hei(get,never) : Int;
+	/** Camera focus coord in level pixels. This is the raw camera location: the displayed camera location might be clamped to level bounds. **/
+	public var focus : LPoint;
+
+	var target : Null<Entity>;
+
+	/** Width of viewport in level pixels **/
+	public var pxWid(get,never) : Int;
+
+	/** Height of viewport in level pixels **/
+	public var pxHei(get,never) : Int;
+
+	var dx : Float;
+	var dy : Float;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
 
+	/** If TRUE (default), the camera will try to stay inside level bounds. It cannot be done if level is smaller than actual viewport. In such case, the camera will be centered. **/
+	public var clampToLevelBounds = true;
+
+	/** Left camera bound in level pixels **/
+	public var left(get,never) : Int;
+		inline function get_left() return M.imax( M.floor( focus.levelX-pxWid*0.5 ), clampToLevelBounds ? 0 : -Const.INFINITE );
+
+	/** Right camera bound in level pixels **/
+	public var right(get,never) : Int;
+		inline function get_right() return left + pxWid - 1;
+
+	/** Upper camera bound in level pixels **/
+	public var top(get,never) : Int;
+		inline function get_top() return M.imax( M.floor( focus.levelY-pxHei*0.5 ), clampToLevelBounds ? 0 : -Const.INFINITE );
+
+	/** Lower camera bound in level pixels **/
+	public var bottom(get,never) : Int;
+		inline function get_bottom() return top + pxHei - 1;
+
+
 	public function new() {
 		super(Game.ME);
-		pos = LPoint.fromCase(0,0);
+		focus = LPoint.fromCase(0,0);
 		dx = dy = 0;
+		apply();
 	}
 
-	function get_wid() {
+	@:keep
+	override function toString() {
+		return 'Camera@${focus.levelX},${focus.levelY}';
+	}
+
+	function get_pxWid() {
 		return M.ceil( Game.ME.w() / Const.SCALE );
 	}
 
-	function get_hei() {
+	function get_pxHei() {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
@@ -34,8 +67,8 @@ class Camera extends dn.Process {
 
 	public function recenter() {
 		if( target!=null ) {
-			pos.levelX = target.centerX;
-			pos.levelY = target.centerY;
+			focus.levelX = target.centerX;
+			focus.levelY = target.centerY;
 		}
 	}
 
@@ -46,33 +79,6 @@ class Camera extends dn.Process {
 	public function shakeS(t:Float, ?pow=1.0) {
 		cd.setS("shaking", t, false);
 		shakePower = pow;
-	}
-
-	override function update() {
-		super.update();
-
-		// Follow target entity
-		if( target!=null ) {
-			var s = 0.006;
-			var deadZone = 5;
-			var tx = target.footX;
-			var ty = target.footY;
-
-			var d = pos.distPx(tx,ty);
-			// var d = M.dist(x,y, tx, ty);
-			if( d>=deadZone ) {
-				var a = pos.angTo(tx,ty);
-				dx += Math.cos(a) * (d-deadZone) * s * tmod;
-				dy += Math.sin(a) * (d-deadZone) * s * tmod;
-			}
-		}
-
-		var frict = 0.89;
-		pos.levelX += dx*tmod;
-		dx *= Math.pow(frict,tmod);
-
-		pos.levelY += dy*tmod;
-		dy *= Math.pow(frict,tmod);
 	}
 
 	public inline function bumpAng(a, dist) {
@@ -86,50 +92,87 @@ class Camera extends dn.Process {
 	}
 
 
+	/** Apply camera values to Game scroller **/
+	function apply() {
+		var level = Game.ME.level;
+		var scroller = Game.ME.scroller;
+
+		// Update scroller
+		if( !clampToLevelBounds || pxWid<level.pxWid)
+			scroller.x = -focus.levelX + pxWid*0.5;
+		else
+			scroller.x = pxWid*0.5 - level.pxWid*0.5;
+
+		if( !clampToLevelBounds || pxHei<level.pxHei)
+			scroller.y = -focus.levelY + pxHei*0.5;
+		else
+			scroller.y = pxHei*0.5 - level.pxHei*0.5;
+
+		// Clamp
+		if( clampToLevelBounds ) {
+			if( pxWid<level.cWid*Const.GRID)
+				scroller.x = M.fclamp(scroller.x, pxWid-level.pxWid, 0);
+			if( pxHei<level.cHei*Const.GRID)
+				scroller.y = M.fclamp(scroller.y, pxHei-level.pxHei, 0);
+		}
+
+		// Bumps friction
+		bumpOffX *= Math.pow(0.75, tmod);
+		bumpOffY *= Math.pow(0.75, tmod);
+
+		// Bump
+		scroller.x += bumpOffX;
+		scroller.y += bumpOffY;
+
+		// Shakes
+		if( cd.has("shaking") ) {
+			scroller.x += Math.cos(ftime*1.1)*2.5*shakePower * cd.getRatio("shaking");
+			scroller.y += Math.sin(0.3+ftime*1.7)*2.5*shakePower * cd.getRatio("shaking");
+		}
+
+		// Scaling
+		scroller.x*=Const.SCALE;
+		scroller.y*=Const.SCALE;
+
+		// Rounding
+		scroller.x = M.round(scroller.x);
+		scroller.y = M.round(scroller.y);
+	}
+
+
 	override function postUpdate() {
 		super.postUpdate();
 
-		if( !ui.Console.ME.hasFlag("scroll") ) {
-			var level = Game.ME.level;
-			var scroller = Game.ME.scroller;
-
-			// Update scroller
-			if( wid<level.wid*Const.GRID)
-				scroller.x = -pos.levelX + wid*0.5;
-			else
-				scroller.x = wid*0.5 - level.wid*0.5*Const.GRID;
-			if( hei<level.hei*Const.GRID)
-				scroller.y = -pos.levelY + hei*0.5;
-			else
-				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
-
-			// Clamp
-			if( wid<level.wid*Const.GRID)
-				scroller.x = M.fclamp(scroller.x, wid-level.wid*Const.GRID, 0);
-			if( hei<level.hei*Const.GRID)
-				scroller.y = M.fclamp(scroller.y, hei-level.hei*Const.GRID, 0);
-
-			// Bumps friction
-			bumpOffX *= Math.pow(0.75, tmod);
-			bumpOffY *= Math.pow(0.75, tmod);
-
-			// Bump
-			scroller.x += bumpOffX;
-			scroller.y += bumpOffY;
-
-			// Shakes
-			if( cd.has("shaking") ) {
-				scroller.x += Math.cos(ftime*1.1)*2.5*shakePower * cd.getRatio("shaking");
-				scroller.y += Math.sin(0.3+ftime*1.7)*2.5*shakePower * cd.getRatio("shaking");
-			}
-
-			// Scaling
-			scroller.x*=Const.SCALE;
-			scroller.y*=Const.SCALE;
-
-			// Rounding
-			scroller.x = M.round(scroller.x);
-			scroller.y = M.round(scroller.y);
-		}
+		if( !ui.Console.ME.hasFlag("scroll") )
+			apply();
 	}
+
+
+	override function update() {
+		super.update();
+
+		// Follow target entity
+		if( target!=null ) {
+			var s = 0.006;
+			var deadZone = 5;
+			var tx = target.footX;
+			var ty = target.footY;
+
+			var d = focus.distPx(tx,ty);
+			if( d>=deadZone ) {
+				var a = focus.angTo(tx,ty);
+				dx += Math.cos(a) * (d-deadZone) * s * tmod;
+				dy += Math.sin(a) * (d-deadZone) * s * tmod;
+			}
+		}
+
+		// Movements
+		var frict = 0.89;
+		focus.levelX += dx*tmod;
+		dx *= Math.pow(frict,tmod);
+
+		focus.levelY += dy*tmod;
+		dy *= Math.pow(frict,tmod);
+	}
+
 }
