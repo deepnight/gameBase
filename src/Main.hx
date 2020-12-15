@@ -3,7 +3,11 @@ import hxd.Key;
 
 class Main extends dn.Process {
 	public static var ME : Main;
+
+	/** Used to create "Access" instances that allow controller checks (keyboard or gamepad) **/
 	public var controller : dn.heaps.Controller;
+
+	/** Controller Access created for Main & Boot **/
 	public var ca : dn.heaps.Controller.ControllerAccess;
 
 	public function new(s:h2d.Scene) {
