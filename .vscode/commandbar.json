@@ -4,10 +4,10 @@
 	"skipErrorMessage": true,
 	"commands": [
 		{
-			"text": "🍊 Build HL",
+			"text": "🍊 HL",
 			"color": "orange",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|HL release",
+			"commandType":"exec",
+			"command": "haxe hl.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -10
@@ -21,10 +21,10 @@
 			"priority": -11
 		},
 		{
-			"text": "☕ Build JS",
+			"text": "☕ JS",
 			"color": "yellow",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|JS release",
+			"commandType":"exec",
+			"command": "haxe js.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -20
@@ -38,7 +38,7 @@
 			"priority": -21
 		},
 		{
-			"text": "🅰️ Build POT",
+			"text": "🅰️ Lang",
 			"color": "white",
 			"commandType":"palette",
 			"command": "workbench.action.tasks.runTask|Lang",
