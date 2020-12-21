@@ -4,7 +4,7 @@ import dn.Tweenie;
 
 
 class Fx extends dn.Process {
-	public var pool : ParticlePool;
+	var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
 	public var bgNormalSb    : h2d.SpriteBatch;
@@ -47,32 +47,34 @@ class Fx extends dn.Process {
 		topNormalSb.remove();
 	}
 
+	/** Clear all particles **/
 	public function clear() {
 		pool.killAll();
 	}
 
+	/** Create a HParticle instance in the TOP layer, using Additive blendmode **/
 	public inline function allocTopAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(topAddSb, t, x, y);
 	}
 
+	/** Create a HParticle instance in the TOP layer, using default blendmode **/
 	public inline function allocTopNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(topNormalSb, t,x,y);
 	}
 
+	/** Create a HParticle instance in the BG layer, using Additive blendmode **/
 	public inline function allocBgAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(bgAddSb, t,x,y);
 	}
 
+	/** Create a HParticle instance in the BG layer, using default blendmode **/
 	public inline function allocBgNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(bgNormalSb, t,x,y);
 	}
 
+	/** Gets a random tile variation from the atlas **/
 	public inline function getTile(id:String) : h2d.Tile {
 		return Assets.tiles.getTileRandom(id);
-	}
-
-	public function killAll() {
-		pool.killAll();
 	}
 
 	public function markerEntity(e:Entity, ?c=0xFF00FF, ?short=false) {
