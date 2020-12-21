@@ -4,14 +4,14 @@ import dn.Tweenie;
 
 
 class Fx extends dn.Process {
+	var game(get,never) : Game; inline function get_game() return Game.ME;
+
 	var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
 	public var bgNormalSb    : h2d.SpriteBatch;
 	public var topAddSb       : h2d.SpriteBatch;
 	public var topNormalSb    : h2d.SpriteBatch;
-
-	var game(get,never) : Game; inline function get_game() return Game.ME;
 
 	public function new() {
 		super(Game.ME);
