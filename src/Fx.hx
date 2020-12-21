@@ -141,7 +141,7 @@ class Fx extends dn.Process {
 
 
 	/**
-		A small sample to demonstrate how basic particles work. This example produce a small explosion of yellow dots that will fall and slowly fade to purple.
+		A small sample to demonstrate how basic particles work. This example produces a small explosion of yellow dots that will fall and slowly fade to purple.
 
 		USAGE: fx.dotsExplosionExample(50,50, 0xffcc00)
 	**/
