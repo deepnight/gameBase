@@ -7,7 +7,7 @@ class Fx extends dn.Process {
 	var game(get,never) : Game; inline function get_game() return Game.ME;
 	var level(get,never) : Level; inline function get_level() return Game.ME.level;
 
-	public var pool : ParticlePool;
+	var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
 	public var bgNormalSb    : h2d.SpriteBatch;
@@ -48,32 +48,34 @@ class Fx extends dn.Process {
 		topNormalSb.remove();
 	}
 
+	/** Clear all particles **/
 	public function clear() {
 		pool.killAll();
 	}
 
+	/** Create a HParticle instance in the TOP layer, using Additive blendmode **/
 	public inline function allocTopAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(topAddSb, t, x, y);
 	}
 
+	/** Create a HParticle instance in the TOP layer, using default blendmode **/
 	public inline function allocTopNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(topNormalSb, t,x,y);
 	}
 
+	/** Create a HParticle instance in the BG layer, using Additive blendmode **/
 	public inline function allocBgAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(bgAddSb, t,x,y);
 	}
 
+	/** Create a HParticle instance in the BG layer, using default blendmode **/
 	public inline function allocBgNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
 		return pool.alloc(bgNormalSb, t,x,y);
 	}
 
+	/** Gets a random tile variation from the atlas **/
 	public inline function getTile(id:String) : h2d.Tile {
 		return Assets.tiles.getTileRandom(id);
-	}
-
-	public function killAll() {
-		pool.killAll();
 	}
 
 	public function markerEntity(e:Entity, ?c=0xFF00FF, ?short=false) {
@@ -141,6 +143,25 @@ class Fx extends dn.Process {
 			e.remove();
 		});
 	}
+
+
+	/**
+		A small sample to demonstrate how basic particles work. This example produce a small explosion of yellow dots that will fall and slowly fade to purple.
+
+		USAGE: fx.dotsExplosionExample(50,50, 0xffcc00)
+	**/
+	public function dotsExplosionExample(x:Float, y:Float, color:UInt) {
+		for(i in 0...80) {
+			var p = allocTopAdd( getTile("fxDot"), x+rnd(0,3,true), y+rnd(0,3,true) );
+			p.alpha = rnd(0.4,1);
+			p.colorAnimS(color, 0x762087, rnd(0.6, 3)); // fade particle color from parameter color to some purple
+			p.moveAwayFrom(x,y, rnd(1,3)); // move away from source
+			p.frict = rnd(0.8, 0.9); // friction applied to velocities
+			p.gy = rnd(0, 0.02); // gravity Y (added on each frame)
+			p.lifeS = rnd(2,3); // life time in seconds
+		}
+	}
+
 
 	override function update() {
 		super.update();

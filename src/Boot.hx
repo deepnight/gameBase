@@ -1,15 +1,28 @@
+/**
+	This class is the entry point for the app.
+	It doesn't do much, except creating Main and taking care of app speed ()
+**/
+
 class Boot extends hxd.App {
 	public static var ME : Boot;
 
+	#if debug
+	var tmodSpeedMul = 1.0;
 	var ca(get,never) : dn.heaps.Controller.ControllerAccess;
 		inline function get_ca() return Main.ME.ca;
+	#end
 
-	// Boot
+
+	/**
+		App entry point
+	**/
 	static function main() {
 		new Boot();
 	}
 
-	// Engine ready
+	/**
+		Called when engine is ready, actual app can start
+	**/
 	override function init() {
 		ME = this;
 		new Main(s2d);
@@ -22,7 +35,7 @@ class Boot extends hxd.App {
 		dn.Process.resizeAll();
 	}
 
-	var tmodSpeedMul = 1.0;
+
 	/** Main app loop **/
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
@@ -30,23 +43,21 @@ class Boot extends hxd.App {
 		// Controller update
 		dn.heaps.Controller.beforeUpdate();
 
-		var adjustedTmod = hxd.Timer.tmod;
+		var currentTmod = hxd.Timer.tmod;
+		#if debug
 		if( Main.ME!=null && !Main.ME.destroyed ) {
-			// Debug slow-mo (toggled with a key)
-			#if debug
+			// Slow down app (toggled with a key)
 			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed()  )
 				tmodSpeedMul = tmodSpeedMul>=1 ? 0.2 : 1;
-			#end
-			adjustedTmod*=tmodSpeedMul;
+			currentTmod*=tmodSpeedMul;
 
-			// Debug turbo (by holding a key)
-			#if debug
-			adjustedTmod *= ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
-			#end
+			// Turbo (by holding a key)
+			currentTmod *= ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
 		}
+		#end
 
-		// Update all Processes
-		dn.Process.updateAll(adjustedTmod);
+		// Update all dn.Process instances
+		dn.Process.updateAll(currentTmod);
 	}
 }
 
