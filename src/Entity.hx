@@ -188,7 +188,7 @@ class Entity {
 		dy = bdy = 0;
 	}
 
-	public function is<T:Entity>(c:Class<T>) return Std.is(this, c);
+	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
 	public function as<T:Entity>(c:Class<T>) : T return Std.downcast(this, c);
 
 	public inline function rnd(min,max,?sign) return Lib.rnd(min,max,sign);
