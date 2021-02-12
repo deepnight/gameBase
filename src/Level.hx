@@ -72,7 +72,7 @@ class Level extends dn.Process {
 
 		var layer = level.l_Collisions;
 		for( autoTile in layer.autoTiles ) {
-			var tile = layer.tileset.getAutoLayerHeapsTile(tilesetSource, autoTile);
+			var tile = layer.tileset.getAutoLayerTile(autoTile);
 			tg.add(autoTile.renderX, autoTile.renderY, tile);
 		}
 	}
