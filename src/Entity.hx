@@ -152,7 +152,7 @@ class Entity {
 	}
 
 	public inline function isAlive() {
-		return !destroyed;
+		return !destroyed && life>0;
 	}
 
 	public function setPosCase(x:Int, y:Int) {
