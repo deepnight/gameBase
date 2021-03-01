@@ -26,6 +26,8 @@ class Hud extends dn.Process {
 
 	function render() {}
 
+	public function onLevelStart() {}
+
 	override function postUpdate() {
 		super.postUpdate();
 

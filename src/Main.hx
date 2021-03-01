@@ -25,13 +25,13 @@ class Main extends dn.Process {
 		// Heaps resources
 		#if( hl && debug )
 			hxd.Res.initLocal();
+			hxd.res.Resource.LIVE_UPDATE = true;
         #else
       		hxd.Res.initEmbed();
         #end
 
         // CastleDB hot reloading
 		#if debug
-        hxd.res.Resource.LIVE_UPDATE = true;
         hxd.Res.data.watch(function() {
             delayer.cancelById("cdb");
             delayer.addS("cdb", function() {
@@ -42,6 +42,19 @@ class Main extends dn.Process {
             }, 0.2);
         });
 		#end
+
+		// LDtk hot reloading
+		#if debug
+        hxd.Res.world.world.watch(function() {
+            delayer.cancelById("ldtk");
+            delayer.addS("ldtk", function() {
+				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
+            	if( Game.ME!=null )
+					Game.ME.onLdtkReload();
+            }, 0.2);
+        });
+		#end
+
 
 		// Assets & data init
 		hxd.snd.Manager.get(); // force sound manager init on startup instead of first sound play

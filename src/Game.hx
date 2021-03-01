@@ -27,7 +27,9 @@ class Game extends Process {
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
 
 	/** LDtk world data **/
-	public var world : World;
+	public var worldData : World;
+
+
 
 	public function new() {
 		super(Main.ME);
@@ -41,26 +43,43 @@ class Game extends Process {
 		root.add(scroller, Const.DP_BG);
 		scroller.filter = new h2d.filter.Nothing(); // force rendering for pixel perfect
 
-		world = new World();
+		worldData = new World();
 		fx = new Fx();
 		hud = new ui.Hud();
 		camera = new Camera();
 
-		startLevel(world.all_levels.FirstLevel);
+		startLevel(worldData.all_levels.FirstLevel);
 		trace(Lang.t._("Game is ready."));
 	}
+
 
 	/** Load a level **/
 	function startLevel(l:World.World_Level) {
 		if( level!=null )
 			level.destroy();
+		fx.clear();
+		// <---- Here: destroy relevant entities when level changes
 
 		level = new Level(l);
+		// <---- Here: instanciate your level entities
+
+		camera.recenter();
+		hud.onLevelStart();
 		Process.resizeAll();
 	}
 
-	/** CDB file changed on disk**/
+
+
+	/** CDB file changed on disk **/
 	public function onCdbReload() {}
+
+
+	/** LDtk file changed on disk **/
+	public function onLdtkReload() {
+		worldData.parseJson( hxd.Res.world.world.entry.getText() );
+		if( level!=null )
+			startLevel( worldData.getLevelUid(level.data.uid) );
+	}
 
 
 	/** Window/app resize event **/
@@ -180,6 +199,11 @@ class Game extends Process {
 					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
 					hxd.System.exit();
+			#end
+
+			#if debug
+			if( ca.isKeyboardPressed(Key.P) )
+				Console.ME.log( this.rprintChildren() );
 			#end
 
 			// Restart
