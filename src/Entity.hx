@@ -65,6 +65,12 @@ class Entity {
 	public var hei(default,set) : Float = Const.GRID;
 	inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
 
+	public var innerRadius(get,never) : Float;
+		inline function get_innerRadius() return M.fmin(wid,hei)*0.5;
+
+	public var largeRadius(get,never) : Float;
+		inline function get_largeRadius() return M.fmax(wid,hei)*0.5;
+
 	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
 
