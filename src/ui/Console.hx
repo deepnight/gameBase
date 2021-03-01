@@ -16,7 +16,7 @@ class Console extends h2d.Console {
 		h2d.Console.HIDE_LOG_TIMEOUT = 30;
 		Lib.redirectTracesToH2dConsole(this);
 
-		// Debug flags
+		// Debug flags (/set, /unset, /list commands)
 		#if debug
 		flags = new Map();
 		this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
@@ -42,11 +42,24 @@ class Console extends h2d.Console {
 		this.addAlias("-","unset");
 		#end
 
+		// List all active dn.Process
 		this.addCommand("process", [], ()->{
 			for( l in Main.ME.rprintChildren().split("\n") )
 				log(l);
 		});
 		this.addAlias("p", "process");
+
+		// Misc flag aliases
+		addFlagCommandAlias("bounds");
+		addFlagCommandAlias("affect");
+		addFlagCommandAlias("scroll");
+	}
+
+	/** Creates a shortcut command "/flag" to toggle specified flag state **/
+	function addFlagCommandAlias(flag:String) {
+		addCommand(flag, [], ()->{
+			setFlag(flag, !hasFlag(flag));
+		});
 	}
 
 	override function handleCommand(command:String) {
