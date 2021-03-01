@@ -68,7 +68,6 @@ class Main extends dn.Process {
 
 		// Start with 1 frame delay, to avoid 1st frame freezing from the game perspective
 		hxd.Timer.wantedFPS = Const.FPS;
-		hxd.Timer.skip();
 		delayer.addF( startGame, 1 );
 	}
 
@@ -78,10 +77,13 @@ class Main extends dn.Process {
 			Game.ME.destroy();
 			delayer.addF(function() {
 				new Game();
+				hxd.Timer.skip();
 			}, 1);
 		}
-		else
+		else {
 			new Game();
+			hxd.Timer.skip();
+		}
 	}
 
 
