@@ -88,10 +88,9 @@ class Main extends dn.Process {
 	public function startGame() {
 		if( Game.ME!=null ) {
 			Game.ME.destroy();
-			delayer.addF(function() {
-				new Game();
-				hxd.Timer.skip();
-			}, 1);
+			dn.Process.updateAll(1);
+			new Game();
+			hxd.Timer.skip();
 		}
 		else {
 			new Game();
