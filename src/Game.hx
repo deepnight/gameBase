@@ -57,7 +57,9 @@ class Game extends Process {
 		if( level!=null )
 			level.destroy();
 		fx.clear();
-		// <---- Here: destroy relevant entities when level changes
+		for(e in Entity.ALL) // <---- Replace this with more adapted entity destruction (eg. keep the player alive)
+			e.destroy();
+		garbageCollectEntities();
 
 		level = new Level(l);
 		// <---- Here: instanciate your level entities
@@ -88,8 +90,8 @@ class Game extends Process {
 	}
 
 
-	/** Garbage collect any Entity marked for destruction **/
-	function gc() {
+	/** Garbage collect any Entity marked for destruction. This is normally done at the end of the frame, but you can call it manually if you want to make sure marked entities are disposed right away, and removed from lists. **/
+	public function garbageCollectEntities() {
 		if( Entity.GC==null || Entity.GC.length==0 )
 			return;
 
@@ -105,7 +107,7 @@ class Game extends Process {
 		fx.destroy();
 		for(e in Entity.ALL)
 			e.destroy();
-		gc();
+		garbageCollectEntities();
 	}
 
 
@@ -170,7 +172,7 @@ class Game extends Process {
 
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
 		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
-		gc();
+		garbageCollectEntities();
 
 		// Update slow-motions
 		updateSlowMos();
