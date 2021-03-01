@@ -49,7 +49,6 @@ class Game extends Process {
 		camera = new Camera();
 
 		startLevel(worldData.all_levels.FirstLevel);
-		trace(Lang.t._("Game is ready."));
 	}
 
 
@@ -128,6 +127,7 @@ class Game extends Process {
 	}
 
 
+	/** Loop that updates slow-mos **/
 	function updateSlowMos() {
 		// Timeout active slow-mos
 		for(s in slowMos) {
@@ -193,17 +193,12 @@ class Game extends Process {
 
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {
 			#if hl
-			// Exit
+			// Exit by pressing ESC twice
 			if( ca.isKeyboardPressed(Key.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
 					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
 					hxd.System.exit();
-			#end
-
-			#if debug
-			if( ca.isKeyboardPressed(Key.P) )
-				Console.ME.log( this.rprintChildren() );
 			#end
 
 			// Restart
