@@ -482,8 +482,8 @@ class Entity {
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
 
-		sprSquashX += (1-sprSquashX) * 0.2;
-		sprSquashY += (1-sprSquashY) * 0.2;
+		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
+		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
 
 		// Blink
 		if( !cd.has("keepBlink") ) {
