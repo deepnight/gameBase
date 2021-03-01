@@ -54,6 +54,10 @@ class Camera extends dn.Process {
 		return M.ceil( Game.ME.h() / Const.SCALE );
 	}
 
+	public inline function isOnScreen(levelX:Float, levelY: Float) {
+		return levelX>=left && levelX<=right && levelY>=top && levelY<=bottom;
+	}
+
 	public function trackEntity(e:Entity, immediate:Bool) {
 		target = e;
 		if( immediate )
