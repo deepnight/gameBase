@@ -41,6 +41,12 @@ class Console extends h2d.Console {
 		this.addAlias("+","set");
 		this.addAlias("-","unset");
 		#end
+
+		this.addCommand("process", [], ()->{
+			for( l in Main.ME.rprintChildren().split("\n") )
+				log(l);
+		});
+		this.addAlias("p", "process");
 	}
 
 	override function handleCommand(command:String) {
