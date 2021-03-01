@@ -219,7 +219,7 @@ class Entity {
 		return dn.Bresenham.checkThinLine(cx,cy,e.cx,e.cy, canSeeThrough);
 	}
 
-	public function makePoint() return LPoint.fromCase(cx+xr,cy+yr);
+	public function createPoint() return LPoint.fromCase(cx+xr,cy+yr);
 
     public inline function destroy() {
         if( !destroyed ) {
