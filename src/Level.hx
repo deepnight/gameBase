@@ -3,10 +3,10 @@ class Level extends dn.Process {
 	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
 
 	/** Level grid-based width**/
-	public var cWid(get,never) : Int; inline function get_cWid() return level.l_Collisions.cWid;
+	public var cWid(get,never) : Int; inline function get_cWid() return data.l_Collisions.cWid;
 
 	/** Level grid-based height **/
-	public var cHei(get,never) : Int; inline function get_cHei() return level.l_Collisions.cHei;
+	public var cHei(get,never) : Int; inline function get_cHei() return data.l_Collisions.cHei;
 
 	/** Level pixel width**/
 	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
@@ -14,16 +14,17 @@ class Level extends dn.Process {
 	/** Level pixel height**/
 	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
 
-	public var level : World.World_Level;
+	public var data : World.World_Level;
 	var tilesetSource : h2d.Tile;
 
 	var marks : Map< LevelMark, Map<Int,Bool> > = new Map();
 	var invalidated = true;
 
-	public function new(l:World.World_Level) {
+	public function new(ldtkLevel:World.World_Level) {
 		super(Game.ME);
+
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
-		level = l;
+		data = ldtkLevel;
 		tilesetSource = hxd.Res.world.tiles.toTile();
 	}
 
@@ -60,7 +61,7 @@ class Level extends dn.Process {
 
 	/** Return TRUE if "Collisions" layer contains a collision value **/
 	public inline function hasCollision(cx,cy) : Bool {
-		return !isValid(cx,cy) ? true : level.l_Collisions.getInt(cx,cy)==0;
+		return !isValid(cx,cy) ? true : data.l_Collisions.getInt(cx,cy)==0;
 	}
 
 	/** Render current level**/
@@ -70,7 +71,7 @@ class Level extends dn.Process {
 
 		var tg = new h2d.TileGroup(tilesetSource, root);
 
-		var layer = level.l_Collisions;
+		var layer = data.l_Collisions;
 		for( autoTile in layer.autoTiles ) {
 			var tile = layer.tileset.getAutoLayerTile(autoTile);
 			tg.add(autoTile.renderX, autoTile.renderY, tile);
