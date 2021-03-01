@@ -207,6 +207,18 @@ class Entity {
 	public inline function distPx(e:Entity) return M.dist(footX, footY, e.footX, e.footY);
 	public inline function distPxFree(x:Float, y:Float) return M.dist(footX, footY, x, y);
 
+	function canSeeThrough(cx:Int, cy:Int) {
+		return !level.hasCollision(cx,cy) || this.cx==cx && this.cy==cy;
+	}
+
+	public inline function sightCheckCase(tcx:Int, tcy:Int) {
+		return dn.Bresenham.checkThinLine(cx,cy,tcx,tcy, canSeeThrough);
+	}
+
+	public inline function sightCheckEntity(e:Entity) {
+		return dn.Bresenham.checkThinLine(cx,cy,e.cx,e.cy, canSeeThrough);
+	}
+
 	public function makePoint() return LPoint.fromCase(cx+xr,cy+yr);
 
     public inline function destroy() {
