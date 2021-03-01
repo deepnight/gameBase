@@ -39,7 +39,7 @@ class Game extends Process {
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
-		scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
+		scroller.filter = new h2d.filter.Nothing(); // force rendering for pixel perfect
 
 		world = new World();
 		fx = new Fx();
@@ -128,7 +128,7 @@ class Game extends Process {
 		ucd.setS("stopFrame", 0.2);
 	}
 
-	
+
 	/** Loop that happens at the beginning of the frame **/
 	override function preUpdate() {
 		super.preUpdate();
