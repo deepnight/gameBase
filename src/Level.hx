@@ -28,6 +28,13 @@ class Level extends dn.Process {
 		tilesetSource = hxd.Res.world.tiles.toTile();
 	}
 
+	override function onDispose() {
+		super.onDispose();
+		data = null;
+		tilesetSource = null;
+		marks = null;
+	}
+
 	/** TRUE if given coords are in level bounds **/
 	public inline function isValid(cx,cy) return cx>=0 && cx<cWid && cy>=0 && cy<cHei;
 
