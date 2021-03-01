@@ -59,11 +59,11 @@ class Entity {
 	/** Multiplier applied on each frame to bump Y velocity **/
 	public var bumpFrictY = 0.93;
 
+	public var wid(default,set) : Float = Const.GRID;
+	inline function set_wid(v) { invalidateDebugBounds=true;  return wid=v; }
+
 	public var hei(default,set) : Float = Const.GRID;
 	inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
-
-	public var radius(default,set) = Const.GRID*0.5;
-	inline function set_radius(v) { invalidateDebugBounds=true;  return radius=v; }
 
 	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
@@ -97,15 +97,25 @@ class Entity {
 	var debugBounds : Null<h2d.Graphics>;
 	var invalidateDebugBounds = false;
 
+	/** Defines X alignment of entity at its attach point (0 to 1.0) **/
+	public var pivotX(default,set) : Float = 0.5;
+	/** Defines Y alignment of entity at its attach point (0 to 1.0) **/
+	public var pivotY(default,set) : Float = 1;
+
+	/** Entity attach X pixel coordinate **/
+	public var attachX(get,never) : Float; inline function get_attachX() return (cx+xr)*Const.GRID;
+	/** Entity attach Y pixel coordinate **/
+	public var attachY(get,never) : Float; inline function get_attachY() return (cy+yr)*Const.GRID;
+
 	// Coordinates getters, for easier gameplay coding
-	public var footX(get,never) : Float; inline function get_footX() return (cx+xr)*Const.GRID;
-	public var footY(get,never) : Float; inline function get_footY() return (cy+yr)*Const.GRID;
-	public var headX(get,never) : Float; inline function get_headX() return footX;
-	public var headY(get,never) : Float; inline function get_headY() return footY-hei;
-	public var centerX(get,never) : Float; inline function get_centerX() return footX;
-	public var centerY(get,never) : Float; inline function get_centerY() return footY-hei*0.5;
-	public var prevFrameFootX : Float = -Const.INFINITE;
-	public var prevFrameFootY : Float = -Const.INFINITE;
+	public var left(get,never) : Float; inline function get_left() return attachX + (0-pivotX) * wid;
+	public var right(get,never) : Float; inline function get_right() return attachX + (1-pivotX) * wid;
+	public var top(get,never) : Float; inline function get_top() return attachY + (0-pivotY) * hei;
+	public var bottom(get,never) : Float; inline function get_bottom() return attachY + (1-pivotY) * hei;
+	public var centerX(get,never) : Float; inline function get_centerX() return attachX + (0.5-pivotX) * wid;
+	public var centerY(get,never) : Float; inline function get_centerY() return attachY + (0.5-pivotY) * hei;
+	public var prevFrameattachX : Float = -Const.INFINITE;
+	public var prevFrameattachY : Float = -Const.INFINITE;
 
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 
@@ -123,11 +133,25 @@ class Entity {
 		baseColor = new h3d.Vector();
 		blinkColor = new h3d.Vector();
 		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
-		spr.setCenterRatio(0.5,1);
+		spr.setCenterRatio(pivotX, pivotY);
 
 		if( ui.Console.ME.hasFlag("bounds") )
 			enableBounds();
     }
+
+	function set_pivotX(v) {
+		pivotX = M.fclamp(v,0,1);
+		if( spr!=null )
+			spr.setCenterRatio(pivotX, pivotY);
+		return pivotX;
+	}
+
+	function set_pivotY(v) {
+		pivotY = M.fclamp(v,0,1);
+		if( spr!=null )
+			spr.setCenterRatio(pivotX, pivotY);
+		return pivotY;
+	}
 
 	public function initLife(v) {
 		life = maxLife = v;
@@ -181,9 +205,9 @@ class Entity {
 	}
 
 	function onPosManuallyChanged() {
-		if( M.dist(footX,footY,prevFrameFootX,prevFrameFootY) > Const.GRID*2 ) {
-			prevFrameFootX = footX;
-			prevFrameFootY = footY;
+		if( M.dist(attachX,attachY,prevFrameattachX,prevFrameattachY) > Const.GRID*2 ) {
+			prevFrameattachX = attachX;
+			prevFrameattachY = attachY;
 		}
 	}
 
@@ -211,8 +235,8 @@ class Entity {
 	public inline function distCase(e:Entity) return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
 	public inline function distCaseFree(tcx:Int, tcy:Int, ?txr=0.5, ?tyr=0.5) return M.dist(cx+xr, cy+yr, tcx+txr, tcy+tyr);
 
-	public inline function distPx(e:Entity) return M.dist(footX, footY, e.footX, e.footY);
-	public inline function distPxFree(x:Float, y:Float) return M.dist(footX, footY, x, y);
+	public inline function distPx(e:Entity) return M.dist(attachX, attachY, e.attachX, e.attachY);
+	public inline function distPxFree(x:Float, y:Float) return M.dist(attachX, attachY, x, y);
 
 	function canSeeThrough(cx:Int, cy:Int) {
 		return !level.hasCollision(cx,cy) || this.cx==cx && this.cy==cy;
@@ -297,29 +321,19 @@ class Entity {
 		var c = Color.makeColorHsl((uid%20)/20, 1, 1);
 		debugBounds.clear();
 
-		// Radius
-		debugBounds.lineStyle(1, c, 0.8);
-		debugBounds.drawCircle(0,-radius,radius);
-
-		// Hei
+		// Bounds rect
 		debugBounds.lineStyle(1, c, 0.5);
-		debugBounds.drawRect(-radius,-hei,radius*2,hei);
+		debugBounds.drawRect(left-attachX, top-attachY, wid, hei);
 
-		// Feet
-		debugBounds.lineStyle(1, 0xffffff, 1);
-		var d = Const.GRID*0.2;
-		debugBounds.moveTo(-d,0);
-		debugBounds.lineTo(d,0);
-		debugBounds.moveTo(0,-d);
-		debugBounds.lineTo(0,0);
+		// Attach point
+		debugBounds.lineStyle(0);
+		debugBounds.beginFill(c,0.8);
+		debugBounds.drawRect(-1, -1, 3, 3);
+		debugBounds.endFill();
 
 		// Center
 		debugBounds.lineStyle(1, c, 0.3);
-		debugBounds.drawCircle(0, -hei*0.5, 3);
-
-		// Head
-		debugBounds.lineStyle(1, c, 0.3);
-		debugBounds.drawCircle(0, headY-footY, 3);
+		debugBounds.drawCircle(centerX-attachX, centerY-attachY, 3);
 	}
 
 	function chargeAction(id:String, sec:Float, cb:Void->Void) {
@@ -471,8 +485,8 @@ class Entity {
 
 		// Debug label
 		if( debugLabel!=null ) {
-			debugLabel.x = Std.int(footX - debugLabel.textWidth*0.5);
-			debugLabel.y = Std.int(footY+1);
+			debugLabel.x = Std.int(attachX - debugLabel.textWidth*0.5);
+			debugLabel.y = Std.int(attachY+1);
 		}
 
 		// Debug bounds
@@ -481,14 +495,14 @@ class Entity {
 				invalidateDebugBounds = false;
 				renderBounds();
 			}
-			debugBounds.x = footX;
-			debugBounds.y = footY;
+			debugBounds.x = Std.int(attachX);
+			debugBounds.y = Std.int(attachY);
 		}
 	}
 
 	public function finalUpdate() {
-		prevFrameFootX = footX;
-		prevFrameFootY = footY;
+		prevFrameattachX = attachX;
+		prevFrameattachY = attachY;
 	}
 
 	public function fixedUpdate() {} // runs at a "guaranteed" 30 fps

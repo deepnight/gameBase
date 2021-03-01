@@ -158,8 +158,8 @@ class Camera extends dn.Process {
 		if( target!=null ) {
 			var s = 0.006;
 			var deadZone = 5;
-			var tx = target.footX;
-			var ty = target.footY;
+			var tx = target.attachX;
+			var ty = target.attachY;
 
 			var d = focus.distPx(tx,ty);
 			if( d>=deadZone ) {

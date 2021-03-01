@@ -136,7 +136,7 @@ class LPoint {
 	/** Return distance to something else, in level pixels **/
 	public inline function distPx(?e:Entity, ?pt:LPoint, ?x=0., ?y=0.) {
 		if( e!=null )
-			return M.dist(levelX, levelY, e.footX, e.footY);
+			return M.dist(levelX, levelY, e.attachX, e.attachY);
 		else if( pt!=null )
 			return M.dist(levelX, levelY, pt.levelX, pt.levelY);
 		else
