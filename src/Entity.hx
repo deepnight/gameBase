@@ -59,26 +59,35 @@ class Entity {
 	/** Multiplier applied on each frame to bump Y velocity **/
 	public var bumpFrictY = 0.93;
 
+	/** Pixel width of entity **/
 	public var wid(default,set) : Float = Const.GRID;
-	inline function set_wid(v) { invalidateDebugBounds=true;  return wid=v; }
+		inline function set_wid(v) { invalidateDebugBounds=true;  return wid=v; }
 
+	/** Pixel height of entity **/
 	public var hei(default,set) : Float = Const.GRID;
-	inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
+		inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
 
+	/** Inner radius in pixels (ie. smallest value between width/height, then divided by 2) **/
 	public var innerRadius(get,never) : Float;
 		inline function get_innerRadius() return M.fmin(wid,hei)*0.5;
 
+	/** "Large" radius in pixels (ie. biggest value between width/height, then divided by 2) **/
 	public var largeRadius(get,never) : Float;
 		inline function get_largeRadius() return M.fmax(wid,hei)*0.5;
 
 	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
 
-	// Sprite transformations
+	/** Sprite X scaling **/
 	public var sprScaleX = 1.0;
+	/** Sprite Y scaling **/
 	public var sprScaleY = 1.0;
-	public var sprSquashX = 1.0;
-	public var sprSquashY = 1.0;
+	/** Sprite X squash & stretch scaling, which automatically comes back to 1 after a few frames **/
+	var sprSquashX = 1.0;
+	/** Sprite Y squash & stretch scaling, which automatically comes back to 1 after a few frames **/
+	var sprSquashY = 1.0;
+
+	/** Entity visibility **/
 	public var entityVisible = true;
 
 	// Hit points
