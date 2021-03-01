@@ -26,14 +26,18 @@ class Entity {
 	/** Unique identifier **/
 	public var uid(default,null) : Int;
 
-	// Position in the game world
+	/** Grid X coordinate **/
     public var cx = 0;
+	/** Grid Y coordinate **/
     public var cy = 0;
+	/** Sub-grid X coordinate (from 0.0 to 1.0) **/
     public var xr = 0.5;
+	/** Sub-grid Y coordinate (from 0.0 to 1.0) **/
     public var yr = 1.0;
 
-	// Velocities
+	/** X velocity, in grid fractions **/
     public var dx = 0.;
+	/** Y velocity, in grid fractions **/
 	public var dy = 0.;
 
 	// Uncontrollable bump velocities, usually applied by external
@@ -45,12 +49,15 @@ class Entity {
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
 	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
 
-	// Multipliers applied on each frame to normal velocities
+	/** Multiplier applied on each frame to normal X velocity **/
 	public var frictX = 0.82;
+	/** Multiplier applied on each frame to normal Y velocity **/
 	public var frictY = 0.82;
 
-	// Multiplier applied on each frame to bump velocities
-	public var bumpFrict = 0.93;
+	/** Multiplier applied on each frame to bump X velocity **/
+	public var bumpFrictX = 0.93;
+	/** Multiplier applied on each frame to bump Y velocity **/
+	public var bumpFrictY = 0.93;
 
 	public var hei(default,set) : Float = Const.GRID;
 	inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
@@ -500,7 +507,7 @@ class Entity {
 			steps--;
 		}
 		dx*=Math.pow(frictX,tmod);
-		bdx*=Math.pow(bumpFrict,tmod);
+		bdx*=Math.pow(bumpFrictX,tmod);
 		if( M.fabs(dx)<=0.0005*tmod ) dx = 0;
 		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
 
@@ -517,7 +524,7 @@ class Entity {
 			steps--;
 		}
 		dy*=Math.pow(frictY,tmod);
-		bdy*=Math.pow(bumpFrict,tmod);
+		bdy*=Math.pow(bumpFrictX,tmod);
 		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
 		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
 
