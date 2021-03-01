@@ -16,7 +16,7 @@ class Camera extends dn.Process {
 	var bumpOffY = 0.;
 
 	/** If TRUE (default), the camera will try to stay inside level bounds. It cannot be done if level is smaller than actual viewport. In such case, the camera will be centered. **/
-	public var clampToLevelBounds = true;
+	public var clampToLevelBounds = false;
 
 	/** Left camera bound in level pixels **/
 	public var left(get,never) : Int;
@@ -60,7 +60,7 @@ class Camera extends dn.Process {
 
 	public function trackEntity(e:Entity, immediate:Bool) {
 		target = e;
-		if( immediate )
+		if( immediate || focus.levelX==0 && focus.levelY==0 )
 			recenter();
 	}
 
