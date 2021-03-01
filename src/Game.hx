@@ -26,7 +26,7 @@ class Game extends Process {
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
 
-	/** LEd world data **/
+	/** LDtk world data **/
 	public var world : World;
 
 	public function new() {
@@ -44,11 +44,19 @@ class Game extends Process {
 		world = new World();
 		fx = new Fx();
 		hud = new ui.Hud();
-		level = new Level(world.all_levels.FirstLevel);
 		camera = new Camera();
 
-		Process.resizeAll();
+		startLevel(world.all_levels.FirstLevel);
 		trace(Lang.t._("Game is ready."));
+	}
+
+	/** Load a level **/
+	function startLevel(l:World.World_Level) {
+		if( level!=null )
+			level.destroy();
+
+		level = new Level(l);
+		Process.resizeAll();
 	}
 
 	/** CDB file changed on disk**/
