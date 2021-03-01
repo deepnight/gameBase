@@ -4,6 +4,9 @@ import hxd.Key;
 class Main extends dn.Process {
 	public static var ME : Main;
 
+	/** 2D scene **/
+	public var scene(default,null) : h2d.Scene;
+
 	/** Used to create "Access" instances that allow controller checks (keyboard or gamepad) **/
 	public var controller : dn.heaps.Controller;
 
@@ -13,11 +16,25 @@ class Main extends dn.Process {
 	public function new(s:h2d.Scene) {
 		super();
 		ME = this;
+		scene = s;
+        createRoot(scene);
 
-        createRoot(s);
+		initHeaps();
+		initAssets();
+		initController();
 
+		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
+		#if js
+		new dn.heaps.GameFocusHelper(scene, Assets.fontMedium);
+		#end
+
+		startGame();
+	}
+
+
+	function initHeaps() {
 		// Engine settings
-		engine.backgroundColor = 0xff<<24|0x111133;
+		engine.backgroundColor = 0xff<<24 | 0x111133;
         #if( hl && !debug )
         engine.fullScreen = true;
         #end
@@ -30,7 +47,16 @@ class Main extends dn.Process {
       		hxd.Res.initEmbed();
         #end
 
-        // CastleDB hot reloading
+		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
+		hxd.snd.Manager.get();
+
+		// Init Timer with desired FPS
+		hxd.Timer.wantedFPS = Const.FPS;
+	}
+
+
+	function initAssets() {
+        // CastleDB file hot reloading
 		#if debug
         hxd.Res.data.watch(function() {
             delayer.cancelById("cdb");
@@ -43,28 +69,35 @@ class Main extends dn.Process {
         });
 		#end
 
-		// LDtk hot reloading
+		// LDtk file hot-reloading
 		#if debug
-        hxd.Res.world.world.watch(function() {
-            delayer.cancelById("ldtk");
-            delayer.addS("ldtk", function() {
+		hxd.Res.world.world.watch(function() {
+			delayer.cancelById("ldtk");
+			delayer.addS("ldtk", function() {
 				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-            	if( Game.ME!=null )
+				if( Game.ME!=null )
 					Game.ME.onLdtkReload();
-            }, 0.2);
-        });
+			}, 0.2);
+		});
 		#end
 
+		// Parse castleDB JSON
+		Data.load( hxd.Res.data.entry.getText() );
 
-		// Assets & data init
-		hxd.snd.Manager.get(); // force sound manager init on startup instead of first sound play
-		Assets.init(); // init assets
-		new ui.Console(Assets.fontTiny, s); // init debug console
-		Lang.init("en"); // init Lang
-		Data.load( hxd.Res.data.entry.getText() ); // read castleDB json
+		// Init game assets
+		Assets.init();
 
-		// Game controller & default key bindings
-		controller = new dn.heaps.Controller(s);
+		// Init console (open with [²] key)
+		new ui.Console(Assets.fontTiny, scene); // init debug console
+
+		// Init lang data
+		Lang.init("en");
+	}
+
+
+	/** Game controller & default key bindings **/
+	function initController() {
+		controller = new dn.heaps.Controller(scene);
 		ca = controller.createAccess("main");
 		controller.bind(AXIS_LEFT_X_NEG, Key.LEFT, Key.Q, Key.A);
 		controller.bind(AXIS_LEFT_X_POS, Key.RIGHT, Key.D);
@@ -73,16 +106,10 @@ class Main extends dn.Process {
 		controller.bind(B, Key.ENTER, Key.NUMPAD_ENTER);
 		controller.bind(SELECT, Key.R);
 		controller.bind(START, Key.N);
-
-		#if js
-		// Optional helper that shows a "Click to start/continue" message when the game looses focus
-		new dn.heaps.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
-		#end
-
-		// Start with 1 frame delay, to avoid 1st frame freezing from the game perspective
-		hxd.Timer.wantedFPS = Const.FPS;
-		delayer.addF( startGame, 1 );
 	}
+
+
+
 
 	/** Start game process **/
 	public function startGame() {
@@ -93,8 +120,11 @@ class Main extends dn.Process {
 			hxd.Timer.skip();
 		}
 		else {
-			new Game();
-			hxd.Timer.skip();
+			hxd.Timer.skip(); // need to ignore heavy Sound manager init frame
+			delayer.addF( ()->{
+				new Game();
+				hxd.Timer.skip();
+			}, 1 );
 		}
 	}
 
