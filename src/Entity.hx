@@ -8,6 +8,8 @@ class Entity {
 	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
+	public var camera(get,never) : Camera; inline function get_camera() return game.camera;
+
 	var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;
 	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
