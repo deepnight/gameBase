@@ -18,7 +18,7 @@ class Camera extends dn.Process {
 	var dy : Float;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
-	public var zoom(default,set) = 2.0;
+	public var zoom(default,set) = 1.0;
 
 	/** Speed multiplier when camera is tracking a target **/
 	var trackingSpeed = 1.0;
