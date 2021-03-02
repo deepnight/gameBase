@@ -4,6 +4,7 @@ package en;
 	This Entity is intended for quick debugging / level exploration.
 	Create one by pressing CTRL-SHIFT-D in game, fly around using ARROWS.
 **/
+@:access(Camera)
 class DebugDrone extends Entity {
 	public static var ME : DebugDrone;
 	static final COLOR = 0xffcc00;
@@ -14,7 +15,7 @@ class DebugDrone extends Entity {
 	var g : h2d.Graphics;
 	var help : h2d.Text;
 
-	public function new(?nearEntity:Entity) {
+	public function new() {
 		if( ME!=null ) {
 			ME.destroy();
 			Game.ME.garbageCollectEntities();
@@ -25,17 +26,14 @@ class DebugDrone extends Entity {
 		ME = this;
 		frictX = frictY = 0.86;
 
-		if( nearEntity!=null )
-			setPosPixel(nearEntity.attachX, nearEntity.attachY);
-		else
-			setPosPixel(level.pxWid*0.5, level.pxHei*0.5);
+		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);
 
 		// Controller
 		ca = Main.ME.controller.createAccess("drone", true);
 
 		// Take control of camera
-		if( @:privateAccess camera.target!=null )
-			previousCameraTarget = @:privateAccess camera.target;
+		if( camera.target!=null && camera.target.isAlive() )
+			previousCameraTarget = camera.target;
 		camera.trackEntity(this,false);
 
 		// Placeholder render
@@ -46,6 +44,7 @@ class DebugDrone extends Entity {
 
 		help = new h2d.Text(Assets.fontSmall);
 		game.root.add(help, Const.DP_TOP);
+		help.textColor = COLOR;
 		help.text = [
 			"ESCAPE - kill debug drone",
 			"ARROWS - move",
@@ -61,6 +60,8 @@ class DebugDrone extends Entity {
 		// Try to restore camera state
 		if( previousCameraTarget!=null )
 			camera.trackEntity(previousCameraTarget, false);
+		else
+			camera.target = null;
 		previousCameraTarget = null;
 
 		super.dispose();
@@ -103,8 +104,8 @@ class DebugDrone extends Entity {
 			destroy();
 
 		// Update previous cam target if it changes
-		if( @:privateAccess camera.target!=null && @:privateAccess camera.target!=this )
-			previousCameraTarget = @:privateAccess camera.target;
+		if( camera.target!=null && camera.target!=this && camera.target.isAlive() )
+			previousCameraTarget = camera.target;
 
 		// Display FPS
 		debug( M.round(hxd.Timer.fps()) + " FPS" );
