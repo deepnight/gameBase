@@ -184,6 +184,7 @@ class Game extends Process {
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
+		// Entities "30 fps" loop
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
@@ -191,11 +192,14 @@ class Game extends Process {
 	override function update() {
 		super.update();
 
+		// Entities main loop
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
 
+		// Key shortcuts
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {
-			#if hl
+
 			// Exit by pressing ESC twice
+			#if hl
 			if( ca.isKeyboardPressed(Key.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
 					trace(Lang.t._("Press ESCAPE again to exit."));
