@@ -49,6 +49,11 @@ class Console extends h2d.Console {
 		});
 		this.addAlias("p", "process");
 
+		// Create a debug drone
+		this.addCommand("drone", [], ()->{
+			new en.DebugDrone();
+		});
+
 		// Misc flag aliases
 		addFlagCommandAlias("bounds");
 		addFlagCommandAlias("affect");
