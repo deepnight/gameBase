@@ -226,6 +226,12 @@ class Entity {
 		}
 	}
 
+	/** Quickly set X/Y pivots. If Y is omitted, it will be equal to X. **/
+	public function setPivots(x:Float, ?y:Float) {
+		pivotX = x;
+		pivotY = y!=null ? y : x;
+	}
+
 	public function bump(x:Float,y:Float) {
 		bdx+=x;
 		bdy+=y;
