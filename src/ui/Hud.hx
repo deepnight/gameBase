@@ -7,6 +7,7 @@ class Hud extends dn.Process {
 
 	var flow : h2d.Flow;
 	var invalidated = true;
+	var notifications : Array<h2d.Flow> = [];
 
 	var debugText : h2d.Text;
 
@@ -17,6 +18,7 @@ class Hud extends dn.Process {
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		flow = new h2d.Flow(root);
+		notifications = [];
 
 		debugText = new h2d.Text(Assets.fontSmall, root);
 		clearDebug();
@@ -27,10 +29,13 @@ class Hud extends dn.Process {
 		root.setScale(Const.UI_SCALE);
 	}
 
+	/** Clear debug printing **/
 	public inline function clearDebug() {
 		debugText.text = "";
 		debugText.visible = false;
 	}
+
+	/** Display a debug string **/
 	public inline function debug(v:Dynamic, clear=true) {
 		if( clear )
 			debugText.text = Std.string(v);
@@ -38,6 +43,36 @@ class Hud extends dn.Process {
 			debugText.text += "\n"+v;
 		debugText.visible = true;
 		debugText.x = Std.int( w()/Const.UI_SCALE - 4 - debugText.textWidth );
+	}
+
+
+	/** Pop a quick notification in the corner **/
+	public function notify(str:String, color=0xA56DE7) {
+		var f = new h2d.Flow(root);
+		f.paddingHorizontal = 6;
+		f.paddingVertical = 4;
+		f.backgroundTile = h2d.Tile.fromColor(color);
+
+		var tf = new h2d.Text(Assets.fontSmall, f);
+		tf.text = str;
+		tf.maxWidth = 0.6 * w()/Const.UI_SCALE;
+		tf.textColor = 0xffffff;
+
+
+		var p = createChildProcess();
+		for(of in notifications)
+			p.tw.createS(of.y, of.y+f.outerHeight+1, 0.1);
+		notifications.push(f);
+		p.tw.createS(f.x, -f.outerWidth>0, 0.1);
+		p.onUpdateCb = ()->{
+			if( p.stime>=2 && !p.cd.hasSetS("done",Const.INFINITE) )
+				p.tw.createS(f.x, -f.outerWidth, 0.2).end( p.destroy );
+		}
+		p.onDisposeCb = ()->{
+			notifications.remove(f);
+			f.remove();
+			trace("removed");
+		}
 	}
 
 	public inline function invalidate() invalidated = true;
