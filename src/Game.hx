@@ -79,7 +79,7 @@ class Game extends Process {
 	public function onLdtkReload() {
 		worldData.parseJson( hxd.Res.world.world.entry.getText() );
 		if( level!=null )
-			startLevel( worldData.getLevelUid(level.data.uid) );
+			startLevel( worldData.getLevel(level.data.uid) );
 	}
 
 
