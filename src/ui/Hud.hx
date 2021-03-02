@@ -71,7 +71,6 @@ class Hud extends dn.Process {
 		p.onDisposeCb = ()->{
 			notifications.remove(f);
 			f.remove();
-			trace("removed");
 		}
 	}
 
