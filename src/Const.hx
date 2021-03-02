@@ -1,9 +1,11 @@
 class Const {
 	// Various constants
-	public static inline var FPS = 60;
-	public static inline var FIXED_FPS = 30;
-	public static inline var GRID = 16;
-	public static inline var INFINITE = 999999;
+	public static final FPS = 60;
+	public static var FIXED_UPDATE_FPS(default,set) = 30;
+		static inline function set_FIXED_UPDATE_FPS(v) return dn.Process.FIXED_UPDATE_FPS = v;
+
+	public static final GRID = 16;
+	public static final INFINITE = 999999;
 
 	/** Unique value generator **/
 	public static var NEXT_UNIQ(get,never) : Int; static inline function get_NEXT_UNIQ() return _uniq++;
