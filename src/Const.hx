@@ -1,12 +1,16 @@
 class Const {
-	// Framerate
-	public static final FPS = 60;
-	public static var FIXED_UPDATE_FPS(default,set) = 30;
-		static inline function set_FIXED_UPDATE_FPS(v) return dn.Process.FIXED_UPDATE_FPS = v;
+	/** Default engine framerate (60) **/
+	public static var FPS(get,never) : Int;
+		static inline function get_FPS() return Std.int( hxd.System.getDefaultFrameRate() );
 
-	// Various constants
+	/** "Fixed" updates target framerate **/
+	public static final FIXED_UPDATE_FPS = 30;
+
+	/** Grid size in pixels **/
 	public static final GRID = 16;
-	public static final INFINITE = 999999;
+
+	/** "Infinite", sort-of. More like a "big number" **/
+	public static final INFINITE : Int = 0xfffFfff;
 
 	/** Unique value generator **/
 	public static var NEXT_UNIQ(get,never) : Int; static inline function get_NEXT_UNIQ() return _uniq++;

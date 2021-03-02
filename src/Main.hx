@@ -18,9 +18,8 @@ class Main extends dn.Process {
 		ME = this;
 		scene = s;
         createRoot(scene);
-		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS; // fix static init order
 
-		initHeaps();
+		initEngine();
 		initAssets();
 		initController();
 
@@ -33,14 +32,14 @@ class Main extends dn.Process {
 	}
 
 
-	function initHeaps() {
+	function initEngine() {
 		// Engine settings
 		engine.backgroundColor = 0xff<<24 | 0x111133;
         #if( hl && !debug )
         engine.fullScreen = true;
         #end
 
-		// Heaps resources
+		// Heaps resource management
 		#if( hl && debug )
 			hxd.Res.initLocal();
 			hxd.res.Resource.LIVE_UPDATE = true;
@@ -51,8 +50,9 @@ class Main extends dn.Process {
 		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
 		hxd.snd.Manager.get();
 
-		// Init Timer with desired FPS
+		// Apply framerates
 		hxd.Timer.wantedFPS = Const.FPS;
+		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
 
 
