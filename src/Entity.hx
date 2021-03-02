@@ -151,7 +151,7 @@ class Entity {
 		spr.setCenterRatio(pivotX, pivotY);
 
 		if( ui.Console.ME.hasFlag("bounds") )
-			enableBounds();
+			enableDebugBounds();
     }
 
 	function set_pivotX(v) {
@@ -322,7 +322,7 @@ class Entity {
 		#end
 	}
 
-	public function disableBounds() {
+	public function disableDebugBounds() {
 		if( debugBounds!=null ) {
 			debugBounds.remove();
 			debugBounds = null;
@@ -330,7 +330,7 @@ class Entity {
 	}
 
 
-	public function enableBounds() {
+	public function enableDebugBounds() {
 		if( debugBounds==null ) {
 			debugBounds = new h2d.Graphics();
 			game.scroller.add(debugBounds, Const.DP_TOP);
@@ -338,7 +338,7 @@ class Entity {
 		invalidateDebugBounds = true;
 	}
 
-	function renderBounds() {
+	function renderDebugBounds() {
 		var c = Color.makeColorHsl((uid%20)/20, 1, 1);
 		debugBounds.clear();
 
@@ -357,6 +357,7 @@ class Entity {
 		debugBounds.drawCircle(centerX-attachX, centerY-attachY, 3);
 	}
 
+	/** Wait for `sec` seconds, then runs provided callback. **/
 	function chargeAction(id:String, sec:Float, cb:Void->Void) {
 		if( isChargingAction(id) )
 			cancelAction(id);
@@ -366,6 +367,7 @@ class Entity {
 			actions.push({ id:id, cb:cb, t:sec});
 	}
 
+	/** If id is null, return TRUE if any action is charging. If id is provided, return TRUE if this specific action is charging nokw. **/
 	public function isChargingAction(?id:String) {
 		if( id==null )
 			return actions.length>0;
@@ -391,6 +393,7 @@ class Entity {
 		}
 	}
 
+	/** Action management loop **/
 	function updateActions() {
 		var i = 0;
 		while( i<actions.length ) {
@@ -415,6 +418,7 @@ class Entity {
 		return hasAffect(k) ? affects.get(k) : 0.;
 	}
 
+	/** Add an Affect. If `allowLower` is TRUE, it is possible to override an existing Affect with a shorter duration. **/
 	public function setAffectS(k:Affect, t:Float, ?allowLower=false) {
 		if( affects.exists(k) && affects.get(k)>t && !allowLower )
 			return;
@@ -429,6 +433,7 @@ class Entity {
 		}
 	}
 
+	/** Multiply an Affect duration by a factor `f` **/
 	public function mulAffectS(k:Affect, f:Float) {
 		if( hasAffect(k) )
 			setAffectS(k, getAffectDurationS(k)*f, true);
@@ -441,6 +446,7 @@ class Entity {
 		}
 	}
 
+	/** Affects update loop **/
 	function updateAffects() {
 		for(k in affects.keys()) {
 			var t = affects.get(k);
@@ -455,25 +461,30 @@ class Entity {
 	function onAffectStart(k:Affect) {}
 	function onAffectEnd(k:Affect) {}
 
+	/** Return TRUE if the entity is active and has no status affect that prevents actions. **/
 	public function isConscious() {
 		return !hasAffect(Stun) && isAlive();
 	}
 
+	/** Blink `spr` briefly (eg. when damaged by something) **/
 	public function blink(c:UInt) {
 		blinkColor.setColor(c);
 		cd.setS("keepBlink",0.06);
 	}
 
-
-	public function setSquashX(v:Float) {
-		sprSquashX = v;
-		sprSquashY = 2-v;
-	}
-	public function setSquashY(v:Float) {
-		sprSquashX = 2-v;
-		sprSquashY = v;
+	/** Briefly squash sprite on X (Y changes accordingly). "1.0" means no distorsion. **/
+	public function setSquashX(scaleX:Float) {
+		sprSquashX = scaleX;
+		sprSquashY = 2-scaleX;
 	}
 
+	/** Briefly squash sprite on Y (X changes accordingly). "1.0" means no distorsion. **/
+	public function setSquashY(scaleY:Float) {
+		sprSquashX = 2-scaleY;
+		sprSquashY = scaleY;
+	}
+
+	/** "Beginning of the frame" loop **/
     public function preUpdate() {
 		ucd.update(utmod);
 		cd.update(tmod);
@@ -481,6 +492,7 @@ class Entity {
 		updateActions();
     }
 
+	/** Post-update loop, usually used for anything "render" related **/
     public function postUpdate() {
         spr.x = (cx+xr)*Const.GRID;
         spr.y = (cy+yr)*Const.GRID;
@@ -514,21 +526,24 @@ class Entity {
 		if( debugBounds!=null ) {
 			if( invalidateDebugBounds ) {
 				invalidateDebugBounds = false;
-				renderBounds();
+				renderDebugBounds();
 			}
 			debugBounds.x = Std.int(attachX);
 			debugBounds.y = Std.int(attachY);
 		}
 	}
 
+	/** Loop that runs at the end of the frame **/
 	public function finalUpdate() {
 		prevFrameattachX = attachX;
 		prevFrameattachY = attachY;
 	}
 
-	public function fixedUpdate() {} // runs at a "guaranteed" 30 fps
+	/** Main loop that only runs at 30 fps (so it might not be called during some frames) **/
+	public function fixedUpdate() {}
 
-    public function update() { // runs at an unknown fps
+	/** Main loop **/
+    public function update() {
 		// X
 		var steps = M.ceil( M.fabs(dxTotal*tmod) );
 		var step = dxTotal*tmod / steps;
@@ -573,10 +588,10 @@ class Entity {
 		}
 
 		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
-			enableBounds();
+			enableDebugBounds();
 
 		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
-			disableBounds();
+			disableDebugBounds();
 		#end
     }
 }

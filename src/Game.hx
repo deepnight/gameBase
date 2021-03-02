@@ -112,7 +112,7 @@ class Game extends Process {
 
 	/**
 		Start a cumulative slow-motion effect that will affect `tmod` value in this Process
-		and its children.
+		and all its children.
 
 		@param sec Realtime second duration of this slowmo
 		@param speedFactor Cumulative multiplier to the Process `tmod`
@@ -128,8 +128,8 @@ class Game extends Process {
 	}
 
 
-	/** Loop that updates slow-mos **/
-	function updateSlowMos() {
+	/** The loop that updates slow-mos **/
+	final function updateSlowMos() {
 		// Timeout active slow-mos
 		for(s in slowMos) {
 			s.t -= utmod * 1/Const.FPS;
@@ -168,18 +168,21 @@ class Game extends Process {
 	override function postUpdate() {
 		super.postUpdate();
 
-
-		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
-		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
-		garbageCollectEntities();
-
 		// Update slow-motions
 		updateSlowMos();
 		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
+
+		// Entities post-updates
+		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();
+
+		// Entities final updates
+		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
+		garbageCollectEntities();
 	}
 
-	/** Main loop but limited to 30fps (so it might not be called during some frames) **/
+
+	/** Main loop but limited to 30 fps (so it might not be called during some frames) **/
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
@@ -187,12 +190,14 @@ class Game extends Process {
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
+
 	/** Main loop **/
 	override function update() {
 		super.update();
 
 		// Entities main loop
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
+
 
 		// Key shortcuts
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {
@@ -212,9 +217,10 @@ class Game extends Process {
 				new en.DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
 			#end
 
-			// Restart
+			// Restart whole game
 			if( ca.selectPressed() )
 				Main.ME.startGame();
+
 		}
 	}
 }
