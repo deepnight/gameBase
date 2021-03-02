@@ -252,6 +252,7 @@ class Camera extends dn.Process {
 				frictX *= 1 - 0.9*brakeRatio;
 			}
 
+			final brakeDist = brakeDistNearBounds * pxHei;
 			if( dy<0 ) {
 				final brakeRatio = 1-M.fclamp( ( rawFocus.levelY - pxHei*0.5 ) / brakeDist, 0, 1 );
 				frictY *= 1 - 0.9*brakeRatio;
