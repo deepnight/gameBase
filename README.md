@@ -1,6 +1,6 @@
 # About
 
-**A lightweight and simple base structure for games, using *Heaps* framework (https://heaps.io) and *Haxe* language (https://haxe.org).**
+**A lightweight and simple base structure for games, using *[Heaps](https://heaps.io)* framework  and *[Haxe](https://haxe.org)* language.**
 
 [ [Changelog](CHANGELOG.md) | [Tutorial](https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/) ]
 
