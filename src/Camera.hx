@@ -18,6 +18,7 @@ class Camera extends dn.Process {
 	var dy : Float;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	public var zoom(default,set) = 2.0;
 
 	/** Speed multiplier when camera is tracking a target **/
 	var trackingSpeed = 1.0;
@@ -28,11 +29,11 @@ class Camera extends dn.Process {
 
 	/** Left camera bound in level pixels **/
 	public var left(get,never) : Int;
-		inline function get_left() return Std.int( clampedFocus.levelX-pxWid*0.5 );
+		inline function get_left() return Std.int( clampedFocus.levelX - pxWid*0.5 );
 
 	/** Right camera bound in level pixels **/
 	public var right(get,never) : Int;
-		inline function get_right() return left + pxWid - 1;
+		inline function get_right() return Std.int( left + (pxWid - 1) );
 
 	/** Upper camera bound in level pixels **/
 	public var top(get,never) : Int;
@@ -44,6 +45,9 @@ class Camera extends dn.Process {
 
 	public var centerX(get,never) : Int;
 		inline function get_centerX() return Std.int( (left+right) * 0.5 );
+
+	public var centerY(get,never) : Int;
+		inline function get_centerY() return Std.int( (top+bottom) * 0.5 );
 
 	// Debugging
 	var invalidateDebugBounds = false;
@@ -62,12 +66,16 @@ class Camera extends dn.Process {
 		return 'Camera@${rawFocus.levelX},${rawFocus.levelY}';
 	}
 
+	function set_zoom(v) {
+		return zoom = M.fclamp(v,1,10);
+	}
+
 	function get_pxWid() {
-		return M.ceil( Game.ME.w() / Const.SCALE );
+		return M.ceil( Game.ME.w() / Const.SCALE / zoom );
 	}
 
 	function get_pxHei() {
-		return M.ceil( Game.ME.h() / Const.SCALE );
+		return M.ceil( Game.ME.h() / Const.SCALE / zoom );
 	}
 
 	public inline function isOnScreen(levelX:Float, levelY: Float) {
@@ -143,12 +151,15 @@ class Camera extends dn.Process {
 		}
 
 		// Scaling
-		scroller.x*=Const.SCALE;
-		scroller.y*=Const.SCALE;
+		scroller.x*=Const.SCALE*zoom;
+		scroller.y*=Const.SCALE*zoom;
 
 		// Rounding
 		scroller.x = M.round(scroller.x);
 		scroller.y = M.round(scroller.y);
+
+		// Zoom
+		scroller.setScale(Const.SCALE * zoom);
 	}
 
 
@@ -190,9 +201,10 @@ class Camera extends dn.Process {
 
 		apply();
 
+		// Debug bounds
 		if( ui.Console.ME.hasFlag("cam") && debugBounds==null )
 			enableDebugBounds();
-		if( !ui.Console.ME.hasFlag("cam") && debugBounds!=null )
+		else if( !ui.Console.ME.hasFlag("cam") && debugBounds!=null )
 			disableDebugBounds();
 
 		if( debugBounds!=null ) {
@@ -212,7 +224,7 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.006*trackingSpeed;
+			var s = 0.006*trackingSpeed*zoom;
 			var deadZone = 5;
 			var tx = target.attachX;
 			var ty = target.attachY;
@@ -226,7 +238,7 @@ class Camera extends dn.Process {
 		}
 
 		// Compute frictions
-		var frictX = baseFrict - trackingSpeed*0.027*baseFrict;
+		var frictX = baseFrict - trackingSpeed*zoom*0.027*baseFrict;
 		var frictY = frictX;
 		if( clampToLevelBounds ) {
 			// "Brake" when approaching bounds
@@ -260,13 +272,13 @@ class Camera extends dn.Process {
 		if( clampToLevelBounds ) {
 			// X
 			if( level.pxWid < pxWid)
-				clampedFocus.levelX = level.pxWid*0.5; // small level
+				clampedFocus.levelX = level.pxWid*0.5; // centered small level
 			else
 				clampedFocus.levelX = M.fclamp( rawFocus.levelX, pxWid*0.5, level.pxWid-pxWid*0.5 );
 
 			// Y
 			if( level.pxHei < pxHei)
-				clampedFocus.levelY = level.pxHei*0.5; // small level
+				clampedFocus.levelY = level.pxHei*0.5; // centered small level
 			else
 				clampedFocus.levelY = M.fclamp( rawFocus.levelY, pxHei*0.5, level.pxHei-pxHei*0.5 );
 		}
