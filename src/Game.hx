@@ -86,7 +86,6 @@ class Game extends Process {
 	/** Window/app resize event **/
 	override function onResize() {
 		super.onResize();
-		scroller.setScale(Const.SCALE);
 	}
 
 
