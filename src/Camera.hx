@@ -1,6 +1,9 @@
 class Camera extends dn.Process {
-	/** Camera focus coord in level pixels. This is the raw camera location: the displayed camera location might be clamped to level bounds. **/
-	public var focus : LPoint;
+	/** Camera focus coord in level pixels. This is the raw camera location: the actual camera location might be clamped to level bounds. **/
+	public var rawFocus : LPoint;
+
+	/** This is equal to rawFocus if `clampToLevelBounds` is disabled **/
+	var clampedFocus : LPoint;
 
 	var target : Null<Entity>;
 
@@ -15,12 +18,15 @@ class Camera extends dn.Process {
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
 
+	/** Speed multiplier when camera is tracking a target **/
+	public var trackingSpeed = 1.0;
+
 	/** If TRUE (default), the camera will try to stay inside level bounds. It cannot be done if level is smaller than actual viewport. In such case, the camera will be centered. **/
 	public var clampToLevelBounds = false;
 
 	/** Left camera bound in level pixels **/
 	public var left(get,never) : Int;
-		inline function get_left() return M.imax( M.floor( focus.levelX-pxWid*0.5 ), clampToLevelBounds ? 0 : -Const.INFINITE );
+		inline function get_left() return Std.int( clampedFocus.levelX-pxWid*0.5 );
 
 	/** Right camera bound in level pixels **/
 	public var right(get,never) : Int;
@@ -28,22 +34,26 @@ class Camera extends dn.Process {
 
 	/** Upper camera bound in level pixels **/
 	public var top(get,never) : Int;
-		inline function get_top() return M.imax( M.floor( focus.levelY-pxHei*0.5 ), clampToLevelBounds ? 0 : -Const.INFINITE );
+		inline function get_top() return Std.int( clampedFocus.levelY-pxHei*0.5 );
 
 	/** Lower camera bound in level pixels **/
 	public var bottom(get,never) : Int;
 		inline function get_bottom() return top + pxHei - 1;
 
+	public var centerX(get,never) : Int;
+		inline function get_centerX() return Std.int( (left+right) * 0.5 );
+
 
 	public function new() {
 		super(Game.ME);
-		focus = LPoint.fromCase(0,0);
+		rawFocus = LPoint.fromCase(0,0);
+		clampedFocus = LPoint.fromCase(0,0);
 		dx = dy = 0;
 	}
 
 	@:keep
 	override function toString() {
-		return 'Camera@${focus.levelX},${focus.levelY}';
+		return 'Camera@${rawFocus.levelX},${rawFocus.levelY}';
 	}
 
 	function get_pxWid() {
@@ -60,7 +70,7 @@ class Camera extends dn.Process {
 
 	public function trackEntity(e:Entity, immediate:Bool) {
 		target = e;
-		if( immediate || focus.levelX==0 && focus.levelY==0 )
+		if( immediate || rawFocus.levelX==0 && rawFocus.levelY==0 )
 			recenter();
 	}
 
@@ -70,8 +80,8 @@ class Camera extends dn.Process {
 
 	public function recenter() {
 		if( target!=null ) {
-			focus.levelX = target.centerX;
-			focus.levelY = target.centerY;
+			rawFocus.levelX = target.centerX;
+			rawFocus.levelY = target.centerY;
 		}
 	}
 
@@ -101,23 +111,8 @@ class Camera extends dn.Process {
 		var scroller = Game.ME.scroller;
 
 		// Update scroller
-		if( !clampToLevelBounds || pxWid<level.pxWid)
-			scroller.x = -focus.levelX + pxWid*0.5;
-		else
-			scroller.x = pxWid*0.5 - level.pxWid*0.5;
-
-		if( !clampToLevelBounds || pxHei<level.pxHei)
-			scroller.y = -focus.levelY + pxHei*0.5;
-		else
-			scroller.y = pxHei*0.5 - level.pxHei*0.5;
-
-		// Clamp
-		if( clampToLevelBounds ) {
-			if( pxWid<level.cWid*Const.GRID)
-				scroller.x = M.fclamp(scroller.x, pxWid-level.pxWid, 0);
-			if( pxHei<level.cHei*Const.GRID)
-				scroller.y = M.fclamp(scroller.y, pxHei-level.pxHei, 0);
-		}
+		scroller.x = -clampedFocus.levelX + pxWid*0.5;
+		scroller.y = -clampedFocus.levelY + pxHei*0.5;
 
 		// Bumps friction
 		bumpOffX *= Math.pow(0.75, tmod);
@@ -156,26 +151,48 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.006;
+			var s = 0.006*trackingSpeed;
 			var deadZone = 5;
 			var tx = target.attachX;
 			var ty = target.attachY;
 
-			var d = focus.distPx(tx,ty);
+			var d = rawFocus.distPx(tx,ty);
 			if( d>=deadZone ) {
-				var a = focus.angTo(tx,ty);
+				var a = rawFocus.angTo(tx,ty);
 				dx += Math.cos(a) * (d-deadZone) * s * tmod;
 				dy += Math.sin(a) * (d-deadZone) * s * tmod;
 			}
 		}
 
-		// Movements
+		// Apply velocities
 		var frict = 0.89;
-		focus.levelX += dx*tmod;
+		rawFocus.levelX += dx*tmod;
 		dx *= Math.pow(frict,tmod);
 
-		focus.levelY += dy*tmod;
+		rawFocus.levelY += dy*tmod;
 		dy *= Math.pow(frict,tmod);
+
+		// Bounds clamping
+		if( clampToLevelBounds ) {
+			final level = Game.ME.level;
+
+			// X
+			if( level.pxWid < pxWid)
+				clampedFocus.levelX = level.pxWid*0.5; // small level
+			else
+				clampedFocus.levelX = M.fclamp( rawFocus.levelX, pxWid*0.5, level.pxWid-pxWid*0.5 );
+
+			// Y
+			if( level.pxHei < pxHei)
+				clampedFocus.levelY = level.pxHei*0.5; // small level
+			else
+				clampedFocus.levelY = M.fclamp( rawFocus.levelY, pxHei*0.5, level.pxHei-pxHei*0.5 );
+		}
+		else {
+			// No clamping
+			clampedFocus.levelX = rawFocus.levelX;
+			clampedFocus.levelY = rawFocus.levelY;
+		}
 	}
 
 }
