@@ -3,6 +3,7 @@
 ## 2.0
 
 - General:
+	- **Debug Drone**: press `CTRL-SHIFT-D` to add a debug Drone. Use arrows to fly it around and quickly explore your level.
 	- Full **LDtk** integration (https://ldtk.io)
 	- The official gameBase version is now the former "advanced" branch version. Merged `advancedBranch` with `master`. A "minimalistic" version will be added to a branch later.
 	- Fixed various FPS values issues
