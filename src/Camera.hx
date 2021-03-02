@@ -107,6 +107,9 @@ class Camera extends dn.Process {
 
 	/** Apply camera values to Game scroller **/
 	function apply() {
+		if( ui.Console.ME.hasFlag("scroll") )
+			return;
+
 		var level = Game.ME.level;
 		var scroller = Game.ME.scroller;
 
@@ -141,8 +144,7 @@ class Camera extends dn.Process {
 	override function postUpdate() {
 		super.postUpdate();
 
-		if( !ui.Console.ME.hasFlag("scroll") )
-			apply();
+		apply();
 	}
 
 
