@@ -59,13 +59,14 @@ class Hud extends dn.Process {
 		tf.textColor = 0xffffff;
 
 
+		var durationS = 2 + str.length*0.04;
 		var p = createChildProcess();
 		for(of in notifications)
 			p.tw.createS(of.y, of.y+f.outerHeight+1, 0.1);
 		notifications.push(f);
 		p.tw.createS(f.x, -f.outerWidth>0, 0.1);
 		p.onUpdateCb = ()->{
-			if( p.stime>=2 && !p.cd.hasSetS("done",Const.INFINITE) )
+			if( p.stime>=durationS && !p.cd.hasSetS("done",Const.INFINITE) )
 				p.tw.createS(f.x, -f.outerWidth, 0.2).end( p.destroy );
 		}
 		p.onDisposeCb = ()->{
