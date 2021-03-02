@@ -206,6 +206,12 @@ class Game extends Process {
 					hxd.System.exit();
 			#end
 
+			// Attach debug drone (CTRL-SHIFT-D)
+			#if debug
+			if( ca.isKeyboardPressed(K.D) ) // && ca.isKeyboardDown(K.CTRL) && ca.isKeyboardDown(K.SHIFT) ) {
+				new en.DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
+			#end
+
 			// Restart
 			if( ca.selectPressed() )
 				Main.ME.startGame();
