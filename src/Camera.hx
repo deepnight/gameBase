@@ -19,7 +19,7 @@ class Camera extends dn.Process {
 	var bumpOffY = 0.;
 
 	/** Speed multiplier when camera is tracking a target **/
-	public var trackingSpeed = 1.0;
+	var trackingSpeed = 1.0;
 
 	/** If TRUE (default), the camera will try to stay inside level bounds. It cannot be done if level is smaller than actual viewport. In such case, the camera will be centered. **/
 	public var clampToLevelBounds = false;
@@ -42,6 +42,10 @@ class Camera extends dn.Process {
 
 	public var centerX(get,never) : Int;
 		inline function get_centerX() return Std.int( (left+right) * 0.5 );
+
+	// Debugging
+	var invalidateDebugBounds = false;
+	var debugBounds : Null<h2d.Graphics>;
 
 
 	public function new() {
@@ -68,10 +72,15 @@ class Camera extends dn.Process {
 		return levelX>=left && levelX<=right && levelY>=top && levelY<=bottom;
 	}
 
-	public function trackEntity(e:Entity, immediate:Bool) {
+	public function trackEntity(e:Entity, immediate:Bool, speed=1.0) {
 		target = e;
+		setTrackingSpeed(speed);
 		if( immediate || rawFocus.levelX==0 && rawFocus.levelY==0 )
 			recenter();
+	}
+
+	public inline function setTrackingSpeed(spd:Float) {
+		trackingSpeed = M.fclamp(spd, 0.01, 10);
 	}
 
 	public inline function stopTracking() {
@@ -141,10 +150,56 @@ class Camera extends dn.Process {
 	}
 
 
+	public function disableDebugBounds() {
+		if( debugBounds!=null ) {
+			debugBounds.remove();
+			debugBounds = null;
+		}
+	}
+	public function enableDebugBounds() {
+		disableDebugBounds();
+		debugBounds = new h2d.Graphics();
+		Game.ME.scroller.add(debugBounds, Const.DP_TOP);
+		invalidateDebugBounds = true;
+	}
+
+	function renderDebugBounds() {
+		debugBounds.clear();
+
+		debugBounds.lineStyle(2,0xff00ff);
+		debugBounds.drawRect(0,0,pxWid,pxHei);
+
+		debugBounds.moveTo(pxWid*0.5, 0);
+		debugBounds.lineTo(pxWid*0.5, pxHei);
+
+		debugBounds.moveTo(0, pxHei*0.5);
+		debugBounds.lineTo(pxWid, pxHei*0.5);
+	}
+
+
+	override function onResize() {
+		super.onResize();
+		invalidateDebugBounds = true;
+	}
+
+
 	override function postUpdate() {
 		super.postUpdate();
 
 		apply();
+
+		if( ui.Console.ME.hasFlag("cam") && debugBounds==null )
+			enableDebugBounds();
+		if( !ui.Console.ME.hasFlag("cam") && debugBounds!=null )
+			disableDebugBounds();
+
+		if( debugBounds!=null ) {
+			if( invalidateDebugBounds ) {
+				renderDebugBounds();
+				invalidateDebugBounds = false;
+			}
+			debugBounds.setPosition(left,top);
+		}
 	}
 
 
@@ -167,7 +222,7 @@ class Camera extends dn.Process {
 		}
 
 		// Apply velocities
-		var frict = 0.89;
+		var frict = 0.89 - trackingSpeed*0.03;
 		rawFocus.levelX += dx*tmod;
 		dx *= Math.pow(frict,tmod);
 
