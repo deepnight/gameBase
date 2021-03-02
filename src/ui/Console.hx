@@ -53,6 +53,7 @@ class Console extends h2d.Console {
 		addFlagCommandAlias("bounds");
 		addFlagCommandAlias("affect");
 		addFlagCommandAlias("scroll");
+		addFlagCommandAlias("cam");
 	}
 
 	/** Creates a shortcut command "/flag" to toggle specified flag state **/
