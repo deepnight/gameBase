@@ -13,6 +13,7 @@ class Camera extends dn.Process {
 	/** Height of viewport in level pixels **/
 	public var pxHei(get,never) : Int;
 
+	var baseFrict = 0.89;
 	var dx : Float;
 	var dy : Float;
 	var bumpOffX = 0.;
@@ -23,6 +24,7 @@ class Camera extends dn.Process {
 
 	/** If TRUE (default), the camera will try to stay inside level bounds. It cannot be done if level is smaller than actual viewport. In such case, the camera will be centered. **/
 	public var clampToLevelBounds = false;
+	var brakeDistNearBounds = 0.1;
 
 	/** Left camera bound in level pixels **/
 	public var left(get,never) : Int;
@@ -206,6 +208,8 @@ class Camera extends dn.Process {
 	override function update() {
 		super.update();
 
+		final level = Game.ME.level;
+
 		// Follow target entity
 		if( target!=null ) {
 			var s = 0.006*trackingSpeed;
@@ -221,18 +225,40 @@ class Camera extends dn.Process {
 			}
 		}
 
+		// Compute frictions
+		var frictX = baseFrict - trackingSpeed*0.027*baseFrict;
+		var frictY = frictX;
+		if( clampToLevelBounds ) {
+			// "Brake" when approaching bounds
+			final brakeDist = brakeDistNearBounds * pxWid;
+			if( dx<=0 ) {
+				final brakeRatio = 1-M.fclamp( ( rawFocus.levelX - pxWid*0.5 ) / brakeDist, 0, 1 );
+				frictX *= 1 - 1*brakeRatio;
+			}
+			else if( dx>0 ) {
+				final brakeRatio = 1-M.fclamp( ( (level.pxWid-pxWid*0.5) - rawFocus.levelX ) / brakeDist, 0, 1 );
+				frictX *= 1 - 0.9*brakeRatio;
+			}
+
+			if( dy<0 ) {
+				final brakeRatio = 1-M.fclamp( ( rawFocus.levelY - pxHei*0.5 ) / brakeDist, 0, 1 );
+				frictY *= 1 - 0.9*brakeRatio;
+			}
+			else if( dy>0 ) {
+				final brakeRatio = 1-M.fclamp( ( (level.pxHei-pxHei*0.5) - rawFocus.levelY ) / brakeDist, 0, 1 );
+				frictY *= 1 - 0.9*brakeRatio;
+			}
+		}
+
 		// Apply velocities
-		var frict = 0.89 - trackingSpeed*0.03;
 		rawFocus.levelX += dx*tmod;
-		dx *= Math.pow(frict,tmod);
+		dx *= Math.pow(frictX,tmod);
 
 		rawFocus.levelY += dy*tmod;
-		dy *= Math.pow(frict,tmod);
+		dy *= Math.pow(frictY,tmod);
 
 		// Bounds clamping
 		if( clampToLevelBounds ) {
-			final level = Game.ME.level;
-
 			// X
 			if( level.pxWid < pxWid)
 				clampedFocus.levelX = level.pxWid*0.5; // small level
