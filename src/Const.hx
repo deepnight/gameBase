@@ -1,9 +1,10 @@
 class Const {
-	// Various constants
+	// Framerate
 	public static final FPS = 60;
 	public static var FIXED_UPDATE_FPS(default,set) = 30;
 		static inline function set_FIXED_UPDATE_FPS(v) return dn.Process.FIXED_UPDATE_FPS = v;
 
+	// Various constants
 	public static final GRID = 16;
 	public static final INFINITE = 999999;
 

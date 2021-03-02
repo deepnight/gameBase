@@ -18,6 +18,7 @@ class Main extends dn.Process {
 		ME = this;
 		scene = s;
         createRoot(scene);
+		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS; // fix static init order
 
 		initHeaps();
 		initAssets();
