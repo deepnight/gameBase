@@ -15,6 +15,10 @@ class DebugDrone extends Entity {
 	var g : h2d.Graphics;
 	var help : h2d.Text;
 
+	var droneDx = 0.;
+	var droneDy = 0.;
+	var droneFrict = 0.86;
+
 	public function new() {
 		if( ME!=null ) {
 			ME.destroy();
@@ -24,7 +28,6 @@ class DebugDrone extends Entity {
 		super(0,0);
 
 		ME = this;
-		frictX = frictY = 0.86;
 
 		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);
 
@@ -77,20 +80,35 @@ class DebugDrone extends Entity {
 	override function update() {
 		super.update();
 
+		// Ignore game standard velocities
+		cancelVelocities();
+
 		// Movement controls
 		var spd = 0.02;
 
 		if( ca.isKeyboardDown(K.LEFT) )
-			dx-=spd*tmod;
+			droneDx-=spd*tmod;
 
 		if( ca.isKeyboardDown(K.RIGHT) )
-			dx+=spd*tmod;
+			droneDx+=spd*tmod;
 
 		if( ca.isKeyboardDown(K.UP) )
-			dy-=spd*tmod;
+			droneDy-=spd*tmod;
 
 		if( ca.isKeyboardDown(K.DOWN) )
-			dy+=spd*tmod;
+			droneDy+=spd*tmod;
+
+		// X physics
+		xr+=droneDx;
+		while( xr>1 ) { xr--; cx++; }
+		while( xr<0 ) { xr++; cx--; }
+		droneDx*=Math.pow(droneFrict, tmod);
+
+		// Y physics
+		yr+=droneDy;
+		while( yr>1 ) { yr--; cy++; }
+		while( yr<0 ) { yr++; cy--; }
+		droneDy*=Math.pow(droneFrict, tmod);
 
 		// Zoom controls
 		if( ca.isKeyboardDown(K.PGUP) )
