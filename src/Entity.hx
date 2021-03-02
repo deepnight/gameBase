@@ -141,6 +141,7 @@ class Entity {
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
         setPosCase(x,y);
+		initLife(1);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -188,8 +189,7 @@ class Entity {
 			hit(life,by);
 	}
 
-	function onDamage(dmg:Int, from:Entity) {
-	}
+	function onDamage(dmg:Int, from:Entity) {}
 
 	function onDie() {
 		destroy();
@@ -203,6 +203,7 @@ class Entity {
 		return !destroyed && life>0;
 	}
 
+	/** Move entity to grid coordinates **/
 	public function setPosCase(x:Int, y:Int) {
 		cx = x;
 		cy = y;
@@ -211,6 +212,7 @@ class Entity {
 		onPosManuallyChanged();
 	}
 
+	/** Move entity to pixel coordinates **/
 	public function setPosPixel(x:Float, y:Float) {
 		cx = Std.int(x/Const.GRID);
 		cy = Std.int(y/Const.GRID);
@@ -232,11 +234,13 @@ class Entity {
 		pivotY = y!=null ? y : x;
 	}
 
+
 	public function bump(x:Float,y:Float) {
 		bdx+=x;
 		bdy+=y;
 	}
 
+	/** Reset velocities to zero **/
 	public function cancelVelocities() {
 		dx = bdx = 0;
 		dy = bdy = 0;
@@ -271,9 +275,9 @@ class Entity {
 		return dn.Bresenham.checkThinLine(cx,cy,e.cx,e.cy, canSeeThrough);
 	}
 
-	public function createPoint() return LPoint.fromCase(cx+xr,cy+yr);
+	public inline function createPoint() return LPoint.fromCase(cx+xr,cy+yr);
 
-    public inline function destroy() {
+    public final function destroy() {
         if( !destroyed ) {
             destroyed = true;
             GC.push(this);
@@ -304,9 +308,14 @@ class Entity {
 		cd = null;
     }
 
+
+	/** Print some numeric value below entity **/
 	public inline function debugFloat(v:Float, ?c=0xffffff) {
 		debug( pretty(v), c );
 	}
+
+
+	/** Print some value below entity **/
 	public inline function debug(?v:Dynamic, ?c=0xffffff) {
 		#if debug
 		if( v==null && debugLabel!=null ) {
@@ -322,6 +331,7 @@ class Entity {
 		#end
 	}
 
+	/** Hide entity debug bounds **/
 	public function disableDebugBounds() {
 		if( debugBounds!=null ) {
 			debugBounds.remove();
@@ -330,6 +340,7 @@ class Entity {
 	}
 
 
+	/** Show entity debug bounds (position and width/height). Use the `/bounds` command in Console to enable them. **/
 	public function enableDebugBounds() {
 		if( debugBounds==null ) {
 			debugBounds = new h2d.Graphics();
