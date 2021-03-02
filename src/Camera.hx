@@ -253,7 +253,6 @@ class Camera extends dn.Process {
 		// Apply velocities
 		rawFocus.levelX += dx*tmod;
 		dx *= Math.pow(frictX,tmod);
-
 		rawFocus.levelY += dy*tmod;
 		dy *= Math.pow(frictY,tmod);
 
