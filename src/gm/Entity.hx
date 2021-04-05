@@ -56,6 +56,10 @@ class Entity {
 	/** Multiplier applied on each frame to normal Y velocity **/
 	public var frictY = 0.82;
 
+	/** Sets both frictX/Y at the same time **/
+	public var frict(never,set) : Float;
+		inline function set_frict(v) return frictX = frictY = v;
+
 	/** Multiplier applied on each frame to bump X velocity **/
 	public var bumpFrictX = 0.93;
 	/** Multiplier applied on each frame to bump Y velocity **/
@@ -555,6 +559,9 @@ class Entity {
 	/** Main loop that only runs at 30 fps (so it might not be called during some frames) **/
 	public function fixedUpdate() {}
 
+	function onPreStepX() {}
+	function onPreStepY() {}
+
 	/** Main loop **/
     public function update() {
 		// X
@@ -562,6 +569,7 @@ class Entity {
 		var step = dxTotal*tmod / steps;
 		while( steps>0 ) {
 			xr+=step;
+			onPreStepX();
 
 			// [ add X collisions checks here ]
 
@@ -579,6 +587,7 @@ class Entity {
 		var step = dyTotal*tmod / steps;
 		while( steps>0 ) {
 			yr+=step;
+			onPreStepY();
 
 			// [ add Y collisions checks here ]
 
