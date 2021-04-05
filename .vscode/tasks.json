@@ -4,6 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "HaxeActiveConf",
             "type": "haxe",
             "args": "active configuration",
             "problemMatcher": [
@@ -19,7 +20,6 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "label": "HaxeActiveConf"
         },
         {
             "label": "Lang",
