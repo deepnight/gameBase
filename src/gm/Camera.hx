@@ -15,11 +15,19 @@ class Camera extends dn.Process {
 	/** Height of viewport in level pixels **/
 	public var pxHei(get,never) : Int;
 
+	/** Horizontal camera dead-zone in percentage of viewport width **/
+	public var deadZonePctX = 0.04;
+
+	/** Verticakl camera dead-zone in percentage of viewport height **/
+	public var deadZonePctY = 0.10;
+
 	var baseFrict = 0.89;
 	var dx : Float;
 	var dy : Float;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+
+	/** Zoom factor **/
 	public var zoom(default,set) = 1.0;
 
 	/** Speed multiplier when camera is tracking a target **/
@@ -226,17 +234,19 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var s = 0.006*trackingSpeed*zoom;
-			var deadZone = 5;
+			var spdX = 0.010*trackingSpeed*zoom;
+			var spdY = 0.013*trackingSpeed*zoom;
 			var tx = target.attachX;
 			var ty = target.attachY;
 
-			var d = rawFocus.distPx(tx,ty);
-			if( d>=deadZone ) {
-				var a = rawFocus.angTo(tx,ty);
-				dx += Math.cos(a) * (d-deadZone) * s * tmod;
-				dy += Math.sin(a) * (d-deadZone) * s * tmod;
-			}
+			var a = rawFocus.angTo(tx,ty);
+			var distX = M.fabs( tx - rawFocus.levelX );
+			if( distX>=deadZonePctX*pxWid )
+				dx += Math.cos(a) * (0.8*distX-deadZonePctX*pxWid) * spdX * tmod;
+
+			var distY = M.fabs( ty - rawFocus.levelY );
+			if( distY>=deadZonePctY*pxHei)
+				dy += Math.sin(a) * (0.8*distY-deadZonePctY*pxHei) * spdY * tmod;
 		}
 
 		// Compute frictions
