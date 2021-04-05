@@ -1,3 +1,5 @@
+package assets;
+
 import dn.heaps.slib.*;
 
 class Assets {

@@ -51,7 +51,7 @@ class Console extends h2d.Console {
 
 		// Create a debug drone
 		this.addCommand("drone", [], ()->{
-			new en.DebugDrone();
+			new DebugDrone();
 		});
 
 		// Misc flag aliases

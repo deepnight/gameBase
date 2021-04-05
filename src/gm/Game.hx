@@ -1,5 +1,6 @@
+package gm;
+
 import dn.Process;
-import hxd.Key;
 
 class Game extends Process {
 	public static var ME : Game;
@@ -76,7 +77,7 @@ class Game extends Process {
 
 
 	// LDtk file changed on disk
-	@:allow(Assets)
+	@:allow(assets.Assets)
 	function onLdtkReload() {
 		if( level!=null )
 			startLevel( Assets.worldData.getLevel(level.data.uid) );
@@ -203,7 +204,7 @@ class Game extends Process {
 
 			// Exit by pressing ESC twice
 			#if hl
-			if( ca.isKeyboardPressed(Key.ESCAPE) )
+			if( ca.isKeyboardPressed(K.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
 					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
@@ -213,7 +214,7 @@ class Game extends Process {
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
 			if( ca.isKeyboardPressed(K.D) ) // && ca.isKeyboardDown(K.CTRL) && ca.isKeyboardDown(K.SHIFT) ) {
-				new en.DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
+				new DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
 			#end
 
 			// Restart whole game

@@ -1,6 +1,7 @@
+package gm;
+
 import h2d.Sprite;
 import dn.heaps.HParticle;
-import dn.Tweenie;
 
 
 class Fx extends dn.Process {

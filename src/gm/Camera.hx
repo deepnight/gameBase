@@ -1,3 +1,5 @@
+package gm;
+
 class Camera extends dn.Process {
 	/** Camera focus coord in level pixels. This is the raw camera location: the actual camera location might be clamped to level bounds. **/
 	public var rawFocus : LPoint;

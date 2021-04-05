@@ -1,3 +1,5 @@
+package gm;
+
 class Level extends dn.Process {
 	var game(get,never) : Game; inline function get_game() return Game.ME;
 	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;

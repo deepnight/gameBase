@@ -10,14 +10,16 @@ import dn.heaps.slib.*;
 // Project classes
 import ui.Console;
 import tools.*;
-import en.*;
+import assets.*;
+import gm.*;
+import gm.en.*;
 import Types;
 
 // Castle DB
-import Cdb;
+import assets.Cdb;
 
 // LDtk
-import World;
+import assets.World;
 
 // Aliases
 import dn.Color as C;

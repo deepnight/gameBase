@@ -1,10 +1,10 @@
-package en;
+package gm.en;
 
 /**
 	This Entity is intended for quick debugging / level exploration.
 	Create one by pressing CTRL-SHIFT-D in game, fly around using ARROWS.
 **/
-@:access(Camera)
+@:access(gm.Camera)
 class DebugDrone extends Entity {
 	public static var ME : DebugDrone;
 	static final COLOR = 0xffcc00;

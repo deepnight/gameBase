@@ -1,3 +1,5 @@
+package assets;
+
 import dn.data.GetText;
 
 class Lang {
