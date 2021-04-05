@@ -70,7 +70,7 @@ class Level extends dn.Process {
 
 	/** Return TRUE if "Collisions" layer contains a collision value **/
 	public inline function hasCollision(cx,cy) : Bool {
-		return !isValid(cx,cy) ? true : data.l_Collisions.getInt(cx,cy)==0;
+		return !isValid(cx,cy) ? true : data.l_Collisions.getInt(cx,cy)==1;
 	}
 
 	/** Render current level**/
