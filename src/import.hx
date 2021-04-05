@@ -13,6 +13,9 @@ import tools.*;
 import en.*;
 import Types;
 
+// Castle DB
+import Cdb;
+
 // LDtk
 import World;
 

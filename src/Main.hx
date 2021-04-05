@@ -1,6 +1,3 @@
-import Data;
-import hxd.Key;
-
 /**
 	"Main" class takes care of all the top-level stuff in the whole application. Any other Process should be a child of Main.
 **/
@@ -91,13 +88,13 @@ class Main extends dn.Process {
 	function initController() {
 		controller = new dn.heaps.Controller(scene);
 		ca = controller.createAccess("main");
-		controller.bind(AXIS_LEFT_X_NEG, Key.LEFT, Key.Q, Key.A);
-		controller.bind(AXIS_LEFT_X_POS, Key.RIGHT, Key.D);
-		controller.bind(X, Key.SPACE, Key.F, Key.E);
-		controller.bind(A, Key.UP, Key.Z, Key.W);
-		controller.bind(B, Key.ENTER, Key.NUMPAD_ENTER);
-		controller.bind(SELECT, Key.R);
-		controller.bind(START, Key.N);
+		controller.bind(AXIS_LEFT_X_NEG, K.LEFT, K.Q, K.A);
+		controller.bind(AXIS_LEFT_X_POS, K.RIGHT, K.D);
+		controller.bind(X, K.SPACE, K.F, K.E);
+		controller.bind(A, K.UP, K.Z, K.W);
+		controller.bind(B, K.ENTER, K.NUMPAD_ENTER);
+		controller.bind(SELECT, K.R);
+		controller.bind(START, K.N);
 	}
 
 
