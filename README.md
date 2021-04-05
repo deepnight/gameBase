@@ -9,8 +9,8 @@
 
 # Installation & usage
 
- 1. **Install Haxe**: [Step-by-step tutorial](https://deepnight.net/tutorial/a-quick-guide-to-installing-haxe/).
- 2. **GameBase introduction**: "[Using gamebase to create a game](https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/)".
- 3. **Join the discord:** [LDtk discord](https://ldtk.io/go/discord).
- 4. For localization, you can check the [following guide](https://deepnight.net/tutorial/part-4-localize-texts-using-po-files/).
+ 1. **Haxe**: [Step-by-step tutorial](https://deepnight.net/tutorial/a-quick-guide-to-installing-haxe/)
+ 2. **GameBase**: [Using gamebase to create a game](https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/)
+ 3. **Discord:** [LDtk discord](https://ldtk.io/go/discord)
+ 4. For localization support (ie. translation), you may also check the [following guide](https://deepnight.net/tutorial/part-4-localize-texts-using-po-files/).
 
