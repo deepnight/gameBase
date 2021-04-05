@@ -1,20 +1,21 @@
 /**
-	This class is the entry point for the app.
-	It doesn't do much, except creating Main and taking care of app speed ()
+	Boot class is the entry point for the app.
+	It doesn't do much, except creating Main class and taking care of loops. Thus, you shouldn't be doing too much in this class.
 **/
 
 class Boot extends hxd.App {
-	public static var ME : Boot;
-
 	#if debug
+	// Debug controls over game speed
 	var tmodSpeedMul = 1.0;
+
+	// Shortcut to controller
 	var ca(get,never) : dn.heaps.Controller.ControllerAccess;
 		inline function get_ca() return Main.ME.ca;
 	#end
 
 
 	/**
-		App entry point
+		App entry point: everything starts here
 	**/
 	static function main() {
 		new Boot();
@@ -24,7 +25,6 @@ class Boot extends hxd.App {
 		Called when engine is ready, actual app can start
 	**/
 	override function init() {
-		ME = this;
 		new Main(s2d);
 		onResize();
 	}
@@ -43,21 +43,26 @@ class Boot extends hxd.App {
 		// Controller update
 		dn.heaps.Controller.beforeUpdate();
 
-		var currentTmod = hxd.Timer.tmod;
+
+		// Debug controls over app speed
+		var adjustedTmod = hxd.Timer.tmod;
 		#if debug
 		if( Main.ME!=null && !Main.ME.destroyed ) {
-			// Slow down app (toggled with a key)
+			// Slow down (toggle)
 			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed()  )
 				tmodSpeedMul = tmodSpeedMul>=1 ? 0.2 : 1;
-			currentTmod*=tmodSpeedMul;
+			adjustedTmod *= tmodSpeedMul;
 
 			// Turbo (by holding a key)
-			currentTmod *= ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
+			adjustedTmod *= ca.isKeyboardDown(K.NUMPAD_ADD) || ca.isKeyboardDown(K.END) || ca.ltDown() ? 5 : 1;
 		}
 		#end
 
-		// Update all dn.Process instances
-		dn.Process.updateAll(currentTmod);
+		// Run all dn.Process instances loops
+		dn.Process.updateAll(adjustedTmod);
+
+		// Update current sprite atlas "tmod" value (for animations)
+		Assets.update(adjustedTmod);
 	}
 }
 

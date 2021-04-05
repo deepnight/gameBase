@@ -26,10 +26,6 @@ class Game extends Process {
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
 
-	/** LDtk world data **/
-	public var worldData : World;
-
-
 
 	public function new() {
 		super(Main.ME);
@@ -43,12 +39,16 @@ class Game extends Process {
 		root.add(scroller, Const.DP_BG);
 		scroller.filter = new h2d.filter.Nothing(); // force rendering for pixel perfect
 
-		worldData = new World();
 		fx = new Fx();
 		hud = new ui.Hud();
 		camera = new Camera();
 
-		startLevel(worldData.all_levels.FirstLevel);
+		startLevel(Assets.worldData.all_levels.FirstLevel);
+	}
+
+
+	public static inline function exists() {
+		return ME!=null && !ME.destroyed;
 	}
 
 
@@ -71,17 +71,16 @@ class Game extends Process {
 
 
 
-	/** CDB file changed on disk **/
+	// CDB file changed on disk
 	public function onCdbReload() {}
 
 
-	/** LDtk file changed on disk **/
-	public function onLdtkReload() {
-		worldData.parseJson( hxd.Res.world.world.entry.getText() );
+	// LDtk file changed on disk
+	@:allow(Assets)
+	function onLdtkReload() {
 		if( level!=null )
-			startLevel( worldData.getLevel(level.data.uid) );
+			startLevel( Assets.worldData.getLevel(level.data.uid) );
 	}
-
 
 	/** Window/app resize event **/
 	override function onResize() {
@@ -208,7 +207,7 @@ class Game extends Process {
 				if( !cd.hasSetS("exitWarn",3) )
 					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
-					hxd.System.exit();
+					Main.ME.exit();
 			#end
 
 			// Attach debug drone (CTRL-SHIFT-D)

@@ -1,6 +1,10 @@
 import Data;
 import hxd.Key;
 
+/**
+	"Main" class takes care of all the top-level stuff in the whole application. Any other Process should be a child of Main.
+**/
+
 class Main extends dn.Process {
 	public static var ME : Main;
 
@@ -20,7 +24,7 @@ class Main extends dn.Process {
         createRoot(scene);
 
 		initEngine();
-		initAssets();
+		initComponents();
 		initController();
 
 		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
@@ -55,36 +59,23 @@ class Main extends dn.Process {
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
 
+	public inline function exists() return ME!=null && !ME.destroyed;
 
-	function initAssets() {
-        // CastleDB file hot reloading
-		#if debug
-        hxd.Res.data.watch(function() {
-            delayer.cancelById("cdb");
-            delayer.addS("cdb", function() {
-				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-            	Data.load( hxd.Res.data.entry.getBytes().toString() );
-            	if( Game.ME!=null )
-                    Game.ME.onCdbReload();
-            }, 0.2);
-        });
+	/** Close the app **/
+	public function exit() {
+		destroy();
+	}
+
+	override function onDispose() {
+		super.onDispose();
+
+		#if hl
+		hxd.System.exit();
 		#end
+	}
 
-		// LDtk file hot-reloading
-		#if debug
-		hxd.Res.world.world.watch(function() {
-			delayer.cancelById("ldtk");
-			delayer.addS("ldtk", function() {
-				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-				if( Game.ME!=null )
-					Game.ME.onLdtkReload();
-			}, 0.2);
-		});
-		#end
 
-		// Parse castleDB JSON
-		Data.load( hxd.Res.data.entry.getText() );
-
+	function initComponents() {
 		// Init game assets
 		Assets.init();
 
@@ -114,9 +105,9 @@ class Main extends dn.Process {
 
 	/** Start game process **/
 	public function startGame() {
-		if( Game.ME!=null ) {
+		if( Game.exists() ) {
 			Game.ME.destroy();
-			dn.Process.updateAll(1);
+			dn.Process.updateAll(1); // ensure all garbage collection is done
 			new Game();
 			hxd.Timer.skip();
 		}
