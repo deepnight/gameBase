@@ -1,4 +1,4 @@
--cp src.langParser
+-cp src/langParser
 -main LangParser
 -lib castle
 -lib deepnightLibs

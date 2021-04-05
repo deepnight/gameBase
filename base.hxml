@@ -1,4 +1,4 @@
--cp src
+-cp src/gameBase
 -lib castle
 -lib heaps
 -lib deepnightLibs
