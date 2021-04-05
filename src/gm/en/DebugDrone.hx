@@ -10,7 +10,8 @@ class DebugDrone extends Entity {
 	static final COLOR = 0xffcc00;
 
 	var ca : dn.heaps.Controller.ControllerAccess;
-	var previousCameraTarget : Null<Entity>;
+	var prevCamTarget : Null<Entity>;
+	var prevCamZoom : Float;
 
 	var g : h2d.Graphics;
 	var help : h2d.Text;
@@ -36,7 +37,8 @@ class DebugDrone extends Entity {
 
 		// Take control of camera
 		if( camera.target!=null && camera.target.isAlive() )
-			previousCameraTarget = camera.target;
+			prevCamTarget = camera.target;
+		prevCamZoom = camera.zoom;
 		camera.trackEntity(this,false);
 
 		// Placeholder render
@@ -61,11 +63,12 @@ class DebugDrone extends Entity {
 
 	override function dispose() {
 		// Try to restore camera state
-		if( previousCameraTarget!=null )
-			camera.trackEntity(previousCameraTarget, false);
+		if( prevCamTarget!=null )
+			camera.trackEntity(prevCamTarget, false);
 		else
 			camera.target = null;
-		previousCameraTarget = null;
+		prevCamTarget = null;
+		camera.zoom = prevCamZoom;
 
 		super.dispose();
 
@@ -123,7 +126,7 @@ class DebugDrone extends Entity {
 
 		// Update previous cam target if it changes
 		if( camera.target!=null && camera.target!=this && camera.target.isAlive() )
-			previousCameraTarget = camera.target;
+			prevCamTarget = camera.target;
 
 		// Display FPS
 		debug( M.round(hxd.Timer.fps()) + " FPS" );
