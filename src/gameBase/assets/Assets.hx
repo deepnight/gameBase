@@ -38,7 +38,7 @@ class Assets {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
 			App.ME.delayer.cancelById("cdb");
 			App.ME.delayer.addS("cdb", function() {
-				Cdb.load( hxd.Res.data.entry.getBytes().toString() );
+				CastleDb.load( hxd.Res.data.entry.getBytes().toString() );
 				if( Game.exists() )
 					Game.ME.onCdbReload();
 			}, 0.2);
@@ -46,7 +46,7 @@ class Assets {
 		#end
 
 		// Parse castleDB JSON
-		Cdb.load( hxd.Res.data.entry.getText() );
+		CastleDb.load( hxd.Res.data.entry.getText() );
 
 		// LDtk init & parsing
 		worldData = new World();

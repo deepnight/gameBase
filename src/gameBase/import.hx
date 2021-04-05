@@ -16,7 +16,7 @@ import gm.en.*;
 import Types;
 
 // Castle DB
-import assets.Cdb;
+import assets.CastleDb;
 
 // LDtk
 import assets.World;
