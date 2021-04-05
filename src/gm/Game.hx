@@ -30,6 +30,7 @@ class Game extends Process {
 
 	public function new() {
 		super(Main.ME);
+
 		ME = this;
 		ca = Main.ME.controller.createAccess("game");
 		ca.setLeftDeadZone(0.2);
