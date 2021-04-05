@@ -3,17 +3,17 @@
 ## 2.0
 
 - General:
+	- **The official gameBase version is now the former "advanced" branch version. A "minimalistic" version might be added to a separate branch in the future.**
 	- **Debug Drone**: press `CTRL-SHIFT-D` to spawn a debug Drone. Use arrows to fly around and quickly explore your current level. You can also type `/drone` in console.
 	- Full **LDtk** integration (https://ldtk.io), with hot-reloading support.
+	- Added many comments everywhere.
 	- Moved all source code to various `src/` subfolders
-	- Moved all game related classes to the `gm/` package
-	- Moved all assets related classes to the `assets/` package
-	- The official gameBase version is now the former "advanced" branch version. A "minimalistic" version might be added to a separate branch in the future.
+	- Moved all game related classes to the `gm` package
+	- Moved all assets related classes to the `assets` package
 	- Fixed various FPS values issues
 	- Added various debug commands to console. Open it up with `²` key, and type: `/help`
 	- Better "active" level management, through `startLevel()` method
 	- Cleaned up Main class
-	- Cleaned up Camera class
 	- Renamed Main class to App
 	- Renamed Data class to CastleDb
 	- Replaced pixel perfect filters with a more optimized one (now using `Nothing` filter)
