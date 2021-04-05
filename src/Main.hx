@@ -52,6 +52,7 @@ class Main extends dn.Process {
 		hxd.snd.Manager.get();
 
 		// Apply framerates
+		hxd.Timer.smoothFactor = 0;
 		hxd.Timer.wantedFPS = Const.FPS;
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
