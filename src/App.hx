@@ -8,7 +8,7 @@ class App extends dn.Process {
 	/** 2D scene **/
 	public var scene(default,null) : h2d.Scene;
 
-	/** Used to create "Access" instances that allow controller checks (keyboard or gamepad) **/
+	/** Used to create "ControllerAccess" instances that will grant controller usage (keyboard or gamepad) **/
 	public var controller : dn.heaps.Controller;
 
 	/** Controller Access created for Main & Boot **/
