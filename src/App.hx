@@ -21,8 +21,11 @@ class App extends dn.Process {
         createRoot(scene);
 
 		initEngine();
-		initComponents();
+		initAssets();
 		initController();
+
+		// Create console (open with [²] key)
+		new ui.Console(Assets.fontTiny, scene); // init debug console
 
 		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
 		#if js
@@ -33,6 +36,35 @@ class App extends dn.Process {
 	}
 
 
+
+	/** Start game process **/
+	public function startGame() {
+		if( Game.exists() ) {
+			// Kill previous game instance first
+			Game.ME.destroy();
+			dn.Process.updateAll(1); // ensure all garbage collection is done
+			_createGameInstance();
+			hxd.Timer.skip();
+		}
+		else {
+			// Fresh start
+			delayer.addF( ()->{
+				_createGameInstance();
+				hxd.Timer.skip();
+			}, 1 );
+		}
+	}
+
+	final function _createGameInstance() {
+		// new Game(); // <---- Uncomment this to start an empty Game instance
+		new sample.SampleGame(); // <---- Uncomment this to start the Sample Game instance
+	}
+
+
+
+	/**
+		Initialize low level stuff, before anything else
+	**/
 	function initEngine() {
 		// Engine settings
 		engine.backgroundColor = 0xff<<24 | 0x111133;
@@ -50,42 +82,26 @@ class App extends dn.Process {
 
 		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
 		hxd.snd.Manager.get();
+		hxd.Timer.skip(); // needed to ignore heavy Sound manager init frame
 
-		// Apply framerates
+		// Framerate
 		hxd.Timer.smoothFactor = 0;
 		hxd.Timer.wantedFPS = Const.FPS;
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
 
-	public static inline function exists() return ME!=null && !ME.destroyed;
 
-	/** Close the app **/
-	public function exit() {
-		destroy();
-	}
-
-	override function onDispose() {
-		super.onDispose();
-
-		#if hl
-		hxd.System.exit();
-		#end
-	}
-
-
-	function initComponents() {
+	/** Init app assets **/
+	function initAssets() {
 		// Init game assets
 		Assets.init();
-
-		// Init console (open with [²] key)
-		new ui.Console(Assets.fontTiny, scene); // init debug console
 
 		// Init lang data
 		Lang.init("en");
 	}
 
 
-	/** Game controller & default key bindings **/
+	/** Init game controller and default key bindings **/
 	function initController() {
 		controller = new dn.heaps.Controller(scene);
 		ca = controller.createAccess("main");
@@ -99,23 +115,20 @@ class App extends dn.Process {
 	}
 
 
+	/** Return TRUE if an App instance exists **/
+	public static inline function exists() return ME!=null && !ME.destroyed;
 
+	/** Close the app **/
+	public function exit() {
+		destroy();
+	}
 
-	/** Start game process **/
-	public function startGame() {
-		if( Game.exists() ) {
-			Game.ME.destroy();
-			dn.Process.updateAll(1); // ensure all garbage collection is done
-			new Game();
-			hxd.Timer.skip();
-		}
-		else {
-			hxd.Timer.skip(); // need to ignore heavy Sound manager init frame
-			delayer.addF( ()->{
-				new Game();
-				hxd.Timer.skip();
-			}, 1 );
-		}
+	override function onDispose() {
+		super.onDispose();
+
+		#if hl
+		hxd.System.exit();
+		#end
 	}
 
 
