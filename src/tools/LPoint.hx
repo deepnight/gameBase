@@ -144,6 +144,6 @@ class LPoint {
 		else if( pt!=null )
 			return Math.atan2(pt.cyf-cyf, pt.cxf-cxf);
 		else
-			return Math.atan2(y-levelY, x-levelX);
+			return Math.atan2(lvlY-levelY, lvlX-levelX);
 	}
 }
