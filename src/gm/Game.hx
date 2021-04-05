@@ -214,7 +214,7 @@ class Game extends Process {
 
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
-			if( ca.isKeyboardPressed(K.D) ) // && ca.isKeyboardDown(K.CTRL) && ca.isKeyboardDown(K.SHIFT) ) {
+			if( ca.isKeyboardPressed(K.D) && ca.isKeyboardDown(K.CTRL) && ca.isKeyboardDown(K.SHIFT) )
 				new DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
 			#end
 
