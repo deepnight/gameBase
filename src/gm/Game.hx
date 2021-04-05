@@ -29,13 +29,13 @@ class Game extends Process {
 
 
 	public function new() {
-		super(Main.ME);
+		super(App.ME);
 
 		ME = this;
-		ca = Main.ME.controller.createAccess("game");
+		ca = App.ME.controller.createAccess("game");
 		ca.setLeftDeadZone(0.2);
 		ca.setRightDeadZone(0.2);
-		createRootInLayers(Main.ME.root, Const.DP_BG);
+		createRootInLayers(App.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -209,7 +209,7 @@ class Game extends Process {
 				if( !cd.hasSetS("exitWarn",3) )
 					trace(Lang.t._("Press ESCAPE again to exit."));
 				else
-					Main.ME.exit();
+					App.ME.exit();
 			#end
 
 			// Attach debug drone (CTRL-SHIFT-D)
@@ -220,7 +220,7 @@ class Game extends Process {
 
 			// Restart whole game
 			if( ca.selectPressed() )
-				Main.ME.startGame();
+				App.ME.startGame();
 
 		}
 	}

@@ -1,9 +1,9 @@
 /**
-	"Main" class takes care of all the top-level stuff in the whole application. Any other Process should be a child of Main.
+	"App" class takes care of all the top-level stuff in the whole application. Any other Process, including Game instance, should be a child of App.
 **/
 
-class Main extends dn.Process {
-	public static var ME : Main;
+class App extends dn.Process {
+	public static var ME : App;
 
 	/** 2D scene **/
 	public var scene(default,null) : h2d.Scene;
@@ -57,7 +57,7 @@ class Main extends dn.Process {
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
 
-	public inline function exists() return ME!=null && !ME.destroyed;
+	public static inline function exists() return ME!=null && !ME.destroyed;
 
 	/** Close the app **/
 	public function exit() {

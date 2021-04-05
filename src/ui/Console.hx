@@ -44,7 +44,7 @@ class Console extends h2d.Console {
 
 		// List all active dn.Process
 		this.addCommand("process", [], ()->{
-			for( l in Main.ME.rprintChildren().split("\n") )
+			for( l in App.ME.rprintChildren().split("\n") )
 				log(l);
 		});
 		this.addAlias("p", "process");

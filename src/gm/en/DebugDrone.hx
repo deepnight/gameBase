@@ -33,7 +33,7 @@ class DebugDrone extends Entity {
 		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);
 
 		// Controller
-		ca = Main.ME.controller.createAccess("drone", true);
+		ca = App.ME.controller.createAccess("drone", true);
 
 		// Take control of camera
 		if( camera.target!=null && camera.target.isAlive() )

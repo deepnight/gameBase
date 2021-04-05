@@ -16,7 +16,7 @@ class Modal extends ui.Window {
 		if( modalIdx==0 )
 			Game.ME.pause();
 
-		ca = Main.ME.controller.createAccess("modal", true);
+		ca = App.ME.controller.createAccess("modal", true);
 		mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
 		root.under(mask);
 		dn.Process.resizeAll();

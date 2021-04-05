@@ -10,7 +10,7 @@ class Boot extends hxd.App {
 
 	// Shortcut to controller
 	var ca(get,never) : dn.heaps.Controller.ControllerAccess;
-		inline function get_ca() return Main.ME.ca;
+		inline function get_ca() return App.ME.ca;
 	#end
 
 
@@ -25,7 +25,7 @@ class Boot extends hxd.App {
 		Called when engine is ready, actual app can start
 	**/
 	override function init() {
-		new Main(s2d);
+		new App(s2d);
 		onResize();
 	}
 
@@ -47,7 +47,7 @@ class Boot extends hxd.App {
 		// Debug controls over app speed
 		var adjustedTmod = hxd.Timer.tmod;
 		#if debug
-		if( Main.ME!=null && !Main.ME.destroyed ) {
+		if( App.exists() ) {
 			// Slow down (toggle)
 			if( ca.isKeyboardPressed(K.NUMPAD_SUB) || ca.isKeyboardPressed(K.HOME) || ca.dpadDownPressed()  )
 				tmodSpeedMul = tmodSpeedMul>=1 ? 0.2 : 1;

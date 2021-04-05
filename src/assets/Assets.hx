@@ -36,8 +36,8 @@ class Assets {
 		#if debug
 		hxd.Res.data.watch(function() {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-			Main.ME.delayer.cancelById("cdb");
-			Main.ME.delayer.addS("cdb", function() {
+			App.ME.delayer.cancelById("cdb");
+			App.ME.delayer.addS("cdb", function() {
 				Cdb.load( hxd.Res.data.entry.getBytes().toString() );
 				if( Game.exists() )
 					Game.ME.onCdbReload();
@@ -55,8 +55,8 @@ class Assets {
 		#if debug
 		hxd.Res.world.world.watch(function() {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-			Main.ME.delayer.cancelById("ldtk");
-			Main.ME.delayer.addS("ldtk", function() {
+			App.ME.delayer.cancelById("ldtk");
+			App.ME.delayer.addS("ldtk", function() {
 				worldData.parseJson( hxd.Res.world.world.entry.getText() );
 				if( Game.exists() )
 					Game.ME.onLdtkReload();

@@ -11,11 +11,11 @@ class SampleEntity extends gm.Entity {
 		camera.trackEntity(this, true);
 		camera.clampToLevelBounds = true;
 
-		ca = Main.ME.controller.createAccess("entitySample");
+		ca = App.ME.controller.createAccess("entitySample");
 		ca.setLeftDeadZone(0.3);
 
-		Main.ME.controller.bind(AXIS_LEFT_Y_NEG, K.UP, K.Z, K.W);
-		Main.ME.controller.bind(AXIS_LEFT_Y_POS, K.DOWN, K.S);
+		App.ME.controller.bind(AXIS_LEFT_Y_NEG, K.UP, K.Z, K.W);
+		App.ME.controller.bind(AXIS_LEFT_Y_POS, K.DOWN, K.S);
 	}
 
 	override function dispose() {
