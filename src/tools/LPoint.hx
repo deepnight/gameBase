@@ -13,6 +13,8 @@ class LPoint {
 	/** Y-ratio (0-1) in current grid cell **/
 	public var yr : Float;
 
+
+
 	/** Grid based X, including sub grid cell ratio **/
 	public var cxf(get,never) : Float;
 		inline function get_cxf() return cx+xr;
@@ -21,7 +23,9 @@ class LPoint {
 	public var cyf(get,never) : Float;
 		inline function get_cyf() return cy+yr;
 
-	/** Level X coord **/
+
+
+	/** Level X pixel coord **/
 	public var levelX(get,set) : Float;
 		inline function get_levelX() return (cx+xr)*Const.GRID;
 		inline function set_levelX(v:Float) {
@@ -29,7 +33,7 @@ class LPoint {
 			return levelX;
 		}
 
-	/** Level Y coord **/
+	/** Level Y pixel coord **/
 	public var levelY(get,set) : Float;
 		inline function get_levelY() return (cy+yr)*Const.GRID;
 		inline function set_levelY(v:Float) {
@@ -37,38 +41,28 @@ class LPoint {
 			return levelY;
 		}
 
-	/** Level pixel X coord **/
-	public var pixelX(get,set) : Int;
-		inline function get_pixelX() return Std.int(levelX);
-		inline function set_pixelX(v:Int) {
-			setLevelPixelX(v);
-			return pixelX;
+
+
+	/** Level X pixel coord (as Integer) **/
+	public var levelXi(get,never) : Int;
+		inline function get_levelXi() return Std.int(levelX);
+
+	/** Level Y pixel coord **/
+	public var levelYi(get,never) : Int;
+		inline function get_levelYi() return Std.int(levelY);
+
+
+
+	/** Screen X pixel coord **/
+	public var screenX(get,never) : Float;
+		inline function get_screenX() {
+			return !Game.exists() ? -1. : levelX*Const.SCALE + Game.ME.scroller.x;
 		}
 
-	/** Level pixel Y coord **/
-	public var pixelY(get,set) : Int;
-		inline function get_pixelY() return Std.int(levelY);
-		inline function set_pixelY(v:Int) {
-			setLevelPixelY(v);
-			return pixelY;
-		}
-
-	/** Global screen X coord **/
-	public var globalX(get,never) : Float;
-		inline function get_globalX() : Float {
-			if( Game.ME==null || Game.ME.destroyed )
-				return -1;
-			else
-				return levelX * Const.SCALE + Game.ME.scroller.x;
-		}
-
-	/** Global screen Y coord **/
-	public var globalY(get,never) : Float;
-		inline function get_globalY() : Float {
-			if( Game.ME==null || Game.ME.destroyed )
-				return -1;
-			else
-				return levelY * Const.SCALE + Game.ME.scroller.y;
+	/** Screen Y pixel coord **/
+	public var screenY(get,never) : Float;
+		inline function get_screenY() {
+			return !Game.exists() ? -1. : levelY*Const.SCALE + Game.ME.scroller.y;
 		}
 
 
@@ -80,7 +74,7 @@ class LPoint {
 
 	@:keep
 	public function toString() : String {
-		return 'LPoint<${M.pretty(cxf)},${M.pretty(cyf)} / $pixelX,$pixelY>';
+		return 'LPoint<${M.pretty(cxf)},${M.pretty(cyf)} / $levelXi,$levelYi>';
 	}
 
 	public static inline function fromCase(cx:Float, cy:Float) {
