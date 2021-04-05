@@ -52,6 +52,7 @@ class Hud extends dn.Process {
 		f.paddingHorizontal = 6;
 		f.paddingVertical = 4;
 		f.backgroundTile = h2d.Tile.fromColor(color);
+		f.y = 4;
 
 		var tf = new h2d.Text(Assets.fontSmall, f);
 		tf.text = str;
@@ -62,7 +63,7 @@ class Hud extends dn.Process {
 		var durationS = 2 + str.length*0.04;
 		var p = createChildProcess();
 		for(of in notifications)
-			p.tw.createS(of.y, of.y+f.outerHeight+1, 0.1);
+			p.tw.createS(of.y, of.y+f.outerHeight+1, 0.1); // TODO fix quick notifications bug
 		notifications.push(f);
 		p.tw.createS(f.x, -f.outerWidth>0, 0.1);
 		p.onUpdateCb = ()->{

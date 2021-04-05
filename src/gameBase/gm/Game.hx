@@ -179,6 +179,8 @@ class Game extends Process {
 
 		// Entities final updates
 		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
+
+		// Dispose entities marked as "destroyed"
 		garbageCollectEntities();
 	}
 
@@ -200,14 +202,14 @@ class Game extends Process {
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
 
 
-		// Key shortcuts
+		// Global key shortcuts
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {
 
 			// Exit by pressing ESC twice
 			#if hl
 			if( ca.isKeyboardPressed(K.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
-					trace(Lang.t._("Press ESCAPE again to exit."));
+					hud.notify(Lang.t._("Press ESCAPE again to exit."));
 				else
 					App.ME.exit();
 			#end
