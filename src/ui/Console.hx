@@ -62,10 +62,12 @@ class Console extends h2d.Console {
 	}
 
 	/** Creates a shortcut command "/flag" to toggle specified flag state **/
-	function addFlagCommandAlias(flag:String) {
+	inline function addFlagCommandAlias(flag:String) {
+		#if debug
 		addCommand(flag, [], ()->{
 			setFlag(flag, !hasFlag(flag));
 		});
+		#end
 	}
 
 	override function handleCommand(command:String) {
