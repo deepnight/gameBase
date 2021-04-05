@@ -1,0 +1,9 @@
+base.hxml
+-hl bin/dummy.hl
+--no-output
+
+-D doc-gen
+-xml docs/docs.xml
+
+# --next
+# --cmd  haxelib run dox -i docs -o docs/pages -in gm tools
