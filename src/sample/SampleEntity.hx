@@ -6,12 +6,13 @@ class SampleEntity extends gm.Entity {
 	public function new() {
 		super(5,5);
 
+		frict = 0.93;
+
 		camera.trackEntity(this, true);
 		camera.clampToLevelBounds = true;
 
 		ca = Main.ME.controller.createAccess("entitySample");
 		ca.setLeftDeadZone(0.3);
-		frict = 0.93;
 
 		Main.ME.controller.bind(AXIS_LEFT_Y_NEG, K.UP, K.Z, K.W);
 		Main.ME.controller.bind(AXIS_LEFT_Y_POS, K.DOWN, K.S);
