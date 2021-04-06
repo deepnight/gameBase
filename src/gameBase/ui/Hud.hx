@@ -51,24 +51,27 @@ class Hud extends dn.Process {
 
 	/** Pop a quick s in the corner **/
 	public function notify(str:String, color=0xA56DE7) {
-		var f = new h2d.Flow(root);
+		// Bg
+		var t = Assets.tiles.getTile("uiBarBg");
+		var f = new dn.heaps.FlowBg(t, 2, root);
+		f.colorizeBg(color);
 		f.paddingHorizontal = 6;
 		f.paddingBottom = 4;
 		f.paddingTop = 2;
 		f.paddingLeft = 9;
-		f.backgroundTile = h2d.Tile.fromColor(color);
 		f.y = 4;
 
+		// Text
 		var tf = new h2d.Text(Assets.fontPixel, f);
 		tf.text = str;
 		tf.maxWidth = 0.6 * w()/Const.UI_SCALE;
 		tf.textColor = 0xffffff;
 
+		// Notification lifetime
 		var durationS = 2 + str.length*0.04;
 		var p = createChildProcess();
 		notifications.insert(0,f);
-
-		p.tw.createS(f.x, -f.outerWidth>0, TEaseOut, 0.1);
+		p.tw.createS(f.x, -f.outerWidth>-2, TEaseOut, 0.1);
 		p.onUpdateCb = ()->{
 			if( p.stime>=durationS && !p.cd.hasSetS("done",Const.INFINITE) )
 				p.tw.createS(f.x, -f.outerWidth, 0.2).end( p.destroy );
@@ -78,7 +81,7 @@ class Hud extends dn.Process {
 			f.remove();
 		}
 
-		// Move all notifications
+		// Move existing notifications
 		var y = 4;
 		for(f in notifications) {
 			notifTw.terminateWithoutCallbacks(f.y);
