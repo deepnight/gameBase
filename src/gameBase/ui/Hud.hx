@@ -8,11 +8,14 @@ class Hud extends dn.Process {
 	var flow : h2d.Flow;
 	var invalidated = true;
 	var notifications : Array<h2d.Flow> = [];
+	var notifTw : dn.Tweenie;
 
 	var debugText : h2d.Text;
 
 	public function new() {
 		super(Game.ME);
+
+		notifTw = new Tweenie(Const.FPS);
 
 		createRootInLayers(game.root, Const.DP_UI);
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
@@ -46,26 +49,26 @@ class Hud extends dn.Process {
 	}
 
 
-	/** Pop a quick notification in the corner **/
+	/** Pop a quick s in the corner **/
 	public function notify(str:String, color=0xA56DE7) {
 		var f = new h2d.Flow(root);
 		f.paddingHorizontal = 6;
-		f.paddingVertical = 4;
+		f.paddingBottom = 4;
+		f.paddingTop = 2;
+		f.paddingLeft = 9;
 		f.backgroundTile = h2d.Tile.fromColor(color);
 		f.y = 4;
 
-		var tf = new h2d.Text(Assets.fontSmall, f);
+		var tf = new h2d.Text(Assets.fontPixel, f);
 		tf.text = str;
 		tf.maxWidth = 0.6 * w()/Const.UI_SCALE;
 		tf.textColor = 0xffffff;
 
-
 		var durationS = 2 + str.length*0.04;
 		var p = createChildProcess();
-		for(of in notifications)
-			p.tw.createS(of.y, of.y+f.outerHeight+1, 0.1); // TODO fix quick notifications bug
-		notifications.push(f);
-		p.tw.createS(f.x, -f.outerWidth>0, 0.1);
+		notifications.insert(0,f);
+
+		p.tw.createS(f.x, -f.outerWidth>0, TEaseOut, 0.1);
 		p.onUpdateCb = ()->{
 			if( p.stime>=durationS && !p.cd.hasSetS("done",Const.INFINITE) )
 				p.tw.createS(f.x, -f.outerWidth, 0.2).end( p.destroy );
@@ -74,6 +77,15 @@ class Hud extends dn.Process {
 			notifications.remove(f);
 			f.remove();
 		}
+
+		// Move all notifications
+		var y = 4;
+		for(f in notifications) {
+			notifTw.terminateWithoutCallbacks(f.y);
+			notifTw.createS(f.y, y, TEaseOut, 0.2);
+			y+=f.outerHeight+1;
+		}
+
 	}
 
 	public inline function invalidate() invalidated = true;
@@ -81,6 +93,11 @@ class Hud extends dn.Process {
 	function render() {}
 
 	public function onLevelStart() {}
+
+	override function preUpdate() {
+		super.preUpdate();
+		notifTw.update(tmod);
+	}
 
 	override function postUpdate() {
 		super.postUpdate();
