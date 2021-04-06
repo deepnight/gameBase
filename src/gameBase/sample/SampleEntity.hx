@@ -46,7 +46,7 @@ class SampleEntity extends gm.Entity {
 	override function update() {
 		super.update();
 
-		if( ca.leftDist()>0 ) {
+		if( !App.ME.anyInputHasFocus() && ca.leftDist()>0 ) {
 			var s = 0.010;
 			dx += Math.cos( ca.leftAngle() ) * s*tmod;
 			dy += Math.sin( ca.leftAngle() ) * s*tmod;

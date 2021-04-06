@@ -61,6 +61,10 @@ class App extends dn.Process {
 	}
 
 
+	public function anyInputHasFocus() {
+		return Console.ME.isActive();
+	}
+
 
 	/**
 		Initialize low level stuff, before anything else
