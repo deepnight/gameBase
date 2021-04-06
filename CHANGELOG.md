@@ -10,6 +10,7 @@
 	- Moved all source code to various `src/` subfolders
 	- Moved all game related classes to the `gm` package
 	- Moved all assets related classes to the `assets` package
+	- Added `/fps` command to console to display FPS chart over time.
 	- Fixed various FPS values issues
 	- Added various debug commands to console. Open it up with `²` key, and type: `/help`
 	- Better "active" level management, through `startLevel()` method
