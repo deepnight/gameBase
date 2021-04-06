@@ -1,5 +1,4 @@
-base.hxml
--hl bin/dummy.hl
+hl.sdl.hxml
 --no-output
 
 -D doc-gen
