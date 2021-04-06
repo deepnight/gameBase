@@ -6,6 +6,8 @@ class Console extends h2d.Console {
 	var flags : Map<String,Bool>;
 	#end
 
+	var stats : Null<dn.heaps.StatsBox>;
+
 	public function new(f:h2d.Font, p:h2d.Object) {
 		super(f, p);
 
@@ -53,6 +55,17 @@ class Console extends h2d.Console {
 		this.addCommand("drone", [], ()->{
 			new DebugDrone();
 		});
+
+		// Create a stats box
+		this.addCommand("fps", [], ()->{
+			if( stats!=null ) {
+				stats.destroy();
+				stats = null;
+			}
+			else
+				stats = new dn.heaps.StatsBox(App.ME);
+		});
+		this.addAlias("stats","fps");
 
 		// Misc flag aliases
 		addFlagCommandAlias("bounds");
