@@ -19,7 +19,7 @@ class SamplePlayer extends gm.Entity {
 		camera.trackEntity(this, true);
 		camera.clampToLevelBounds = true;
 
-		// Controller
+		// Init controller
 		ca = App.ME.controller.createAccess("entitySample");
 		ca.setLeftDeadZone(0.3);
 		App.ME.controller.bind(AXIS_LEFT_Y_NEG, K.UP, K.Z, K.W);
@@ -31,34 +31,42 @@ class SamplePlayer extends gm.Entity {
 		g.drawCircle(0,-hei*0.5,9);
 	}
 
+
 	override function dispose() {
 		super.dispose();
 		ca.dispose();
 	}
 
+
 	// X physics
 	override function onPreStepX() {
 		super.onPreStepX();
 
+		// Right collision
 		if( xr>0.8 && level.hasCollision(cx+1,cy) )
 			xr = 0.8;
 
+		// Left collision
 		if( xr<0.2 && level.hasCollision(cx-1,cy) )
 			xr = 0.2;
 	}
+
 
 	// Y physics
 	override function onPreStepY() {
 		super.onPreStepY();
 
+		// Land on ground
 		if( yr>1 && level.hasCollision(cx,cy+1) ) {
 			setSquashY(0.5);
 			yr = 1;
 		}
 
+		// Ceiling collision
 		if( yr<0.2 && level.hasCollision(cx,cy-1) )
 			yr = 0.2;
 	}
+
 
 	override function update() {
 		super.update();
@@ -68,15 +76,15 @@ class SamplePlayer extends gm.Entity {
 		if( !onGround )
 			dy+=0.015*tmod;
 		else {
-			cd.setS("recentOnGround",0.1);
+			cd.setS("recentOnGround",0.1); // allows "just-in-time" jumps
 			dy = 0;
 		}
 
 		// Jump
 		if( cd.has("recentOnGround") && ca.aPressed() ) {
 			dy = -0.5;
-			onGround = false;
 			setSquashX(0.5);
+			onGround = false;
 			cd.unset("recentOnGround");
 		}
 
