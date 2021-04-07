@@ -34,6 +34,7 @@ class DebugDrone extends Entity {
 
 		// Controller
 		ca = App.ME.controller.createAccess("drone", true);
+		ca.setLeftDeadZone(0.3);
 
 		// Take control of camera
 		if( camera.target!=null && camera.target.isAlive() )
@@ -94,6 +95,12 @@ class DebugDrone extends Entity {
 		var spd = 0.02;
 
 		if( !App.ME.anyInputHasFocus() ) {
+			if( ca.leftDist()>0 ) {
+				var a = ca.leftAngle();
+				var d = ca.leftDist();
+				droneDx+=Math.cos(a) * d*spd * tmod;
+				droneDy+=Math.sin(a) * d*spd * tmod;
+			}
 			if( ca.isKeyboardDown(K.LEFT) )
 				droneDx-=spd*tmod;
 
