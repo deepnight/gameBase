@@ -29,7 +29,6 @@ class DebugDrone extends Entity {
 		super(0,0);
 
 		ME = this;
-
 		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);
 
 		// Controller
@@ -129,13 +128,13 @@ class DebugDrone extends Entity {
 
 
 		// X physics
-		xr+=droneDx;
+		xr += droneDx*tmod;
 		while( xr>1 ) { xr--; cx++; }
 		while( xr<0 ) { xr++; cx--; }
 		droneDx*=Math.pow(droneFrict, tmod);
 
 		// Y physics
-		yr+=droneDy;
+		yr += droneDy*tmod;
 		while( yr>1 ) { yr--; cy++; }
 		while( yr<0 ) { yr++; cy--; }
 		droneDy*=Math.pow(droneFrict, tmod);
