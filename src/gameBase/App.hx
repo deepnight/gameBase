@@ -89,7 +89,7 @@ class App extends dn.Process {
 		hxd.Timer.skip(); // needed to ignore heavy Sound manager init frame
 
 		// Framerate
-		hxd.Timer.smoothFactor = 0;
+		hxd.Timer.smoothFactor = 0.4;
 		hxd.Timer.wantedFPS = Const.FPS;
 		dn.Process.FIXED_UPDATE_FPS = Const.FIXED_UPDATE_FPS;
 	}
