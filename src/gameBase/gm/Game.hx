@@ -66,7 +66,7 @@ class Game extends Process {
 		level = new Level(l);
 		// <---- Here: instanciate your level entities
 
-		camera.recenter();
+		camera.centerOnTarget();
 		hud.onLevelStart();
 		Process.resizeAll();
 	}

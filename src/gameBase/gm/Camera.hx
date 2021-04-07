@@ -8,6 +8,8 @@ class Camera extends dn.Process {
 	var clampedFocus : LPoint;
 
 	var target : Null<Entity>;
+	public var targetOffX = 0.;
+	public var targetOffY = 0.;
 
 	/** Width of viewport in level pixels **/
 	public var pxWid(get,never) : Int;
@@ -96,7 +98,7 @@ class Camera extends dn.Process {
 		target = e;
 		setTrackingSpeed(speed);
 		if( immediate || rawFocus.levelX==0 && rawFocus.levelY==0 )
-			recenter();
+			centerOnTarget();
 	}
 
 	public inline function setTrackingSpeed(spd:Float) {
@@ -107,10 +109,10 @@ class Camera extends dn.Process {
 		target = null;
 	}
 
-	public function recenter() {
+	public function centerOnTarget() {
 		if( target!=null ) {
-			rawFocus.levelX = target.centerX;
-			rawFocus.levelY = target.centerY;
+			rawFocus.levelX = target.centerX + targetOffX;
+			rawFocus.levelY = target.centerY + targetOffY;
 		}
 	}
 
@@ -236,8 +238,8 @@ class Camera extends dn.Process {
 		if( target!=null ) {
 			var spdX = 0.010*trackingSpeed*zoom;
 			var spdY = 0.013*trackingSpeed*zoom;
-			var tx = target.attachX;
-			var ty = target.attachY;
+			var tx = target.centerX + targetOffX;
+			var ty = target.centerY + targetOffY;
 
 			var a = rawFocus.angTo(tx,ty);
 			var distX = M.fabs( tx - rawFocus.levelX );
