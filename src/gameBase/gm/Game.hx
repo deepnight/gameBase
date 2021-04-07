@@ -5,6 +5,8 @@ import dn.Process;
 class Game extends Process {
 	public static var ME : Game;
 
+	public var app(get,never) : App; inline function get_app() return App.ME;
+
 	/** Game controller (pad or keyboard) **/
 	public var ca : dn.heaps.Controller.ControllerAccess;
 
@@ -203,7 +205,7 @@ class Game extends Process {
 
 
 		// Global key shortcuts
-		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() ) {
+		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !ca.locked() ) {
 
 			// Exit by pressing ESC twice
 			#if hl
