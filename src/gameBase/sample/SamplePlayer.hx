@@ -1,7 +1,15 @@
 package sample;
 
+/**
+	SamplePlayer is an Entity with some extra functionalities:
+	- basic level collisions and gravity
+	- controls (gamepad or keyboard)
+	- some squash animations, because it's cheap and they do the job
+**/
+
 class SamplePlayer extends gm.Entity {
 	var ca : ControllerAccess;
+
 
 	public function new() {
 		super(5,5);
@@ -22,8 +30,6 @@ class SamplePlayer extends gm.Entity {
 		// Init controller
 		ca = App.ME.controller.createAccess("entitySample");
 		ca.setLeftDeadZone(0.3);
-		App.ME.controller.bind(AXIS_LEFT_Y_NEG, K.UP, K.Z, K.W);
-		App.ME.controller.bind(AXIS_LEFT_Y_POS, K.DOWN, K.S);
 
 		// Placeholder representation
 		var g = new h2d.Graphics(spr);
@@ -34,11 +40,11 @@ class SamplePlayer extends gm.Entity {
 
 	override function dispose() {
 		super.dispose();
-		ca.dispose();
+		ca.dispose(); // don't forget to dispose controller accesses
 	}
 
 
-	// X physics
+	/** X collisions **/
 	override function onPreStepX() {
 		super.onPreStepX();
 
@@ -52,7 +58,7 @@ class SamplePlayer extends gm.Entity {
 	}
 
 
-	// Y physics
+	/** Y collisions **/
 	override function onPreStepY() {
 		super.onPreStepY();
 
@@ -80,18 +86,20 @@ class SamplePlayer extends gm.Entity {
 			dy = 0;
 		}
 
-		// Jump
-		if( cd.has("recentOnGround") && ca.aPressed() ) {
-			dy = -0.5;
-			setSquashX(0.5);
-			onGround = false;
-			cd.unset("recentOnGround");
-		}
+		if( !ca.locked() ) {
+			// Jump
+			if( cd.has("recentOnGround") && ( ca.aPressed() || ca.isKeyboardPressed(K.SPACE) ) ) {
+				dy = -0.5;
+				setSquashX(0.5);
+				onGround = false;
+				cd.unset("recentOnGround");
+			}
 
-		// Walk around
-		if( !App.ME.anyInputHasFocus() && ca.leftDist()>0 ) {
-			var s = 0.015;
-			dx += Math.cos( ca.leftAngle() ) * s*tmod * ca.leftDist();
+			// Walk around
+			if( !App.ME.anyInputHasFocus() && ca.leftDist()>0 ) {
+				var speed = 0.015;
+				dx += Math.cos(ca.leftAngle()) * speed*tmod * ca.leftDist();
+			}
 		}
 	}
 }
