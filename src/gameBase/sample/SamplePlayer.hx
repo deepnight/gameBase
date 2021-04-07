@@ -1,6 +1,6 @@
 package sample;
 
-class SampleEntity extends gm.Entity {
+class SamplePlayer extends gm.Entity {
 	var ca : ControllerAccess;
 
 	public function new() {
@@ -74,7 +74,7 @@ class SampleEntity extends gm.Entity {
 
 		// Jump
 		if( cd.has("recentOnGround") && ca.aPressed() ) {
-			dy = -0.35;
+			dy = -0.5;
 			onGround = false;
 			setSquashX(0.5);
 			cd.unset("recentOnGround");
