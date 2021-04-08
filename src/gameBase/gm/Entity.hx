@@ -560,7 +560,10 @@ class Entity {
 	/** Main loop that only runs at 30 fps (so it might not be called during some frames) **/
 	public function fixedUpdate() {}
 
+	/** Called at the beginning of each X movement step **/
 	function onPreStepX() {}
+
+	/** Called at the beginning of each Y movement step **/
 	function onPreStepY() {}
 
 	/** Main loop **/
