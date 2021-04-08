@@ -90,6 +90,9 @@ class SamplePlayer extends gm.Entity {
 		super.preUpdate();
 
 		walkSpeed = 0;
+		if( onGround )
+			cd.setS("recentlyOnGround",0.1); // allows "just-in-time" jumps
+
 
 		if( !ca.locked() ) {
 			// Jump
@@ -114,9 +117,6 @@ class SamplePlayer extends gm.Entity {
 		// Gravity
 		if( !onGround )
 			dy+=0.05;
-		else
-			cd.setS("recentlyOnGround",0.1); // allows "just-in-time" jumps
-
 
 		// Apply requested walk movement
 		if( walkSpeed!=0 ) {
