@@ -1,8 +1,9 @@
 hl.sdl.hxml
 --no-output
-
+--dce no
 -D doc-gen
 -xml docs/docs.xml
 
-# --next
-# --cmd  haxelib run dox -i docs -o docs/pages -in gm tools
+--next
+-cp src/docs
+--macro XmlDocToMarkdown.run("docs/docs.xml", "src")
