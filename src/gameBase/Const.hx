@@ -3,7 +3,9 @@ class Const {
 	public static var FPS(get,never) : Int;
 		static inline function get_FPS() return Std.int( hxd.System.getDefaultFrameRate() );
 
-	/** "Fixed" updates target framerate **/
+	/**
+		"Fixed" updates framerate. 30fps is a good value here, as it's almost guaranteed to work on any decent setup, and it's more than enough to run any gameplay related physics.
+	**/
 	public static final FIXED_UPDATE_FPS = 30;
 
 	/** Grid size in pixels **/
@@ -12,9 +14,11 @@ class Const {
 	/** "Infinite", sort-of. More like a "big number" **/
 	public static final INFINITE : Int = 0xfffFfff;
 
+	static var _nextUniqueId = 0;
 	/** Unique value generator **/
-	public static var NEXT_UNIQ(get,never) : Int; static inline function get_NEXT_UNIQ() return _uniq++;
-	static var _uniq = 0;
+	public static inline function makeUniqueId() {
+		return _nextUniqueId++;
+	}
 
 	/** Viewport scaling **/
 	public static var SCALE(get,never) : Int;
