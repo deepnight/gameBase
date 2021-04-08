@@ -2,6 +2,9 @@ package assets;
 
 import dn.heaps.slib.*;
 
+/**
+	This class centralizes all assets management (ie. art, sounds, fonts etc.)
+**/
 class Assets {
 	// Fonts
 	public static var fontPixel : h2d.Font;
@@ -16,11 +19,12 @@ class Assets {
 	// LDtk world data
 	public static var worldData : World;
 
-	static var initDone = false;
+
+	static var _initDone = false;
 	public static function init() {
-		if( initDone )
+		if( _initDone )
 			return;
-		initDone = true;
+		_initDone = true;
 
 		// Fonts
 		fontPixel = hxd.Res.fonts.minecraftiaOutline.toFont();

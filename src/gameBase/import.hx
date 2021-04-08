@@ -8,12 +8,12 @@ import dn.heaps.Controller;
 import dn.heaps.slib.*;
 
 // Project classes
+import Types;
 import ui.Console;
 import tools.*;
 import assets.*;
 import gm.*;
 import gm.en.*;
-import Types;
 
 // Castle DB
 import assets.CastleDb;
