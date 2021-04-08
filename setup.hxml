@@ -1,0 +1,10 @@
+--cmd haxelib git heaps https://github.com/HeapsIO/heaps.git
+
+--next
+--cmd haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
+
+--next
+--cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
+
+--next
+--cmd haxelib git castle https://github.com/ncannasse/castle.git
