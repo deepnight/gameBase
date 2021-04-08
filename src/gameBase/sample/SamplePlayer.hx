@@ -2,13 +2,19 @@ package sample;
 
 /**
 	SamplePlayer is an Entity with some extra functionalities:
-	- basic level collisions and gravity
-	- controls (gamepad or keyboard)
+	- falls with gravity
+	- has basic level collisions
+	- controllable (using gamepad or keyboard)
 	- some squash animations, because it's cheap and they do the job
 **/
 
 class SamplePlayer extends gm.Entity {
 	var ca : ControllerAccess;
+	var walkSpeed = 0.;
+
+	// This is TRUE if the player is not falling
+	var onGround(get,never) : Bool;
+		inline function get_onGround() return !destroyed && dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
 
 	public function new() {
@@ -19,9 +25,9 @@ class SamplePlayer extends gm.Entity {
 		if( start!=null )
 			setPosCase(start.cx, start.cy);
 
-		// Inits
-		frictX = 0.89;
-		frictY = 0.95;
+		// Misc inits
+		frictX = 0.84;
+		frictY = 0.94;
 
 		// Camera tracks this
 		camera.trackEntity(this, true);
@@ -31,7 +37,7 @@ class SamplePlayer extends gm.Entity {
 		ca = App.ME.controller.createAccess("entitySample");
 		ca.setLeftDeadZone(0.3);
 
-		// Placeholder representation
+		// Placeholder display
 		var g = new h2d.Graphics(spr);
 		g.beginFill(0x00ff00);
 		g.drawCircle(0,-hei*0.5,9);
@@ -65,7 +71,9 @@ class SamplePlayer extends gm.Entity {
 		// Land on ground
 		if( yr>1 && level.hasCollision(cx,cy+1) ) {
 			setSquashY(0.5);
+			dy = 0;
 			yr = 1;
+			onPosManuallyChanged();
 		}
 
 		// Ceiling collision
@@ -74,32 +82,46 @@ class SamplePlayer extends gm.Entity {
 	}
 
 
-	override function update() {
-		super.update();
+	/**
+		Control inputs are checked at the beginning of the frame.
+		VERY IMPORTANT NOTE: because game physics only occur during the `fixedUpdate` (at a constant 30 FPS), no physics increment should ever happen here! What this means is that you can SET a physics value (eg. see the Jump below), but not make any calculation that happens over multiple frames (eg. increment X speed when walking).
+	**/
+	override function preUpdate() {
+		super.preUpdate();
 
-		// Gravity
-		var onGround = yr==1 && level.hasCollision(cx,cy+1);
-		if( !onGround )
-			dy+=0.015*tmod;
-		else {
-			cd.setS("recentOnGround",0.1); // allows "just-in-time" jumps
-			dy = 0;
-		}
+		walkSpeed = 0;
 
 		if( !ca.locked() ) {
 			// Jump
-			if( cd.has("recentOnGround") && ( ca.aPressed() || ca.isKeyboardPressed(K.SPACE) ) ) {
-				dy = -0.5;
+			if( cd.has("recentlyOnGround") && ( ca.aPressed() || ca.isKeyboardPressed(K.SPACE) ) ) {
+				dy = -0.85;
 				setSquashX(0.5);
-				onGround = false;
-				cd.unset("recentOnGround");
+				cd.unset("recentlyOnGround");
 			}
 
-			// Walk around
+			// Walk
 			if( !App.ME.anyInputHasFocus() && ca.leftDist()>0 ) {
-				var speed = 0.015;
-				dx += Math.cos(ca.leftAngle()) * speed*tmod * ca.leftDist();
+				// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
+				walkSpeed = Math.cos(ca.leftAngle()) * ca.leftDist();
 			}
+		}
+	}
+
+
+	override function fixedUpdate() {
+		super.fixedUpdate();
+
+		// Gravity
+		if( !onGround )
+			dy+=0.05;
+		else
+			cd.setS("recentlyOnGround",0.1); // allows "just-in-time" jumps
+
+
+		// Apply requested walk movement
+		if( walkSpeed!=0 ) {
+			var speed = 0.045;
+			dx += walkSpeed * speed;
 		}
 	}
 }
