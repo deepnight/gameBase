@@ -565,44 +565,53 @@ class Entity {
 
 	/** Main loop **/
     public function update() {
-		// X
-		var steps = M.ceil( M.fabs(dxTotal*tmod) );
-		var step = dxTotal*tmod / steps;
-		while( steps>0 ) {
-			xr+=step;
-			onPreStepX();
+		/*
+			Stepping: any movement greater than 33% of grid size (ie. 0.33) will increase the number of `steps` here. These steps will break down the full movement into smaller iterations to avoid jumping over grid collisions.
+		*/
+		var steps = M.ceil( ( M.fabs(dxTotal*tmod) + M.fabs(dyTotal*tmod) ) / 0.33 );
+		if( steps>0 ) {
+			var stepX = dxTotal*tmod / steps;
+			var stepY = dyTotal*tmod / steps;
+			while ( steps>0 ) {
+				// X movement
+				xr += stepX;
+				onPreStepX();
 
-			// [ add X collisions checks here ]
+				// <---- Add X collisions checks here
 
-			while( xr>1 ) { xr--; cx++; }
-			while( xr<0 ) { xr++; cx--; }
-			steps--;
+				while( xr>1 ) { xr--; cx++; }
+				while( xr<0 ) { xr++; cx--; }
+
+
+				// Y movement
+				yr += stepY;
+				onPreStepY();
+
+				// <---- Add X collisions checks here
+
+				while( yr>1 ) { yr--; cy++; }
+				while( yr<0 ) { yr++; cy--; }
+
+				steps--;
+			}
 		}
-		dx*=Math.pow(frictX,tmod);
-		bdx*=Math.pow(bumpFrictX,tmod);
-		if( M.fabs(dx)<=0.0005*tmod ) dx = 0;
-		if( M.fabs(bdx)<=0.0005*tmod ) bdx = 0;
 
-		// Y
-		var steps = M.ceil( M.fabs(dyTotal*tmod) );
-		var step = dyTotal*tmod / steps;
-		while( steps>0 ) {
-			yr+=step;
-			onPreStepY();
+		// X frictions
+		dx *= Math.pow(frictX,tmod);
+		bdx *= Math.pow(bumpFrictX,tmod);
+		if( M.fabs(dx) <= 0.0005*tmod ) dx = 0;
+		if( M.fabs(bdx) <= 0.0005*tmod ) bdx = 0;
 
-			// [ add Y collisions checks here ]
+		// Y frictions
+		dy *= Math.pow(frictY,tmod);
+		bdy *= Math.pow(bumpFrictX,tmod);
+		if( M.fabs(dy) <= 0.0005*tmod ) dy = 0;
+		if( M.fabs(bdy) <= 0.0005*tmod ) bdy = 0;
 
-			while( yr>1 ) { yr--; cy++; }
-			while( yr<0 ) { yr++; cy--; }
-			steps--;
-		}
-		dy*=Math.pow(frictY,tmod);
-		bdy*=Math.pow(bumpFrictX,tmod);
-		if( M.fabs(dy)<=0.0005*tmod ) dy = 0;
-		if( M.fabs(bdy)<=0.0005*tmod ) bdy = 0;
 
 
 		#if debug
+		// Display the list of active "affects"
 		if( ui.Console.ME.hasFlag("affect") ) {
 			var all = [];
 			for(k in affects.keys())
@@ -610,9 +619,11 @@ class Entity {
 			debug(all);
 		}
 
+		// Show bounds
 		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
 			enableDebugBounds();
 
+		// Hide bounds
 		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
 			disableDebugBounds();
 		#end
