@@ -670,7 +670,7 @@ class Entity {
 
 		// Y frictions
 		dy *= frictY;
-		bdy *= bumpFrictX;
+		bdy *= bumpFrictY;
 		if( M.fabs(dy) <= 0.0005 ) dy = 0;
 		if( M.fabs(bdy) <= 0.0005 ) bdy = 0;
 	}
