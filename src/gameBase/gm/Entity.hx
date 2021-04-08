@@ -619,10 +619,12 @@ class Entity {
 
 
 	/** Called at the beginning of each X movement step **/
-	function onPreStepX() {}
+	function onPreStepX() {
+	}
 
 	/** Called at the beginning of each Y movement step **/
-	function onPreStepY() {}
+	function onPreStepY() {
+	}
 
 
 	/**
@@ -641,9 +643,8 @@ class Entity {
 			while ( steps>0 ) {
 				// X movement
 				xr += stepX;
-				onPreStepX();
 
-				// <---- Add X collisions checks here
+				onPreStepX(); // <---- Add X collisions checks and physics here
 
 				while( xr>1 ) { xr--; cx++; }
 				while( xr<0 ) { xr++; cx--; }
@@ -651,9 +652,8 @@ class Entity {
 
 				// Y movement
 				yr += stepY;
-				onPreStepY();
 
-				// <---- Add X collisions checks here
+				onPreStepY(); // <---- Add Y collisions checks and physics here
 
 				while( yr>1 ) { yr--; cy++; }
 				while( yr<0 ) { yr++; cy--; }
