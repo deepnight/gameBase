@@ -122,22 +122,32 @@ class Entity {
 	/** Entity visibility **/
 	public var entityVisible = true;
 
-	// Hit points
+	/** Current hit points **/
 	public var life(default,null) : Int;
+	/** Max hit points **/
 	public var maxLife(default,null) : Int;
+	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
 
+	/** Horizontal direction (left=-1 or right=1): from "last source of damage" to "this" **/
 	public var lastHitDirFromSource(get,never) : Int;
 	inline function get_lastHitDirFromSource() return lastDmgSource==null ? -dir : -dirTo(lastDmgSource);
 
+	/** Horizontal direction (left=-1 or right=1): from "this" to "last source of damage" **/
 	public var lastHitDirToSource(get,never) : Int;
-	inline function get_lastHitDirToSource() return lastDmgSource==null ? dir : dirTo(lastDmgSource);
+		inline function get_lastHitDirToSource() return lastDmgSource==null ? dir : dirTo(lastDmgSource);
 
-	// Visual components
+	/** Main entity HSprite instance **/
     public var spr : HSprite;
+
+	/** Color vector transformation applied to sprite **/
 	public var baseColor : h3d.Vector;
-	public var blinkColor : h3d.Vector;
+
+	/** Color matrix transformation applied to sprite **/
 	public var colorMatrix : h3d.Matrix;
+
+	// Animated blink color on damage hit
+	var blinkColor : h3d.Vector;
 
 	// Debug stuff
 	var debugLabel : Null<h2d.Text>;
@@ -155,19 +165,29 @@ class Entity {
 	public var attachY(get,never) : Float; inline function get_attachY() return (cy+yr)*Const.GRID;
 
 	// Coordinates getters, for easier gameplay coding
+	/** Left pixel coordinate of the bounding box **/
 	public var left(get,never) : Float; inline function get_left() return attachX + (0-pivotX) * wid;
+	/** Right pixel coordinate of the bounding box **/
 	public var right(get,never) : Float; inline function get_right() return attachX + (1-pivotX) * wid;
+	/** Top pixel coordinate of the bounding box **/
 	public var top(get,never) : Float; inline function get_top() return attachY + (0-pivotY) * hei;
 	public var bottom(get,never) : Float; inline function get_bottom() return attachY + (1-pivotY) * hei;
+
+	/** Center X pixel coordinate of the bounding box **/
 	public var centerX(get,never) : Float; inline function get_centerX() return attachX + (0.5-pivotX) * wid;
+	/** Center Y pixel coordinate of the bounding box **/
 	public var centerY(get,never) : Float; inline function get_centerY() return attachY + (0.5-pivotY) * hei;
-	public var prevFrameattachX : Float = -Const.INFINITE;
-	public var prevFrameattachY : Float = -Const.INFINITE;
+
+	/** attachX value during last frame **/
+	public var prevFrameattachX(default,null) : Float = -Const.INFINITE;
+	/** attachY value during last frame **/
+	public var prevFrameattachY(default,null) : Float = -Const.INFINITE;
 
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 
+
     public function new(x:Int, y:Int) {
-        uid = Const.NEXT_UNIQ;
+        uid = Const.makeUniqueId();
 		ALL.push(this);
 
 		cd = new dn.Cooldown(Const.FPS);
@@ -201,10 +221,12 @@ class Entity {
 		return pivotY;
 	}
 
+	/** Initialize current and max hit points **/
 	public function initLife(v) {
 		life = maxLife = v;
 	}
 
+	/** Inflict damage **/
 	public function hit(dmg:Int, from:Null<Entity>) {
 		if( !isAlive() || dmg<=0 )
 			return;
@@ -216,6 +238,7 @@ class Entity {
 			onDie();
 	}
 
+	/** Kill instantly **/
 	public function kill(by:Null<Entity>) {
 		if( isAlive() )
 			hit(life,by);
@@ -231,6 +254,7 @@ class Entity {
 		return dir = v>0 ? 1 : v<0 ? -1 : dir;
 	}
 
+	/** Return TRUE if current entity wasn't destroyed or killed **/
 	public inline function isAlive() {
 		return !destroyed && life>0;
 	}
@@ -253,6 +277,7 @@ class Entity {
 		onPosManuallyChanged();
 	}
 
+	/** Should be called when you manually modify entity coordinates **/
 	function onPosManuallyChanged() {
 		if( M.dist(attachX,attachY,prevFrameattachX,prevFrameattachY) > Const.GRID*2 ) {
 			prevFrameattachX = attachX;
@@ -267,10 +292,10 @@ class Entity {
 		pivotY = y!=null ? y : x;
 	}
 
-
+	/** Apply a bump/kick force to entity **/
 	public function bump(x:Float,y:Float) {
-		bdx+=x;
-		bdy+=y;
+		bdx += x;
+		bdy += y;
 	}
 
 	/** Reset velocities to zero **/
@@ -282,32 +307,47 @@ class Entity {
 	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
 	public function as<T:Entity>(c:Class<T>) : T return Std.downcast(this, c);
 
+	/** Return a random Float value in range [min,max]. If `sign` is TRUE, returned value might be multiplied by -1 randomly. **/
 	public inline function rnd(min,max,?sign) return Lib.rnd(min,max,sign);
+	/** Return a random Integer value in range [min,max]. If `sign` is TRUE, returned value might be multiplied by -1 randomly. **/
 	public inline function irnd(min,max,?sign) return Lib.irnd(min,max,sign);
-	public inline function pretty(v,?p=1) return M.pretty(v,p);
+
+	/** Truncate a float value using given `precision` **/
+	public inline function pretty(value:Float,?precision=1) return M.pretty(value,precision);
 
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
 	public inline function dirToAng() return dir==1 ? 0. : M.PI;
 	public inline function getMoveAng() return Math.atan2(dyTotal,dxTotal);
 
-	public inline function distCase(e:Entity) return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
-	public inline function distCaseFree(tcx:Int, tcy:Int, ?txr=0.5, ?tyr=0.5) return M.dist(cx+xr, cy+yr, tcx+txr, tcy+tyr);
+	/** Return a distance (in grid cells) from this to something **/
+	public inline function distCase(?e:Entity, ?tcx:Int, ?tcy:Int, ?txr=0.5, ?tyr=0.5) {
+		if( e!=null )
+			return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
+		else
+			return M.dist(cx+xr, cy+yr, tcx+txr, tcy+tyr);
+	}
 
-	public inline function distPx(e:Entity) return M.dist(attachX, attachY, e.attachX, e.attachY);
-	public inline function distPxFree(x:Float, y:Float) return M.dist(attachX, attachY, x, y);
+	/** Return a distance (in pixels) from this to something **/
+	public inline function distPx(?e:Entity, ?x:Float, ?y:Float) {
+		if( e!=null )
+			return M.dist(attachX, attachY, e.attachX, e.attachY);
+		else
+			return return M.dist(attachX, attachY, x, y);
+	}
 
 	function canSeeThrough(cx:Int, cy:Int) {
 		return !level.hasCollision(cx,cy) || this.cx==cx && this.cy==cy;
 	}
 
-	public inline function sightCheckCase(tcx:Int, tcy:Int) {
-		return dn.Bresenham.checkThinLine(cx,cy,tcx,tcy, canSeeThrough);
+	/** Check if the grid-based line between this and given target isn't blocked by some obstacle **/
+	public inline function sightCheck(?e:Entity, ?tcx:Int, ?tcy:Int) {
+		if( e!=this )
+			return dn.Bresenham.checkThinLine(cx, cy, e.cx, e.cy, canSeeThrough);
+		else
+			return dn.Bresenham.checkThinLine(cx, cy, tcx, tcy, canSeeThrough);
 	}
 
-	public inline function sightCheckEntity(e:Entity) {
-		return dn.Bresenham.checkThinLine(cx,cy,e.cx,e.cy, canSeeThrough);
-	}
-
+	/** Create a LPoint instance from current coordinates **/
 	public inline function createPoint() return LPoint.fromCase(cx+xr,cy+yr);
 
     public final function destroy() {
