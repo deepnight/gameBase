@@ -98,7 +98,7 @@ class SamplePlayer extends gm.Entity {
 			// Jump
 			if( cd.has("recentlyOnGround") && ( ca.aPressed() || ca.isKeyboardPressed(K.SPACE) ) ) {
 				dy = -0.85;
-				setSquashX(0.5);
+				setSquashX(0.6);
 				cd.unset("recentlyOnGround");
 			}
 
