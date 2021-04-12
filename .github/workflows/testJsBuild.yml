@@ -1,0 +1,36 @@
+name: Test JS build
+
+on:
+  push:
+    branches:
+      - master
+      - advancedBase
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+        haxe: [4.2.0]
+      fail-fast: true
+    runs-on: windows-latest
+
+    steps:
+      # Checkout & install haxe
+      - uses: actions/checkout@v2
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.2.0
+      - run: haxe -version
+
+      # Install libs
+      - run: haxe setup.hxml
+      - run: haxelib list
+
+      # Try to build
+      - run: haxe js.hxml
+

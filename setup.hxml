@@ -1,4 +1,4 @@
---cmd haxelib git heaps https://github.com/HeapsIO/heaps.git
+--cmd haxelib git heaps https://github.com/deepnight/heaps.git
 
 --next
 --cmd haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
@@ -7,4 +7,4 @@
 --cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
 
 --next
---cmd haxelib git castle https://github.com/ncannasse/castle.git
+--cmd haxelib git castle https://github.com/deepnight/castle.git
