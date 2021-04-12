@@ -29,10 +29,7 @@ jobs:
       - run: haxe -version
 
       # Install libs
-      - run: haxelib git castle https://github.com/deepnight/castle.git
-      - run: haxelib git heaps https://github.com/deepnight/heaps.git
-      - run: haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
-      - run: haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
+      - run: haxe setup.hxml
       - run: haxelib list
 
       # Try to build
