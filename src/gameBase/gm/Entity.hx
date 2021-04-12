@@ -678,27 +678,28 @@ class Entity {
 		*/
 		var steps = M.ceil( ( M.fabs(dxTotal) + M.fabs(dyTotal) ) / 0.33 );
 		if( steps>0 ) {
-			var stepX = dxTotal / steps;
-			var stepY = dyTotal / steps;
-			while ( steps>0 ) {
+			var n = 0;
+			while ( n<steps ) {
 				// X movement
-				xr += stepX;
+				xr += dxTotal / steps;
 
-				onPreStepX(); // <---- Add X collisions checks and physics here
+				if( dxTotal!=0 )
+					onPreStepX(); // <---- Add X collisions checks and physics in here
 
 				while( xr>1 ) { xr--; cx++; }
 				while( xr<0 ) { xr++; cx--; }
 
 
 				// Y movement
-				yr += stepY;
+				yr += dyTotal / steps;
 
-				onPreStepY(); // <---- Add Y collisions checks and physics here
+				if( dyTotal!=0 )
+					onPreStepY(); // <---- Add Y collisions checks and physics in here
 
 				while( yr>1 ) { yr--; cy++; }
 				while( yr<0 ) { yr++; cy--; }
 
-				steps--;
+				n++;
 			}
 		}
 
