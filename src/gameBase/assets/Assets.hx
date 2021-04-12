@@ -57,15 +57,17 @@ class Assets {
 
 		// LDtk file hot-reloading
 		#if debug
-		hxd.Res.world.world.watch(function() {
-			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
-			App.ME.delayer.cancelById("ldtk");
-			App.ME.delayer.addS("ldtk", function() {
-				worldData.parseJson( hxd.Res.world.world.entry.getText() );
-				if( Game.exists() )
-					Game.ME.onLdtkReload();
-			}, 0.2);
-		});
+		var res = try hxd.Res.load(worldData.projectFilePath.substr(4)) catch(_) null; // assume the LDtk file is in "res/" subfolder
+		if( res!=null )
+			res.watch( ()->{
+				// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
+				App.ME.delayer.cancelById("ldtk");
+				App.ME.delayer.addS("ldtk", function() {
+					worldData.parseJson( res.entry.getText() );
+					if( Game.exists() )
+						Game.ME.onLdtkReload();
+				}, 0.2);
+			});
 		#end
 	}
 
