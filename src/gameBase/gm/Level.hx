@@ -16,7 +16,7 @@ class Level extends dn.Process {
 	/** Level pixel height**/
 	public var pxHei(get,never) : Int; inline function get_pxHei() return cHei*Const.GRID;
 
-	public var data : World.World_Level;
+	public var data : World_Level;
 	var tilesetSource : h2d.Tile;
 
 	var marks : Map< LevelMark, Map<Int,Bool> > = new Map();
@@ -27,7 +27,7 @@ class Level extends dn.Process {
 
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 		data = ldtkLevel;
-		tilesetSource = hxd.Res.world.tiles.toTile();
+		tilesetSource = hxd.Res.levels.tiles.toTile();
 	}
 
 	override function onDispose() {
