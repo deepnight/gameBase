@@ -6,7 +6,7 @@ Latest release notes: [View changelog](CHANGELOG.md).
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build)
 
-# Installation & usage
+# Installation
 
  1. Install **Haxe** and **Hashlink**: [Step-by-step tutorial](https://deepnight.net/tutorial/a-quick-guide-to-installing-haxe/)
  2. Install required libs by running the following command **in the root of the repo**:
