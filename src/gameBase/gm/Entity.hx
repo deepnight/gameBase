@@ -43,10 +43,18 @@ class Entity {
 	/** Y velocity, in grid fractions **/
 	public var dy = 0.;
 
-	// Uncontrollable bump velocities, usually applied by external
-	// factors (think of a bumper in Sonic for example)
+	/** Uncontrollable bump X velocity, usually applied by external factors (eg. a bumper in Sonic) **/
     public var bdx = 0.;
+	/** Uncontrollable bump Y velocity, usually applied by external factors (eg. a bumper in Sonic) **/
 	public var bdy = 0.;
+
+	/** Last known X position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
+	var lastFixedUpdateX = 0.;
+	/** Last known Y position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
+	var lastFixedUpdateY = 0.;
+
+	/** If TRUE, the sprite display coordinates will be an interpolation between the last known position and the current one. This is useful if the gameplay happens in the `fixedUpdate()` (so at 30 FPS), but you still want the sprite position to move smoothly at 60 FPS or more. **/
+	var interpolateSprPos = true;
 
 	// Velocities + bump velocities
 	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
@@ -85,10 +93,27 @@ class Entity {
 	/** Horizontal direction, can only be -1 or 1 **/
 	public var dir(default,set) = 1;
 
+	/** Current sprite X **/
+	public var sprX(get,never) : Float;
+		inline function get_sprX() {
+			return interpolateSprPos
+				? M.lerp( lastFixedUpdateX, (cx+xr)*Const.GRID, game.getFixedUpdateAccuRatio() )
+				: (cx+xr)*Const.GRID;
+		}
+
+	/** Current sprite Y **/
+	public var sprY(get,never) : Float;
+		inline function get_sprY() {
+			return interpolateSprPos
+				? M.lerp( lastFixedUpdateY, (cy+yr)*Const.GRID, game.getFixedUpdateAccuRatio() )
+				: (cy+yr)*Const.GRID;
+		}
+
 	/** Sprite X scaling **/
 	public var sprScaleX = 1.0;
 	/** Sprite Y scaling **/
 	public var sprScaleY = 1.0;
+
 	/** Sprite X squash & stretch scaling, which automatically comes back to 1 after a few frames **/
 	var sprSquashX = 1.0;
 	/** Sprite Y squash & stretch scaling, which automatically comes back to 1 after a few frames **/
@@ -258,6 +283,7 @@ class Entity {
 			prevFrameattachX = attachX;
 			prevFrameattachY = attachY;
 		}
+		updateLastFixedUpdatePos();
 	}
 
 	/** Quickly set X/Y pivots. If Y is omitted, it will be equal to X. **/
@@ -542,18 +568,43 @@ class Entity {
 		sprSquashY = scaleY;
 	}
 
-	/** "Beginning of the frame" loop **/
+
+	/**
+		"Beginning of the frame" loop, called before any other Entity update loop
+	**/
     public function preUpdate() {
 		ucd.update(utmod);
 		cd.update(tmod);
 		updateAffects();
 		updateActions();
+
+
+		#if debug
+		// Display the list of active "affects" (with `/set affect` in console)
+		if( ui.Console.ME.hasFlag("affect") ) {
+			var all = [];
+			for(k in affects.keys())
+				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
+			debug(all);
+		}
+
+		// Show bounds (with `/bounds` in console)
+		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
+			enableDebugBounds();
+
+		// Hide bounds
+		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
+			disableDebugBounds();
+		#end
+
     }
 
-	/** Post-update loop, usually used for anything "render" related **/
+	/**
+		Post-update loop, which is guaranteed to happen AFTER any preUpdate/update. This is usually where render and display is updated
+	**/
     public function postUpdate() {
-        spr.x = (cx+xr)*Const.GRID;
-        spr.y = (cy+yr)*Const.GRID;
+		spr.x = sprX;
+		spr.y = sprY;
         spr.scaleX = dir*sprScaleX * sprSquashX;
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
@@ -591,36 +642,49 @@ class Entity {
 		}
 	}
 
-	/** Loop that runs at the end of the frame **/
+	/**
+		Loop that runs at the absolute end of the frame
+	**/
 	public function finalUpdate() {
 		prevFrameattachX = attachX;
 		prevFrameattachY = attachY;
 	}
 
-	/** Main loop that only runs at 30 fps (so it might not be called during some frames) **/
-	public function fixedUpdate() {}
+
+	final function updateLastFixedUpdatePos() {
+		lastFixedUpdateX = attachX;
+		lastFixedUpdateY = attachY;
+	}
+
+
 
 	/** Called at the beginning of each X movement step **/
-	function onPreStepX() {}
+	function onPreStepX() {
+	}
 
 	/** Called at the beginning of each Y movement step **/
-	function onPreStepY() {}
+	function onPreStepY() {
+	}
 
-	/** Main loop **/
-    public function update() {
+
+	/**
+		Main loop, but it only runs at a "guaranteed" 30 fps (so it might not be called during some frames, if the app runs at 60fps). This is usually where most gameplay elements affecting physics should occur, to ensure these will not depend on FPS at all.
+	**/
+	public function fixedUpdate() {
+		updateLastFixedUpdatePos();
+
 		/*
 			Stepping: any movement greater than 33% of grid size (ie. 0.33) will increase the number of `steps` here. These steps will break down the full movement into smaller iterations to avoid jumping over grid collisions.
 		*/
-		var steps = M.ceil( ( M.fabs(dxTotal*tmod) + M.fabs(dyTotal*tmod) ) / 0.33 );
+		var steps = M.ceil( ( M.fabs(dxTotal) + M.fabs(dyTotal) ) / 0.33 );
 		if( steps>0 ) {
-			var stepX = dxTotal*tmod / steps;
-			var stepY = dyTotal*tmod / steps;
+			var stepX = dxTotal / steps;
+			var stepY = dyTotal / steps;
 			while ( steps>0 ) {
 				// X movement
 				xr += stepX;
-				onPreStepX();
 
-				// <---- Add X collisions checks here
+				onPreStepX(); // <---- Add X collisions checks and physics here
 
 				while( xr>1 ) { xr--; cx++; }
 				while( xr<0 ) { xr++; cx--; }
@@ -628,9 +692,8 @@ class Entity {
 
 				// Y movement
 				yr += stepY;
-				onPreStepY();
 
-				// <---- Add X collisions checks here
+				onPreStepY(); // <---- Add Y collisions checks and physics here
 
 				while( yr>1 ) { yr--; cy++; }
 				while( yr<0 ) { yr++; cy--; }
@@ -640,35 +703,22 @@ class Entity {
 		}
 
 		// X frictions
-		dx *= Math.pow(frictX,tmod);
-		bdx *= Math.pow(bumpFrictX,tmod);
-		if( M.fabs(dx) <= 0.0005*tmod ) dx = 0;
-		if( M.fabs(bdx) <= 0.0005*tmod ) bdx = 0;
+		dx *= frictX;
+		bdx *= bumpFrictX;
+		if( M.fabs(dx) <= 0.0005 ) dx = 0;
+		if( M.fabs(bdx) <= 0.0005 ) bdx = 0;
 
 		// Y frictions
-		dy *= Math.pow(frictY,tmod);
-		bdy *= Math.pow(bumpFrictX,tmod);
-		if( M.fabs(dy) <= 0.0005*tmod ) dy = 0;
-		if( M.fabs(bdy) <= 0.0005*tmod ) bdy = 0;
+		dy *= frictY;
+		bdy *= bumpFrictY;
+		if( M.fabs(dy) <= 0.0005 ) dy = 0;
+		if( M.fabs(bdy) <= 0.0005 ) bdy = 0;
+	}
 
 
-
-		#if debug
-		// Display the list of active "affects"
-		if( ui.Console.ME.hasFlag("affect") ) {
-			var all = [];
-			for(k in affects.keys())
-				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
-			debug(all);
-		}
-
-		// Show bounds
-		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
-			enableDebugBounds();
-
-		// Hide bounds
-		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
-			disableDebugBounds();
-		#end
+	/**
+		Main loop running at full FPS
+	**/
+    public function update() {
     }
 }
