@@ -75,11 +75,12 @@ class Game extends Process {
 
 
 
-	// CDB file changed on disk
-	public function onCdbReload() {}
+	/** Called when CDB file changes on disk **/
+	@:allow(assets.Assets)
+	function onCdbReload() {}
 
 
-	// LDtk file changed on disk
+	/** Called when LDtk file changes on disk **/
 	@:allow(assets.Assets)
 	function onLdtkReload() {
 		if( level!=null )
