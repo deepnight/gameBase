@@ -91,7 +91,7 @@ class DebugDrone extends Entity {
 		cancelVelocities();
 
 		// Movement controls
-		var spd = 0.02;
+		var spd = 0.02 * ( ca.aDown() ? 6 : 1 );
 
 		if( !App.ME.anyInputHasFocus() ) {
 			if( ca.leftDist()>0 ) {
