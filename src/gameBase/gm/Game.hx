@@ -77,12 +77,15 @@ class Game extends Process {
 
 	/** Called when CDB file changes on disk **/
 	@:allow(assets.Assets)
-	function onCdbReload() {}
+	function onCdbReload() {
+		hud.notify("CDB reloaded");
+	}
 
 
 	/** Called when LDtk file changes on disk **/
 	@:allow(assets.Assets)
 	function onLdtkReload() {
+		hud.notify("LDtk reloaded");
 		if( level!=null )
 			startLevel( Assets.worldData.getLevel(level.data.uid) );
 	}
