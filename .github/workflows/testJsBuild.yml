@@ -1,0 +1,40 @@
+name: Test JS build
+
+on:
+  push:
+    branches:
+      - master
+      - advancedBase
+      - githubActionsTests
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+        haxe: [4.2.0]
+      fail-fast: true
+    runs-on: windows-latest
+
+    steps:
+      # Checkout & install haxe
+      - uses: actions/checkout@v2
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.2.0
+      - run: haxe -version
+
+      # Install libs
+      - run: haxelib git castle https://github.com/deepnight/castle.git
+      - run: haxelib git heaps https://github.com/deepnight/heaps.git
+      - run: haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
+      - run: haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
+      - run: haxelib list
+
+      # Try to build
+      - run: haxe js.hxml
+
