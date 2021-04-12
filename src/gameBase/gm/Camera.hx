@@ -236,8 +236,8 @@ class Camera extends dn.Process {
 
 		// Follow target entity
 		if( target!=null ) {
-			var spdX = 0.010*trackingSpeed*zoom;
-			var spdY = 0.013*trackingSpeed*zoom;
+			var spdX = 0.015*trackingSpeed*zoom;
+			var spdY = 0.023*trackingSpeed*zoom;
 			var tx = target.centerX + targetOffX;
 			var ty = target.centerY + targetOffY;
 
