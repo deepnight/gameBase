@@ -1,15 +1,15 @@
---cmd haxelib git heaps https://github.com/deepnight/heaps.git
+--cmd haxelib git heaps https://github.com/deepnight/heaps.git --always
 
 --next
---cmd haxelib git castle https://github.com/deepnight/castle.git
+--cmd haxelib git castle https://github.com/deepnight/castle.git --always
 
 --next
---cmd haxelib install redistHelper
+--cmd haxelib install redistHelper --always
 
 --next
---cmd haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git
+--cmd haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git --always
 
 --next
---cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
+--cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git --always
 
 
