@@ -4,7 +4,7 @@
 
 Latest release notes: [View changelog](CHANGELOG.md).
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build)](https://github.com/deepnight/gameBase/actions)
 
 # Installation
 
