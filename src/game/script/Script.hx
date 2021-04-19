@@ -5,7 +5,9 @@ class Script {
 	public static var parser : hscript.Parser;
 
 	/**
-		Execute provided script
+		Execute provided hscript.
+		USAGE:
+			Script.run('var a=1 ; a++ ; log(a) ; return a');
 	**/
 	public static function run(script:String) {
 		// Init script
@@ -13,23 +15,33 @@ class Script {
 		log.clear();
 		log.add("exec", "Script started.");
 
+		// API
 		var interp = new hscript.Interp();
 		interp.variables.set("api", new script.Api());
 		interp.variables.set("log", (v:Dynamic)->log.add("run", Std.string(v)));
 
+		// Execute
 		var program = parser.parseString(script);
-		try interp.execute(program)
+		var out : Dynamic = try interp.execute(program)
 		catch( e:hscript.Expr.Error ) {
 			log.error( Std.string(e) );
+			null;
 		}
-		log.add("exec", "Script completed.");
+
+		// Returned value
+		if( out!=null )
+			log.add("exec", "Returned: "+out);
 
 		if( log.containsAnyCriticalEntry() ) {
+			// Error
 			printLastLog();
 			return false;
 		}
-		else
+		else {
+			// Done!
+			log.add("exec", "Script completed.");
 			return true;
+		}
 	}
 
 
