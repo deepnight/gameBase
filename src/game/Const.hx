@@ -1,10 +1,10 @@
 /**
-	The Const class is a place for you to store various values available everywhere in your game.
+	The Const class is the place for you to store various values that should be available everywhere in your code. Example: `Const.FPS`
 
 	This class will also contain a `db` field (created by ConstDbBuilder macro). This field will be filled with all values found in both following sources:
 
 	- `res/const.json`, a simple JSON file,
-	- `res/data.cdb`, the CastleDB file, in the sheet named "ConstDb".
+	- `res/data.cdb`, the CastleDB file, from the sheet named "ConstDb".
 
 	This allows super easy access to your game constants and settings. Example:
 
@@ -15,12 +15,13 @@
 			Const.db.myValue; // equals to 5
 			Const.db.someText; // equals to "hello"
 
-		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing real-time testing. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
+		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing testing without recompiling. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
 **/
 
 @:build( assets.ConstDbBuilder.build("data.cdb", "const.json") )
 class Const {
-	#if !macro
+#if !macro
+
 
 	/** Default engine framerate (60) **/
 	public static var FPS(get,never) : Int;
@@ -67,5 +68,6 @@ class Const {
 	public static var DP_TOP = _inc++;
 	public static var DP_UI = _inc++;
 
-	#end
+
+#end
 }
