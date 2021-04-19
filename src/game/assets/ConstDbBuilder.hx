@@ -7,32 +7,27 @@ using haxe.macro.Tools;
 #end
 
 /**
-	This macro will create a `db` field to the Const class, and fill it with all values found in both:
-	- "res/const.json" simple JSON file,
-	- "res/data.cdb" CastleDB file, in sheet named "ConstDb".
-
-	This allows easy access to your game constants. Example:
-		With `res/const.json` containing:
-			{ "myValue":5, "someText":"hello" }
-
-		You may use:
-			Const.db.myValue; // equals to 5
-			Const.db.someText; // equals to "hello"
-
-		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing real-time testing. This hot-reloading only works if the project was built using the `-debug` flag. In release builds, values are constant.
+	This macro will create a `db` field to the Const class, and fill it with all values found in JSON and CastleDB sources.
 **/
 class ConstDbBuilder {
 	#if( macro || display )
 
-	macro public static function build(cdbFile:String, jsonFile:String) : Array<Field> {
+	/**
+		Build the class fields.
+		If a provided file path is `null`, this source will just be ignored.
+	**/
+	macro public static function build(cdbFile:Null<String>, jsonFile:Null<String>) : Array<Field> {
 		var pos = Context.currentPos();
 		var baseFields = Context.getBuildFields(); // base Const fields
 		var dbTypeDef : Array<Field> = []; // type definition of "db" field
 		var dbDefaults : Array<ObjectField> = []; // "db" field initialization
 
 		// Create fields from files
-		buildFromCdb(cdbFile, baseFields, dbTypeDef, dbDefaults);
-		buildFromJson(jsonFile, baseFields, dbTypeDef, dbDefaults);
+		if( cdbFile!=null )
+			buildFromCdb(cdbFile, baseFields, dbTypeDef, dbDefaults);
+
+		if( jsonFile!=null )
+			buildFromJson(jsonFile, baseFields, dbTypeDef, dbDefaults);
 
 		// Add "db" field
 		baseFields.push({
