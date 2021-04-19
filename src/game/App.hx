@@ -5,14 +5,6 @@
 class App extends dn.Process {
 	public static var ME : App;
 
-	public static var test(get,set): Int;
-		static function get_test() return 0;
-		static function set_test(v) return v;
-
-	public var pouet = "hello";
-	public var int=5;
-	public var bool=true;
-
 	/** 2D scene **/
 	public var scene(default,null) : h2d.Scene;
 
