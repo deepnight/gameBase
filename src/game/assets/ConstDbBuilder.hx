@@ -226,10 +226,7 @@ class ConstDbBuilder {
 					kind: FVar(macro:Float),
 				});
 				dbDefaults.push({ field:subId, expr: macro 0. });
-				fillExprs.push( macro {
-					db.$subId = _resolveCdbValue( cast $v{id}, $v{i} );
-					trace($v{id});
-				});
+				fillExprs.push( macro db.$subId = _resolveCdbValue( cast $v{id}, $v{i} ) );
 			}
 
 			// String desc getter
