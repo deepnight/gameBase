@@ -43,14 +43,27 @@ class Assets {
 			App.ME.delayer.cancelById("cdb");
 			App.ME.delayer.addS("cdb", function() {
 				CastleDb.load( hxd.Res.data.entry.getBytes().toString() );
+				Const.fillCdbValues();
 				if( Game.exists() )
-					Game.ME.onCdbReload();
+					Game.ME.onDbReload();
 			}, 0.2);
 		});
 		#end
 
 		// Parse castleDB JSON
 		CastleDb.load( hxd.Res.data.entry.getText() );
+		Const.fillCdbValues();
+
+		// `const.json` hot-reloading
+		hxd.Res.const.watch(function() {
+			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
+			App.ME.delayer.cancelById("constJson");
+			App.ME.delayer.addS("constJson", function() {
+				Const.fillJsonValues( hxd.Res.const.entry.getBytes().toString() );
+				if( Game.exists() )
+					Game.ME.onDbReload();
+			}, 0.2);
+		});
 
 		// LDtk init & parsing
 		worldData = new World();

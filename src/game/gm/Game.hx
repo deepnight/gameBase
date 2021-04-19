@@ -75,10 +75,10 @@ class Game extends Process {
 
 
 
-	/** Called when CDB file changes on disk **/
+	/** Called when either CastleDB or `const.json` changes on disk **/
 	@:allow(assets.Assets)
-	function onCdbReload() {
-		hud.notify("CDB reloaded");
+	function onDbReload() {
+		hud.notify("DB reloaded");
 	}
 
 
