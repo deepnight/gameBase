@@ -12,4 +12,5 @@
 --next
 --cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git --always
 
-
+--next
+--cmd haxelib git hscript https://github.com/HaxeFoundation/hscript.git --always
