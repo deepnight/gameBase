@@ -1,2 +1,3 @@
 _base.hxml
+-dce full
 -js bin/client.js
