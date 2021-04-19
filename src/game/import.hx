@@ -1,3 +1,5 @@
+#if !macro
+
 // Libs
 import dn.M;
 import dn.Lib;
@@ -25,3 +27,5 @@ import assets.World;
 import dn.Color as C;
 import hxd.Key as K;
 import tools.LPoint as P;
+
+#end

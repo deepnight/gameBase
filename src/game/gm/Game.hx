@@ -48,6 +48,8 @@ class Game extends Process {
 		camera = new Camera();
 
 		startLevel(Assets.worldData.all_levels.FirstLevel);
+
+		Const.db.someValue;
 	}
 
 

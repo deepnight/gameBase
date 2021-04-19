@@ -1,5 +1,59 @@
 {
-	"sheets": [],
+	"sheets": [
+		{
+			"name": "ConstDb",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "constId"
+				},
+				{
+					"typeStr": "1",
+					"name": "desc1",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "value1",
+					"opt": true
+				},
+				{
+					"typeStr": "1",
+					"name": "desc2",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "value2",
+					"opt": true
+				},
+				{
+					"typeStr": "1",
+					"name": "desc3",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "value3",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"desc1": "Some free text description for value1",
+					"desc2": "whatever you want",
+					"value1": 1.5,
+					"value2": 2,
+					"value3": 3.9,
+					"constId": "SomeConstantName"
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
 	"customTypes": [],
 	"compress": false
 }

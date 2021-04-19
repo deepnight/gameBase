@@ -1,4 +1,7 @@
+@:build( assets.ConstDbBuilder.build("data.cdb", "const.json") )
 class Const {
+	#if !macro
+
 	/** Default engine framerate (60) **/
 	public static var FPS(get,never) : Int;
 		static inline function get_FPS() return Std.int( hxd.System.getDefaultFrameRate() );
@@ -43,4 +46,6 @@ class Const {
 	public static var DP_FX_FRONT = _inc++;
 	public static var DP_TOP = _inc++;
 	public static var DP_UI = _inc++;
+
+	#end
 }
