@@ -87,6 +87,7 @@ class Assets {
 
 	public static function update(tmod) {
 		tiles.tmod = tmod;
+		// <-- add other atlas TMOD updates here
 	}
 
 }

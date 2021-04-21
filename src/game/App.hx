@@ -137,7 +137,7 @@ class App extends dn.Process {
 
 
     override function update() {
-		Assets.tiles.tmod = tmod;
+		Assets.update(tmod);
         super.update();
     }
 }
