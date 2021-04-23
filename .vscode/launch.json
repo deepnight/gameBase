@@ -17,13 +17,6 @@
             "type": "chrome",
             "file": "${workspaceFolder}/js.html",
             "preLaunchTask": "HaxeActiveConf"
-        },
-        {
-            "name": "Firefox JS debug",
-            "request": "launch",
-            "type": "firefox",
-            "file": "${workspaceFolder}/js.html",
-            "preLaunchTask": "HaxeActiveConf"
         }
     ]
 }
