@@ -1,6 +1,12 @@
 --cmd haxelib git heaps https://github.com/deepnight/heaps.git --always
 
 --next
+--cmd haxelib install hldx --always
+
+--next
+--cmd haxelib install hlsdl --always
+
+--next
 --cmd haxelib git castle https://github.com/deepnight/castle.git --always
 
 --next
@@ -14,3 +20,6 @@
 
 --next
 --cmd haxelib git hscript https://github.com/HaxeFoundation/hscript.git --always
+
+--next
+--cmd haxelib list
