@@ -100,6 +100,7 @@ class SamplePlayer extends gm.Entity {
 				dy = -0.85;
 				setSquashX(0.6);
 				cd.unset("recentlyOnGround");
+				fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
 			}
 
 			// Walk
