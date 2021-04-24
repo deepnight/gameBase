@@ -22,7 +22,7 @@
 --cmd haxelib --always git hscript https://github.com/HaxeFoundation/hscript.git
 
 --next
---cmd haxelib --always git https://github.com/deepnight/heaps-aseprite.git
+--cmd haxelib --always git heaps-aseprite https://github.com/deepnight/heaps-aseprite.git
 
 --next
 --cmd haxelib list
