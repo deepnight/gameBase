@@ -1,25 +1,28 @@
---cmd haxelib git heaps https://github.com/deepnight/heaps.git --always
+--cmd haxelib --always git heaps https://github.com/deepnight/heaps.git
 
 --next
---cmd haxelib install hldx --always
+--cmd haxelib --always install hldx
 
 --next
---cmd haxelib install hlsdl --always
+--cmd haxelib --always install hlsdl
 
 --next
---cmd haxelib git castle https://github.com/deepnight/castle.git --always
+--cmd haxelib --always git castle https://github.com/deepnight/castle.git
 
 --next
---cmd haxelib install redistHelper --always
+--cmd haxelib --always install redistHelper
 
 --next
---cmd haxelib git deepnightLibs https://github.com/deepnight/deepnightLibs.git --always
+--cmd haxelib --always git deepnightLibs https://github.com/deepnight/deepnightLibs.git
 
 --next
---cmd haxelib git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git --always
+--cmd haxelib --always git ldtk-haxe-api https://github.com/deepnight/ldtk-haxe-api.git
 
 --next
---cmd haxelib git hscript https://github.com/HaxeFoundation/hscript.git --always
+--cmd haxelib --always git hscript https://github.com/HaxeFoundation/hscript.git
+
+--next
+--cmd haxelib --always git https://github.com/deepnight/heaps-aseprite.git
 
 --next
 --cmd haxelib list
