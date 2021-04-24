@@ -17,6 +17,8 @@ class Entity {
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;
 	public var hud(get,never) : ui.Hud; inline function get_hud() return Game.ME.hud;
 
+	var dict = Assets.tilesDict;
+
 	/** Cooldowns **/
 	public var cd : dn.Cooldown;
 
