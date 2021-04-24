@@ -52,7 +52,7 @@ class Hud extends dn.Process {
 	/** Pop a quick s in the corner **/
 	public function notify(str:String, color=0xA56DE7) {
 		// Bg
-		var t = Assets.tiles.getTile("uiBarBg");
+		var t = Assets.tiles.getTile( Assets.tilesDict.uiBar );
 		var f = new dn.heaps.FlowBg(t, 2, root);
 		f.colorizeBg(color);
 		f.paddingHorizontal = 6;

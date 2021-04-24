@@ -13,10 +13,13 @@ class Assets {
 	public static var fontMedium : h2d.Font;
 	public static var fontLarge : h2d.Font;
 
-	// Sprite atlas
+	/** Main atlas **/
 	public static var tiles : SpriteLib;
 
-	// LDtk world data
+	/** Fully typed access to slice names present in Aseprite file (eg. `trace(tilesDict.myStoneTexture)` )**/
+	public static var tilesDict = dn.heaps.assets.Aseprite.getDict(hxd.Res.atlas.tiles);
+
+	/** LDtk world data **/
 	public static var worldData : World;
 
 
@@ -33,8 +36,8 @@ class Assets {
 		fontMedium = hxd.Res.fonts.barlow_condensed_medium_regular_17.toFont();
 		fontLarge = hxd.Res.fonts.barlow_condensed_medium_regular_32.toFont();
 
-		// Atlas
-		tiles = dn.heaps.assets.Atlas.load("atlas/tiles.atlas");
+		// build sprite atlas directly from Aseprite file
+		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
 
 		// CastleDB file hot reloading
 		#if debug

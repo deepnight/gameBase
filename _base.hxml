@@ -4,4 +4,5 @@
 -lib hscript
 -lib deepnightLibs
 -lib ldtk-haxe-api
+-lib heaps-aseprite
 -main Boot
