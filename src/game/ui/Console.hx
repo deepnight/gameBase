@@ -93,6 +93,16 @@ class Console extends h2d.Console {
 		h2d.Console.HIDE_LOG_TIMEOUT = Const.INFINITE;
 	}
 
+	override function hide() {
+		// Delay by 1 frame so that App.ME.anyInputHasFocus() is still true on the current frame
+		App.ME.delayer.addF(() -> {
+			bg.visible = false;
+			tf.text = "";
+			hintTxt.text = "";
+			tf.cursorIndex = -1;
+		}, 1);
+	}
+
 	#if debug
 	public function setFlag(k:String,v) {
 		k = k.toLowerCase();
