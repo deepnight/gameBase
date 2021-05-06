@@ -62,7 +62,7 @@ class App extends dn.Process {
 
 
 	public function anyInputHasFocus() {
-		return Console.ME.isActive();
+		return Console.ME.isActive() || cd.has("consoleRecentlyActive");
 	}
 
 
@@ -138,6 +138,10 @@ class App extends dn.Process {
 
     override function update() {
 		Assets.update(tmod);
+
         super.update();
+
+		if( ui.Console.ME.isActive() )
+			cd.setF("consoleRecentlyActive",2);
     }
 }
