@@ -41,6 +41,16 @@ class ConstDbBuilder {
 	}
 
 
+	/** Remove invalid characters from a given string **/
+	static inline function cleanupIdentifier(str:String) {
+		if( str==null )
+			return "";
+		else
+			return ~/[^a-z0-9_]/gi.replace(str, "_");
+	}
+
+
+
 	/**
 		Lookup a file in all known paths
 	**/
@@ -119,7 +129,7 @@ class ConstDbBuilder {
 
 			// Add field and default value
 			if( kind!=null ) {
-				dbTypeDef.push({ name:k, pos:pos, kind:kind });
+				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: "[JSON] "+k });
 				dbDefaults.push({ field:k, expr:macro $v{val} });
 			}
 		}
@@ -210,39 +220,41 @@ class ConstDbBuilder {
 			meta: [{ name:":noCompletion", pos:pos }, { name:":keep", pos:pos }],
 		});
 
-		// Iterate all const IDs
-		var settingIdReg = ~/"constId"\s*:\s*"(.*?)"/gim;
-		var fillExprs : Array<Expr> = [];
-		while( settingIdReg.match(raw) ) {
-			var id = settingIdReg.matched(1);
-
-			for(i in 1...4) {
-				var subId = id+"_"+i;
-
-				// Float value getter
-				dbTypeDef.push({
-					name: subId,
-					pos: pos,
-					kind: FVar(macro:Float),
-				});
-				dbDefaults.push({ field:subId, expr: macro 0. });
-				fillExprs.push( macro db.$subId = _resolveCdbValue( cast $v{id}, $v{i} ) );
-			}
-
-			// String desc getter
-			dbTypeDef.push({
-				name: id+"_desc",
-				pos: pos,
-				kind: FVar(macro:Int->Null<String>),
-			});
-			dbDefaults.push({
-				field:id+"_desc",
-				expr: macro function(valueIndex:Int) { return _resolveCdbDesc( cast $v{id}, valueIndex); }
-			});
-
-			// Continue on next ID
-			raw = settingIdReg.matchedRight();
+		// Parse JSON
+		var json : { sheets:Array<{name:String, lines:Array<Dynamic>}> } = try haxe.Json.parse(raw) catch(_) null;
+		if( json==null ) {
+			Context.fatalError("CastleDB JSON parsing failed!", pos);
+			return;
 		}
+
+		// List constants
+		var fillExprs : Array<Expr> = [];
+		for(sheet in json.sheets)
+			if( sheet.name=="ConstDb" ) {
+				for(l in sheet.lines) {
+					var id = Reflect.field(l, "constId");
+
+					// List used values
+					var values = [];
+					for(i in 1...3+1)
+						if( Reflect.hasField(l, "value"+i) )
+							values.push(i);
+
+					// Create value fields
+					for(i in values) {
+						var desc = Reflect.field(l,"valueName"+i);
+						var subId = values.length==1 ? id : id+"_"+( desc==null ? Std.string(i) : cleanupIdentifier(desc) );
+						dbTypeDef.push({
+							name: subId,
+							pos: pos,
+							doc: "[CDB] " + ( desc==null ? id : desc ),
+							kind: FVar(macro:Float),
+						});
+						dbDefaults.push({ field:subId, expr:macro 0. });
+						fillExprs.push( macro db.$subId = _resolveCdbValue( cast $v{id}, $v{i} ) );
+					}
+				}
+			}
 
 		// Create
 		baseFields.push({

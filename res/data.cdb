@@ -9,9 +9,8 @@
 				},
 				{
 					"typeStr": "1",
-					"name": "desc1",
-					"opt": true,
-					"display": null
+					"name": "valueName1",
+					"opt": true
 				},
 				{
 					"typeStr": "4",
@@ -20,9 +19,8 @@
 				},
 				{
 					"typeStr": "1",
-					"name": "desc2",
-					"opt": true,
-					"display": null
+					"name": "valueName2",
+					"opt": true
 				},
 				{
 					"typeStr": "4",
@@ -31,7 +29,7 @@
 				},
 				{
 					"typeStr": "1",
-					"name": "desc3",
+					"name": "valueName3",
 					"opt": true
 				},
 				{
@@ -42,12 +40,11 @@
 			],
 			"lines": [
 				{
-					"desc1": "Some free text description for value1",
-					"desc2": "whatever you want",
-					"value1": 1.5,
-					"value2": 2,
-					"value3": 3.9,
-					"constId": "SomeConstantName"
+					"value1": 3,
+					"value2": 1000,
+					"constId": "PlayerSettings",
+					"valueName1": "HP",
+					"valueName2": "Gold"
 				}
 			],
 			"separators": [],
