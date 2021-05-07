@@ -208,24 +208,6 @@ class ConstDbBuilder {
 			],
 		});
 
-		// String desc resolver
-		baseFields.push({
-			name: "_resolveCdbDesc",
-			access: [AStatic, APublic, AInline],
-			pos: pos,
-			kind: FFun({
-				args: [
-					{ name:"constId", type:Context.getType("CastleDb.ConstDbKind").toComplexType() },
-					{ name:"valueIdx", type: macro:Int, opt:true, value:macro 1 },
-				],
-				ret: macro:Null<String>,
-				expr: macro {
-					return valueIdx<1 || valueIdx>3 ? null : Reflect.field( CastleDb.ConstDb.get(constId), "desc"+valueIdx );
-				},
-			}),
-			meta: [{ name:":noCompletion", pos:pos }, { name:":keep", pos:pos }],
-		});
-
 		// Parse JSON
 		var json : { sheets:Array<{name:String, lines:Array<Dynamic>}> } = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
