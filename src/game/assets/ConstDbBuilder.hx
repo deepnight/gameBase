@@ -90,10 +90,13 @@ class ConstDbBuilder {
 			Context.fatalError("File not found: "+basePath, pos);
 			return;
 		}
+
+		var fileName = dn.FilePath.extractFileWithExt(path);
 		Context.registerModuleDependency(Context.getLocalModule(), path);
-		var raw = sys.io.File.getContent(path);
+
 
 		// Parse JSON
+		var raw = sys.io.File.getContent(path);
 		var jsonPos = Context.makePosition({ file:path, min:1, max:1 });
 		var json = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
@@ -129,7 +132,7 @@ class ConstDbBuilder {
 
 			// Add field and default value
 			if( kind!=null ) {
-				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: "[JSON] "+k });
+				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: "["+fileName+"]  "+k });
 				dbDefaults.push({ field:k, expr:macro $v{val} });
 			}
 		}
@@ -173,11 +176,16 @@ class ConstDbBuilder {
 			Context.fatalError("File not found: "+basePath, pos);
 			return;
 		}
+
+		var fileName = dn.FilePath.extractFileWithExt(path);
+		Context.registerModuleDependency(Context.getLocalModule(), path);
+
 		var raw = sys.io.File.getContent(path);
 		if( raw.indexOf('"ConstDb"')<0 ) {
-			Context.fatalError("CastleDB file should contain a ConstDb sheet.", pos);
+			Context.fatalError('$fileName file should contain a ConstDb sheet.', pos);
 			return;
 		}
+
 
 
 		// Float value resolver
@@ -188,11 +196,10 @@ class ConstDbBuilder {
 			kind: FFun({
 				args: [
 					{ name:"constId", type:Context.getType("CastleDb.ConstDbKind").toComplexType() },
-					{ name:"valueIdx", type: macro:Int, opt:true, value:macro 1 },
 				],
 				ret: macro:Float,
 				expr: macro {
-					return valueIdx<1 || valueIdx>3 ? 0 : Reflect.field( CastleDb.ConstDb.get(constId), "value"+valueIdx );
+					return Reflect.field( CastleDb.ConstDb.get(constId), "value" );
 				},
 			}),
 			meta: [
@@ -233,26 +240,16 @@ class ConstDbBuilder {
 			if( sheet.name=="ConstDb" ) {
 				for(l in sheet.lines) {
 					var id = Reflect.field(l, "constId");
+					var doc = Reflect.field(l,"doc");
 
-					// List used values
-					var values = [];
-					for(i in 1...3+1)
-						if( Reflect.hasField(l, "value"+i) )
-							values.push(i);
-
-					// Create value fields
-					for(i in values) {
-						var desc = Reflect.field(l,"valueName"+i);
-						var subId = values.length==1 ? id : id+"_"+( desc==null ? Std.string(i) : cleanupIdentifier(desc) );
-						dbTypeDef.push({
-							name: subId,
-							pos: pos,
-							doc: "[CDB] " + ( desc==null ? id : desc ),
-							kind: FVar(macro:Float),
-						});
-						dbDefaults.push({ field:subId, expr:macro 0. });
-						fillExprs.push( macro db.$subId = _resolveCdbValue( cast $v{id}, $v{i} ) );
-					}
+					dbTypeDef.push({
+						name: id,
+						pos: pos,
+						doc: "["+fileName+"]  " + ( doc==null ? id : doc ),
+						kind: FVar(macro:Float),
+					});
+					dbDefaults.push({ field:id, expr:macro 0. });
+					fillExprs.push( macro db.$id = _resolveCdbValue( cast $v{id} ) );
 				}
 			}
 
