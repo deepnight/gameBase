@@ -132,7 +132,7 @@ class ConstDbBuilder {
 
 			// Add field and default value
 			if( kind!=null ) {
-				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: "["+fileName+"]  "+k });
+				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: k + " *["+fileName+"]* " });
 				dbDefaults.push({ field:k, expr:macro $v{val} });
 			}
 		}
@@ -215,7 +215,6 @@ class ConstDbBuilder {
 			pos: pos,
 			kind: FFun({
 				args: [
-					// { name:"constId", type: macro:String },
 					{ name:"constId", type:Context.getType("CastleDb.ConstDbKind").toComplexType() },
 					{ name:"valueIdx", type: macro:Int, opt:true, value:macro 1 },
 				],
@@ -245,7 +244,7 @@ class ConstDbBuilder {
 					dbTypeDef.push({
 						name: id,
 						pos: pos,
-						doc: "["+fileName+"]  " + ( doc==null ? id : doc ),
+						doc: ( doc==null ? id : doc ) + "  *["+fileName+"]* ",
 						kind: FVar(macro:Float),
 					});
 					dbDefaults.push({ field:id, expr:macro 0. });
