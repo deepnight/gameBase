@@ -8,47 +8,32 @@
 					"name": "constId"
 				},
 				{
-					"typeStr": "1",
-					"name": "valueName1",
-					"opt": true
-				},
-				{
 					"typeStr": "4",
-					"name": "value1",
-					"opt": true
+					"name": "value",
+					"display": null
 				},
 				{
 					"typeStr": "1",
-					"name": "valueName2",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "value2",
-					"opt": true
-				},
-				{
-					"typeStr": "1",
-					"name": "valueName3",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "value3",
-					"opt": true
+					"name": "doc",
+					"opt": true,
+					"display": null
 				}
 			],
 			"lines": [
 				{
-					"value1": 3,
-					"value2": 1000,
-					"constId": "PlayerSettings",
-					"valueName1": "HP",
-					"valueName2": "Gold"
+					"constId": "MyCdbConstant",
+					"value": 3.5,
+					"doc": "This documentation will be displayed when using VScode auto-complete for this specific value."
 				}
 			],
-			"separators": [],
-			"props": {}
+			"props": {
+				"separatorTitles": [
+					"This sheet allows to access CastleDB \"constants\" in your code. Just call \"Const.db.MyCdbConstant\" to access its Float value. These values will be updated on runtime if hot-reloading is enabled. DO NOT MODIFY THE SHEET NAME OR COLUMNS!"
+				]
+			},
+			"separatorIds": [
+				"MyCdbConstant"
+			]
 		}
 	],
 	"customTypes": [],
