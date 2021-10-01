@@ -29,7 +29,7 @@ class App extends dn.Process {
 
 		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
 		#if js
-		new dn.heaps.GameFocusHelper(scene, Assets.fontMedium);
+		new dn.heaps.GameFocusHelper(scene, Assets.fontPixel);
 		#end
 
 		startGame();
