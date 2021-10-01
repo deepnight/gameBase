@@ -8,7 +8,6 @@ import dn.Tweenie;
 import dn.data.GetText;
 import dn.heaps.Controller;
 import dn.heaps.slib.*;
-import dn.RandomTools as R;
 
 // Project classes
 import Types;
@@ -26,6 +25,7 @@ import assets.World;
 
 // Aliases
 import dn.Color as C;
+import dn.RandomTools as R;
 import hxd.Key as K;
 import tools.LPoint as P;
 import assets.Lang as L;
