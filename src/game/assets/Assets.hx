@@ -8,10 +8,6 @@ import dn.heaps.slib.*;
 class Assets {
 	// Fonts
 	public static var fontPixel : h2d.Font;
-	public static var fontTiny : h2d.Font;
-	public static var fontSmall : h2d.Font;
-	public static var fontMedium : h2d.Font;
-	public static var fontLarge : h2d.Font;
 
 	/** Main atlas **/
 	public static var tiles : SpriteLib;
@@ -30,11 +26,7 @@ class Assets {
 		_initDone = true;
 
 		// Fonts
-		fontPixel = hxd.Res.fonts.minecraftiaOutline.toFont();
-		fontTiny = hxd.Res.fonts.barlow_condensed_medium_regular_9.toFont();
-		fontSmall = hxd.Res.fonts.barlow_condensed_medium_regular_11.toFont();
-		fontMedium = hxd.Res.fonts.barlow_condensed_medium_regular_17.toFont();
-		fontLarge = hxd.Res.fonts.barlow_condensed_medium_regular_32.toFont();
+		fontPixel = hxd.Res.fonts.pixel_unicode_regular_12.toFont();
 
 		// build sprite atlas directly from Aseprite file
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());

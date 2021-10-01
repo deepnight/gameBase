@@ -48,8 +48,9 @@ class DebugDrone extends Entity {
 		setPivots(0.5);
 		setColor(DEFAULT_COLOR);
 
-		help = new h2d.Text(Assets.fontSmall);
+		help = new h2d.Text(Assets.fontPixel);
 		game.root.add(help, Const.DP_TOP);
+		help.filter = new dn.heaps.filter.PixelOutline();
 		help.textColor = DEFAULT_COLOR;
 		help.text = [
 			"ESCAPE - kill debug drone",
@@ -57,6 +58,7 @@ class DebugDrone extends Entity {
 			"PAGE UP/DOWN- zoom",
 		].join("\n");
 		help.setScale(Const.UI_SCALE);
+		help.x = 4*Const.UI_SCALE;
 
 		// <----- HERE: add your own specific inits, like setting drone gravity to zero, updating collision behaviors etc.
 	}

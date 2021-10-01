@@ -418,8 +418,10 @@ class Entity {
 			debugLabel = null;
 		}
 		if( v!=null ) {
-			if( debugLabel==null )
-				debugLabel = new h2d.Text(Assets.fontTiny, Game.ME.scroller);
+			if( debugLabel==null ) {
+				debugLabel = new h2d.Text(Assets.fontPixel, Game.ME.scroller);
+				debugLabel.filter = new dn.heaps.filter.PixelOutline();
+			}
 			debugLabel.text = Std.string(v);
 			debugLabel.textColor = c;
 		}

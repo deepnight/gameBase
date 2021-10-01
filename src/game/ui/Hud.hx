@@ -23,7 +23,8 @@ class Hud extends dn.Process {
 		flow = new h2d.Flow(root);
 		notifications = [];
 
-		debugText = new h2d.Text(Assets.fontSmall, root);
+		debugText = new h2d.Text(Assets.fontPixel, root);
+		debugText.filter = new dn.heaps.filter.PixelOutline();
 		clearDebug();
 	}
 

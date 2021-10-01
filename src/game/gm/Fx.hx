@@ -118,7 +118,7 @@ class Fx extends dn.Process {
 
 	public function markerText(cx:Int, cy:Int, txt:String, ?t=1.0) {
 		#if debug
-		var tf = new h2d.Text(Assets.fontTiny, topNormalSb);
+		var tf = new h2d.Text(Assets.fontPixel, topNormalSb);
 		tf.text = txt;
 
 		var p = allocTopAdd(getTile(dict.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
