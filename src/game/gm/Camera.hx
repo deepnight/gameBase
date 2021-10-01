@@ -1,6 +1,10 @@
 package gm;
 
 class Camera extends dn.Process {
+	public static var MIN_ZOOM : Float = 1.0;
+	public static var MAX_ZOOM : Float = 10;
+
+
 	/** Camera focus coord in level pixels. This is the raw camera location: the actual camera location might be clamped to level bounds. **/
 	public var rawFocus : LPoint;
 
@@ -24,13 +28,22 @@ class Camera extends dn.Process {
 	public var deadZonePctY = 0.10;
 
 	var baseFrict = 0.89;
-	var dx : Float;
-	var dy : Float;
+	var dx = 0.;
+	var dy = 0.;
+	var dz = 0.;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
 
-	/** Zoom factor **/
-	public var zoom(default,set) = 1.0;
+	/** Actual zoom value without modifiers **/
+	var baseZoom = 1.0;
+	var zoomSpeed = 0.0014;
+	var zoomFrict = 0.9;
+
+	/** Current zoom factor, including all modifiers **/
+	public var zoom(get,never) : Float;
+
+	/** Target base zoom value **/
+	public var targetZoom(default,set) = 1.0;
 
 	/** Speed multiplier when camera is tracking a target **/
 	var trackingSpeed = 1.0;
@@ -78,9 +91,26 @@ class Camera extends dn.Process {
 		return 'Camera@${rawFocus.levelX},${rawFocus.levelY}';
 	}
 
-	function set_zoom(v) {
-		return zoom = M.fclamp(v,1,10);
+	inline function get_zoom() {
+		return baseZoom;
 	}
+
+
+	inline function set_targetZoom(v) {
+		return targetZoom = M.fclamp(v, MIN_ZOOM, MAX_ZOOM);
+	}
+
+	/** Smoothly change zoom within MIN/MAX bounds **/
+	public inline function zoomTo(v:Float) {
+		targetZoom = v;
+	}
+
+	/** Force zoom immediately to given value **/
+	public function forceZoom(v) {
+		baseZoom = targetZoom = M.fclamp(v, MIN_ZOOM, MAX_ZOOM);
+		dz = 0;
+	}
+
 
 	function get_pxWid() {
 		return M.ceil( Game.ME.w() / Const.SCALE / zoom );
@@ -263,6 +293,34 @@ class Camera extends dn.Process {
 
 		final level = Game.ME.level;
 
+
+		// Zoom movement
+		var tz = targetZoom;
+
+		if( tz!=baseZoom ) {
+			if( tz>baseZoom)
+				dz+=zoomSpeed;
+			else
+				dz-=zoomSpeed;
+		}
+		else
+			dz = 0;
+
+		var prevZoom = baseZoom;
+		baseZoom+=dz*tmod;
+
+		// bumpZoomFactor *= Math.pow(0.9, tmod);
+		dz*=Math.pow(zoomFrict, tmod);
+		if( M.fabs(tz-baseZoom)<=0.05*tmod )
+			dz*=Math.pow(0.8,tmod);
+
+		// Reached target zoom
+		if( prevZoom<tz && baseZoom>=tz || prevZoom>tz && baseZoom<=tz ) {
+			baseZoom = tz;
+			dz = 0;
+		}
+
+
 		// Follow target entity
 		if( target!=null ) {
 			var spdX = 0.015*trackingSpeed*zoom;
@@ -311,6 +369,7 @@ class Camera extends dn.Process {
 		dx *= Math.pow(frictX,tmod);
 		rawFocus.levelY += dy*tmod;
 		dy *= Math.pow(frictY,tmod);
+
 
 		// Bounds clamping
 		if( clampToLevelBounds ) {

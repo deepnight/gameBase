@@ -72,7 +72,7 @@ class DebugDrone extends Entity {
 		else
 			camera.target = null;
 		prevCamTarget = null;
-		camera.zoom = prevCamZoom;
+		camera.forceZoom( prevCamZoom );
 
 		super.dispose();
 
@@ -114,10 +114,10 @@ class DebugDrone extends Entity {
 
 			// Zoom controls
 			if( ca.isKeyboardDown(K.PGUP) )
-				camera.zoom -= camera.zoom * 0.02*tmod;
+				camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
 
 			if( ca.isKeyboardDown(K.PGDOWN) )
-				camera.zoom += camera.zoom * 0.02*tmod;
+				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
 			// Destroy
 			if( ca.isKeyboardPressed(K.ESCAPE) ) {
