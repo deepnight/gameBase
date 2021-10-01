@@ -25,4 +25,7 @@
 --cmd haxelib --always git heaps-aseprite https://github.com/deepnight/heaps-aseprite.git
 
 --next
+--cmd haxelib --always install ase 1.1.1
+
+--next
 --cmd haxelib list
