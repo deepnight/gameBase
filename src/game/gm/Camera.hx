@@ -90,10 +90,36 @@ class Camera extends dn.Process {
 		return M.ceil( Game.ME.h() / Const.SCALE / zoom );
 	}
 
-	public inline function isOnScreen(levelX:Float, levelY: Float) {
-		return levelX>=left && levelX<=right && levelY>=top && levelY<=bottom;
+
+	/**
+		Return TRUE if given coords are in current camera bounds. Padding is *added* to the screen bounds (it can be negative to *shrink* these bounds).
+	**/
+	public inline function isOnScreen(levelX:Float, levelY: Float, padding=0.) {
+		return levelX>=left-padding && levelX<=right+padding && levelY>=top-padding && levelY<=bottom+padding;
 	}
 
+	/**
+		Return TRUE if given rectangle is partially inside current camera bounds. Padding is *added* to the screen bounds (it can be negative to *shrink* these bounds).
+	**/
+	public inline function isOnScreenRect(x:Float, y:Float, wid:Float, hei:Float, padding=0.) {
+		return Lib.rectangleOverlaps(
+			left-padding, top-padding, pxWid+padding*2, pxHei+padding*2,
+			x, y, wid, hei
+		);
+	}
+
+	/**
+		Return TRUE if given grid coords are in current camera bounds. Padding is *added* to the screen bounds (it can be negative to *shrink* these bounds).
+	**/
+	public inline function isOnScreenCase(cx:Int, cy:Int, padding=32) {
+		return cx*Const.GRID>=left-padding && (cx+1)*Const.GRID<=right+padding
+			&& cy*Const.GRID>=top-padding && (cy+1)*Const.GRID<=bottom+padding;
+	}
+
+
+	/**
+		Enable auto tracking on given Entity. If `immediate` is true, the camera is immediately positioned over the Entity, otherwise it just moves to it.
+	**/
 	public function trackEntity(e:Entity, immediate:Bool, speed=1.0) {
 		target = e;
 		setTrackingSpeed(speed);
@@ -175,12 +201,15 @@ class Camera extends dn.Process {
 	}
 
 
+	/** Hide camera debug bounds **/
 	public function disableDebugBounds() {
 		if( debugBounds!=null ) {
 			debugBounds.remove();
 			debugBounds = null;
 		}
 	}
+
+	/** Show camera debug bounds **/
 	public function enableDebugBounds() {
 		disableDebugBounds();
 		debugBounds = new h2d.Graphics();
