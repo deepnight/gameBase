@@ -8,8 +8,6 @@ class Fx extends dn.Process {
 	var game(get,never) : Game; inline function get_game() return Game.ME;
 	var level(get,never) : Level; inline function get_level() return Game.ME.level;
 
-	final dict = Assets.tilesDict;
-
 	var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
@@ -92,12 +90,12 @@ class Fx extends dn.Process {
 
 	public function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile(dict.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile(D.tiles.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.lifeS = sec;
 
-		var p = allocTopAdd(getTile(dict.pixel), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile(D.tiles.pixel), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.setScale(2);
@@ -107,7 +105,7 @@ class Fx extends dn.Process {
 
 	public function markerFree(x:Float, y:Float, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile(dict.fxDot), x,y);
+		var p = allocTopAdd(getTile(D.tiles.fxDot), x,y);
 		p.setCenterRatio(0.5,0.5);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
@@ -121,7 +119,7 @@ class Fx extends dn.Process {
 		var tf = new h2d.Text(Assets.fontPixel, topNormalSb);
 		tf.text = txt;
 
-		var p = allocTopAdd(getTile(dict.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocTopAdd(getTile(D.tiles.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.colorize(0x0080FF);
 		p.alpha = 0.6;
 		p.lifeS = 0.3;
@@ -155,7 +153,7 @@ class Fx extends dn.Process {
 	**/
 	public function dotsExplosionExample(x:Float, y:Float, color:UInt) {
 		for(i in 0...80) {
-			var p = allocTopAdd( getTile(dict.fxDot), x+rnd(0,3,true), y+rnd(0,3,true) );
+			var p = allocTopAdd( getTile(D.tiles.fxDot), x+rnd(0,3,true), y+rnd(0,3,true) );
 			p.alpha = rnd(0.4,1);
 			p.colorAnimS(color, 0x762087, rnd(0.6, 3)); // fade particle color from given color to some purple
 			p.moveAwayFrom(x,y, rnd(1,3)); // move away from source

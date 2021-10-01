@@ -12,9 +12,6 @@ class Assets {
 	/** Main atlas **/
 	public static var tiles : SpriteLib;
 
-	/** Fully typed access to slice names present in Aseprite file (eg. `trace(tilesDict.myStoneTexture)` )**/
-	public static var tilesDict = dn.heaps.assets.Aseprite.getDict(hxd.Res.atlas.tiles);
-
 	/** LDtk world data **/
 	public static var worldData : World;
 
