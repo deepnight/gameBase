@@ -27,5 +27,6 @@ import assets.World;
 import dn.Color as C;
 import hxd.Key as K;
 import tools.LPoint as P;
+import assets.Lang as L;
 
 #end
