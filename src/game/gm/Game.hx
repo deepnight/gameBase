@@ -209,7 +209,7 @@ class Game extends Process {
 
 
 		// Global key shortcuts
-		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !ca.locked() ) {
+		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !ca.locked() && !Console.ME.isActive() ) {
 
 			// Exit by pressing ESC twice
 			#if hl
