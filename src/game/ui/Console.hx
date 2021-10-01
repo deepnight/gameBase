@@ -116,4 +116,10 @@ class Console extends h2d.Console {
 	#end
 
 	public function onFlagChange(k:String, v:Bool) {}
+
+
+	public inline function clearAndLog(str:Dynamic) {
+		runCommand("cls");
+		log( Std.string(str) );
+	}
 }
