@@ -304,6 +304,16 @@ class Entity {
 		pivotY = y!=null ? y : x;
 	}
 
+	/** Return TRUE if the Entity *center point* is in screen bounds (default padding is +32px) **/
+	public inline function isOnScreenCenter(padding=32) {
+		return camera.isOnScreen( centerX, centerY, padding + M.fmax(wid*0.5, hei*0.5) );
+	}
+
+	/** Return TRUE if the Entity rectangle is in screen bounds (default padding is +32px) **/
+	public inline function isOnScreenBounds(padding=32) {
+		return camera.isOnScreenRect( left,top, wid, hei, padding );
+	}
+
 	/** Apply a bump/kick force to entity **/
 	public function bump(x:Float,y:Float) {
 		bdx += x;
