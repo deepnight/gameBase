@@ -182,6 +182,14 @@ class Entity {
 	/** Center Y pixel coordinate of the bounding box **/
 	public var centerY(get,never) : Float; inline function get_centerY() return attachY + (0.5-pivotY) * hei;
 
+	/** Current X position on screen (ie. absolute)**/
+	public var screenAttachX(get,never) : Float;
+		inline function get_screenAttachX() return game!=null && !game.destroyed ? sprX*Const.SCALE + game.scroller.x : sprX*Const.SCALE;
+
+	/** Current Y position on screen (ie. absolute)**/
+	public var screenAttachY(get,never) : Float;
+		inline function get_screenAttachY() return game!=null && !game.destroyed ? sprY*Const.SCALE + game.scroller.y : sprY*Const.SCALE;
+
 	/** attachX value during last frame **/
 	public var prevFrameattachX(default,null) : Float = -Const.INFINITE;
 	/** attachY value during last frame **/
