@@ -14,6 +14,9 @@ class App extends dn.Process {
 	/** Controller Access created for Main & Boot **/
 	public var ca : dn.heaps.Controller.ControllerAccess;
 
+	/** If TRUE, game is paused, and a Contrast filter is applied **/
+	public var screenshotMode(default,null) = false;
+
 	public function new(s:h2d.Scene) {
 		super();
 		ME = this;
@@ -63,6 +66,29 @@ class App extends dn.Process {
 
 	public function anyInputHasFocus() {
 		return Console.ME.isActive() || cd.has("consoleRecentlyActive");
+	}
+
+
+	/** Set screenshot mode **/
+	public function setScreenshotMode(v:Bool) {
+		screenshotMode = v;
+
+		if( screenshotMode ) {
+			var f = new h2d.filter.ColorMatrix();
+			f.matrix.colorContrast(0.2);
+			root.filter = f;
+			if( Game.exists() ) {
+				Game.ME.hud.root.visible = false;
+				Game.ME.pause();
+			}
+		}
+		else {
+			if( Game.exists() ) {
+				Game.ME.hud.root.visible = true;
+				Game.ME.resume();
+			}
+			root.filter = null;
+		}
 	}
 
 
@@ -145,7 +171,12 @@ class App extends dn.Process {
 
         super.update();
 
+		if( ca.isKeyboardPressed(K.F9) )
+			setScreenshotMode( !screenshotMode );
+
 		if( ui.Console.ME.isActive() )
 			cd.setF("consoleRecentlyActive",2);
+
+
     }
 }
