@@ -166,13 +166,15 @@ class Entity {
 	/** Entity attach Y pixel coordinate **/
 	public var attachY(get,never) : Float; inline function get_attachY() return (cy+yr)*Const.GRID;
 
-	// Coordinates getters, for easier gameplay coding
+	// Various coordinates getters, for easier gameplay coding
+
 	/** Left pixel coordinate of the bounding box **/
 	public var left(get,never) : Float; inline function get_left() return attachX + (0-pivotX) * wid;
 	/** Right pixel coordinate of the bounding box **/
 	public var right(get,never) : Float; inline function get_right() return attachX + (1-pivotX) * wid;
 	/** Top pixel coordinate of the bounding box **/
 	public var top(get,never) : Float; inline function get_top() return attachY + (0-pivotY) * hei;
+	/** Bottom pixel coordinate of the bounding box **/
 	public var bottom(get,never) : Float; inline function get_bottom() return attachY + (1-pivotY) * hei;
 
 	/** Center X pixel coordinate of the bounding box **/
