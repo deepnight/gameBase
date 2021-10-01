@@ -11,11 +11,12 @@ class Console extends h2d.Console {
 	public function new(f:h2d.Font, p:h2d.Object) {
 		super(f, p);
 
+		logTxt.filter = new dn.heaps.filter.PixelOutline();
 		scale(2); // TODO smarter scaling for 4k screens
 
 		// Settings
 		ME = this;
-		h2d.Console.HIDE_LOG_TIMEOUT = 30;
+		h2d.Console.HIDE_LOG_TIMEOUT = #if debug 60 #else 5 #end;
 		Lib.redirectTracesToH2dConsole(this);
 
 		// Debug flags (/set, /unset, /list commands)
