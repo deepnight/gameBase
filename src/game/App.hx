@@ -76,6 +76,10 @@ class App extends dn.Process {
         engine.fullScreen = true;
         #end
 
+		#if( hl && !debug)
+		hl.UI.closeConsole();
+		#end
+
 		// Heaps resource management
 		#if( hl && debug )
 			hxd.Res.initLocal();
