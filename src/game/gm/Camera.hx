@@ -33,6 +33,7 @@ class Camera extends dn.Process {
 	var dz = 0.;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	var bumpZoomFactor = 0.;
 
 	/** Actual zoom value without modifiers **/
 	var baseZoom = 1.0;
@@ -92,7 +93,7 @@ class Camera extends dn.Process {
 	}
 
 	inline function get_zoom() {
-		return baseZoom;
+		return baseZoom + bumpZoomFactor;
 	}
 
 
@@ -111,6 +112,9 @@ class Camera extends dn.Process {
 		dz = 0;
 	}
 
+	public inline function bumpZoom(z:Float) {
+		bumpZoomFactor = z;
+	}
 
 	function get_pxWid() {
 		return M.ceil( Game.ME.w() / Const.SCALE / zoom );
@@ -309,7 +313,7 @@ class Camera extends dn.Process {
 		var prevZoom = baseZoom;
 		baseZoom+=dz*tmod;
 
-		// bumpZoomFactor *= Math.pow(0.9, tmod);
+		bumpZoomFactor *= Math.pow(0.9, tmod);
 		dz*=Math.pow(zoomFrict, tmod);
 		if( M.fabs(tz-baseZoom)<=0.05*tmod )
 			dz*=Math.pow(0.8,tmod);
