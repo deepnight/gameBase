@@ -467,6 +467,9 @@ class Entity {
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
 	function chargeAction(id:String, sec:Float, cb:Void->Void) {
+		if( !isAlive() )
+			return;
+
 		if( isChargingAction(id) )
 			cancelAction(id);
 		if( sec<=0 )
@@ -477,6 +480,9 @@ class Entity {
 
 	/** If id is null, return TRUE if any action is charging. If id is provided, return TRUE if this specific action is charging nokw. **/
 	public function isChargingAction(?id:String) {
+		if( !isAlive() )
+			return false;
+
 		if( id==null )
 			return actions.length>0;
 
@@ -488,6 +494,9 @@ class Entity {
 	}
 
 	public function cancelAction(?id:String) {
+		if( !isAlive() )
+			return;
+
 		if( id==null )
 			actions = [];
 		else {
@@ -503,6 +512,9 @@ class Entity {
 
 	/** Action management loop **/
 	function updateActions() {
+		if( !isAlive() )
+			return;
+
 		var i = 0;
 		while( i<actions.length ) {
 			var a = actions[i];
@@ -519,7 +531,7 @@ class Entity {
 
 
 	public inline function hasAffect(k:Affect) {
-		return affects.exists(k) && affects.get(k)>0;
+		return isAlive() && affects.exists(k) && affects.get(k)>0;
 	}
 
 	public inline function getAffectDurationS(k:Affect) {
@@ -528,7 +540,7 @@ class Entity {
 
 	/** Add an Affect. If `allowLower` is TRUE, it is possible to override an existing Affect with a shorter duration. **/
 	public function setAffectS(k:Affect, t:Float, ?allowLower=false) {
-		if( affects.exists(k) && affects.get(k)>t && !allowLower )
+		if( !isAlive() || affects.exists(k) && affects.get(k)>t && !allowLower )
 			return;
 
 		if( t<=0 )
@@ -556,6 +568,9 @@ class Entity {
 
 	/** Affects update loop **/
 	function updateAffects() {
+		if( !isAlive() )
+			return;
+		
 		for(k in affects.keys()) {
 			var t = affects.get(k);
 			t-=1/Const.FPS * tmod;
