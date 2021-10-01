@@ -51,6 +51,9 @@ class Console extends h2d.Console {
 		});
 		this.addAlias("p", "process");
 
+		// Show build info
+		this.addCommand("build", [], ()->log( Const.BUILD_INFO ) );
+
 		// Create a debug drone
 		this.addCommand("drone", [], ()->{
 			new DebugDrone();

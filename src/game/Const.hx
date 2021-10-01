@@ -58,6 +58,14 @@ class Const {
 			return SCALE;
 		}
 
+	/** Compilation date and time: YYYY-MM-DD HH:MM:SS **/
+	public static var BUILD_DATE = dn.MacroTools.getRawBuildDate();
+
+	/** Compilation date and time: YYYY-MM-DD HH:MM:SS **/
+	public static var BUILD_INFO(get,never) : String;
+		static function get_BUILD_INFO() return dn.MacroTools.getBuildInfo();
+
+
 	/** Game layers indexes **/
 	static var _inc = 0;
 	public static var DP_BG = _inc++;
