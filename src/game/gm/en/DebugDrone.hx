@@ -96,29 +96,19 @@ class DebugDrone extends Entity {
 		var spd = 0.02 * ( ca.isPadDown(X) ? 3 : 1 ); // turbo by holding pad-X
 
 		if( !App.ME.anyInputHasFocus() ) {
+			// Fly around
 			if( ca.getAnalogDist(MoveX,MoveY) > 0 ) {
 				var a = ca.getAnalogAngle(MoveX,MoveY);
 				var d = ca.getAnalogDist(MoveX,MoveY);
 				droneDx+=Math.cos(a) * d*spd * tmod;
 				droneDy+=Math.sin(a) * d*spd * tmod;
 			}
-			if( ca.isKeyboardDown(K.LEFT) )
-				droneDx-=spd*tmod;
-
-			if( ca.isKeyboardDown(K.RIGHT) )
-				droneDx+=spd*tmod;
-
-			if( ca.isKeyboardDown(K.UP) )
-				droneDy-=spd*tmod;
-
-			if( ca.isKeyboardDown(K.DOWN) )
-				droneDy+=spd*tmod;
 
 			// Zoom controls
-			if( ca.isKeyboardDown(K.PGUP) )
+			if( ca.isKeyboardDown(K.PGUP) || ca.isPadDown(LT) )
 				camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
 
-			if( ca.isKeyboardDown(K.PGDOWN) )
+			if( ca.isKeyboardDown(K.PGDOWN) || ca.isPadDown(RT) )
 				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
 			// Destroy
