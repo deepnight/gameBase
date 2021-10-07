@@ -72,6 +72,7 @@ class SamplePlayer extends gm.Entity {
 			setSquashY(0.5);
 			dy = 0;
 			yr = 1;
+			ca.rumble(0.2, 0.06);
 			onPosManuallyChanged();
 		}
 
@@ -99,6 +100,7 @@ class SamplePlayer extends gm.Entity {
 			setSquashX(0.6);
 			cd.unset("recentlyOnGround");
 			fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
+			ca.rumble(0.05, 0.06);
 		}
 
 		// Walk
