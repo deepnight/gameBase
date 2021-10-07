@@ -19,30 +19,38 @@ class Console extends h2d.Console {
 		h2d.Console.HIDE_LOG_TIMEOUT = #if debug 60 #else 5 #end;
 		Lib.redirectTracesToH2dConsole(this);
 
-		// Debug flags (/set, /unset, /list commands)
 		#if debug
-		flags = new Map();
-		this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
-			setFlag(k,true);
-			log("+ "+k.toLowerCase(), 0x80FF00);
-		});
-		this.addCommand("unset", [{ name:"k", t:AString, opt:true } ], function(?k:String) {
-			if( k==null ) {
-				log("Reset all.",0xFF0000);
-				for(k in flags.keys())
+			// Debug flags (/set, /unset, /list commands)
+			flags = new Map();
+			this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
+				setFlag(k,true);
+				log("+ "+k.toLowerCase(), 0x80FF00);
+			});
+			this.addCommand("unset", [{ name:"k", t:AString, opt:true } ], function(?k:String) {
+				if( k==null ) {
+					log("Reset all.",0xFF0000);
+					for(k in flags.keys())
+						setFlag(k,false);
+				}
+				else {
+					log("- "+k,0xFF8000);
 					setFlag(k,false);
-			}
-			else {
-				log("- "+k,0xFF8000);
-				setFlag(k,false);
-			}
-		});
-		this.addCommand("list", [], function() {
-			for(k in flags.keys())
-				log(k, 0x80ff00);
-		});
-		this.addAlias("+","set");
-		this.addAlias("-","unset");
+				}
+			});
+			this.addCommand("list", [], function() {
+				for(k in flags.keys())
+					log(k, 0x80ff00);
+			});
+			this.addAlias("+","set");
+			this.addAlias("-","unset");
+
+			// Controller debugger
+			this.addCommand("ctrl", [], ()->{
+				App.ME.ca.toggleDebugger(App.ME, dbg->{
+					dbg.root.filter = new dn.heaps.filter.PixelOutline();
+					dbg.onUpdateCb = ()->dbg.root.setScale( Const.UI_SCALE );
+				});
+			});
 		#end
 
 		// List all active dn.Process
