@@ -149,6 +149,14 @@ class App extends dn.Process {
 		controller.bindKeyboard(Jump, K.SPACE);
 		controller.bindKeyboard(Restart, K.R);
 
+		// Debug controls
+		#if debug
+		controller.bindPad(DebugTurbo, LT);
+		controller.bindPad(DebugSlowMo, LB);
+		controller.bindKeyboard(DebugTurbo, [K.END, K.NUMPAD_ADD]);
+		controller.bindKeyboard(DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
+		#end
+
 		ca = controller.createAccess();
 	}
 

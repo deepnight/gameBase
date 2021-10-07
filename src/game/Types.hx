@@ -4,6 +4,9 @@ enum GameAction {
 	Jump;
 	Restart;
 	Cancel;
+
+	DebugTurbo;
+	DebugSlowMo;
 }
 
 enum Affect {
