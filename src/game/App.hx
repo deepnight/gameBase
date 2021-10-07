@@ -140,12 +140,12 @@ class App extends dn.Process {
 		controller = new dn.heaps.input.Controller(GameAction);
 
 		// Gamepad bindings
-		controller.bindPadLStickX(Walk);
+		controller.bindPadLStick(MoveX,MoveY);
 		controller.bindPad(Jump, A);
 		controller.bindPad(Restart, SELECT);
 
 		// Keyboard bindings
-		controller.bindKeyboardAsStickX(Walk, K.LEFT, K.RIGHT);
+		controller.bindKeyboardAsStick(MoveX,MoveY, K.UP, K.LEFT, K.DOWN, K.RIGHT);
 		controller.bindKeyboard(Jump, K.SPACE);
 		controller.bindKeyboard(Restart, K.R);
 
@@ -158,6 +158,9 @@ class App extends dn.Process {
 		#end
 
 		ca = controller.createAccess();
+		ca.lockCondition = ()->{
+			return destroyed || Console.ME.isActive();
+		}
 	}
 
 

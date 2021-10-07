@@ -102,15 +102,11 @@ class SamplePlayer extends gm.Entity {
 		}
 
 		// Walk
-		if( !App.ME.anyInputHasFocus() && ca.getAnalogDist(Walk)>0 ) {
+		if( ca.getAnalogDist(MoveX)>0 ) {
 			// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
-			walkSpeed = ca.getAnalogValue(Walk);
+			walkSpeed = ca.getAnalogValue(MoveX); // -1 to 1
 		}
-
-		// Zoom test
-		if( ca.isKeyboardPressed(K.ENTER) )
-			camera.targetZoom = camera.targetZoom==2 ? 1: 2;
-}
+	}
 
 
 	override function fixedUpdate() {
