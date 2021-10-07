@@ -4,7 +4,7 @@ class Modal extends ui.Window {
 	public static var ALL : Array<Modal> = [];
 	static var COUNT = 0;
 
-	var ca : dn.heaps.Controller.ControllerAccess;
+	var ca : dn.legacy.Controller.ControllerAccess;
 	var mask : h2d.Bitmap;
 	var modalIdx : Int;
 
