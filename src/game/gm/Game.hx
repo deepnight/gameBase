@@ -8,7 +8,7 @@ class Game extends Process {
 	public var app(get,never) : App; inline function get_app() return App.ME;
 
 	/** Game controller (pad or keyboard) **/
-	public var ca : ControllerAccess;
+	public var ca : ControllerAccess<GameAction>;
 
 	/** Particles **/
 	public var fx : Fx;
@@ -34,9 +34,7 @@ class Game extends Process {
 		super(App.ME);
 
 		ME = this;
-		ca = App.ME.controller.createAccess("game");
-		ca.setLeftDeadZone(0.2);
-		ca.setRightDeadZone(0.2);
+		ca = App.ME.controller.createAccess();
 		createRootInLayers(App.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();
@@ -209,7 +207,7 @@ class Game extends Process {
 
 
 		// Global key shortcuts
-		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !ca.locked() && !Console.ME.isActive() ) {
+		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !Console.ME.isActive() ) {
 
 			// Exit by pressing ESC twice
 			#if hl
@@ -227,7 +225,7 @@ class Game extends Process {
 			#end
 
 			// Restart whole game
-			if( ca.selectPressed() )
+			if( ca.isPressed(Restart) )
 				App.ME.startGame();
 
 		}

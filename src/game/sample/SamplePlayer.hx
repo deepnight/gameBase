@@ -9,7 +9,7 @@ package sample;
 **/
 
 class SamplePlayer extends gm.Entity {
-	var ca : ControllerAccess;
+	var ca : ControllerAccess<GameAction>;
 	var walkSpeed = 0.;
 
 	// This is TRUE if the player is not falling
@@ -34,8 +34,7 @@ class SamplePlayer extends gm.Entity {
 		camera.clampToLevelBounds = true;
 
 		// Init controller
-		ca = App.ME.controller.createAccess("entitySample");
-		ca.setLeftDeadZone(0.3);
+		ca = App.ME.controller.createAccess();
 
 		// Placeholder display
 		var g = new h2d.Graphics(spr);
@@ -94,26 +93,24 @@ class SamplePlayer extends gm.Entity {
 			cd.setS("recentlyOnGround",0.1); // allows "just-in-time" jumps
 
 
-		if( !ca.locked() ) {
-			// Jump
-			if( cd.has("recentlyOnGround") && ( ca.aPressed() || ca.isKeyboardPressed(K.SPACE) ) ) {
-				dy = -0.85;
-				setSquashX(0.6);
-				cd.unset("recentlyOnGround");
-				fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
-			}
-
-			// Walk
-			if( !App.ME.anyInputHasFocus() && ca.leftDist()>0 ) {
-				// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
-				walkSpeed = Math.cos(ca.leftAngle()) * ca.leftDist();
-			}
-
-			// Zoom test
-			if( ca.isKeyboardPressed(K.ENTER) )
-				camera.targetZoom = camera.targetZoom==2 ? 1: 2;
+		// Jump
+		if( cd.has("recentlyOnGround") && ca.isPressed(Jump) ) {
+			dy = -0.85;
+			setSquashX(0.6);
+			cd.unset("recentlyOnGround");
+			fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
 		}
-	}
+
+		// Walk
+		if( !App.ME.anyInputHasFocus() && ca.getAnalogDist(Walk)>0 ) {
+			// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
+			walkSpeed = ca.getAnalogValue(Walk);
+		}
+
+		// Zoom test
+		if( ca.isKeyboardPressed(K.ENTER) )
+			camera.targetZoom = camera.targetZoom==2 ? 1: 2;
+}
 
 
 	override function fixedUpdate() {

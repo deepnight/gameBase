@@ -9,7 +9,7 @@ class DebugDrone extends Entity {
 	public static var ME : DebugDrone;
 	static var DEFAULT_COLOR = 0x00ff00;
 
-	var ca : ControllerAccess;
+	var ca : ControllerAccess<GameAction>;
 	var prevCamTarget : Null<Entity>;
 	var prevCamZoom : Float;
 
@@ -32,8 +32,8 @@ class DebugDrone extends Entity {
 		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);
 
 		// Controller
-		ca = App.ME.controller.createAccess("drone", true);
-		ca.setLeftDeadZone(0.3);
+		ca = App.ME.controller.createAccess();
+		ca.takeExclusivity();
 
 		// Take control of camera
 		if( camera.target!=null && camera.target.isAlive() )
@@ -93,65 +93,65 @@ class DebugDrone extends Entity {
 		cancelVelocities();
 
 		// Movement controls
-		var spd = 0.02 * ( ca.xDown() ? 3 : 1 ); // turbo by holding pad-X
+		// var spd = 0.02 * ( ca.xDown() ? 3 : 1 ); // turbo by holding pad-X
 
-		if( !App.ME.anyInputHasFocus() ) {
-			if( ca.leftDist()>0 ) {
-				var a = ca.leftAngle();
-				var d = ca.leftDist();
-				droneDx+=Math.cos(a) * d*spd * tmod;
-				droneDy+=Math.sin(a) * d*spd * tmod;
-			}
-			if( ca.isKeyboardDown(K.LEFT) )
-				droneDx-=spd*tmod;
+		// if( !App.ME.anyInputHasFocus() ) {
+		// 	if( ca.leftDist()>0 ) {
+		// 		var a = ca.leftAngle();
+		// 		var d = ca.leftDist();
+		// 		droneDx+=Math.cos(a) * d*spd * tmod;
+		// 		droneDy+=Math.sin(a) * d*spd * tmod;
+		// 	}
+		// 	if( ca.isKeyboardDown(K.LEFT) )
+		// 		droneDx-=spd*tmod;
 
-			if( ca.isKeyboardDown(K.RIGHT) )
-				droneDx+=spd*tmod;
+		// 	if( ca.isKeyboardDown(K.RIGHT) )
+		// 		droneDx+=spd*tmod;
 
-			if( ca.isKeyboardDown(K.UP) )
-				droneDy-=spd*tmod;
+		// 	if( ca.isKeyboardDown(K.UP) )
+		// 		droneDy-=spd*tmod;
 
-			if( ca.isKeyboardDown(K.DOWN) )
-				droneDy+=spd*tmod;
+		// 	if( ca.isKeyboardDown(K.DOWN) )
+		// 		droneDy+=spd*tmod;
 
-			// Zoom controls
-			if( ca.isKeyboardDown(K.PGUP) )
-				camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
+		// 	// Zoom controls
+		// 	if( ca.isKeyboardDown(K.PGUP) )
+		// 		camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
 
-			if( ca.isKeyboardDown(K.PGDOWN) )
-				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
+		// 	if( ca.isKeyboardDown(K.PGDOWN) )
+		// 		camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
-			// Destroy
-			if( ca.isKeyboardPressed(K.ESCAPE) ) {
-				destroy();
-				return;
-			}
-		}
+		// 	// Destroy
+		// 	if( ca.isKeyboardPressed(K.ESCAPE) ) {
+		// 		destroy();
+		// 		return;
+		// 	}
+		// }
 
 
-		// X physics
-		xr += droneDx*tmod;
-		while( xr>1 ) { xr--; cx++; }
-		while( xr<0 ) { xr++; cx--; }
-		droneDx*=Math.pow(droneFrict, tmod);
+		// // X physics
+		// xr += droneDx*tmod;
+		// while( xr>1 ) { xr--; cx++; }
+		// while( xr<0 ) { xr++; cx--; }
+		// droneDx*=Math.pow(droneFrict, tmod);
 
-		// Y physics
-		yr += droneDy*tmod;
-		while( yr>1 ) { yr--; cy++; }
-		while( yr<0 ) { yr++; cy--; }
-		droneDy*=Math.pow(droneFrict, tmod);
+		// // Y physics
+		// yr += droneDy*tmod;
+		// while( yr>1 ) { yr--; cy++; }
+		// while( yr<0 ) { yr++; cy--; }
+		// droneDy*=Math.pow(droneFrict, tmod);
 
-		// Update previous cam target if it changes
-		if( camera.target!=null && camera.target!=this && camera.target.isAlive() )
-			prevCamTarget = camera.target;
+		// // Update previous cam target if it changes
+		// if( camera.target!=null && camera.target!=this && camera.target.isAlive() )
+		// 	prevCamTarget = camera.target;
 
-		// Display FPS
-		debug( M.round(hxd.Timer.fps()) + " FPS" );
+		// // Display FPS
+		// debug( M.round(hxd.Timer.fps()) + " FPS" );
 
-		// Collisions
-		if( level.hasCollision(cx,cy) )
-			setColor(0xff0000);
-		else
-			setColor(DEFAULT_COLOR);
+		// // Collisions
+		// if( level.hasCollision(cx,cy) )
+		// 	setColor(0xff0000);
+		// else
+		// 	setColor(DEFAULT_COLOR);
 	}
 }

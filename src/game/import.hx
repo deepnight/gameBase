@@ -6,7 +6,7 @@ import dn.Lib;
 import dn.Color;
 import dn.Tweenie;
 import dn.data.GetText;
-import dn.legacy.Controller;
+import dn.heaps.input.*;
 import dn.heaps.slib.*;
 
 // Project classes

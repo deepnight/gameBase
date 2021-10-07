@@ -9,10 +9,10 @@ class App extends dn.Process {
 	public var scene(default,null) : h2d.Scene;
 
 	/** Used to create "ControllerAccess" instances that will grant controller usage (keyboard or gamepad) **/
-	public var controller : Controller;
+	public var controller : Controller<GameAction>;
 
 	/** Controller Access created for Main & Boot **/
-	public var ca : ControllerAccess;
+	public var ca : ControllerAccess<GameAction>;
 
 	/** If TRUE, game is paused, and a Contrast filter is applied **/
 	public var screenshotMode(default,null) = false;
@@ -137,15 +137,19 @@ class App extends dn.Process {
 
 	/** Init game controller and default key bindings **/
 	function initController() {
-		controller = new dn.legacy.Controller(scene);
-		ca = controller.createAccess("main");
-		controller.bind(AXIS_LEFT_X_NEG, K.LEFT, K.Q, K.A);
-		controller.bind(AXIS_LEFT_X_POS, K.RIGHT, K.D);
-		controller.bind(X, K.SPACE, K.F, K.E);
-		controller.bind(A, K.UP, K.Z, K.W);
-		controller.bind(B, K.ENTER, K.NUMPAD_ENTER);
-		controller.bind(SELECT, K.R);
-		controller.bind(START, K.N);
+		controller = new dn.heaps.input.Controller(GameAction);
+
+		// Gamepad bindings
+		controller.bindPadLStickX(Walk);
+		controller.bindPad(Jump, A);
+		controller.bindPad(Restart, SELECT);
+
+		// Keyboard bindings
+		controller.bindKeyboardAsStickX(Walk, K.LEFT, K.RIGHT);
+		controller.bindKeyboard(Jump, K.SPACE);
+		controller.bindKeyboard(Restart, K.R);
+
+		ca = controller.createAccess();
 	}
 
 

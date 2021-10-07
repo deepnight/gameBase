@@ -40,10 +40,6 @@ class Boot extends hxd.App {
 	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 
-		// Controller update
-		Controller.beforeUpdate();
-
-
 		// Debug controls over app speed
 		var adjustedTmod = hxd.Timer.tmod;
 		#if debug

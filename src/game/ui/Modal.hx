@@ -4,7 +4,7 @@ class Modal extends ui.Window {
 	public static var ALL : Array<Modal> = [];
 	static var COUNT = 0;
 
-	var ca : ControllerAccess;
+	var ca : ControllerAccess<GameAction>;
 	var mask : h2d.Bitmap;
 	var modalIdx : Int;
 
@@ -16,7 +16,8 @@ class Modal extends ui.Window {
 		if( modalIdx==0 )
 			Game.ME.pause();
 
-		ca = App.ME.controller.createAccess("modal", true);
+		ca = App.ME.controller.createAccess();
+		ca.takeExclusivity();
 		mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
 		root.under(mask);
 		dn.Process.resizeAll();
@@ -62,7 +63,7 @@ class Modal extends ui.Window {
 
 	override function update() {
 		super.update();
-		if( ca.bPressed() || ca.isKeyboardPressed(hxd.Key.ESCAPE) )
+		if( ca.isPressed(Cancel) )
 			close();
 	}
 }
