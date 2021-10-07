@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Font size="12" family="Pixel UniCode" height="14" style="Regular">
+<Font size="12" family="Pixel UniCode" height="15" style="Regular">
  <Char width="2" offset="0 13" rect="1 10 0 0" code=" "/>
  <Char width="2" offset="0 5" rect="2 2 1 8" code="!"/>
  <Char width="4" offset="0 5" rect="4 2 3 2" code="&quot;"/>
