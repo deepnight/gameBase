@@ -8,7 +8,7 @@ class Game extends Process {
 	public var app(get,never) : App; inline function get_app() return App.ME;
 
 	/** Game controller (pad or keyboard) **/
-	public var ca : dn.legacy.Controller.ControllerAccess;
+	public var ca : ControllerAccess;
 
 	/** Particles **/
 	public var fx : Fx;

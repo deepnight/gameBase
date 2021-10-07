@@ -9,7 +9,7 @@ class Boot extends hxd.App {
 	var tmodSpeedMul = 1.0;
 
 	// Shortcut to controller
-	var ca(get,never) : dn.legacy.Controller.ControllerAccess;
+	var ca(get,never) : Controller.ControllerAccess;
 		inline function get_ca() return App.ME.ca;
 	#end
 
@@ -41,7 +41,7 @@ class Boot extends hxd.App {
 		super.update(deltaTime);
 
 		// Controller update
-		dn.legacy.Controller.beforeUpdate();
+		Controller.beforeUpdate();
 
 
 		// Debug controls over app speed

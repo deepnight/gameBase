@@ -9,10 +9,10 @@ class App extends dn.Process {
 	public var scene(default,null) : h2d.Scene;
 
 	/** Used to create "ControllerAccess" instances that will grant controller usage (keyboard or gamepad) **/
-	public var controller : dn.legacy.Controller;
+	public var controller : Controller;
 
 	/** Controller Access created for Main & Boot **/
-	public var ca : dn.legacy.Controller.ControllerAccess;
+	public var ca : ControllerAccess;
 
 	/** If TRUE, game is paused, and a Contrast filter is applied **/
 	public var screenshotMode(default,null) = false;

@@ -9,7 +9,7 @@ class DebugDrone extends Entity {
 	public static var ME : DebugDrone;
 	static var DEFAULT_COLOR = 0x00ff00;
 
-	var ca : dn.legacy.Controller.ControllerAccess;
+	var ca : ControllerAccess;
 	var prevCamTarget : Null<Entity>;
 	var prevCamZoom : Float;
 
