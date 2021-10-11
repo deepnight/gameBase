@@ -5,7 +5,7 @@ class Game extends Process {
 	public static var ME : Game;
 
 	/** Game controller (pad or keyboard) **/
-	public var ca : dn.heaps.Controller.ControllerAccess;
+	public var ca : ControllerAccess;
 
 	/** Particles **/
 	public var fx : Fx;

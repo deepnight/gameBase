@@ -8,7 +8,7 @@ class Boot extends hxd.App {
 
 	#if debug
 	var tmodSpeedMul = 1.0;
-	var ca(get,never) : dn.heaps.Controller.ControllerAccess;
+	var ca(get,never) : ControllerAccess;
 		inline function get_ca() return Main.ME.ca;
 	#end
 
@@ -41,7 +41,7 @@ class Boot extends hxd.App {
 		super.update(deltaTime);
 
 		// Controller update
-		dn.heaps.Controller.beforeUpdate();
+		Controller.beforeUpdate();
 
 		var currentTmod = hxd.Timer.tmod;
 		#if debug
