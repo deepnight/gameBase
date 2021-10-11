@@ -14,7 +14,7 @@ class Lang {
         CUR = lid==null ? DEFAULT : lid;
 
 		t = new GetText();
-		t.readMo( hxd.Res.load("lang/"+CUR+".mo").entry.getBytes() );
+		t.readPo( hxd.Res.load("lang/"+CUR+".po").entry.getBytes() );
     }
 
     public static function untranslated(str:Dynamic) : LocaleString {
