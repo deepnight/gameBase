@@ -1,5 +1,3 @@
-package gm;
-
 import h2d.Sprite;
 import dn.heaps.HParticle;
 

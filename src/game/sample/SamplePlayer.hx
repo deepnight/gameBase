@@ -8,7 +8,7 @@ package sample;
 	- some squash animations, because it's cheap and they do the job
 **/
 
-class SamplePlayer extends gm.Entity {
+class SamplePlayer extends Entity {
 	var ca : ControllerAccess<GameAction>;
 	var walkSpeed = 0.;
 

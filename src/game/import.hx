@@ -14,8 +14,7 @@ import Types;
 import ui.Console;
 import tools.*;
 import assets.*;
-import gm.*;
-import gm.en.*;
+import en.*;
 
 // Castle DB
 import assets.CastleDb;

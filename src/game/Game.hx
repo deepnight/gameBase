@@ -1,5 +1,3 @@
-package gm;
-
 import dn.Process;
 
 class Game extends Process {
