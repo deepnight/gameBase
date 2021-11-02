@@ -77,7 +77,14 @@ class Assets {
 	}
 
 
-	public static function update(tmod) {
+	/**
+		Pass `tmod` value from the game to atlases, to allow them to play animations at the same speed as the Game.
+		For example, if the game has some slow-mo running, all atlas anims should also play in slow-mo
+	**/
+	public static function update(tmod:Float) {
+		if( Game.exists() && Game.ME.isPaused() )
+			tmod = 0;
+
 		tiles.tmod = tmod;
 		// <-- add other atlas TMOD updates here
 	}

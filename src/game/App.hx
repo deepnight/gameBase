@@ -69,7 +69,10 @@ class App extends dn.Process {
 	}
 
 
-	/** Set screenshot mode **/
+	/**
+		Set "screenshot" mode.
+		If enabled, the game will be adapted to be more suitable for screenshots: more color contrast, no UI etc.
+	**/
 	public function setScreenshotMode(v:Bool) {
 		screenshotMode = v;
 
@@ -92,8 +95,15 @@ class App extends dn.Process {
 	}
 
 
+	public function toggleGamePause() {
+		if( !Game.exists() )
+			return;
+
+		Game.ME.togglePause();
+	}
+
 	/**
-		Initialize low level stuff, before anything else
+		Initialize low-level engine stuff, before anything else
 	**/
 	function initEngine() {
 		// Engine settings
@@ -125,7 +135,9 @@ class App extends dn.Process {
 	}
 
 
-	/** Init app assets **/
+	/**
+		Init app assets
+	**/
 	function initAssets() {
 		// Init game assets
 		Assets.init();
@@ -143,12 +155,16 @@ class App extends dn.Process {
 		controller.bindPadLStick(MoveX,MoveY);
 		controller.bindPad(Jump, A);
 		controller.bindPad(Restart, SELECT);
+		controller.bindPad(Pause, START);
 		controller.bindPadButtonsAsStick(MoveX, MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
 
 		// Keyboard bindings
 		controller.bindKeyboardAsStick(MoveX,MoveY, K.UP, K.LEFT, K.DOWN, K.RIGHT);
 		controller.bindKeyboard(Jump, K.SPACE);
 		controller.bindKeyboard(Restart, K.R);
+		controller.bindKeyboard(ScreenshotMode, K.F9);
+		controller.bindKeyboard(Pause, K.P);
+		controller.bindKeyboard(Pause, K.PAUSE_BREAK);
 
 		// Debug controls
 		#if debug
@@ -168,7 +184,7 @@ class App extends dn.Process {
 	/** Return TRUE if an App instance exists **/
 	public static inline function exists() return ME!=null && !ME.destroyed;
 
-	/** Close the app **/
+	/** Close & exit the app **/
 	public function exit() {
 		destroy();
 	}
@@ -187,8 +203,11 @@ class App extends dn.Process {
 
         super.update();
 
-		if( ca.isKeyboardPressed(K.F9) )
+		if( ca.isPressed(ScreenshotMode) )
 			setScreenshotMode( !screenshotMode );
+
+		if( ca.isPressed(Pause) )
+			toggleGamePause();
 
 		if( ui.Console.ME.isActive() )
 			cd.setF("consoleRecentlyActive",2);

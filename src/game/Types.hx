@@ -9,6 +9,8 @@ enum GameAction {
 
 	DebugTurbo;
 	DebugSlowMo;
+	ScreenshotMode;
+	Pause;
 }
 
 enum Affect {
