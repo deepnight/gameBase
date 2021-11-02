@@ -25,6 +25,7 @@ import assets.World;
 // Aliases
 import dn.Color as C;
 import dn.RandomTools as R;
+import assets.Assets as A;
 import assets.AssetsDictionaries as D;
 import hxd.Key as K;
 import tools.LPoint as P;
