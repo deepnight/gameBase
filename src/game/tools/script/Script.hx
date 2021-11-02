@@ -1,4 +1,4 @@
-package script;
+package tools.script;
 
 class Script {
 	public static var log : dn.Log;
@@ -17,7 +17,7 @@ class Script {
 
 		// API
 		var interp = new hscript.Interp();
-		interp.variables.set("api", new script.Api());
+		interp.variables.set("api", new tools.script.Api());
 		interp.variables.set("log", (v:Dynamic)->log.add("run", Std.string(v)));
 
 		// Execute

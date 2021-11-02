@@ -1,4 +1,4 @@
-package script;
+package tools.script;
 
 /**
 	Everything in this class will be available in HScript execution context.
