@@ -147,6 +147,11 @@ class Entity {
 	// Animated blink color on damage hit
 	var blinkColor : h3d.Vector;
 
+	/** Sprite X shake power **/
+	var shakePowX = 0.;
+	/** Sprite Y shake power **/
+	var shakePowY = 0.;
+
 	// Debug stuff
 	var debugLabel : Null<h2d.Text>;
 	var debugBounds : Null<h2d.Graphics>;
@@ -594,6 +599,12 @@ class Entity {
 		cd.setS("keepBlink",0.06);
 	}
 
+	public function shakeS(xPow:Float, yPow:Float, t:Float) {
+		cd.setS("shaking", t, true);
+		shakePowX = xPow;
+		shakePowY = yPow;
+	}
+
 	/** Briefly squash sprite on X (Y changes accordingly). "1.0" means no distorsion. **/
 	public function setSquashX(scaleX:Float) {
 		sprSquashX = scaleX;
@@ -649,6 +660,11 @@ class Entity {
 
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
+
+		if( cd.has("shaking") ) {
+			spr.x += Math.cos(ftime*1.1)*shakePowX * cd.getRatio("shaking");
+			spr.y += Math.sin(0.3+ftime*1.7)*shakePowY * cd.getRatio("shaking");
+		}
 
 		// Blink
 		if( !cd.has("keepBlink") ) {
