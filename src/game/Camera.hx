@@ -212,8 +212,8 @@ class Camera extends dn.Process {
 		bumpOffY *= Math.pow(bumpFrict, tmod);
 
 		// Bump
-		scroller.x += bumpOffX;
-		scroller.y += bumpOffY;
+		scroller.x -= bumpOffX;
+		scroller.y -= bumpOffY;
 
 		// Shakes
 		if( cd.has("shaking") ) {
