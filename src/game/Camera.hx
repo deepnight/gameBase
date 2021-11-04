@@ -31,6 +31,7 @@ class Camera extends dn.Process {
 	var dz = 0.;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	var bumpFrict = 0.85;
 	var bumpZoomFactor = 0.;
 
 	/** Actual zoom value without modifiers **/
@@ -207,8 +208,8 @@ class Camera extends dn.Process {
 		scroller.y = -clampedFocus.levelY + pxHei*0.5;
 
 		// Bumps friction
-		bumpOffX *= Math.pow(0.75, tmod);
-		bumpOffY *= Math.pow(0.75, tmod);
+		bumpOffX *= Math.pow(bumpFrict, tmod);
+		bumpOffY *= Math.pow(bumpFrict, tmod);
 
 		// Bump
 		scroller.x += bumpOffX;
