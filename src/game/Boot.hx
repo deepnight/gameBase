@@ -54,11 +54,21 @@ class Boot extends hxd.App {
 		}
 		#end
 
-		// Run all dn.Process instances loops
-		dn.Process.updateAll(adjustedTmod);
+		#if( hl && !debug )
+		try {
+		#end
 
-		// Update current sprite atlas "tmod" value (for animations)
-		Assets.update(adjustedTmod);
+			// Run all dn.Process instances loops
+			dn.Process.updateAll(adjustedTmod);
+
+			// Update current sprite atlas "tmod" value (for animations)
+			Assets.update(adjustedTmod);
+
+		#if( hl && !debug )
+		} catch(err) {
+			App.onCrash(err);
+		}
+		#end
 	}
 }
 

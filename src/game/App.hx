@@ -40,6 +40,35 @@ class App extends dn.Process {
 
 
 
+	#if hl
+	public static function onCrash(err:Dynamic) {
+		var title = L.untranslated("Fatal error");
+		var msg = L.untranslated('I\'m really sorry but the game crashed! Error: ${Std.string(err)}');
+		var flags : haxe.EnumFlags<hl.UI.DialogFlags> = new haxe.EnumFlags();
+		flags.set(IsError);
+
+		var log = [ Std.string(err) ];
+		try {
+			log.push("BUILD: "+Const.BUILD_INFO);
+			log.push("EXCEPTION:");
+			log.push( haxe.CallStack.toString( haxe.CallStack.exceptionStack() ) );
+
+			log.push("CALL:");
+			log.push( haxe.CallStack.toString( haxe.CallStack.callStack() ) );
+
+			sys.io.File.saveContent("crash.log", log.join("\n"));
+			hl.UI.dialog(title, msg, flags);
+		}
+		catch(_) {
+			sys.io.File.saveContent("crash2.log", log.join("\n"));
+			hl.UI.dialog(title, msg, flags);
+		}
+
+		hxd.System.exit();
+	}
+	#end
+
+
 	/** Start game process **/
 	public function startGame() {
 		if( Game.exists() ) {
@@ -114,6 +143,7 @@ class App extends dn.Process {
 
 		#if( hl && !debug)
 		hl.UI.closeConsole();
+		hl.Api.setErrorHandler( onCrash );
 		#end
 
 		// Heaps resource management
