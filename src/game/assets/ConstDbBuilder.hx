@@ -196,10 +196,19 @@ class ConstDbBuilder {
 			kind: FFun({
 				args: [
 					{ name:"constId", type:Context.getType("CastleDb.ConstDbKind").toComplexType() },
+					{ name:"valueId", type:Context.getType("String").toComplexType() },
 				],
 				ret: macro:Float,
 				expr: macro {
-					return Reflect.field( CastleDb.ConstDb.get(constId), "value" );
+					var all : Array<Dynamic> = Reflect.field( CastleDb.ConstDb.get(constId), "values" );
+					var out = 0.;
+					if( all!=null )
+						for(v in all)
+							if( v.valueName==valueId ) {
+								out = v.value;
+								break;
+							}
+					return out;
 				},
 			}),
 			meta: [
@@ -209,7 +218,7 @@ class ConstDbBuilder {
 		});
 
 		// Parse JSON
-		var json : { sheets:Array<{name:String, lines:Array<Dynamic>}> } = try haxe.Json.parse(raw) catch(_) null;
+		var json : { sheets:Array<{name:String, lines:Array<{values:Array<Dynamic>}>}> } = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
 			Context.fatalError("CastleDB JSON parsing failed!", pos);
 			return;
@@ -223,14 +232,32 @@ class ConstDbBuilder {
 					var id = Reflect.field(l, "constId");
 					var doc = Reflect.field(l,"doc");
 
+					var valuesFields : Array<Field> = [];
+					// var valuesType :
+					for( v in l.values ) {
+						var vid = cleanupIdentifier(v.valueName);
+						valuesFields.push({
+							name: vid,
+							pos: pos,
+							doc: (v.doc==null ? v.valueName : v.doc ) + "  *["+fileName+"]* ",
+							kind: FVar( macro:Float ),
+						});
+						// trace(v.value);
+						fillExprs.push( macro {
+							if( db.$id==null )
+								db.$id = cast {};
+							db.$id.$vid = _resolveCdbValue( cast $v{id}, $v{vid} );
+						 } );
+
+					}
+
 					dbTypeDef.push({
 						name: id,
 						pos: pos,
 						doc: ( doc==null ? id : doc ) + "  *["+fileName+"]* ",
-						kind: FVar(macro:Float),
+						kind: FVar( TAnonymous(valuesFields) ),
 					});
-					dbDefaults.push({ field:id, expr:macro 0. });
-					fillExprs.push( macro db.$id = _resolveCdbValue( cast $v{id} ) );
+					dbDefaults.push({ field:id, expr:macro cast {} });
 				}
 			}
 
@@ -245,6 +272,10 @@ class ConstDbBuilder {
 				expr: macro $a{fillExprs},
 			}),
 		});
+	}
+
+	static inline function cleanUpIdentifier(v:String) {
+		return ~/[^a-z0-9_]/gi.replace(v, "");
 	}
 
 	#end
