@@ -4,18 +4,30 @@ class LRect {
 	var topLeft : LPoint;
 	var bottomRight : LPoint;
 
+	/** Pixel based left coordinate **/
 	public var pxLeft(get,set) : Int;
+	/** Pixel based top coordinate **/
 	public var pxTop(get,set) : Int;
+	/** Pixel based right coordinate **/
 	public var pxRight(get,set) : Int;
+	/** Pixel based bottom coordinate **/
 	public var pxBottom(get,set) : Int;
+	/** Pixel based width **/
 	public var pxWid(get,set) : Int;
+	/** Pixel based height **/
 	public var pxHei(get,set) : Int;
 
+	/** Grid based left coordinate **/
 	public var cLeft(get,set) : Int;
+	/** Grid based top coordinate **/
 	public var cTop(get,set) : Int;
+	/** Grid based right coordinate **/
 	public var cRight(get,set) : Int;
+	/** Grid based bottom coordinate **/
 	public var cBottom(get,set) : Int;
+	/** Grid based width **/
 	public var cWid(get,set) : Int;
+	/** Grid based height **/
 	public var cHei(get,set) : Int;
 
 	private inline function new() {
@@ -25,7 +37,7 @@ class LRect {
 
 	@:keep
 	public function toString() : String {
-		return 'LRect<$pxLeft,$pxTop ${pxWid}x$pxHei / $cLeft,$cTop ${cWid}x$cHei>';
+		return 'LRect<px=$pxLeft,$pxTop ${pxWid}x$pxHei / grid=$cLeft,$cTop ${cWid}x$cHei>';
 	}
 
 	/**
