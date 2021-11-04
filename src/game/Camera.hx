@@ -88,7 +88,7 @@ class Camera extends dn.Process {
 
 	@:keep
 	override function toString() {
-		return 'Camera@${rawFocus.levelX},${rawFocus.levelY}';
+		return 'Camera@${Std.int(rawFocus.levelX)},${Std.int(rawFocus.levelY)}';
 	}
 
 	inline function get_zoom() {
