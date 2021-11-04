@@ -368,6 +368,9 @@ class Entity {
 	/** Create a LPoint instance from current coordinates **/
 	public inline function createPoint() return LPoint.fromCase(cx+xr,cy+yr);
 
+	/** Create a LRect instance from current entity bounds **/
+	public inline function createRect() return tools.LRect.fromPixels( Std.int(left), Std.int(top), Std.int(wid), Std.int(hei) );
+
     public final function destroy() {
         if( !destroyed ) {
             destroyed = true;
