@@ -232,23 +232,24 @@ class ConstDbBuilder {
 					var id = Reflect.field(l, "constId");
 					var doc = Reflect.field(l,"doc");
 
+					// List sub values
 					var valuesFields : Array<Field> = [];
-					// var valuesType :
 					for( v in l.values ) {
 						var vid = cleanupIdentifier(v.valueName);
 						valuesFields.push({
 							name: vid,
 							pos: pos,
 							doc: (v.doc==null ? v.valueName : v.doc ) + "  *["+fileName+"]* ",
-							kind: FVar( macro:Float ),
+							kind: FVar( v.isInteger ? macro:Int : macro:Float ),
 						});
-						// trace(v.value);
+						var resolveExpr = v.isInteger
+							? macro Std.int( _resolveCdbValue( cast $v{id}, $v{vid} ) )
+							: macro _resolveCdbValue( cast $v{id}, $v{vid} );
 						fillExprs.push( macro {
 							if( db.$id==null )
 								db.$id = cast {};
-							db.$id.$vid = _resolveCdbValue( cast $v{id}, $v{vid} );
+							db.$id.$vid = $e{resolveExpr};
 						 } );
-
 					}
 
 					dbTypeDef.push({

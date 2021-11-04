@@ -19,12 +19,14 @@
 						{
 							"valueName": "valueA",
 							"value": 1,
-							"doc": "This documentation will show up when using your editor auto-completion for this value"
+							"doc": "This documentation will show up when using your editor auto-completion for this value",
+							"isInteger": true
 						},
 						{
 							"valueName": "valueB",
 							"value": 2.5,
-							"doc": "Doc for this other value"
+							"doc": "Doc for this other value",
+							"isInteger": false
 						}
 					]
 				}
@@ -55,6 +57,10 @@
 					"typeStr": "4",
 					"name": "value",
 					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "isInteger"
 				},
 				{
 					"typeStr": "1",
