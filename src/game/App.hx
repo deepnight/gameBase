@@ -205,9 +205,7 @@ class App extends dn.Process {
 		#end
 
 		ca = controller.createAccess();
-		ca.lockCondition = ()->{
-			return destroyed || anyInputHasFocus();
-		}
+		ca.lockCondition = ()->return destroyed || anyInputHasFocus();
 	}
 
 

@@ -33,6 +33,7 @@ class Game extends Process {
 
 		ME = this;
 		ca = App.ME.controller.createAccess();
+		ca.lockCondition = ()->return destroyed || App.ME.anyInputHasFocus();
 		createRootInLayers(App.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();

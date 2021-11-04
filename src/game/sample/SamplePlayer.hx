@@ -35,6 +35,7 @@ class SamplePlayer extends Entity {
 
 		// Init controller
 		ca = App.ME.controller.createAccess();
+		ca.lockCondition = ()->return destroyed || App.ME.anyInputHasFocus();
 
 		// Placeholder display
 		var g = new h2d.Graphics(spr);
