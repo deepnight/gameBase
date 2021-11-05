@@ -5,12 +5,13 @@ enum GameAction {
 
 	Jump;
 	Restart;
-	Cancel;
+
+	MenuCancel;
+	Pause;
 
 	DebugTurbo;
 	DebugSlowMo;
 	ScreenshotMode;
-	Pause;
 }
 
 enum Affect {

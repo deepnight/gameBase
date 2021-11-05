@@ -123,13 +123,21 @@ class App extends dn.Process {
 		}
 	}
 
+	/** Toggle current game pause state **/
+	public inline function toggleGamePause() setGamePause( !isGamePaused() );
 
-	public function toggleGamePause() {
-		if( !Game.exists() )
-			return;
+	/** Return TRUE if current game is paused **/
+	public inline function isGamePaused() return Game.exists() && Game.ME.isPaused();
 
-		Game.ME.togglePause();
+	/** Set current game pause state **/
+	public function setGamePause(pauseState:Bool) {
+		if( Game.exists() )
+			if( pauseState )
+				Game.ME.pause();
+			else
+				Game.ME.resume();
 	}
+
 
 	/**
 		Initialize low-level engine stuff, before anything else
@@ -187,6 +195,7 @@ class App extends dn.Process {
 		controller.bindPad(Restart, SELECT);
 		controller.bindPad(Pause, START);
 		controller.bindPadButtonsAsStick(MoveX, MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
+		controller.bindPad(MenuCancel, B);
 
 		// Keyboard bindings
 		controller.bindKeyboardAsStick(MoveX,MoveY, K.UP, K.LEFT, K.DOWN, K.RIGHT);
@@ -195,6 +204,7 @@ class App extends dn.Process {
 		controller.bindKeyboard(ScreenshotMode, K.F9);
 		controller.bindKeyboard(Pause, K.P);
 		controller.bindKeyboard(Pause, K.PAUSE_BREAK);
+		controller.bindKeyboard(MenuCancel, K.ESCAPE);
 
 		// Debug controls
 		#if debug
@@ -236,6 +246,9 @@ class App extends dn.Process {
 
 		if( ca.isPressed(Pause) )
 			toggleGamePause();
+
+		if( isGamePaused() && ca.isPressed(MenuCancel) )
+			setGamePause(false);
 
 		if( ui.Console.ME.isActive() )
 			cd.setF("consoleRecentlyActive",2);

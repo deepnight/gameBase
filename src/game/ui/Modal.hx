@@ -64,7 +64,7 @@ class Modal extends ui.Window {
 
 	override function update() {
 		super.update();
-		if( ca.isPressed(Cancel) )
+		if( ca.isPressed(MenuCancel) )
 			close();
 	}
 }
