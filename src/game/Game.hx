@@ -33,7 +33,7 @@ class Game extends Process {
 
 		ME = this;
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = ()->return destroyed || App.ME.anyInputHasFocus();
+		ca.lockCondition = isGameControllerLocked;
 		createRootInLayers(App.ME.root, Const.DP_BG);
 
 		scroller = new h2d.Layers();
@@ -45,6 +45,11 @@ class Game extends Process {
 		camera = new Camera();
 
 		startLevel(Assets.worldData.all_levels.FirstLevel);
+	}
+
+
+	public static function isGameControllerLocked() {
+		return !exists() || ME.isPaused() || App.ME.anyInputHasFocus();
 	}
 
 
