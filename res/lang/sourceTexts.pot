@@ -5,6 +5,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 
 
-#: "src/game/gm/Game.hx"
+#: "src/game/Game.hx"
 msgid "Press ESCAPE again to exit."
 msgstr ""
