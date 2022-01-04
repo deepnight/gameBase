@@ -6,7 +6,7 @@ class LangParser {
 		var all = GetText.parseSourceCode("src");
 
 		// Extract from LDtk
-		all = all.concat( GetText.parseLdtk("res/levels/sampleWorld.ldtk", {
+		all = all.concat( GetText.parseLdtk("res/levels/josWorld.ldtk", {
 			entityFields: [], // fill this with Entity fields that should be extracted for localization
 			levelFieldIds: [], // fill this with Level fields that should be extracted for localization
 		}));
