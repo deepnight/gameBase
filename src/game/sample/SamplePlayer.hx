@@ -1,5 +1,7 @@
 package sample;
 
+import solv.ViiEmitter;
+
 /**
 	SamplePlayer is an Entity with some extra functionalities:
 	- falls with gravity
@@ -10,21 +12,24 @@ package sample;
 
 class SamplePlayer extends Entity {
 	var ca : ControllerAccess<GameAction>;
-	var walkSpeed = 0.;
+	var xSpeed = 0.;
+	var ySpeed = 0.;
 
 	// This is TRUE if the player is not falling
 	var onGround(get,never) : Bool;
 		inline function get_onGround() return !destroyed && dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
+	var emit :ViiEmitter;
 
 	public function new() {
 		super(5,5);
-
+		emit = new ViiEmitter(5,5);
 		// Start point using level entity "PlayerStart"
 		var start = level.data.l_Entities.all_PlayerStart[0];
+
 		if( start!=null )
 			setPosCase(start.cx, start.cy);
-
+			emit.setPosCase(start.cx,start.cy);
 		// Misc inits
 		frictX = 0.84;
 		frictY = 0.94;
@@ -90,7 +95,10 @@ class SamplePlayer extends Entity {
 	override function preUpdate() {
 		super.preUpdate();
 
-		walkSpeed = 0;
+		xSpeed = 0;
+		ySpeed = 0;
+		//emit.setBlowingStatus(false);
+		
 		if( onGround )
 			cd.setS("recentlyOnGround",0.1); // allows "just-in-time" jumps
 
@@ -103,11 +111,25 @@ class SamplePlayer extends Entity {
 			fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
 			ca.rumble(0.05, 0.06);
 		}
+		if (!ca.isDown(Blow)){
+			emit.setBlowingStatus(false);
+		}
 
+		if (ca.isDown(Blow)){
+			emit.blow(dx,dy);
+			emit.setBlowingStatus(true); 
+		}
+
+		if (ca.isDown(ShapeWind)){
+			emit.shape();
+		}
 		// Walk
+		if ( ca.getAnalogDist(MoveY)>0){
+			ySpeed = ca.getAnalogValue(MoveY); 
+		}
 		if( ca.getAnalogDist(MoveX)>0 ) {
 			// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
-			walkSpeed = ca.getAnalogValue(MoveX); // -1 to 1
+			xSpeed = ca.getAnalogValue(MoveX); // -1 to 1
 		}
 	}
 
@@ -116,13 +138,21 @@ class SamplePlayer extends Entity {
 		super.fixedUpdate();
 
 		// Gravity
-		if( !onGround )
-			dy+=0.05;
+		//if( !onGround )
+		//	dy+=0.05;
 
 		// Apply requested walk movement
-		if( walkSpeed!=0 ) {
-			var speed = 0.045;
-			dx += walkSpeed * speed;
+		if( ySpeed!=0 ) {
+			var speed = 0.075;
+			dy += ySpeed * speed;
+		} 
+		if( xSpeed!=0 ) {
+			var speed = 0.075;
+			dx += xSpeed * speed;
 		}
+
+		emit.dx = dx;
+		emit.dy = dy;
+		emit.setPosPixel(attachX,attachY);
 	}
 }

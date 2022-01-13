@@ -736,7 +736,7 @@ class Entity {
 			while ( n<steps ) {
 				// X movement
 				xr += dxTotal / steps;
-
+				
 				if( dxTotal!=0 )
 					onPreStepX(); // <---- Add X collisions checks and physics in here
 

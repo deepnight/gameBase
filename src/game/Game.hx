@@ -22,7 +22,7 @@ class Game extends Process {
 
 	/** UI **/
 	public var hud : ui.Hud;
-
+	public var solver : Solver;
 	/** Slow mo internal values**/
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
@@ -43,6 +43,7 @@ class Game extends Process {
 		fx = new Fx();
 		hud = new ui.Hud();
 		camera = new Camera();
+		//solver = new Solver();
 
 		startLevel(Assets.worldData.all_levels.FirstLevel);
 	}
@@ -60,16 +61,18 @@ class Game extends Process {
 
 	/** Load a level **/
 	function startLevel(l:World.World_Level) {
-		if( level!=null )
+		if( level!=null ){
 			level.destroy();
+			solver.onDispose();
+		}
 		fx.clear();
 		for(e in Entity.ALL) // <---- Replace this with more adapted entity destruction (eg. keep the player alive)
 			e.destroy();
 		garbageCollectEntities();
 
 		level = new Level(l);
+		solver = new Solver();
 		// <---- Here: instanciate your level entities
-
 		camera.centerOnTarget();
 		hud.onLevelStart();
 		Process.resizeAll();

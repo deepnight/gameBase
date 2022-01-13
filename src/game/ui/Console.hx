@@ -69,7 +69,8 @@ class Console extends h2d.Console {
 			new en.DebugDrone();
 		});
 		#end
-
+		this.addCommand("grid", [], ()->{
+		});
 		// Create a stats box
 		this.addCommand("fps", [], ()->{
 			if( stats!=null ) {
@@ -86,6 +87,8 @@ class Console extends h2d.Console {
 		addFlagCommandAlias("affect");
 		addFlagCommandAlias("scroll");
 		addFlagCommandAlias("cam");
+		addFlagCommandAlias("grid");
+		//addFlagCommandAlias("vector");
 	}
 
 	/** Creates a shortcut command "/flag" to toggle specified flag state **/

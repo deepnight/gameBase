@@ -48,7 +48,7 @@ class Const {
 	public static var SCALE(get,never) : Int;
 		static inline function get_SCALE() {
 			// can be replaced with another way to determine the game scaling
-			return dn.heaps.Scaler.bestFit_i(200,200);
+			return dn.heaps.Scaler.bestFit_i(400,400);
 		}
 
 	/** Specific scaling for top UI elements **/
@@ -66,13 +66,14 @@ class Const {
 
 	/** Game layers indexes **/
 	static var _inc = 0;
-	public static var DP_BG = _inc++;
-	public static var DP_FX_BG = _inc++;
-	public static var DP_MAIN = _inc++;
-	public static var DP_FRONT = _inc++;
+	public static var DP_BG 	  = _inc++;
+	public static var DP_FX_BG    = _inc++;
+	public static var DP_MAIN     = _inc++;
+	public static var DP_FRONT    = _inc++;
 	public static var DP_FX_FRONT = _inc++;
-	public static var DP_TOP = _inc++;
-	public static var DP_UI = _inc++;
+	public static var DP_SOLVER   = _inc++;
+	public static var DP_TOP      = _inc++;
+	public static var DP_UI 	  = _inc++;
 
 
 #end

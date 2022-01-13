@@ -5,7 +5,9 @@ enum GameAction {
 
 	Jump;
 	Restart;
-
+	Blow;
+	ShapeWind;
+	
 	MenuCancel;
 	Pause;
 
