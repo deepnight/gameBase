@@ -29,15 +29,15 @@ class Solver extends dn.Process {
     
 	var frame:Int;  
     //solver grid width hei shorcut for list parcour
-    var sw:Int;
-    var sh:Int; 
+    public var sw:Int;
+    public var sh:Int; 
     var boundOffset:Int;
-    var caseOffset:Int;
+    public var caseOffset:Int;
 
 	public var solver:solv.FluidSolver;
 
     var sb : h2d.SpriteBatch;
-    var cells : Array<h2d.SpriteBatch.BatchElement>;
+    public var cells : Array<h2d.SpriteBatch.BatchElement>;
     public var directions : Array<h2d.SpriteBatch.BatchElement>;
     
 	public function new() {
@@ -97,6 +97,16 @@ class Solver extends dn.Process {
         for ( e in ViiEmitter.ALL){
             addForce(e.cx,e.cy,e.windX,e.windY,new Vector(1,0,1));
         } 
+
+        for (e in Fan.ALL){
+            for(c in e.informedCells){
+                solver.u[c.index] = c.u;
+                solver.v[c.index] = c.v;
+                solver.uOld[c.index] = c.u;
+                solver.vOld[c.index] = c.v;
+            }
+        }
+
         solver.update();     
     }
 
@@ -151,8 +161,6 @@ class Solver extends dn.Process {
         var isx = Math.floor(x-(w/2));
         var iex = Math.floor(x+(w/2));
 
-        
-
         for( j in jsy...jey){
             for(i in isx...iex){
                 index = i+(sw*j);
@@ -174,7 +182,7 @@ class Solver extends dn.Process {
 
 	public  function getUVatCoord(cx:Int,cy:Int) {
         if (isInGrid(cx,cy)){
-            var index = solver.getIndexForCellPosition( cx - boundOffset,cy - boundOffset);
+            var index = solver.getIndexForCellPosition(cx,cy);
             return new Vector(solver.u[index],solver.v[index]);
         }
         return new Vector(0,0);    
@@ -184,14 +192,12 @@ class Solver extends dn.Process {
         if (cx >= 0 && cx < FLUID_WIDTH && cy >=0 && cy < FLUID_HEIGHT )
             return true;
      
-        return false;
-        
+        return false;   
     }
 
 	override public function onDispose() {
 		super.onDispose();
-
-		//solver.dispose(); a inventer
+		//solver.dispose(); a inventer une source est reste "coince" ap reset une fois 
 		sb.remove();
         cells = [];
         directions = [];

@@ -20,5 +20,23 @@ enum Affect {
 	Stun;
 }
 
+enum AreaShape {
+	AsCircle;
+	AsSquare;
+	AsLine;
+}
+
+enum AreaEquation {
+	AeCurl;
+	AeDiverge;
+	AeConverge;
+}
+
+enum AreaInfluence {
+	AiSmall;
+	AiMedium;
+	AiLarge;
+}
+
 enum LevelMark {
 }

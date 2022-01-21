@@ -107,22 +107,16 @@ class Entity {
 				: (cy+yr)*Const.GRID;
 		}
 
-	/** Sprite X scaling **/
 	public var sprScaleX = 1.0;
-	/** Sprite Y scaling **/
 	public var sprScaleY = 1.0;
 
-	/** Sprite X squash & stretch scaling, which automatically comes back to 1 after a few frames **/
+	
 	var sprSquashX = 1.0;
-	/** Sprite Y squash & stretch scaling, which automatically comes back to 1 after a few frames **/
 	var sprSquashY = 1.0;
 
-	/** Entity visibility **/
 	public var entityVisible = true;
 
-	/** Current hit points **/
-	public var life(default,null) : Int;
-	/** Max hit points **/
+	public var life(default,null)    : Int;
 	public var maxLife(default,null) : Int;
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
@@ -135,21 +129,17 @@ class Entity {
 	public var lastHitDirToSource(get,never) : Int;
 		inline function get_lastHitDirToSource() return lastDmgSource==null ? dir : dirTo(lastDmgSource);
 
-	/** Main entity HSprite instance **/
+	
     public var spr : HSprite;
 
-	/** Color vector transformation applied to sprite **/
+	
 	public var baseColor : h3d.Vector;
+	var blinkColor : h3d.Vector;
 
 	/** Color matrix transformation applied to sprite **/
 	public var colorMatrix : h3d.Matrix;
 
-	// Animated blink color on damage hit
-	var blinkColor : h3d.Vector;
-
-	/** Sprite X shake power **/
 	var shakePowX = 0.;
-	/** Sprite Y shake power **/
 	var shakePowY = 0.;
 
 	// Debug stuff
@@ -157,44 +147,34 @@ class Entity {
 	var debugBounds : Null<h2d.Graphics>;
 	var invalidateDebugBounds = false;
 
-	/** Defines X alignment of entity at its attach point (0 to 1.0) **/
 	public var pivotX(default,set) : Float = 0.5;
-	/** Defines Y alignment of entity at its attach point (0 to 1.0) **/
 	public var pivotY(default,set) : Float = 1;
 
-	/** Entity attach X pixel coordinate **/
 	public var attachX(get,never) : Float; inline function get_attachX() return (cx+xr)*Const.GRID;
-	/** Entity attach Y pixel coordinate **/
 	public var attachY(get,never) : Float; inline function get_attachY() return (cy+yr)*Const.GRID;
+
+	public var prevFrameattachX(default,null) : Float = -Const.INFINITE;
+	public var prevFrameattachY(default,null) : Float = -Const.INFINITE;
 
 	// Various coordinates getters, for easier gameplay coding
 
-	/** Left pixel coordinate of the bounding box **/
+	//Bounding box getters//
 	public var left(get,never) : Float; inline function get_left() return attachX + (0-pivotX) * wid;
-	/** Right pixel coordinate of the bounding box **/
 	public var right(get,never) : Float; inline function get_right() return attachX + (1-pivotX) * wid;
-	/** Top pixel coordinate of the bounding box **/
 	public var top(get,never) : Float; inline function get_top() return attachY + (0-pivotY) * hei;
-	/** Bottom pixel coordinate of the bounding box **/
 	public var bottom(get,never) : Float; inline function get_bottom() return attachY + (1-pivotY) * hei;
 
-	/** Center X pixel coordinate of the bounding box **/
+	// Bounding box center//
 	public var centerX(get,never) : Float; inline function get_centerX() return attachX + (0.5-pivotX) * wid;
-	/** Center Y pixel coordinate of the bounding box **/
 	public var centerY(get,never) : Float; inline function get_centerY() return attachY + (0.5-pivotY) * hei;
 
-	/** Current X position on screen (ie. absolute)**/
+	//Position on screen (ie. absolute)//
 	public var screenAttachX(get,never) : Float;
 		inline function get_screenAttachX() return game!=null && !game.destroyed ? sprX*Const.SCALE + game.scroller.x : sprX*Const.SCALE;
 
-	/** Current Y position on screen (ie. absolute)**/
 	public var screenAttachY(get,never) : Float;
 		inline function get_screenAttachY() return game!=null && !game.destroyed ? sprY*Const.SCALE + game.scroller.y : sprY*Const.SCALE;
 
-	/** attachX value during last frame **/
-	public var prevFrameattachX(default,null) : Float = -Const.INFINITE;
-	/** attachY value during last frame **/
-	public var prevFrameattachY(default,null) : Float = -Const.INFINITE;
 
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 
