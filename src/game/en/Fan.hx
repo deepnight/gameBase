@@ -3,12 +3,12 @@ package en;
 import dn.CiAssert;
 import dn.Bresenham;
 
-typedef CellStruct = {index:Int, abx:Int, aby:Int, u:Float, v:Float}
+typedef CellStruct = {index:Int,x:Int,y:Int,abx:Int,aby:Int,u:Float,v:Float}
 
 class Fan extends Entity {
 	public static var ALL:Array<Fan> = [];
 
-	public var solver(get, never):Solver;inline function get_solver()return Game.ME.solver;
+	var solver(get, never):Solver;inline function get_solver()return Game.ME.solver;
 
 	var areaShape:AreaShape = AsCircle;
 	var areaInfluence:AreaInfluence = AiSmall;
@@ -21,96 +21,120 @@ class Fan extends Entity {
 	var cySolverOffset(get, never):Int;inline function get_cySolverOffset() return cy + solver.caseOffset;
 
 	// var isx = Math.floor(x - (aw / 2));
-	var cxTopRectangle(get, never):Int;inline function get_cxTopRectangle()return Math.floor(cxSolverOffset - (aw / 2));
-	var cyTopRectangle(get, never):Int;inline function get_cyTopRectangle()return Math.floor(cySolverOffset - (ah / 2));
+	var cxTopRectangle(get, never):Int;inline function get_cxTopRectangle()return Math.floor(cxSolverOffset - (aw / 2))+1;
+	var cyTopRectangle(get, never):Int;inline function get_cyTopRectangle()return Math.floor(cySolverOffset - (ah / 2))+1;
 
+	public var isBlowing(get,never):Bool;inline function get_isBlowing()return blowingIsActive;
+	//public var 
+
+	var blowingIsActive:Bool;
+	var parentEntity:Entity;
 	var angle:Float = 0;
 
-	public var informedCells:Array<CellStruct> = [];
+	var informedCells:Array<CellStruct> = [];
 
-	public function new(x:Int, y:Int) {
+	public function new(x:Int, y:Int, ?entity:Entity) {
 		super(x, y);
 		ALL.push(this);
-		computeInfluencedCell();
+		storeInfluencedCell();
+        informCellUVFields();
+        
+		if(entity != null){
+			parentEntity = entity;
+			setPosCase(parentEntity.cx,parentEntity.cy);
+		}
 
-		spr.set(D.tiles.Square);
-		spr.colorize(0x00ff00, 1);
+        spr.set(D.tiles.fxCircle15);
+        spr.colorize(0xff00af);
 	}
-
+	
 	override function update() {
-		angle += 0.01;
+		angle += 0.1;
+        
+		stickToParentEntity();
+		actualizeAreaCells();
+		informCellUVFields();
+
 	}
 
-	function computeInfluencedCell() {
+	private function stickToParentEntity(){
+		if(parentEntity != null){
+			setPosPixel(parentEntity.attachX,parentEntity.attachY);
+		}
+	}
+
+	private function storeInfluencedCell() {
 		informedCells = [];
+
 		switch (areaShape) {
 			case AsSquare:
-				addRectangleAreaCells_toInformedCells();
+                var list = Bresenham.getRectangle(cxTopRectangle, cyTopRectangle, aw, ah);
+				pushAreaCells_toInformedCells(list);
 				return;
 			case AsCircle:
-				addRectangleAreaCells_toInformedCells();
+                var list = Bresenham.getDisc(cxSolverOffset, cySolverOffset, areaRadius);
+                pushAreaCells_toInformedCells(list);
 				return;
 			case AsLine:
 				return;
 		}
 	}
 
-	function addRectangleAreaCells_toInformedCells() {
-		var list = Bresenham.getRectangle(cxTopRectangle, cyTopRectangle, aw, ah);
-		for (l in list) {
-			var absoluteCx = l.x - cx;
-			var absoluteCy = l.y - cy;
-			var ind = l.x + (solver.sw * l.y);
-			solver.cells[ind].visible = false;
-			if (testIfIndexIsInArray(ind)) {
-				solver.cells[ind].visible = false;
-				informedCells.push({index: ind,abx: absoluteCx,aby: absoluteCy,u: 0,v: 0});
-			}
-		}
-	}
-
-	function addCircleAreaCells_toInformedCells() {
+	private function actualizeAreaCells(){
 		var list = Bresenham.getDisc(cxSolverOffset, cySolverOffset, areaRadius);
+		informedCells = [];
+		pushAreaCells_toInformedCells(list);
+	}
 
+	private function pushAreaCells_toInformedCells(list:Array<{x:Int,y:Int}>) {
 		for (l in list) {
-			var absoluteCx = l.x - cx;
-			var absoluteCy = l.y - cy;
-			var ind = l.x + (solver.sw * l.y);
-			solver.cells[ind].visible = false;
-			if (testIfIndexIsInArray(ind)) {
-				solver.cells[ind].visible = false;
-				informedCells.push({index: ind,	abx: absoluteCx,aby: absoluteCy,u: 0,v: 0});
+            var ind = solver.computeSolverIndexFromCxCy(l.x,l.y);
+			if (solver.testIfIndexIsInArray(ind)) {
+				informedCells.push({index: ind,x:l.x,y:l.y,abx: 0,aby: 0,u: 0,v: 0});
 			}
 		}
 	}
 
-	// a delocaliser en api public solver
-	function testIfIndexIsInArray(cellIndex:Int) {
-		if (cellIndex >= 0 && cellIndex < solver.solver.numCells)
-			return true;
-		return false;
-	}
-}
-
-    
-/*     function addSquareAreaCells_toInformedCells(){
-            var ind:Int;
-			var x = cxSolverOffset;
-            var y = cySolverOffset;
-
-			var jsy = Math.floor(y - (ah / 2));
-			var jey = Math.floor(y + (ah / 2));
-			var isx = Math.floor(x - (aw / 2));
-			var iex = Math.floor(x + (aw / 2));
-
-			for (j in jsy...jey) {
-				for (i in isx...iex) {
-					ind = i + (solver.sw * j);
-					if (testIfIndexIsInArray(ind)) {
-						var absoluteCx = Math.floor((i + solver.caseOffset - x));
-						var absoluteCy = Math.floor((j + solver.caseOffset - y));
-						informedCells.push({index: ind,abx: absoluteCx,aby: absoluteCy,u: 0,v: 0});
-					}
-				}
+    private function informCellUVFields() {
+		if (isBlowing){
+			for (cell in informedCells){
+				cell.u = 0;//1*Math.cos(angle);
+				cell.v = 1;//1*Math.sin(angle);
 			}
-        } */
+		}
+    }
+
+    private function computeCaseDistanceToCenterAreaCase() {
+        for (cell in informedCells) {
+		    cell.abx = cell.x - cx;
+			cell.aby = cell.y - cy;
+        }
+    }
+	
+	//API//
+
+	public function getInformedCellsIndex() {
+		var list:Array<Int> = [];
+			for(iCell in informedCells){
+				list.push(iCell.index);
+			}
+		return list;
+	}
+
+	public function getInformedCells(){
+		return informedCells;
+	}
+
+	public function activateFan(){
+		if (blowingIsActive == false)
+			blowingIsActive = true;
+			spr.colorize(0xff0000);
+	}
+
+	public function deactivateFan(){
+		if (blowingIsActive == true)
+			blowingIsActive = false;
+		    spr.colorize(0xff00af);
+	}
+
+}

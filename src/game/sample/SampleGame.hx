@@ -18,6 +18,7 @@ class SampleGame extends Game {
 		super.startLevel(l);
 		new SamplePlayer();
 		new Fan(20,30);
+		
 		for (i in 0...25){
 			for( j in 0...25){
 			new Boids(5+i*2,5+ j*2);

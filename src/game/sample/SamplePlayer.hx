@@ -1,6 +1,7 @@
 package sample;
 
 import solv.ViiEmitter;
+import en.Fan;
 
 /**
 	SamplePlayer is an Entity with some extra functionalities:
@@ -20,16 +21,20 @@ class SamplePlayer extends Entity {
 		inline function get_onGround() return !destroyed && dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
 	var emit :ViiEmitter;
+	var fan :Fan;
 
 	public function new() {
 		super(5,5);
 		emit = new ViiEmitter(5,5);
+		fan = new Fan(5,5,this);
 		// Start point using level entity "PlayerStart"
 		var start = level.data.l_Entities.all_PlayerStart[0];
 
 		if( start!=null )
 			setPosCase(start.cx, start.cy);
 			emit.setPosCase(start.cx,start.cy);
+			//fan.setPosCase(start.cx,start.cy);
+
 		// Misc inits
 		frictX = 0.84;
 		frictY = 0.94;
@@ -112,16 +117,22 @@ class SamplePlayer extends Entity {
 			ca.rumble(0.05, 0.06);
 		}
 		if (!ca.isDown(Blow)){
-			emit.setBlowingStatus(false);
+			//emit.setBlowingStatus(false);
 		}
 
 		if (ca.isDown(Blow)){
-			emit.blow(dx,dy);
-			emit.setBlowingStatus(true); 
+			//emit.blow(dx,dy);
+			//emit.setBlowingStatus(true); 
 		}
 
 		if (ca.isDown(ShapeWind)){
-			emit.shape();
+			if(!fan.isBlowing)
+				fan.activateFan();
+		}
+		if (!ca.isDown(ShapeWind)){
+			//emit.shape();
+			if(fan.isBlowing)
+				fan.deactivateFan();
 		}
 		// Walk
 		if ( ca.getAnalogDist(MoveY)>0){

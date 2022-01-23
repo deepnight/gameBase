@@ -42,13 +42,13 @@ class Boids extends Entity{
 
         spr.set(D.tiles.fxCircle15);
         spr.colorize(0x0ea0ff);
-        spr.setCenterRatio(0.5,1);
+        //spr.setCenterRatio(0.5,1);
     }
 
     override public function fixedUpdate() {
         super.fixedUpdate();
         
-        if (!solver.isInGrid(cx,cy))
+        if (!solver.testIfCellIsInGrid(cx,cy))
             destroy();
 
 

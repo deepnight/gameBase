@@ -1,4 +1,5 @@
-import hxsl.Types.Vec;
+
+import solv.DebugSolver;
 import solv.ViiEmitter;
 import solv.FluidSolver;
 import h3d.Vector;
@@ -27,6 +28,8 @@ class Solver extends dn.Process {
     public var FLUID_WIDTH(get,never) : Int; inline function get_FLUID_WIDTH() return level.cWid;
     public var FLUID_HEIGHT(get,never):Int; inline function get_FLUID_HEIGHT() return Std.int( FLUID_WIDTH * height / width );
     
+    var graphicsDebug:solv.DebugSolver;
+
 	var frame:Int;  
     //solver grid width hei shorcut for list parcour
     public var sw:Int;
@@ -36,10 +39,6 @@ class Solver extends dn.Process {
 
 	public var solver:solv.FluidSolver;
 
-    var sb : h2d.SpriteBatch;
-    public var cells : Array<h2d.SpriteBatch.BatchElement>;
-    public var directions : Array<h2d.SpriteBatch.BatchElement>;
-    
 	public function new() {
 		super(Game.ME);
 
@@ -52,43 +51,12 @@ class Solver extends dn.Process {
         solver.solverIterations = 1;
 
         
+        graphicsDebug = new DebugSolver(solver);
 
         //init start value//
         for (i in 0...solver.rOld.length) {
 			solver.rOld[i] = solver.gOld[i] = solver.bOld[i] = 0;
 		}
-
-        cells = [];
-        directions = [];
-        sb = new h2d.SpriteBatch(h2d.Tile.fromColor(Color.makeColorRgb(1,1,1),Const.GRID,Const.GRID));
-        game.scroller.add(sb,Const.DP_SOLVER);
-        sb.blendMode = Add;
-        sb.hasUpdate = true;
-        sb.hasRotationScale = true;
-
-        sw = solver.width;
-        sh = solver.height;
-        caseOffset = 1;
-        boundOffset = Const.GRID * caseOffset;
-
-        for(j in 0...sh) {
-			for(i in 0...sw) {
-                var be = new BatchElement(h2d.Tile.fromColor(Color.makeColorRgb(1,1,1),Const.GRID-1,Const.GRID-1));
-                be.x = i*Const.GRID+1 -boundOffset;
-                be.y = j*Const.GRID+1 -boundOffset;
-                be.a = 0.3;
-                sb.add(be);
-                cells.push(be);
-                var ve = new BatchElement(Assets.tiles.getTile(D.tiles.vector12));
-                ve.x = i*Const.GRID-boundOffset + Const.GRID/2;
-                ve.y = j*Const.GRID-boundOffset + Const.GRID/2;
-                ve.rotation = 0;
-                sb.add(ve);
-                directions.push(ve);
-			}
-		}
-
-        sb.visible = false;
 
 	}
     
@@ -99,11 +67,11 @@ class Solver extends dn.Process {
         } 
 
         for (e in Fan.ALL){
-            for(c in e.informedCells){
-                solver.u[c.index] = c.u;
-                solver.v[c.index] = c.v;
-                solver.uOld[c.index] = c.u;
-                solver.vOld[c.index] = c.v;
+            if (e.isBlowing){
+                var cells = e.getInformedCells();
+                for(c in cells){
+                setUVatIndex(c.u,c.v,c.index);
+                }
             }
         }
 
@@ -113,25 +81,16 @@ class Solver extends dn.Process {
 
     override public function postUpdate() {
         super.postUpdate();
-    
-        if( ui.Console.ME.hasFlag("grid")){
-            sb.visible = true;
-		    var fi:Int;
-        
-            for(j in 0...sh) {
-                for(i in 0...sw) {
-                    fi = i + (sw * j);
-                    if (fi < cells.length){
-                        cells[fi].r = Math.lerp(0,255,solver.r[fi]);
-                        cells[fi].g = Math.lerp(0,255,solver.g[fi]);
-                        cells[fi].b = Math.lerp(0,255,solver.b[fi]);
-                        var a = Math.atan2(solver.v[fi],solver.u[fi]);
-                        directions[fi].rotation = a;
-                        directions[fi].a =1*Math.sqrt((solver.u[fi]*solver.u[fi]+solver.v[fi]*solver.v[fi]));
-                    }
-                }
-            }
-        }  
+        turnOffFanCells();
+        graphicsDebug.updateGridDebugDraw();
+
+    }
+
+    private function turnOffFanCells() {
+        for (e in Fan.ALL){
+            var l = e.getInformedCellsIndex();
+            graphicsDebug.turnOffListOfCells(l);
+        }
     }
 
     public function addForce(x:Int, y:Int, dx:Float, dy:Float, rgb:Vector):Void {
@@ -150,7 +109,7 @@ class Solver extends dn.Process {
 			solver.vOld[index] += dy * velocityMult;
 		}
 	}
-
+/* 
     public function addEquation(_x:Int, _y:Int, w:Int, h:Int) {
         var index:Int;
         var x = _x + caseOffset;
@@ -163,33 +122,46 @@ class Solver extends dn.Process {
 
         for( j in jsy...jey){
             for(i in isx...iex){
-                index = i+(sw*j);
-                if(index >=0 && index < solver.numCells){
-                    
+                index = computeSolverIndexFromCxCy(i,j);//i+(sw*j);
+                if(testIfIndexIsInArray(index)){
                     var ex = Math.floor((i+caseOffset-x));
                     var ey = Math.floor((j+caseOffset-y));//-(h/2));
-                    
-                        solver.u[index] = -ey*0.2 -(ex*0.02);// - fSolver.v[index];
-                        solver.v[index] = ex*0.2 -(ey*0.02);// 0;
-
-
-                        solver.uOld[index] =  -ey*0.2-(ex*0.02);
-                        solver.vOld[index] =  ex*0.2- (ey*0.02);
+                    var u = -ey*0.2 -(ex*0.02);
+                    var v =  ex*0.2 -(ey*0.02);
+                    setUVatIndex(u,v,index);
                 }
             }
         }
+    } */
+
+    private function setUVatIndex(u:Float,v:Float,index:Int){
+        solver.u[index] = u;
+        solver.v[index] = v;
+        solver.uOld[index] = u;
+        solver.vOld[index] = v;
     }
 
 	public  function getUVatCoord(cx:Int,cy:Int) {
-        if (isInGrid(cx,cy)){
+        if (testIfCellIsInGrid(cx,cy)){
             var index = solver.getIndexForCellPosition(cx,cy);
             return new Vector(solver.u[index],solver.v[index]);
         }
         return new Vector(0,0);    
     }
 
-    public function isInGrid(cx:Int,cy:Int){
-        if (cx >= 0 && cx < FLUID_WIDTH && cy >=0 && cy < FLUID_HEIGHT )
+    public function  computeSolverIndexFromCxCy(cx:Int,cy:Int){
+        var index = solver.getIndexForCellPosition(cx,cy);
+        return index;
+    }
+
+    public function testIfIndexIsInArray(cellIndex:Int) {
+		if (cellIndex >= 0 && cellIndex < solver.numCells)
+			return true;
+		return false;
+	}
+
+    public function testIfCellIsInGrid(cx:Int,cy:Int){
+        if (cx >= 0 && cx < solver.width && cy >=0 && cy < solver.height )
             return true;
      
         return false;   
@@ -197,9 +169,8 @@ class Solver extends dn.Process {
 
 	override public function onDispose() {
 		super.onDispose();
-		//solver.dispose(); a inventer une source est reste "coince" ap reset une fois 
-		sb.remove();
-        cells = [];
-        directions = [];
+        graphicsDebug.dispose();
 	}
+
+   
 }

@@ -31,7 +31,7 @@ class ViiEmitter extends Entity {
     }
 
     public function shape() {
-        Game.ME.solver.addEquation(cx,cy,10,10);
+        //Game.ME.solver.addEquation(cx,cy,10,10);
     }
 
 
