@@ -1,6 +1,7 @@
 
+import solv.SolverModifier;
 import solv.DebugSolver;
-import solv.ViiEmitter;
+//import solv.ViiEmitter;
 import solv.FluidSolver;
 import h3d.Vector;
 import hxd.Math;
@@ -62,11 +63,11 @@ class Solver extends dn.Process {
     
     override public function fixedUpdate() {
         super.fixedUpdate();
-        for ( e in ViiEmitter.ALL){
-            addForce(e.cx,e.cy,e.windX,e.windY,new Vector(1,0,1));
-        } 
+        //for ( e in ViiEmitter.ALL){
+          //  addForce(e.cx,e.cy,e.windX,e.windY,new Vector(1,0,1));
+        //} 
 
-        for (e in Fan.ALL){
+        for (e in SolverModifier.ALL){
             if (e.isBlowing){
                 var cells = e.getInformedCells();
                 for(c in cells){
@@ -87,7 +88,7 @@ class Solver extends dn.Process {
     }
 
     private function turnOffFanCells() {
-        for (e in Fan.ALL){
+        for (e in SolverModifier.ALL){
             var l = e.getInformedCellsIndex();
             graphicsDebug.turnOffListOfCells(l);
         }

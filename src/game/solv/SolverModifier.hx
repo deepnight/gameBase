@@ -1,12 +1,12 @@
-package en;
+package solv;
 
 import dn.CiAssert;
 import dn.Bresenham;
 
 typedef CellStruct = {index:Int,x:Int,y:Int,abx:Int,aby:Int,u:Float,v:Float}
 
-class Fan extends Entity {
-	public static var ALL:Array<Fan> = [];
+class SolverModifier extends Entity {
+	public static var ALL:Array<SolverModifier> = [];
 
 	var solver(get, never):Solver;inline function get_solver()return Game.ME.solver;
 

@@ -1,5 +1,7 @@
 package sample;
 
+import solv.SolverModifier;
+
 /**
 	This small class just creates a SamplePlayer instance in current level
 **/
@@ -17,7 +19,7 @@ class SampleGame extends Game {
 	override function startLevel(l:World_Level) {
 		super.startLevel(l);
 		new SamplePlayer();
-		new Fan(20,30);
+		new SolverModifier(20,30);
 		
 		for (i in 0...25){
 			for( j in 0...25){

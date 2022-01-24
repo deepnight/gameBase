@@ -1,7 +1,8 @@
 package sample;
 
-import solv.ViiEmitter;
-import en.Fan;
+//import solv.ViiEmitter;
+import solv.SolverModifier;
+
 
 /**
 	SamplePlayer is an Entity with some extra functionalities:
@@ -20,19 +21,19 @@ class SamplePlayer extends Entity {
 	var onGround(get,never) : Bool;
 		inline function get_onGround() return !destroyed && dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
-	var emit :ViiEmitter;
-	var fan :Fan;
+	//var emit :ViiEmitter;
+	var fan :SolverModifier;
 
 	public function new() {
 		super(5,5);
-		emit = new ViiEmitter(5,5);
-		fan = new Fan(5,5,this);
+		//emit = new ViiEmitter(5,5);
+		fan = new SolverModifier(5,5,this);
 		// Start point using level entity "PlayerStart"
 		var start = level.data.l_Entities.all_PlayerStart[0];
 
 		if( start!=null )
 			setPosCase(start.cx, start.cy);
-			emit.setPosCase(start.cx,start.cy);
+			//emit.setPosCase(start.cx,start.cy);
 			//fan.setPosCase(start.cx,start.cy);
 
 		// Misc inits
@@ -162,8 +163,8 @@ class SamplePlayer extends Entity {
 			dx += xSpeed * speed;
 		}
 
-		emit.dx = dx;
-		emit.dy = dy;
-		emit.setPosPixel(attachX,attachY);
+		//emit.dx = dx;
+		//emit.dy = dy;
+		//emit.setPosPixel(attachX,attachY);
 	}
 }
