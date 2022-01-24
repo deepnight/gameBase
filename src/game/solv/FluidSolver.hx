@@ -7,9 +7,7 @@ package solv;
 /*
    haXe port
    Andy Li
-*/
-class FluidSolver 
-{
+
    public static var FLUID_DEFAULT_NX:Float						= 50;
    public static var FLUID_DEFAULT_NY:Float						= 50;
    public static var FLUID_DEFAULT_DT:Float						= 1.0;
@@ -18,8 +16,21 @@ class FluidSolver
    public static var FLUID_DEFAULT_FADESPEED:Float				= 0.3;
    public static var FLUID_DEFAULT_SOLVER_ITERATIONS:Int		= 10;
    public static var FLUID_DEFAULT_VORTICITY_CONFINEMENT:Bool 	= false;
+*/
 
-   
+class FluidSolver 
+{
+   public static var FLUID_DEFAULT_NX:Float						= 50;
+   public static var FLUID_DEFAULT_NY:Float						= 50;
+   public static var FLUID_DEFAULT_DT:Float						= 0.5/Const.FIXED_UPDATE_FPS;//1.0;
+   public static var FLUID_DEFAULT_VISC:Float					= 0.0000003;
+   public static var FLUID_DEFAULT_COLOR_DIFFUSION:Float 		= 0.0;
+   public static var FLUID_DEFAULT_FADESPEED:Float				= 0.05;
+   public static var FLUID_DEFAULT_SOLVER_ITERATIONS:Int		= 1;
+   public static var FLUID_DEFAULT_VORTICITY_CONFINEMENT:Bool 	= true;
+   public static var FLUID_DEFAULT_BOUNDARY_OFFSET              = 2;
+
+
    public var u:Array<Float>;
    public var v:Array<Float>;
    
@@ -71,14 +82,15 @@ class FluidSolver
        
        _NX = NX;
        _NY = NY;
-       _NX2 = _NX + 2;
-       _NY2 = _NY + 2;
+       _NX2 = _NX ;//+ FLUID_DEFAULT_BOUNDARY_OFFSET;
+       _NY2 = _NY ;//+ FLUID_DEFAULT_BOUNDARY_OFFSET;
        
        numCells = _NX2 * _NY2;
        
        _invNumCells = 1.0 / numCells;
        
        width = _NX2;
+
        height = _NY2;
        
        reset();
@@ -98,7 +110,6 @@ class FluidSolver
        var i:Int = numCells;
        while ( --i > -1 ) {
            u[i] = uOld[i] = v[i] = vOld[i] = 0.0;
-           //r[i] = rOld[i] = g[i] = gOld[i] = b[i] = bOld[i] = 0;
            curl_abs[i] = curl_orig[i] = 0;
        }
    }	
@@ -478,73 +489,6 @@ class FluidSolver
    inline private function FLUID_IX(i:Int, j:Int):Int
    { 
        return i + _NX2 * j;
-   }
-   
-   public function shiftLeft():Void
-   {                
-       var j:Int = _NX2 - 1, k:Int, ind:Int;
-       for (i in 0..._NY2)
-       {
-           k = i * _NX2 + j;
-           ind = k - j;
-
-           
-           u.insert(k, u.splice(ind, 1)[0]);
-           v.insert(k, v.splice(ind, 1)[0]);
-           
-           uOld.insert(k, uOld.splice(ind, 1)[0]);
-           vOld.insert(k, vOld.splice(ind, 1)[0]);
-       }
-   }
-   
-   public function shiftRight():Void
-   {                
-       var j:Int = _NX2 - 1, k:Int, ind:Int;
-       for (i in 0..._NY2)
-       {
-           k = i * _NX2 + j;
-           ind = k - j;
-
-           u.insert(ind, u.splice(k, 1)[0]);
-           v.insert(ind, v.splice(k, 1)[0]);
-
-           uOld.insert(ind, uOld.splice(k, 1)[0]);
-           vOld.insert(ind, vOld.splice(k, 1)[0]);
-       }
-   }
-   
-   public function shiftUp():Void
-   {
-      
-       u = u.concat(u.slice(0, _NX2));
-       u.splice(0, _NX2);
-       
-       v = v.concat(v.slice(0, _NX2));
-       v.splice(0, _NX2);
-       
-       uOld = uOld.concat(uOld.slice(0, _NX2));
-       uOld.splice(0, _NX2);
-       
-       vOld = vOld.concat(vOld.slice(0, _NX2));
-       vOld.splice(0, _NX2);
-   }
-   
-   public function shiftDown():Void
-   {
-       var offset:Int = (_NY2 - 1) * _NX2;
-       var offset2:Int = offset + _NX2;
-        
-       u = u.slice(offset, offset2).concat(u);
-       u.splice(numCells, _NX2);
-       
-       v = v.slice(offset, offset2).concat(v);
-       v.splice(numCells, _NX2);
-        
-       uOld = uOld.slice(offset, offset2).concat(uOld);
-       uOld.splice(numCells, _NX2);
-       
-       vOld = vOld.slice(offset, offset2).concat(vOld);
-       vOld.splice(numCells, _NX2);
    }
    
     // nx => nx2 le debug draw repose sur cette fonction      

@@ -17,15 +17,13 @@ class SolverModifier extends Entity {
 	var aw:Int = 5;
 	var areaRadius:Int = 3;
 
-	var cxSolverOffset(get, never):Int;inline function get_cxSolverOffset() return cx + solver.caseOffset;
-	var cySolverOffset(get, never):Int;inline function get_cySolverOffset() return cy + solver.caseOffset;
-
-	// var isx = Math.floor(x - (aw / 2));
-	var cxTopRectangle(get, never):Int;inline function get_cxTopRectangle()return Math.floor(cxSolverOffset - (aw / 2))+1;
-	var cyTopRectangle(get, never):Int;inline function get_cyTopRectangle()return Math.floor(cySolverOffset - (ah / 2))+1;
+	
+	
+	var cxTopRectangle(get, never):Int;inline function get_cxTopRectangle()return Math.floor(cx - (aw / 2))+1;
+	var cyTopRectangle(get, never):Int;inline function get_cyTopRectangle()return Math.floor(cy - (ah / 2))+1;
 
 	public var isBlowing(get,never):Bool;inline function get_isBlowing()return blowingIsActive;
-	//public var 
+	
 
 	var blowingIsActive:Bool;
 	var parentEntity:Entity;
@@ -68,11 +66,11 @@ class SolverModifier extends Entity {
 
 		switch (areaShape) {
 			case AsSquare:
-                var list = Bresenham.getRectangle(cxTopRectangle, cyTopRectangle, aw, ah);
+                var list = Bresenham.getRectangle(cx, cy, aw, ah);
 				pushAreaCells_toInformedCells(list);
 				return;
 			case AsCircle:
-                var list = Bresenham.getDisc(cxSolverOffset, cySolverOffset, areaRadius);
+                var list = Bresenham.getDisc(cx,cy, areaRadius);
                 pushAreaCells_toInformedCells(list);
 				return;
 			case AsLine:
@@ -81,7 +79,7 @@ class SolverModifier extends Entity {
 	}
 
 	private function actualizeAreaCells(){
-		var list = Bresenham.getDisc(cxSolverOffset, cySolverOffset, areaRadius);
+		var list = Bresenham.getDisc(cx,cy, areaRadius);
 		informedCells = [];
 		pushAreaCells_toInformedCells(list);
 	}
@@ -98,8 +96,8 @@ class SolverModifier extends Entity {
     private function informCellUVFields() {
 		if (isBlowing){
 			for (cell in informedCells){
-				cell.u = 0;//1*Math.cos(angle);
-				cell.v = 1;//1*Math.sin(angle);
+				cell.u = 0;
+				cell.v = 1;
 			}
 		}
     }
