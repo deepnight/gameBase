@@ -1,7 +1,7 @@
 package sample;
 
 import solv.SolverModifier;
-
+import solv.Boids;
 /**
 	This small class just creates a SamplePlayer instance in current level
 **/

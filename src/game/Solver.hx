@@ -44,7 +44,7 @@ class Solver extends dn.Process {
 		super(Game.ME);
 
 		solver = new FluidSolver( FLUID_WIDTH, FLUID_HEIGHT );
-		solver.isRGB = false;
+		//solver.isRGB = false;
 		solver.fadeSpeed = 0.05;
 		solver.deltaT = 0.5/Const.FIXED_UPDATE_FPS;
 		solver.viscosity = .0000003;//**0^8**/
@@ -55,17 +55,14 @@ class Solver extends dn.Process {
         graphicsDebug = new DebugSolver(solver);
 
         //init start value//
-        for (i in 0...solver.rOld.length) {
+        /* for (i in 0...solver.rOld.length) {
 			solver.rOld[i] = solver.gOld[i] = solver.bOld[i] = 0;
-		}
+		} */
 
 	}
     
     override public function fixedUpdate() {
         super.fixedUpdate();
-        //for ( e in ViiEmitter.ALL){
-          //  addForce(e.cx,e.cy,e.windX,e.windY,new Vector(1,0,1));
-        //} 
 
         for (e in SolverModifier.ALL){
             if (e.isBlowing){
@@ -82,9 +79,8 @@ class Solver extends dn.Process {
 
     override public function postUpdate() {
         super.postUpdate();
-        turnOffFanCells();
+        //turnOffFanCells();
         graphicsDebug.updateGridDebugDraw();
-
     }
 
     private function turnOffFanCells() {
@@ -102,38 +98,14 @@ class Solver extends dn.Process {
 			
 			var index:Int = solver.getIndexForCellPosition(x,y);
 			
-			solver.rOld[index]  = rgb.r;
-			solver.gOld[index]  = rgb.g;
-			solver.bOld[index]  = rgb.b;
+			//solver.rOld[index]  = rgb.r;
+			//solver.gOld[index]  = rgb.g;
+			//solver.bOld[index]  = rgb.b;
 			
 			solver.uOld[index] += dx * velocityMult;
 			solver.vOld[index] += dy * velocityMult;
 		}
 	}
-/* 
-    public function addEquation(_x:Int, _y:Int, w:Int, h:Int) {
-        var index:Int;
-        var x = _x + caseOffset;
-        var y = _y + caseOffset;
-
-        var jsy = Math.floor(y-(h/2));
-        var jey = Math.floor(y+(h/2));
-        var isx = Math.floor(x-(w/2));
-        var iex = Math.floor(x+(w/2));
-
-        for( j in jsy...jey){
-            for(i in isx...iex){
-                index = computeSolverIndexFromCxCy(i,j);//i+(sw*j);
-                if(testIfIndexIsInArray(index)){
-                    var ex = Math.floor((i+caseOffset-x));
-                    var ey = Math.floor((j+caseOffset-y));//-(h/2));
-                    var u = -ey*0.2 -(ex*0.02);
-                    var v =  ex*0.2 -(ey*0.02);
-                    setUVatIndex(u,v,index);
-                }
-            }
-        }
-    } */
 
     private function setUVatIndex(u:Float,v:Float,index:Int){
         solver.u[index] = u;

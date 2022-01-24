@@ -49,8 +49,8 @@ class DebugSolver {
             sb.visible = true;
 		    var index:Int;
         
-            for(j in 0...sh) {
-                for(i in 0...sw) {
+            for(j in 0...solver.height) {
+                for(i in 0...solver.width) {
                     index = solver.getIndexForCellPosition(i,j);
                     if (index < sbCells.length){
                         colorizeCellElement(index);
@@ -109,9 +109,9 @@ class DebugSolver {
     }
 
     private function colorizeCellElement(index){
-        sbCells[index].r = Math.lerp(0,255,solver.r[index]);
-        sbCells[index].g = Math.lerp(0,255,solver.g[index]);
-        sbCells[index].b = Math.lerp(0,255,solver.b[index]);
+        sbCells[index].r = Math.lerp(0,255,solver.u[index]);
+        sbCells[index].g = 0 ;
+        sbCells[index].b = Math.lerp(0,255,solver.v[index]);
     }
 
     private function turnOffCellVisibility(sIndex:Int) {
