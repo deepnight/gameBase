@@ -12,6 +12,8 @@ enum GameAction {
 	Pause;
 
 	ToggleDebugDrone;
+	DebugDroneZoomIn;
+	DebugDroneZoomOut;
 	DebugTurbo;
 	DebugSlowMo;
 	ScreenshotMode;

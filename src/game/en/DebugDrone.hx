@@ -53,9 +53,10 @@ class DebugDrone extends Entity {
 		help.filter = new dn.heaps.filter.PixelOutline();
 		help.textColor = DEFAULT_COLOR;
 		help.text = [
-			"ESCAPE - kill debug drone",
-			"ARROWS - move",
-			"PAGE UP/DOWN- zoom",
+			"CANCEL -- Escape",
+			"MOVE -- ARROWS/pad",
+			"ZOOM IN -- "+ca.input.getAllBindindTextsFor(DebugDroneZoomIn).join(", "),
+			"ZOOM OUT -- "+ca.input.getAllBindindTextsFor(DebugDroneZoomOut).join(", "),
 		].join("\n");
 		help.setScale(Const.UI_SCALE);
 		help.x = 4*Const.UI_SCALE;
@@ -105,10 +106,10 @@ class DebugDrone extends Entity {
 			}
 
 			// Zoom controls
-			if( ca.isKeyboardDown(K.PGUP) || ca.isPadDown(LT) )
+			if( ca.isDown(DebugDroneZoomOut) )
 				camera.forceZoom( camera.baseZoom-0.04*camera.baseZoom );
 
-			if( ca.isKeyboardDown(K.PGDOWN) || ca.isPadDown(RT) )
+			if( ca.isDown(DebugDroneZoomIn) )
 				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
 			// Destroy

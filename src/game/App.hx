@@ -216,6 +216,11 @@ class App extends dn.Process {
 		#if debug
 		controller.bindPad(DebugTurbo, LT);
 		controller.bindPad(DebugSlowMo, LB);
+		controller.bindPad(DebugDroneZoomIn, RSTICK_UP);
+		controller.bindPad(DebugDroneZoomOut, RSTICK_DOWN);
+
+		controller.bindKeyboard(DebugDroneZoomIn, K.PGUP);
+		controller.bindKeyboard(DebugDroneZoomOut, K.PGDOWN);
 		controller.bindKeyboard(DebugTurbo, [K.END, K.NUMPAD_ADD]);
 		controller.bindKeyboard(DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
 		controller.bindPadCombo(ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
