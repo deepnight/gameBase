@@ -112,7 +112,7 @@ class DebugDrone extends Entity {
 				camera.forceZoom( camera.baseZoom+0.02*camera.baseZoom );
 
 			// Destroy
-			if( ca.isKeyboardPressed(K.ESCAPE) ) {
+			if( ca.isKeyboardPressed(K.ESCAPE) || ca.isPressed(ToggleDebugDrone) ) {
 				destroy();
 				return;
 			}

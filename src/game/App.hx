@@ -218,6 +218,8 @@ class App extends dn.Process {
 		controller.bindPad(DebugSlowMo, LB);
 		controller.bindKeyboard(DebugTurbo, [K.END, K.NUMPAD_ADD]);
 		controller.bindKeyboard(DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
+		controller.bindPadCombo(ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
+		controller.bindKeyboardCombo(ToggleDebugDrone, [K.D, K.CTRL, K.SHIFT]);
 		#end
 
 		ca = controller.createAccess();
