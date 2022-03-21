@@ -26,7 +26,7 @@ class Assets {
 		fontPixel = new hxd.res.BitmapFont( hxd.Res.fonts.pixel_unicode_regular_12_xml.entry ).toFont();
 
 		// build sprite atlas directly from Aseprite file
-		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
+		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles_aseprite.toAseprite());
 
 		// CastleDB file hot reloading
 		#if debug
