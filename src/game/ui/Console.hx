@@ -48,7 +48,6 @@ class Console extends h2d.Console {
 			this.addCommand("ctrl", [], ()->{
 				App.ME.ca.toggleDebugger(App.ME, dbg->{
 					dbg.root.filter = new dn.heaps.filter.PixelOutline();
-					dbg.onUpdateCb = ()->dbg.root.setScale( dn.heaps.Scaler.bestFit_i(dbg.width, dbg.height) );
 				});
 			});
 		#end
