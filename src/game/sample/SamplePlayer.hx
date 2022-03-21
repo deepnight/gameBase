@@ -105,9 +105,10 @@ class SamplePlayer extends Entity {
 		}
 
 		// Walk
-		if( ca.getAnalogDistXY(MoveX)>0 ) {
+		debugFloat( ca.getAnalogValue(MoveLeft) );
+		if( ca.getAnalogDist2(MoveLeft,MoveRight)>0 ) {
 			// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
-			walkSpeed = ca.getAnalogValue(MoveX); // -1 to 1
+			walkSpeed = ca.getAnalogValue2(MoveLeft,MoveRight); // -1 to 1
 		}
 	}
 

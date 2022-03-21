@@ -190,15 +190,21 @@ class App extends dn.Process {
 		controller = new dn.heaps.input.Controller(GameAction);
 
 		// Gamepad bindings
-		controller.bindPadLStick(MoveX,MoveY);
+		controller.bindPadLStick4(MoveLeft, MoveRight, MoveUp, MoveDown);
 		controller.bindPad(Jump, A);
 		controller.bindPad(Restart, SELECT);
 		controller.bindPad(Pause, START);
-		controller.bindPadButtonsAsStickXY(MoveX, MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
+		controller.bindPad(MoveLeft, DPAD_LEFT);
+		controller.bindPad(MoveRight, DPAD_RIGHT);
+		controller.bindPad(MoveUp, DPAD_UP);
+		controller.bindPad(MoveDown, DPAD_DOWN);
 		controller.bindPad(MenuCancel, B);
 
 		// Keyboard bindings
-		controller.bindKeyboardAsStick(MoveX,MoveY, K.UP, K.LEFT, K.DOWN, K.RIGHT);
+		controller.bindKeyboard(MoveLeft, [K.LEFT, K.Q, K.A]);
+		controller.bindKeyboard(MoveRight, [K.RIGHT, K.D]);
+		controller.bindKeyboard(MoveUp, [K.UP, K.Z, K.W]);
+		controller.bindKeyboard(MoveDown, [K.DOWN, K.S]);
 		controller.bindKeyboard(Jump, K.SPACE);
 		controller.bindKeyboard(Restart, K.R);
 		controller.bindKeyboard(ScreenshotMode, K.F9);
