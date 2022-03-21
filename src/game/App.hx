@@ -194,7 +194,7 @@ class App extends dn.Process {
 		controller.bindPad(Jump, A);
 		controller.bindPad(Restart, SELECT);
 		controller.bindPad(Pause, START);
-		controller.bindPadButtonsAsStick(MoveX, MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
+		controller.bindPadButtonsAsStickXY(MoveX, MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
 		controller.bindPad(MenuCancel, B);
 
 		// Keyboard bindings

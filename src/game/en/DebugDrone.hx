@@ -97,9 +97,9 @@ class DebugDrone extends Entity {
 
 		if( !App.ME.anyInputHasFocus() ) {
 			// Fly around
-			if( ca.getAnalogDist(MoveX,MoveY) > 0 ) {
-				var a = ca.getAnalogAngle(MoveX,MoveY);
-				var d = ca.getAnalogDist(MoveX,MoveY);
+			if( ca.getAnalogDistXY(MoveX,MoveY) > 0 ) {
+				var a = ca.getAnalogAngleXY(MoveX,MoveY);
+				var d = ca.getAnalogDistXY(MoveX,MoveY);
 				droneDx+=Math.cos(a) * d*spd * tmod;
 				droneDy+=Math.sin(a) * d*spd * tmod;
 			}
