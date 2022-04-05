@@ -1,10 +1,10 @@
 package ui;
 
-class Window extends dn.Process {
+class Window extends GameProcess {
 	public var win: h2d.Flow;
 
 	public function new() {
-		super(Game.ME);
+		super();
 
 		createRootInLayers(Game.ME.root, Const.DP_UI);
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering

@@ -2,10 +2,7 @@ import h2d.Sprite;
 import dn.heaps.HParticle;
 
 
-class Fx extends dn.Process {
-	var game(get,never) : Game; inline function get_game() return Game.ME;
-	var level(get,never) : Level; inline function get_level() return Game.ME.level;
-
+class Fx extends GameProcess {
 	var pool : ParticlePool;
 
 	public var bgAddSb    : h2d.SpriteBatch;
@@ -14,7 +11,7 @@ class Fx extends dn.Process {
 	public var topNormalSb    : h2d.SpriteBatch;
 
 	public function new() {
-		super(Game.ME);
+		super();
 
 		pool = new ParticlePool(Assets.tiles.tile, 2048, Const.FPS);
 

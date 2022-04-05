@@ -1,4 +1,4 @@
-class Camera extends dn.Process {
+class Camera extends GameProcess {
 	public static var MIN_ZOOM : Float = 1.0;
 	public static var MAX_ZOOM : Float = 10;
 
@@ -80,7 +80,7 @@ class Camera extends dn.Process {
 
 
 	public function new() {
-		super(Game.ME);
+		super();
 		rawFocus = LPoint.fromCase(0,0);
 		clampedFocus = LPoint.fromCase(0,0);
 		dx = dy = 0;

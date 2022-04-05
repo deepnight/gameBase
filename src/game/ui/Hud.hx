@@ -1,10 +1,6 @@
 package ui;
 
-class Hud extends dn.Process {
-	public var game(get,never) : Game; inline function get_game() return Game.ME;
-	public var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
-	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
-
+class Hud extends GameProcess {
 	var flow : h2d.Flow;
 	var invalidated = true;
 	var notifications : Array<h2d.Flow> = [];
@@ -13,7 +9,7 @@ class Hud extends dn.Process {
 	var debugText : h2d.Text;
 
 	public function new() {
-		super(Game.ME);
+		super();
 
 		notifTw = new Tweenie(Const.FPS);
 

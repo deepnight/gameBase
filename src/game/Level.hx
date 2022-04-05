@@ -1,7 +1,4 @@
-class Level extends dn.Process {
-	var game(get,never) : Game; inline function get_game() return Game.ME;
-	var fx(get,never) : Fx; inline function get_fx() return Game.ME.fx;
-
+class Level extends GameProcess {
 	/** Level grid-based width**/
 	public var cWid(get,never) : Int; inline function get_cWid() return data.l_Collisions.cWid;
 
@@ -21,7 +18,7 @@ class Level extends dn.Process {
 	var invalidated = true;
 
 	public function new(ldtkLevel:World.World_Level) {
-		super(Game.ME);
+		super();
 
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 		data = ldtkLevel;

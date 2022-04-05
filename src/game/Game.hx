@@ -1,9 +1,5 @@
-import dn.Process;
-
-class Game extends Process {
+class Game extends dn.Process {
 	public static var ME : Game;
-
-	public var app(get,never) : App; inline function get_app() return App.ME;
 
 	/** Game controller (pad or keyboard) **/
 	public var ca : ControllerAccess<GameAction>;
@@ -72,7 +68,7 @@ class Game extends Process {
 
 		camera.centerOnTarget();
 		hud.onLevelStart();
-		Process.resizeAll();
+		dn.Process.resizeAll();
 	}
 
 
