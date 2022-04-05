@@ -55,14 +55,6 @@
 			"priority": -40
 		},
 		{
-			"text": "📘 Docs",
-			"color": "white",
-			"command": "haxe tools.docs.hxml",
-			"alignment": "right",
-			"skipTerminateQuickPick": false,
-			"priority": -41
-		},
-		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
 			"command": "haxelib run redistHelper hl.dx.hxml hl.sdl.hxml js.hxml -o redist -p GameBase -zip",
