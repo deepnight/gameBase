@@ -199,6 +199,9 @@ class Entity {
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 
 
+	/**
+		Constructor
+	**/
     public function new(x:Int, y:Int) {
         uid = Const.makeUniqueId();
 		ALL.push(this);
@@ -219,6 +222,7 @@ class Entity {
 		if( ui.Console.ME.hasFlag("bounds") )
 			enableDebugBounds();
     }
+
 
 	function set_pivotX(v) {
 		pivotX = M.fclamp(v,0,1);
@@ -295,7 +299,6 @@ class Entity {
 		if( M.dist(attachX,attachY,prevFrameAttachX,prevFrameAttachY) > Const.GRID*2 ) {
 			prevFrameAttachX = attachX;
 			prevFrameAttachY = attachY;
-			hud.notify("recal");
 		}
 		updateLastFixedUpdatePos();
 	}
