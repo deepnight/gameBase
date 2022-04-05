@@ -1,3 +1,5 @@
+package tools;
+
 class GameProcess extends dn.Process {
 	public var app(get,never) : App; inline function get_app() return App.ME;
 	public var game(get,never) : Game; inline function get_game() return Game.ME;
