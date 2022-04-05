@@ -5,14 +5,15 @@
 - General:
 	- **The official gameBase version is now the former "advanced" branch version. The previous, more minimalistic version, is still available in the `legacy` branch.**
 	- **Debug Drone**: press `CTRL-SHIFT-D` to spawn a debug Drone. Use arrows to fly around and quickly explore your current level. You can also type `/drone` in console.
+	- Full **Controller** rework, to provide much better Gamepad support, bindings, combos, etc.
 	- Full **LDtk** integration (https://ldtk.io), with hot-reloading support.
 	- Added many comments everywhere.
 	- Moved all source code to various `src/` subfolders
-	- Moved all game related classes to the `gm` package
-	- Moved all assets related classes to the `assets` package
+	- Moved all assets related classes to the `assets.*` package
+	- Added various debug commands to console. Open it up by typing `/`. Enter `/help` to list all available commands.
 	- Added `/fps` command to console to display FPS chart over time.
+	- Added `/ctrl` command to visualize and debug controller (keyboard or gamepad).
 	- Fixed various FPS values issues
-	- Added various debug commands to console. Open it up with `²` key, and type: `/help`
 	- Better "active" level management, through `startLevel()` method
 	- Cleaned up Main class
 	- Renamed Main class to App
