@@ -14,7 +14,7 @@
 			],
 			"lines": [
 				{
-					"constId": "Player",
+					"constId": "player",
 					"values": [
 						{
 							"valueName": "valueA",
@@ -37,7 +37,7 @@
 				]
 			},
 			"separatorIds": [
-				"Player"
+				"player"
 			]
 		},
 		{
