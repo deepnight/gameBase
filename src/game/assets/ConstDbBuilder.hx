@@ -132,7 +132,7 @@ class ConstDbBuilder {
 
 			// Add field and default value
 			if( kind!=null ) {
-				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: k + " *["+fileName+"]* " });
+				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: '$k\n\n*From $fileName* ' });
 				dbDefaults.push({ field:k, expr:macro $v{val} });
 			}
 		}
@@ -239,7 +239,7 @@ class ConstDbBuilder {
 						valuesFields.push({
 							name: vid,
 							pos: pos,
-							doc: (v.doc==null ? v.valueName : v.doc ) + "  *["+fileName+"]* ",
+							doc: (v.doc==null ? v.valueName : v.doc ) + '\n\n*From $fileName* ',
 							kind: FVar( v.isInteger ? macro:Int : macro:Float ),
 						});
 						var resolveExpr = v.isInteger
@@ -255,7 +255,7 @@ class ConstDbBuilder {
 					dbTypeDef.push({
 						name: id,
 						pos: pos,
-						doc: ( doc==null ? id : doc ) + "  *["+fileName+"]* ",
+						doc: ( doc==null ? id : doc ) + '\n\n*From $fileName* ',
 						kind: FVar( TAnonymous(valuesFields) ),
 					});
 					dbDefaults.push({ field:id, expr:macro cast {} });
