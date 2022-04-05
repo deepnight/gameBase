@@ -22,10 +22,11 @@ class ConstDbBuilder {
 		var dbTypeDef : Array<Field> = []; // type definition of "db" field
 		var dbDefaults : Array<ObjectField> = []; // "db" field initialization
 
-		// Create fields from files
+		// Create fields from CDB
 		if( cdbFile!=null )
 			buildFromCdb(cdbFile, baseFields, dbTypeDef, dbDefaults);
 
+		// Create fields from JSON
 		if( jsonFile!=null )
 			buildFromJson(jsonFile, baseFields, dbTypeDef, dbDefaults);
 
