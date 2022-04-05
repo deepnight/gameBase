@@ -19,6 +19,8 @@ From the command line, run either:
  - For **OpenGL**: `haxe build.opengl.hxml`
  - For **Javascript/WebGL**: `haxe build.js.hxml`
 
+The `build.dev.hxml` is just a shortcut to one of the previous ones, with added `-debug` flag.
+
 Run the result with either:
 
  - For **DirectX/OpenGL**: `hl bin\client.hl`
