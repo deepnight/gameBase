@@ -13,7 +13,7 @@ Latest release notes: [View changelog](CHANGELOG.md).
 
 Two separate branches exist for GameBase:
 
- - `master`: default and main branch, actively maintained.
+ - `master`: latest GameBase version, actively maintained.
  - `legacy`: the previous Gamebase version. This one is much more minimalistic but it could be useful if you were looking for a very basic framework for Heaps+Haxe.
 
 The following document will only refer to the `master` branch.
