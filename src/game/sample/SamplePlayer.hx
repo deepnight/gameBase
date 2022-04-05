@@ -74,7 +74,7 @@ class SamplePlayer extends Entity {
 			dy = 0;
 			yr = 1;
 			ca.rumble(0.2, 0.06);
-			onPosManuallyChanged();
+			onPosManuallyChangedY();
 		}
 
 		// Ceiling collision
