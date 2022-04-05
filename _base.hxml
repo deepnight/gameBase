@@ -1,0 +1,10 @@
+-cp src/game
+
+-lib castle
+-lib heaps
+-lib hscript
+-lib deepnightLibs
+-lib ldtk-haxe-api
+-lib heaps-aseprite
+
+-main Boot

@@ -1,5 +1,76 @@
 {
-	"sheets": [],
+	"sheets": [
+		{
+			"name": "ConstDb",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "constId"
+				},
+				{
+					"typeStr": "8",
+					"name": "values"
+				}
+			],
+			"lines": [
+				{
+					"constId": "Player",
+					"values": [
+						{
+							"valueName": "valueA",
+							"value": 1,
+							"doc": "This documentation will show up when using your editor auto-completion for this value",
+							"isInteger": true
+						},
+						{
+							"valueName": "valueB",
+							"value": 2.5,
+							"doc": "Doc for this other value",
+							"isInteger": false
+						}
+					]
+				}
+			],
+			"props": {
+				"separatorTitles": [
+					"This sheet allows to access CastleDB \"constants\" in your code. Just call for example \"Const.db.Player.valueA\" to access float values. These values will be updated on runtime if hot-reloading is enabled. DO NOT MODIFY THE SHEET NAME OR COLUMNS!"
+				]
+			},
+			"separatorIds": [
+				"Player"
+			]
+		},
+		{
+			"name": "ConstDb@values",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "valueName",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "value",
+					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "isInteger"
+				},
+				{
+					"typeStr": "1",
+					"name": "doc",
+					"opt": true,
+					"display": null
+				}
+			]
+		}
+	],
 	"customTypes": [],
 	"compress": false
 }

@@ -1,6 +1,0 @@
--cp src
--lib castle
--lib heaps
--lib deepnightLibs
--main Boot
--dce full

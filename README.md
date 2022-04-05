@@ -1,20 +1,39 @@
 # About
 
-Base structure for my games, using **Heaps** framework (https://heaps.io) and **Haxe** language (https://haxe.org).
+**A lightweight and simple base structure for games, using *[Heaps](https://heaps.io)* framework  and *[Haxe](https://haxe.org)* language.**
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build?label=master)](https://github.com/deepnight/gameBase/actions/workflows/testJsBuild.yml)
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build/advancedBase?label=advanced%20base)](https://github.com/deepnight/gameBase/actions/workflows/testJsBuild.yml)
+Latest release notes: [View changelog](CHANGELOG.md).
 
-# Installation & usage
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build)](https://github.com/deepnight/gameBase/actions)
 
-Please check this documentation for every details: https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/
+# Install
 
-For localization, you can check the following guide: https://deepnight.net/tutorial/part-4-localize-texts-using-po-files/
+ 1. Install **Haxe** and **Hashlink**: [Step-by-step tutorial](https://deepnight.net/tutorial/a-quick-guide-to-installing-haxe/)
+ 2. Install required libs by running the following command **in the root of the repo**: `haxe setup.hxml`
 
-If you need some extra "advanced features", you can also give a try to the **advancedBase** branch: https://github.com/deepnight/gameBase/tree/advancedBase
+# Compile
 
- * Status effects on Entity.hx (like Stun or whatever you could think of)
- * Stackable slow-motions management for Game.hx
- * Level marks (can be useful for AI coding, for example by marking platform ends)
- * A few very basic extra UI components that should be useful for any game projects (like a Bar).
- * etc.
+From the command line, run either:
+
+ - For **DirectX**: `haxe build.directx.hxml`
+ - For **OpenGL**: `haxe build.opengl.hxml`
+ - For **Javascript/WebGL**: `haxe build.js.hxml`
+
+Run the result with either:
+
+ - For **DirectX/OpenGL**: `hl bin\client.hl`
+ - For **Javascript**: `start run_js.html`
+
+# Full guide
+
+An in-depth tutorial is available here: [Using gamebase to create a game](https://deepnight.net/tutorial/using-my-gamebase-to-create-a-heaps-game/).
+
+For **localization support** (ie. translating your game texts), you may also check the [following guide](https://deepnight.net/tutorial/part-4-localize-texts-using-po-files/).
+
+Any question? Join the [Official Deepnight Games discord](https://deepnight.net/go/discord).
+
+# Cleanup for your own usage
+
+You may remove the following files/folders from repo root:
+
+- `.github`
