@@ -3,7 +3,7 @@
 ## 2.0
 
 - General:
-	- **The official gameBase version is now the former "advanced" branch version. A "minimalistic" version might be added to a separate branch in the future.**
+	- **The official gameBase version is now the former "advanced" branch version. The previous, more minimalistic version, is still available in the `legacy` branch.**
 	- **Debug Drone**: press `CTRL-SHIFT-D` to spawn a debug Drone. Use arrows to fly around and quickly explore your current level. You can also type `/drone` in console.
 	- Full **LDtk** integration (https://ldtk.io), with hot-reloading support.
 	- Added many comments everywhere.
