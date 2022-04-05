@@ -4,10 +4,19 @@
 	"skipErrorMessage": true,
 	"commands": [
 		{
-			"text": "🍊 HL",
+			"text": "🍊 DX",
 			"color": "orange",
 			"commandType":"exec",
-			"command": "haxe hl.hxml",
+			"command": "haxe build.directx.hxml",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -9
+		},
+		{
+			"text": "🍊 OpenGL",
+			"color": "orange",
+			"commandType":"exec",
+			"command": "haxe build.opengl.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -10
@@ -24,7 +33,7 @@
 			"text": "☕ JS",
 			"color": "yellow",
 			"commandType":"exec",
-			"command": "haxe js.hxml",
+			"command": "haxe build.js.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -20
@@ -32,7 +41,7 @@
 		{
 			"text": "Run JS",
 			"color": "yellow",
-			"command": "start js.html",
+			"command": "start run_js.html",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -21
@@ -40,8 +49,7 @@
 		{
 			"text": "🅰️ Lang",
 			"color": "white",
-			"commandType":"palette",
-			"command": "workbench.action.tasks.runTask|Lang",
+			"command": "haxe tools.langParser.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -40
@@ -49,7 +57,7 @@
 		{
 			"text": "📘 Docs",
 			"color": "white",
-			"command": "haxe docs.hxml",
+			"command": "haxe tools.docs.hxml",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -41

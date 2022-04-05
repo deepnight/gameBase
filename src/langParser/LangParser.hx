@@ -16,5 +16,7 @@ class LangParser {
 
 		// Write POT
 		GetText.writePOT("res/lang/sourceTexts.pot",all);
+
+		Sys.println("Done.");
 	}
 }

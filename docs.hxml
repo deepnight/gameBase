@@ -1,9 +1,0 @@
-hl.sdl.hxml
---no-output
---dce no
--D doc-gen
--xml docs/docs.xml
-
---next
--cp src/docs
---macro XmlDocToMarkdown.run("docs/docs.xml", "src")
