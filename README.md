@@ -15,14 +15,14 @@ Latest release notes: [View changelog](CHANGELOG.md).
 
 From the command line, run either:
 
- - For DirectX: `haxe build.directx.hxml`
- - For OpenGL: `haxe build.opengl.hxml`
- - For Javascript/WebGL: `haxe build.js.hxml`
+ - For **DirectX**: `haxe build.directx.hxml`
+ - For **OpenGL**: `haxe build.opengl.hxml`
+ - For **Javascript/WebGL**: `haxe build.js.hxml`
 
 Run the result with either:
 
- - `hl bin\client.hl` (for DirectX/OpenGL)
- - `start run_js.html` (for Javascript)
+ - For **DirectX/OpenGL**: `hl bin\client.hl`
+ - For **Javascript**: `start run_js.html`
 
 # Full guide
 
