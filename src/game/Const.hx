@@ -1,23 +1,6 @@
 /**
-	The Const class is the place for you to store various values that should be available everywhere in your code. Example: `Const.FPS`
-
-	This class will also contain a `db` field (created by ConstDbBuilder macro). This field will be filled with all values found in both following sources:
-
-	- `res/const.json`, a simple JSON file,
-	- `res/data.cdb`, the CastleDB file, from the sheet named "ConstDb".
-
-	This allows super easy access to your game constants and settings. Example:
-
-		Having `res/const.json`:
-			{ "myValue":5, "someText":"hello" }
-
-		You may use:
-			Const.db.myValue; // equals to 5
-			Const.db.someText; // equals to "hello"
-
-		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing testing without recompiling. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
+	The Const class is a place for you to store various values that should be available everywhere in your code. Example: `Const.FPS`
 **/
-
 class Const {
 #if !macro
 
@@ -72,7 +55,25 @@ class Const {
 	public static var DP_TOP = _inc++;
 	public static var DP_UI = _inc++;
 
-	/** Simplified "constants database" using CastleDB and JSON files **/
+
+	/**
+		Simplified "constants database" using CastleDB and JSON files
+		It will be filled with all values found in both following sources:
+
+		- `res/const.json`, a basic JSON file,
+		- `res/data.cdb`, the CastleDB file, from the sheet named "ConstDb".
+
+		This allows super easy access to your game constants and settings. Example:
+
+			Having `res/const.json`:
+				{ "myValue":5, "someText":"hello" }
+
+			You may use:
+				Const.db.myValue; // equals to 5
+				Const.db.someText; // equals to "hello"
+
+		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing testing without recompiling. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
+	**/
 	public static var db = ConstDbBuilder.build("data.cdb", "const.json", assets.CastleDb);
 
 #end
