@@ -10,6 +10,10 @@ using haxe.macro.Tools;
 typedef CastleDbJson = {
 	sheets : Array<{
 		name : String,
+		columns : Array<{
+			typeStr: String,
+			name: String,
+		}>,
 		lines:Array<{
 			constId: String,
 			values: Array<{
@@ -184,14 +188,8 @@ class ConstDbBuilder {
 		}
 		Context.registerModuleDependency(Context.getLocalModule(), path);
 
-		// Check CDB sheets
-		var raw = sys.io.File.getContent(path);
-		if( raw.indexOf('"ConstDb"')<0 ) {
-			Context.fatalError('$fileName CastleDB file should contain a ConstDb sheet.', pos);
-			return [];
-		}
-
 		// Parse JSON
+		var raw = sys.io.File.getContent(path);
 		var json : CastleDbJson = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
 			Context.fatalError("CastleDB JSON parsing failed!", pos);
@@ -200,8 +198,16 @@ class ConstDbBuilder {
 
 		// List constants
 		var fields : Array<Field> = [];
+		var valid = false;
 		for(sheet in json.sheets)
 			if( sheet.name=="ConstDb" ) {
+				if( sheet.columns.filter(c->c.name=="constId").length==0 )
+					continue;
+
+				if( sheet.columns.filter(c->c.name=="values").length==0 )
+					continue;
+
+				valid = true;
 				for(l in sheet.lines) {
 					var id = Reflect.field(l, "constId");
 					var doc = Reflect.field(l,"doc");
@@ -243,6 +249,12 @@ class ConstDbBuilder {
 					});
 				}
 			}
+
+		// Check CDB sheets
+		if( !valid ) {
+			Context.fatalError('$fileName CastleDB file should contain a valid "ConstDb" sheet.', pos);
+			return [];
+		}
 
 		// Reloader
 		var cdbJsonType = Context.getType("ConstDbBuilder.CastleDbJson").toComplexType();
