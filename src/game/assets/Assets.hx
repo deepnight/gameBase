@@ -35,21 +35,21 @@ class Assets {
 			App.ME.delayer.cancelById("cdb");
 			App.ME.delayer.addS("cdb", function() {
 				CastleDb.load( hxd.Res.data.entry.getBytes().toString() );
-				Const.db.reloadCdb();
+				Const.db.reload_data_cdb();
 			}, 0.2);
 		});
 		#end
 
 		// Parse castleDB JSON
 		CastleDb.load( hxd.Res.data.entry.getText() );
-		Const.db.reloadCdb(false);
+		Const.db.reload_data_cdb(false);
 
 		// `const.json` hot-reloading
 		hxd.Res.const.watch(function() {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
 			App.ME.delayer.cancelById("constJson");
 			App.ME.delayer.addS("constJson", function() {
-				Const.db.reloadJson( hxd.Res.const.entry.getBytes().toString() );
+				Const.db.reload_const_json( hxd.Res.const.entry.getBytes().toString() );
 			}, 0.2);
 		});
 

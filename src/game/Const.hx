@@ -74,7 +74,7 @@ class Const {
 
 		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing testing without recompiling. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
 	**/
-	public static var db = ConstDbBuilder.build("data.cdb", "const.json", assets.CastleDb);
+	public static var db = ConstDbBuilder.build("data.cdb", assets.CastleDb, ["const.json"]);
 
 #end
 }

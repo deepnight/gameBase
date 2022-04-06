@@ -8,7 +8,7 @@ using haxe.macro.Tools;
 
 class ConstDbBuilder {
 
-	public static macro function build(cdbFileName:String, jsonFileName:String, cdbClass:ExprOf<Class<Dynamic>>) {
+	public static macro function build(cdbFileName:String, cdbClass:ExprOf<Class<Dynamic>>, jsonFileNames:Array<String>) {
 		var pos = Context.currentPos();
 		var rawMod = Context.getLocalModule();
 		var modPack = rawMod.split(".");
@@ -17,7 +17,7 @@ class ConstDbBuilder {
 		// Create class type
 		var classTypeDef : TypeDefinition = {
 			pos : pos,
-			name : cleanupIdentifier('Db_${cdbFileName}_${jsonFileName}'),
+			name : cleanupIdentifier('Db_${cdbFileName}_${jsonFileNames.join("_")}'),
 			pack : modPack,
 			meta: [{ name:":keep", pos:pos }],
 			doc: "Project specific Level class",
@@ -35,12 +35,15 @@ class ConstDbBuilder {
 		classTypeDef.fields = extraFields.concat(classTypeDef.fields);
 
 		// Generic JSON
-		var jsonFields = readJson(jsonFileName);
-		classTypeDef.fields = jsonFields.concat(classTypeDef.fields);
+		for(f in jsonFileNames) {
+			var jsonFields = readJson(f);
+			classTypeDef.fields = jsonFields.concat(classTypeDef.fields);
+		}
 
 		Context.defineModule(rawMod, [classTypeDef]);
 		Context.registerModuleDependency(rawMod, resolveFilePath(cdbFileName));
-		Context.registerModuleDependency(rawMod, resolveFilePath(jsonFileName));
+		for(f in jsonFileNames)
+			Context.registerModuleDependency(rawMod, resolveFilePath(f));
 
 		// Return constructor
 		var classTypePath : TypePath = { pack:classTypeDef.pack, name:classTypeDef.name }
@@ -54,6 +57,7 @@ class ConstDbBuilder {
 		Parse a JSON and create class fields using its root values
 	**/
 	static function readJson(fileName:String) : Array<Field> {
+		var uid = cleanupIdentifier(fileName);
 		var pos = Context.currentPos();
 
 		// Read file
@@ -119,7 +123,7 @@ class ConstDbBuilder {
 
 		// Update class fields using given JSON string (used for hot-reloading support)
 		fields.push({
-			name: "reloadJson",
+			name: "reload_"+uid,
 			doc: "Update class values using given JSON (useful if you want to support hot-reloading of the JSON db file)",
 			pos: pos,
 			access: [APublic],
@@ -150,6 +154,8 @@ class ConstDbBuilder {
 		Parse CastleDB and create class fields using its "ConstDb" sheet
 	**/
 	static function readCdb(fileName:String, cdbClass:Expr) : Array<Field> {
+		var uid = cleanupIdentifier(fileName);
+
 		var cdbClassIdentifier : String = switch cdbClass.expr {
 			case EConst( CIdent(s) ): s;
 			case EField( e, field):
@@ -184,8 +190,9 @@ class ConstDbBuilder {
 
 
 		// Float value resolver
+		var resolverName = "_resolveCdbValue_"+uid;
 		fields.push({
-			name: "_resolveCdbValue",
+			name: resolverName,
 			access: [APublic, AInline],
 			pos: pos,
 			kind: FFun({
@@ -221,6 +228,7 @@ class ConstDbBuilder {
 
 		// List constants
 		var fillExprs : Array<Expr> = [];
+		var resolverExpr : Expr = { pos:pos, expr:EConst(CIdent(resolverName)) }
 		for(sheet in json.sheets)
 			if( sheet.name=="ConstDb" ) {
 				for(l in sheet.lines) {
@@ -238,8 +246,8 @@ class ConstDbBuilder {
 							kind: FVar( v.isInteger ? macro:Int : macro:Float ),
 						});
 						var resolveExpr = v.isInteger
-							? macro Std.int( _resolveCdbValue( cast $v{id}, $v{vid} ) )
-							: macro _resolveCdbValue( cast $v{id}, $v{vid} );
+							? macro Std.int( $resolverExpr( cast $v{id}, $v{vid} ) )
+							: macro $resolverExpr( cast $v{id}, $v{vid} );
 						fillExprs.push( macro {
 							if( this.$id==null )
 								this.$id = cast {};
@@ -260,7 +268,7 @@ class ConstDbBuilder {
 		// Public method
 		fields.push({
 			pos:pos,
-			name: "reloadCdb",
+			name: "reload_"+uid,
 			doc: "Update class values using the content of the CastleDB file (useful if you want to support hot-reloading of the CastleDB file)",
 			access: [ APublic ],
 			kind: FFun({
