@@ -42,7 +42,7 @@ class Assets {
 
 		// Parse castleDB JSON
 		CastleDb.load( hxd.Res.data.entry.getText() );
-		Const.db.reloadCdb();
+		Const.db.reloadCdb(false);
 
 		// `const.json` hot-reloading
 		hxd.Res.const.watch(function() {

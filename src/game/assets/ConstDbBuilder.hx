@@ -8,15 +8,16 @@ using haxe.macro.Tools;
 
 class ConstDbBuilder {
 
-	public static macro function build(cdbFileName:String, jsonFilename:String, cdbClass:ExprOf<Class<Dynamic>>) {
+	public static macro function build(cdbFileName:String, jsonFileName:String, cdbClass:ExprOf<Class<Dynamic>>) {
 		var pos = Context.currentPos();
 		var rawMod = Context.getLocalModule();
 		var modPack = rawMod.split(".");
 		var modName = modPack.pop();
 
+		// Create class type
 		var classTypeDef : TypeDefinition = {
 			pos : pos,
-			name : "_Test", // TODO
+			name : cleanupIdentifier('Db_${cdbFileName}_${jsonFileName}'),
 			pack : modPack,
 			meta: [{ name:":keep", pos:pos }],
 			doc: "Project specific Level class",
@@ -24,22 +25,22 @@ class ConstDbBuilder {
 			fields : (macro class {
 				public function new() {}
 
+				/** This callback will trigger when one of the files is reloaded. **/
 				public dynamic function onReload() {}
 			}).fields,
 		}
 
-		// Add fields based on CastleDB
-		var cdbFields = readCdb(cdbFileName, cdbClass);
-		classTypeDef.fields = cdbFields.concat(classTypeDef.fields);
+		// Castle DB
+		var extraFields = readCdb(cdbFileName, cdbClass);
+		classTypeDef.fields = extraFields.concat(classTypeDef.fields);
 
-		// Add fields based on JSON
-		var jsonFields = readJson(jsonFilename);
+		// Generic JSON
+		var jsonFields = readJson(jsonFileName);
 		classTypeDef.fields = jsonFields.concat(classTypeDef.fields);
 
-		// Register class
 		Context.defineModule(rawMod, [classTypeDef]);
 		Context.registerModuleDependency(rawMod, resolveFilePath(cdbFileName));
-		Context.registerModuleDependency(rawMod, resolveFilePath(jsonFilename));
+		Context.registerModuleDependency(rawMod, resolveFilePath(jsonFileName));
 
 		// Return constructor
 		var classTypePath : TypePath = { pack:classTypeDef.pack, name:classTypeDef.name }
@@ -256,17 +257,18 @@ class ConstDbBuilder {
 				}
 			}
 
-		// Create
+		// Public method
 		fields.push({
 			pos:pos,
 			name: "reloadCdb",
 			doc: "Update class values using the content of the CastleDB file (useful if you want to support hot-reloading of the CastleDB file)",
 			access: [ APublic ],
 			kind: FFun({
-				args: [],
+				args: [{ name:"triggerCallback", type:macro:Bool, value:macro true}],
 				expr: macro {
 					$a{fillExprs}
-					onReload();
+					if( triggerCallback )
+						onReload();
 				},
 			}),
 		});
