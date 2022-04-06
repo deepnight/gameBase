@@ -6,90 +6,60 @@ import haxe.macro.Expr;
 using haxe.macro.Tools;
 #end
 
-/**
-	This macro will add a `db` field to a Class, and fill it it with all values found in JSON and CastleDB sources.
-**/
 class ConstDbBuilder {
+
+	public static macro function build(cdbFileName:String, jsonFilename:String, cdbClass:ExprOf<Class<Dynamic>>) {
+		var pos = Context.currentPos();
+		var rawMod = Context.getLocalModule();
+		var modPack = rawMod.split(".");
+		var modName = modPack.pop();
+
+		var classTypeDef : TypeDefinition = {
+			pos : pos,
+			name : "_Test", // TODO
+			pack : modPack,
+			meta: [{ name:":keep", pos:pos }],
+			doc: "Project specific Level class",
+			kind : TDClass(),
+			fields : (macro class {
+				public function new() {}
+
+				public dynamic function onReload() {}
+			}).fields,
+		}
+
+		// Add fields based on CastleDB
+		var cdbFields = readCdb(cdbFileName, cdbClass);
+		classTypeDef.fields = cdbFields.concat(classTypeDef.fields);
+
+		// Add fields based on JSON
+		var jsonFields = readJson(jsonFilename);
+		classTypeDef.fields = jsonFields.concat(classTypeDef.fields);
+
+		// Register class
+		Context.defineModule(rawMod, [classTypeDef]);
+		Context.registerModuleDependency(rawMod, resolveFilePath(cdbFileName));
+		Context.registerModuleDependency(rawMod, resolveFilePath(jsonFilename));
+
+		// Return constructor
+		var classTypePath : TypePath = { pack:classTypeDef.pack, name:classTypeDef.name }
+		return macro new $classTypePath();
+	}
+
+
 	#if( macro || display )
 
 	/**
-		Build the class fields.
-		If a provided file path is `null`, this source will just be ignored.
+		Parse a JSON and create class fields using its root values
 	**/
-	macro public static function build(cdbFile:Null<String>, jsonFile:Null<String>) : Array<Field> {
-		var pos = Context.currentPos();
-		var baseFields = Context.getBuildFields(); // base Const fields
-		var dbTypeDef : Array<Field> = []; // type definition of "db" field
-		var dbDefaults : Array<ObjectField> = []; // "db" field initialization
-
-		// Create fields from CDB
-		if( cdbFile!=null )
-			buildFromCdb(cdbFile, baseFields, dbTypeDef, dbDefaults);
-
-		// Create fields from JSON
-		if( jsonFile!=null )
-			buildFromJson(jsonFile, baseFields, dbTypeDef, dbDefaults);
-
-		// Add "db" field
-		baseFields.push({
-			name: "db",
-			meta: [{ name:":keep", pos:Context.currentPos() }],
-			access: [ APublic, AStatic ],
-			pos: Context.currentPos(),
-			kind: FVar( TAnonymous(dbTypeDef), { pos:pos, expr:EObjectDecl(dbDefaults) } ),
-		});
-		return baseFields;
-	}
-
-
-	/** Remove invalid characters from a given string **/
-	static inline function cleanupIdentifier(str:String) {
-		if( str==null )
-			return "";
-		else
-			return ~/[^a-z0-9_]/gi.replace(str, "_");
-	}
-
-
-
-	/**
-		Lookup a file in all known paths
-	**/
-	static function resolveFilePath(basePath:String) : Null<String> {
-		// Look in class paths
-		var path = try Context.resolvePath(basePath) catch( e : Dynamic ) null;
-
-		// Look in resourcesPath define
-		if( path == null ) {
-			var r = Context.definedValue("resourcesPath");
-			if( r != null ) {
-				r = r.split("\\").join("/");
-				if( !StringTools.endsWith(r, "/") ) r += "/";
-				try path = Context.resolvePath(r + basePath) catch( e : Dynamic ) null;
-			}
-		}
-
-		// Look in default Heaps resource dir
-		if( path == null )
-			try path = Context.resolvePath("res/" + basePath) catch( e : Dynamic ) null;
-
-		return path;
-	}
-
-
-
-
-	/**
-		Proxy over JSON file
-	**/
-	static function buildFromJson(basePath:String, baseFields:Array<Field>, dbTypeDef:Array<Field>, dbDefaults:Array<ObjectField>) {
+	static function readJson(fileName:String) : Array<Field> {
 		var pos = Context.currentPos();
 
 		// Read file
-		var path = resolveFilePath(basePath);
+		var path = resolveFilePath(fileName);
 		if( path==null ) {
-			Context.fatalError("File not found: "+basePath, pos);
-			return;
+			Context.fatalError("File not found: "+fileName, pos);
+			return [];
 		}
 
 		var fileName = dn.FilePath.extractFileWithExt(path);
@@ -102,10 +72,12 @@ class ConstDbBuilder {
 		var json = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
 			Context.fatalError("Couldn't parse JSON: "+path, jsonPos);
-			return;
+			return [];
 		}
 
 		// List all supported fields in JSON
+		var fields : Array<Field> = [];
+		var initializers : Array<Expr> = [];
 		for(k in Reflect.fields(json)) {
 			var val = Reflect.field(json, k);
 			var kind : FieldType = null;
@@ -116,7 +88,7 @@ class ConstDbBuilder {
 					kind = FVar(null);
 
 				case TInt:
-					kind = FVar(macro:Int);
+					kind = FVar(macro:Int, macro $v{val});
 
 				case TFloat:
 					kind = FVar(macro:Float);
@@ -133,49 +105,69 @@ class ConstDbBuilder {
 
 			// Add field and default value
 			if( kind!=null ) {
-				dbTypeDef.push({ name:k, pos:pos, kind:kind, doc: '$k\n\n*From $fileName* ' });
-				dbDefaults.push({ field:k, expr:macro $v{val} });
+				fields.push({
+					name: k,
+					pos: pos,
+					kind: kind,
+					doc: '$k\n\n*From $fileName* ',
+					access: [APublic],
+				});
+				initializers.push( macro trace("hello "+$v{k}) );
 			}
 		}
 
-
-		// Add hot-reload parser method
-		baseFields.push({
-			name: "fillJsonValues",
-			access: [ AStatic, APublic ],
-			meta: [{ name:":keep", pos:pos }, { name:":noCompletion", pos:pos }],
+		// Update class fields using given JSON string (used for hot-reloading support)
+		fields.push({
+			name: "reloadJson",
+			doc: "Update class values using given JSON (useful if you want to support hot-reloading of the JSON db file)",
 			pos: pos,
+			access: [APublic],
 			kind: FFun({
-				args: [{ name:"rawJson", type:macro:String }],
+				args: [{ name:"updatedJsonStr", type:macro:String }],
 				expr: macro {
-					var json = try haxe.Json.parse(rawJson) catch(_) null;
+					var json = try haxe.Json.parse(updatedJsonStr) catch(_) null;
 					if( json==null )
 						return;
 
-					for(k in Reflect.fields(json)) {
-						if( Reflect.hasField(Const.db, k) )
-							try Reflect.setField(Const.db, k, Reflect.field(json,k))
+					for(k in Reflect.fields(json))
+						if( Reflect.hasField(this, k) ) {
+							try Reflect.setField( this, k, Reflect.field(json,k) )
 							catch(_) trace("ERROR: couldn't update JSON const "+k);
-					}
+						}
+
+					onReload();
 				},
 			}),
 		});
 
+		return fields;
 	}
 
 
 
 	/**
-		Proxy over "ConstDb" sheet in CastleDB file.
+		Parse CastleDB and create class fields using its "ConstDb" sheet
 	**/
-	static function buildFromCdb(basePath:String, baseFields:Array<Field>, dbTypeDef:Array<Field>, dbDefaults:Array<ObjectField>) {
+	static function readCdb(fileName:String, cdbClass:Expr) : Array<Field> {
+		var cdbClassIdentifier : String = switch cdbClass.expr {
+			case EConst( CIdent(s) ): s;
+			case EField( e, field):
+				switch e.expr {
+					case EConst( CIdent(s)): s +"."+ field;
+					case _: null;
+				}
+			case _: null;
+		}
+		if( cdbClassIdentifier==null )
+			Context.fatalError('Unable to resolve class identifier', cdbClass.pos);
+
 		var pos = Context.currentPos();
 
 		// Read file
-		var path = resolveFilePath(basePath);
+		var path = resolveFilePath(fileName);
 		if( path==null ) {
-			Context.fatalError("File not found: "+basePath, pos);
-			return;
+			Context.fatalError("File not found: "+fileName, pos);
+			return [];
 		}
 
 		var fileName = dn.FilePath.extractFileWithExt(path);
@@ -184,25 +176,26 @@ class ConstDbBuilder {
 		var raw = sys.io.File.getContent(path);
 		if( raw.indexOf('"ConstDb"')<0 ) {
 			Context.fatalError('$fileName file should contain a ConstDb sheet.', pos);
-			return;
+			return [];
 		}
 
+		var fields : Array<Field> = [];
 
 
 		// Float value resolver
-		baseFields.push({
+		fields.push({
 			name: "_resolveCdbValue",
-			access: [AStatic, APublic, AInline],
+			access: [APublic, AInline],
 			pos: pos,
 			kind: FFun({
 				args: [
-					{ name:"constId", type:Context.getType("CastleDb.ConstDbKind").toComplexType() },
+					{ name:"constId", type:Context.getType(cdbClassIdentifier+".ConstDbKind").toComplexType() },
 					{ name:"valueId", type:Context.getType("String").toComplexType() },
 				],
 				ret: macro:Float,
 				expr: macro {
-					var all : Array<Dynamic> = Reflect.field( CastleDb.ConstDb.get(constId), "values" );
 					var out = 0.;
+					var all : Array<Dynamic> = Reflect.field( (cast $cdbClass).ConstDb.get(constId), "values" );
 					if( all!=null )
 						for(v in all)
 							if( v.valueName==valueId ) {
@@ -222,7 +215,7 @@ class ConstDbBuilder {
 		var json : { sheets:Array<{name:String, lines:Array<{values:Array<Dynamic>}>}> } = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
 			Context.fatalError("CastleDB JSON parsing failed!", pos);
-			return;
+			return [];
 		}
 
 		// List constants
@@ -247,38 +240,75 @@ class ConstDbBuilder {
 							? macro Std.int( _resolveCdbValue( cast $v{id}, $v{vid} ) )
 							: macro _resolveCdbValue( cast $v{id}, $v{vid} );
 						fillExprs.push( macro {
-							if( db.$id==null )
-								db.$id = cast {};
-							db.$id.$vid = $e{resolveExpr};
+							if( this.$id==null )
+								this.$id = cast {};
+							this.$id.$vid = $e{resolveExpr};
 						 } );
 					}
 
-					dbTypeDef.push({
+					fields.push({
 						name: id,
 						pos: pos,
+						access: [APublic],
 						doc: ( doc==null ? id : doc ) + '\n\n*From $fileName* ',
 						kind: FVar( TAnonymous(valuesFields) ),
 					});
-					dbDefaults.push({ field:id, expr:macro cast {} });
 				}
 			}
 
 		// Create
-		baseFields.push({
+		fields.push({
 			pos:pos,
-			name: "fillCdbValues",
-			meta: [ {name:":noCompletion",pos:pos} ],
-			access: [ AStatic, APublic ],
+			name: "reloadCdb",
+			doc: "Update class values using the content of the CastleDB file (useful if you want to support hot-reloading of the CastleDB file)",
+			access: [ APublic ],
 			kind: FFun({
 				args: [],
-				expr: macro $a{fillExprs},
+				expr: macro {
+					$a{fillExprs}
+					onReload();
+				},
 			}),
 		});
+
+		return fields;
 	}
 
-	static inline function cleanUpIdentifier(v:String) {
-		return ~/[^a-z0-9_]/gi.replace(v, "");
+
+
+	/** Lookup a file in all known project paths **/
+	static function resolveFilePath(basePath:String) : Null<String> {
+		// Look in class paths
+		var path = try Context.resolvePath(basePath) catch( e : Dynamic ) null;
+
+		// Look in resourcesPath define
+		if( path == null ) {
+			var r = Context.definedValue("resourcesPath");
+			if( r != null ) {
+				r = r.split("\\").join("/");
+				if( !StringTools.endsWith(r, "/") ) r += "/";
+				try path = Context.resolvePath(r + basePath) catch( e : Dynamic ) null;
+			}
+		}
+
+		// Look in default Heaps resource dir
+		if( path == null )
+			try path = Context.resolvePath("res/" + basePath) catch( e : Dynamic ) null;
+
+		return path;
 	}
+
+
+	/** Remove invalid characters from a given string **/
+	static inline function cleanupIdentifier(str:String) {
+		if( str==null )
+			return "";
+		else
+			return ~/[^a-z0-9_]/gi.replace(str, "_");
+	}
+
+
 
 	#end
+
 }

@@ -18,10 +18,8 @@
 		If the JSON changes on runtime, the `myValue` field is kept up-to-date, allowing testing without recompiling. IMPORTANT: this hot-reloading only works if the project was built using the `-debug` flag. In release builds, all values become constants and are fully embedded.
 **/
 
-@:build( assets.ConstDbBuilder.build("data.cdb", "const.json") )
 class Const {
 #if !macro
-
 
 	/** Default engine framerate (60) **/
 	public static var FPS(get,never) : Int;
@@ -74,6 +72,8 @@ class Const {
 	public static var DP_TOP = _inc++;
 	public static var DP_UI = _inc++;
 
+	/** Simplified "constants database" using CastleDB and JSON files **/
+	public static var db = ConstDbBuilder.build("data.cdb", "const.json", assets.CastleDb);
 
 #end
 }

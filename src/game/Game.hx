@@ -74,7 +74,7 @@ class Game extends dn.Process {
 
 
 	/** Called when either CastleDB or `const.json` changes on disk **/
-	@:allow(assets.Assets)
+	@:allow(App)
 	function onDbReload() {
 		hud.notify("DB reloaded");
 	}

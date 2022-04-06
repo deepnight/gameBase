@@ -182,6 +182,9 @@ class App extends dn.Process {
 
 		// Init lang data
 		Lang.init("en");
+
+		// Bind DB hot-reloading callback
+		Const.db.onReload = onDbReload;
 	}
 
 
@@ -248,6 +251,11 @@ class App extends dn.Process {
 		#end
 	}
 
+	/** Called when Const.db values are hot-reloaded **/
+	public function onDbReload() {
+		if( Game.exists() )
+			Game.ME.onDbReload();
+	}
 
     override function update() {
 		Assets.update(tmod);
