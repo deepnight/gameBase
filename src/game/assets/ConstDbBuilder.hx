@@ -7,7 +7,7 @@ using haxe.macro.Tools;
 #end
 
 /**
-	This macro will create a `db` field to the Const class, and fill it with all values found in JSON and CastleDB sources.
+	This macro will add a `db` field to a Class, and fill it it with all values found in JSON and CastleDB sources.
 **/
 class ConstDbBuilder {
 	#if( macro || display )
