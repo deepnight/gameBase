@@ -28,23 +28,22 @@ class Assets {
 		// build sprite atlas directly from Aseprite file
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
 
-		// CastleDB file hot reloading
+		// Hot-reloading of CastleDB
 		#if debug
 		hxd.Res.data.watch(function() {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
 			App.ME.delayer.cancelById("cdb");
 			App.ME.delayer.addS("cdb", function() {
 				CastleDb.load( hxd.Res.data.entry.getBytes().toString() );
-				Const.db.reload_data_cdb();
+				Const.db.reload_data_cdb( hxd.Res.data.entry.getText() );
 			}, 0.2);
 		});
 		#end
 
 		// Parse castleDB JSON
 		CastleDb.load( hxd.Res.data.entry.getText() );
-		Const.db.reload_data_cdb(false);
 
-		// `const.json` hot-reloading
+		// Hot-reloading of `const.json`
 		hxd.Res.const.watch(function() {
 			// Only reload actual updated file from disk after a short delay, to avoid reading a file being written
 			App.ME.delayer.cancelById("constJson");

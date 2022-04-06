@@ -6,9 +6,28 @@ import haxe.macro.Expr;
 using haxe.macro.Tools;
 #end
 
+// Rough CastleDB JSON typedef
+typedef CastleDbJson = {
+	sheets : Array<{
+		name : String,
+		lines:Array<{
+			constId: String,
+			values: Array<{
+				value : Dynamic,
+				valueName : String,
+				isInteger : Bool,
+				doc : String,
+			}>,
+		}>,
+	}>,
+}
+
 class ConstDbBuilder {
 
-	public static macro function build(cdbFileName:String, cdbClass:ExprOf<Class<Dynamic>>, jsonFileNames:Array<String>) {
+	/**
+		Provide source files (JSON or CastleDB) to extract constants from.
+	**/
+	public static macro function build(dbFileNames:Array<String>) {
 		var pos = Context.currentPos();
 		var rawMod = Context.getLocalModule();
 		var modPack = rawMod.split(".");
@@ -17,7 +36,7 @@ class ConstDbBuilder {
 		// Create class type
 		var classTypeDef : TypeDefinition = {
 			pos : pos,
-			name : cleanupIdentifier('Db_${cdbFileName}_${jsonFileNames.join("_")}'),
+			name : cleanupIdentifier('Db_${dbFileNames.join("_")}'),
 			pack : modPack,
 			meta: [{ name:":keep", pos:pos }],
 			doc: "Project specific Level class",
@@ -30,22 +49,22 @@ class ConstDbBuilder {
 			}).fields,
 		}
 
-		// Castle DB
-		var extraFields = readCdb(cdbFileName, cdbClass);
-		classTypeDef.fields = extraFields.concat(classTypeDef.fields);
-
-		// Generic JSON
-		for(f in jsonFileNames) {
-			var jsonFields = readJson(f);
-			classTypeDef.fields = jsonFields.concat(classTypeDef.fields);
+		// Parse given files and create class fields
+		for(f in dbFileNames) {
+			var fileFields = switch dn.FilePath.extractExtension(f) {
+				case "cdb": readCdb(f);
+				case "json": readJson(f);
+				case _: Context.fatalError("Unsupported database file "+f, pos);
+			}
+			classTypeDef.fields = fileFields.concat(classTypeDef.fields);
 		}
 
+		// Register stuff
 		Context.defineModule(rawMod, [classTypeDef]);
-		Context.registerModuleDependency(rawMod, resolveFilePath(cdbFileName));
-		for(f in jsonFileNames)
+		for(f in dbFileNames)
 			Context.registerModuleDependency(rawMod, resolveFilePath(f));
 
-		// Return constructor
+		// Return class constructor
 		var classTypePath : TypePath = { pack:classTypeDef.pack, name:classTypeDef.name }
 		return macro new $classTypePath();
 	}
@@ -153,21 +172,8 @@ class ConstDbBuilder {
 	/**
 		Parse CastleDB and create class fields using its "ConstDb" sheet
 	**/
-	static function readCdb(fileName:String, cdbClass:Expr) : Array<Field> {
+	static function readCdb(fileName:String) : Array<Field> {
 		var uid = cleanupIdentifier(fileName);
-
-		var cdbClassIdentifier : String = switch cdbClass.expr {
-			case EConst( CIdent(s) ): s;
-			case EField( e, field):
-				switch e.expr {
-					case EConst( CIdent(s)): s +"."+ field;
-					case _: null;
-				}
-			case _: null;
-		}
-		if( cdbClassIdentifier==null )
-			Context.fatalError('Unable to resolve class identifier', cdbClass.pos);
-
 		var pos = Context.currentPos();
 
 		// Read file
@@ -176,59 +182,24 @@ class ConstDbBuilder {
 			Context.fatalError("File not found: "+fileName, pos);
 			return [];
 		}
-
-		var fileName = dn.FilePath.extractFileWithExt(path);
 		Context.registerModuleDependency(Context.getLocalModule(), path);
 
+		// Check CDB sheets
 		var raw = sys.io.File.getContent(path);
 		if( raw.indexOf('"ConstDb"')<0 ) {
-			Context.fatalError('$fileName file should contain a ConstDb sheet.', pos);
+			Context.fatalError('$fileName CastleDB file should contain a ConstDb sheet.', pos);
 			return [];
 		}
 
-		var fields : Array<Field> = [];
-
-
-		// Float value resolver
-		var resolverName = "_resolveCdbValue_"+uid;
-		fields.push({
-			name: resolverName,
-			access: [APublic, AInline],
-			pos: pos,
-			kind: FFun({
-				args: [
-					{ name:"constId", type:Context.getType(cdbClassIdentifier+".ConstDbKind").toComplexType() },
-					{ name:"valueId", type:Context.getType("String").toComplexType() },
-				],
-				ret: macro:Float,
-				expr: macro {
-					var out = 0.;
-					var all : Array<Dynamic> = Reflect.field( (cast $cdbClass).ConstDb.get(constId), "values" );
-					if( all!=null )
-						for(v in all)
-							if( v.valueName==valueId ) {
-								out = v.value;
-								break;
-							}
-					return out;
-				},
-			}),
-			meta: [
-				{ name:":keep", pos:pos },
-				{ name:":noCompletion", pos:pos },
-			],
-		});
-
 		// Parse JSON
-		var json : { sheets:Array<{name:String, lines:Array<{values:Array<Dynamic>}>}> } = try haxe.Json.parse(raw) catch(_) null;
+		var json : CastleDbJson = try haxe.Json.parse(raw) catch(_) null;
 		if( json==null ) {
 			Context.fatalError("CastleDB JSON parsing failed!", pos);
 			return [];
 		}
 
 		// List constants
-		var fillExprs : Array<Expr> = [];
-		var resolverExpr : Expr = { pos:pos, expr:EConst(CIdent(resolverName)) }
+		var fields : Array<Field> = [];
 		for(sheet in json.sheets)
 			if( sheet.name=="ConstDb" ) {
 				for(l in sheet.lines) {
@@ -237,7 +208,9 @@ class ConstDbBuilder {
 
 					// List sub values
 					var valuesFields : Array<Field> = [];
+					var valuesIniters : Array<ObjectField> = [];
 					for( v in l.values ) {
+						// Value field def
 						var vid = cleanupIdentifier(v.valueName);
 						valuesFields.push({
 							name: vid,
@@ -245,14 +218,17 @@ class ConstDbBuilder {
 							doc: (v.doc==null ? v.valueName : v.doc ) + '\n\n*From $fileName* ',
 							kind: FVar( v.isInteger ? macro:Int : macro:Float ),
 						});
-						var resolveExpr = v.isInteger
-							? macro Std.int( $resolverExpr( cast $v{id}, $v{vid} ) )
-							: macro $resolverExpr( cast $v{id}, $v{vid} );
-						fillExprs.push( macro {
-							if( this.$id==null )
-								this.$id = cast {};
-							this.$id.$vid = $e{resolveExpr};
-						 } );
+						// Initial value setter
+						if( v.isInteger && v.value!=Std.int(v.value) )
+							Context.warning('[$fileName] "${l.constId}.${v.valueName}" is a Float instead of an Int', pos);
+						var cleanVal = Std.string( v.isInteger ? Std.int(v.value) : v.value );
+						valuesIniters.push({
+							field: vid,
+							expr: {
+								pos: pos,
+								expr: EConst( v.isInteger ? CInt(cleanVal) : CFloat(cleanVal) ),
+							},
+						});
 					}
 
 					fields.push({
@@ -260,23 +236,46 @@ class ConstDbBuilder {
 						pos: pos,
 						access: [APublic],
 						doc: ( doc==null ? id : doc ) + '\n\n*From $fileName* ',
-						kind: FVar( TAnonymous(valuesFields) ),
+						kind: FVar( TAnonymous(valuesFields), {
+							pos:pos,
+							expr: EObjectDecl(valuesIniters),
+						} ),
 					});
 				}
 			}
 
-		// Public method
+		// Reloader
+		var cdbJsonType = Context.getType("ConstDbBuilder.CastleDbJson").toComplexType();
 		fields.push({
 			pos:pos,
 			name: "reload_"+uid,
 			doc: "Update class values using the content of the CastleDB file (useful if you want to support hot-reloading of the CastleDB file)",
 			access: [ APublic ],
 			kind: FFun({
-				args: [{ name:"triggerCallback", type:macro:Bool, value:macro true}],
+				args: [{ name:"updatedCdbJson", type:macro:String}],
 				expr: macro {
-					$a{fillExprs}
-					if( triggerCallback )
-						onReload();
+					var json : $cdbJsonType = try haxe.Json.parse(updatedCdbJson) catch(_) null;
+					if( json==null )
+						return;
+
+					for(s in json.sheets) {
+						if( s.name!="ConstDb" )
+							continue;
+
+						for(l in s.lines) {
+							var obj = Reflect.field(this, l.constId);
+							if( obj==null ) {
+								obj = {}
+								Reflect.setField(this, l.constId, obj);
+							}
+							for(v in l.values)
+								if( v.isInteger )
+									Reflect.setField(obj, v.valueName, Std.int(v.value));
+								else
+									Reflect.setField(obj, v.valueName, v.value);
+						}
+					}
+					onReload();
 				},
 			}),
 		});
