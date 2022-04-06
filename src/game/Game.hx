@@ -112,6 +112,9 @@ class Game extends dn.Process {
 		for(e in Entity.ALL)
 			e.destroy();
 		garbageCollectEntities();
+
+		if( ME==this )
+			ME = null;
 	}
 
 
