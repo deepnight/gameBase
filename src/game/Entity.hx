@@ -24,6 +24,9 @@ class Entity {
 	/** Temporary gameplay affects **/
 	var affects : Map<Affect,Float> = new Map();
 
+	/** State machine. Value should only be changed using `startState(v)` **/
+	public var state(default,null) : State;
+
 	/** Unique identifier **/
 	public var uid(default,null) : Int;
 
@@ -210,6 +213,7 @@ class Entity {
 		ucd = new dn.Cooldown(Const.FPS);
         setPosCase(x,y);
 		initLife(1);
+		state = Normal;
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -333,6 +337,34 @@ class Entity {
 	public inline function isOnScreenBounds(padding=32) {
 		return camera.isOnScreenRect( left,top, wid, hei, padding );
 	}
+
+
+	/**
+		Changed the current entity state.
+		Return TRUE if the state is `s` after the call.
+	**/
+	public function startState(s:State) : Bool {
+		if( s==state )
+			return true;
+
+		if( !canChangeStateTo(state, s) )
+			return false;
+
+		var old = state;
+		state = s;
+		onStateChange(old,state);
+		return true;
+	}
+
+
+	/** Return TRUE to allow a change of the state value **/
+	function canChangeStateTo(from:State, to:State) {
+		return true;
+	}
+
+	/** Called when state is changed to a new value **/
+	function onStateChange(old:State, newState:State) {}
+
 
 	/** Apply a bump/kick force to entity **/
 	public function bump(x:Float,y:Float) {
