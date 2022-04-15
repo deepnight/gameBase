@@ -51,3 +51,5 @@ Any question? Join the [Official Deepnight Games discord](https://deepnight.net/
 You may remove the following files/folders from repo root:
 
 - `.github`
+- `LICENSE`
+- `README.md`
