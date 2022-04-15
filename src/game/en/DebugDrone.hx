@@ -87,8 +87,8 @@ class DebugDrone extends Entity {
 	}
 
 
-	override function update() {
-		super.update();
+	override function frameUpdate() {
+		super.frameUpdate();
 
 		// Ignore game standard velocities
 		cancelVelocities();

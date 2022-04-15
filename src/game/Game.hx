@@ -206,7 +206,7 @@ class Game extends dn.Process {
 		super.update();
 
 		// Entities main loop
-		for(e in Entity.ALL) if( !e.destroyed ) e.update();
+		for(e in Entity.ALL) if( !e.destroyed ) e.frameUpdate();
 
 
 		// Global key shortcuts

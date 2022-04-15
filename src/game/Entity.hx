@@ -823,8 +823,8 @@ class Entity {
 
 
 	/**
-		Main loop running at full FPS
+		Main loop running at full FPS (ie. always happen once on every frames, after preUpdate and before  postUpdate)
 	**/
-    public function update() {
+    public function frameUpdate() {
     }
 }
