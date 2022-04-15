@@ -1,7 +1,6 @@
 redist/
 bin/
 dump/
-docs/
 res/.tmp/
 
 # VScode
