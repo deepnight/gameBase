@@ -12,6 +12,10 @@ class MarkerMap<T:EnumValue> {
 	}
 
 
+	public function dispose() {
+		marks = null;
+	}
+
 
 	/** TRUE if given coords are in level bounds **/
 	inline function isValid(cx,cy) return cx>=0 && cx<wid && cy>=0 && cy<hei;
