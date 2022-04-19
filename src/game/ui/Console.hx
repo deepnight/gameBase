@@ -13,6 +13,7 @@ class Console extends h2d.Console {
 
 		logTxt.filter = new dn.heaps.filter.PixelOutline();
 		scale(2); // TODO smarter scaling for 4k screens
+		errorColor = 0xff6666;
 
 		// Settings
 		ME = this;
@@ -50,6 +51,35 @@ class Console extends h2d.Console {
 					dbg.root.filter = new dn.heaps.filter.PixelOutline();
 				});
 			});
+
+			// Level marks
+			this.addCommand(
+				"mark",
+				[
+					{ name:"levelMark", t:AEnum(Types.LevelMark.getConstructors()) },
+					{ name:"bit", t:AInt, opt:true },
+				],
+				(k, bit:Null<Int>)->{
+					if( !Game.exists() ) {
+						error('Game is not running');
+						return;
+					}
+					var mark = try LevelMark.createByName(k) catch(_) null;
+					if( mark==null ) {
+						error('Unknown level mark $k');
+						return;
+					}
+
+					var col = 0xffcc00;
+					log('Displaying $mark (bit=$bit)...', col);
+					var l = Game.ME.level;
+					for(cy in 0...l.cHei)
+					for(cx in 0...l.cWid)
+						if( bit==null && l.marks.hasMark(mark,cx,cy) || bit!=null && l.marks.hasMarkAndBit(mark, bit, cx,cy) )
+							Game.ME.fx.markerCase(cx,cy, 10, col);
+
+				}
+			);
 		#end
 
 		// List all active dn.Process
@@ -87,6 +117,36 @@ class Console extends h2d.Console {
 		addFlagCommandAlias("cam");
 	}
 
+	override function getCommandSuggestion(cmd:String):String {
+		var sugg = super.getCommandSuggestion(cmd);
+		if( sugg.length>0 )
+			return sugg;
+
+		if( cmd.length==0 )
+			return "";
+
+		// Simplistic argument auto-complete
+		for(c in commands.keys()) {
+			var reg = new EReg("([ \t\\/]*"+c+"[ \t]+)(.*)", "gi");
+			if( reg.match(cmd) ) {
+				var lowArg = reg.matched(2).toLowerCase();
+				for(a in commands.get(c).args)
+					switch a.t {
+						case AInt:
+						case AFloat:
+						case AString:
+						case ABool:
+						case AEnum(values):
+							for(v in values)
+								if( v.toLowerCase().indexOf(lowArg)==0 )
+									return reg.matched(1) + v;
+					}
+			}
+		}
+
+		return "";
+	}
+
 	/** Creates a shortcut command "/flag" to toggle specified flag state **/
 	inline function addFlagCommandAlias(flag:String) {
 		#if debug
@@ -102,7 +162,7 @@ class Console extends h2d.Console {
 	}
 
 	public function error(msg:Dynamic) {
-		log("[ERROR] "+Std.string(msg), 0xff0000);
+		log("[ERROR] "+Std.string(msg), errorColor);
 		h2d.Console.HIDE_LOG_TIMEOUT = Const.INFINITE;
 	}
 
