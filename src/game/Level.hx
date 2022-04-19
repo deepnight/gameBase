@@ -14,7 +14,7 @@ class Level extends GameProcess {
 	public var data : World_Level;
 	var tilesetSource : h2d.Tile;
 
-	var marks : Map< LevelMark, Map<Int,Bool> > = new Map();
+	public var marks : tools.MarkerMap<Types.LevelMark>;
 	var invalidated = true;
 
 	public function new(ldtkLevel:World.World_Level) {
@@ -23,12 +23,14 @@ class Level extends GameProcess {
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 		data = ldtkLevel;
 		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
+		marks = new MarkerMap(cWid, cHei);
 	}
 
 	override function onDispose() {
 		super.onDispose();
 		data = null;
 		tilesetSource = null;
+		marks.dispose();
 		marks = null;
 	}
 
@@ -41,26 +43,6 @@ class Level extends GameProcess {
 	/** Ask for a level render that will only happen at the end of the current frame. **/
 	public inline function invalidate() {
 		invalidated = true;
-	}
-
-	/** Return TRUE if mark is present at coordinates **/
-	public inline function hasMark(mark:LevelMark, cx:Int, cy:Int) {
-		return !isValid(cx,cy) || !marks.exists(mark) ? false : marks.get(mark).exists( coordId(cx,cy) );
-	}
-
-	/** Enable mark at coordinates **/
-	public function setMark(mark:LevelMark, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && !hasMark(mark,cx,cy) ) {
-			if( !marks.exists(mark) )
-				marks.set(mark, new Map());
-			marks.get(mark).set( coordId(cx,cy), true );
-		}
-	}
-
-	/** Remove mark at coordinates **/
-	public function removeMark(mark:LevelMark, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && hasMark(mark,cx,cy) )
-			marks.get(mark).remove( coordId(cx,cy) );
 	}
 
 	/** Return TRUE if "Collisions" layer contains a collision value **/
