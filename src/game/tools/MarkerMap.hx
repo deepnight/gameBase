@@ -70,7 +70,6 @@ class MarkerMap<T:EnumValue> {
 				markMap.set( coordId(cx,cy), M.setBit(0,subBit) );
 			else
 				markMap.set( coordId(cx,cy), M.setBit(markMap.get(coordId(cx,cy)), subBit) );
-			trace(mark+" "+markMap.get(coordId(cx,cy)));
 		}
 	}
 
