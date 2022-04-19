@@ -32,3 +32,7 @@ enum Affect {
 
 enum LevelMark {
 }
+
+enum abstract LevelSubMark(Int) to Int {
+	var None; // 0
+}
