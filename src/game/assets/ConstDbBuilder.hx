@@ -361,13 +361,16 @@ class ConstDbBuilder {
 										var v : Float = Reflect.field(v.subValues, k);
 										Reflect.setField(subObj, k, v);
 									}
+
+									// Also include (or remove) _value
+									if( v.value!=0 )
+										Reflect.setField(subObj, "_value", v.isInteger ? Std.int(v.value) : v.value );
+									else
+										Reflect.deleteField(subObj, "_value");
 								}
 								else {
 									// Reload int/float value
-									if( v.isInteger )
-										Reflect.setField(obj, v.valueName, Std.int(v.value));
-									else
-										Reflect.setField(obj, v.valueName, v.value);
+									Reflect.setField(obj, v.valueName, v.isInteger ? Std.int(v.value) : v.value );
 								}
 							}
 						}
