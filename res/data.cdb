@@ -34,9 +34,10 @@
 							"isInteger": false,
 							"subValues": {
 								"x": 1.1,
-								"y": 1.2
+								"y": 1.2,
+								"n": 3
 							},
-							"doc": "You may also define some \"sub values\"."
+							"doc": "You may also define some \"sub values\". Accepted sub value types are: Int, Float, Bool, Text and Color."
 						}
 					]
 				}
@@ -103,6 +104,12 @@
 				{
 					"typeStr": "4",
 					"name": "y",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "n",
 					"opt": true,
 					"display": null
 				}
