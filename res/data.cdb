@@ -27,6 +27,16 @@
 							"value": 2.5,
 							"doc": "Doc for this other value",
 							"isInteger": false
+						},
+						{
+							"valueName": "withSubValues",
+							"value": 0,
+							"isInteger": false,
+							"subValues": {
+								"x": 1.1,
+								"y": 1.2
+							},
+							"doc": "You may also define some \"sub values\"."
 						}
 					]
 				}
@@ -54,6 +64,12 @@
 					"display": null
 				},
 				{
+					"typeStr": "1",
+					"name": "doc",
+					"opt": true,
+					"display": null
+				},
+				{
 					"typeStr": "4",
 					"name": "value",
 					"display": null
@@ -63,8 +79,30 @@
 					"name": "isInteger"
 				},
 				{
-					"typeStr": "1",
-					"name": "doc",
+					"typeStr": "17",
+					"name": "subValues",
+					"opt": true,
+					"display": null
+				}
+			]
+		},
+		{
+			"name": "ConstDb@values@subValues",
+			"props": {
+				"hide": true,
+				"isProps": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "x",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "y",
 					"opt": true,
 					"display": null
 				}
