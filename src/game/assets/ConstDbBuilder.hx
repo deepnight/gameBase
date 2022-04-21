@@ -19,6 +19,7 @@ typedef CastleDbJson = {
 			values: Array<{
 				value : Dynamic,
 				valueName : String,
+				subValues: Dynamic,
 				isInteger : Bool,
 				doc : String,
 			}>,
@@ -216,25 +217,92 @@ class ConstDbBuilder {
 					var valuesFields : Array<Field> = [];
 					var valuesIniters : Array<ObjectField> = [];
 					for( v in l.values ) {
-						// Value field def
+						var doc = (v.doc==null ? v.valueName : v.doc ) + '\n\n*From $fileName* ';
 						var vid = cleanupIdentifier(v.valueName);
-						valuesFields.push({
-							name: vid,
-							pos: pos,
-							doc: (v.doc==null ? v.valueName : v.doc ) + '\n\n*From $fileName* ',
-							kind: FVar( v.isInteger ? macro:Int : macro:Float ),
-						});
-						// Initial value setter
-						if( v.isInteger && v.value!=Std.int(v.value) )
-							Context.warning('[$fileName] "${l.constId}.${v.valueName}" is a Float instead of an Int', pos);
-						var cleanVal = Std.string( v.isInteger ? Std.int(v.value) : v.value );
-						valuesIniters.push({
-							field: vid,
-							expr: {
+
+						if( v.subValues!=null && Reflect.fields(v.subValues).length>0 ) {
+							// Value is an object with sub fields
+							var fields : Array<Field> = [];
+							var initers : Array<ObjectField> = [];
+
+							// Read sub values
+							for(k in Reflect.fields(v.subValues)) {
+								if( k=="_value" )
+									Context.fatalError('[$fileName] "${l.constId}.${v.valueName}" value name "_value" is not allowed.', pos);
+
+								fields.push({
+									name: k,
+									kind: FVar( macro:Float ),
+									pos: pos,
+									doc: doc,
+								});
+
+								var val : Float = try Reflect.field(v.subValues, k) catch(_) 0;
+								if( !dn.M.isValidNumber(val) )
+									val = 0;
+								initers.push({
+									field: k,
+									expr: { expr:EConst(CFloat( Std.string(val) )), pos:pos },
+								});
+							}
+
+							// Also include column value if it's not zero
+							if( v.value!=0 ) {
+								fields.push({
+									name: "_value",
+									pos: pos,
+									doc: doc,
+									kind: FVar( v.isInteger ? macro:Int : macro:Float ),
+								});
+								if( v.isInteger && v.value != Std.int(v.value) )
+									Context.warning('[$fileName] "${l.constId}.${v.valueName}" is a Float instead of an Int', pos);
+								var cleanVal = Std.string( v.isInteger ? Std.int(v.value) : v.value );
+								initers.push({
+									field: "_value",
+									expr: {
+										pos: pos,
+										expr: EConst( v.isInteger ? CInt(cleanVal) : CFloat(cleanVal) ),
+									},
+								});
+							}
+
+							// Value definition
+							valuesFields.push({
+								name: vid,
 								pos: pos,
-								expr: EConst( v.isInteger ? CInt(cleanVal) : CFloat(cleanVal) ),
-							},
-						});
+								doc: (v.doc==null ? v.valueName : v.doc ) + '\n\n*From $fileName* ',
+								kind: FVar( TAnonymous(fields) ),
+							});
+							// Value init
+							valuesIniters.push({
+								field: vid,
+								expr: {
+									pos: pos,
+									expr: EObjectDecl(initers),
+								},
+							});
+						}
+						else {
+							// Simple value (int/float)
+							valuesFields.push({
+								name: vid,
+								pos: pos,
+								doc: doc,
+								kind: FVar( v.isInteger ? macro:Int : macro:Float ),
+							});
+
+							// Initial value setter
+							if( v.isInteger && v.value!=Std.int(v.value) )
+								Context.warning('[$fileName] "${l.constId}.${v.valueName}" is a Float instead of an Int', pos);
+							var cleanVal = Std.string( v.isInteger ? Std.int(v.value) : v.value );
+							valuesIniters.push({
+								field: vid,
+								expr: {
+									pos: pos,
+									expr: EConst( v.isInteger ? CInt(cleanVal) : CFloat(cleanVal) ),
+								},
+							});
+						}
 					}
 
 					fields.push({
