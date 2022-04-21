@@ -30,9 +30,12 @@ typedef CastleDbJson = {
 class ConstDbBuilder {
 
 	/**
-		Provide source files (JSON or CastleDB) to extract constants from.
+		Generate a class based on fields extracted from provided source files (JSON or CastleDB). Then return an instance of this class to be stored in some static var. Typically:
+		```haxe
+		public static var db = ConstDbBuilder.buildVar(["data.cdb", "const.json"]);
+		```
 	**/
-	public static macro function build(dbFileNames:Array<String>) {
+	public static macro function buildVar(dbFileNames:Array<String>) {
 		var pos = Context.currentPos();
 		var rawMod = Context.getLocalModule();
 		var modPack = rawMod.split(".");
