@@ -129,7 +129,7 @@ class ConstDbBuilder {
 					kind = FVar(macro:String);
 
 				case _:
-					Context.warning('Unsupported value type "${Type.typeof(val)}" for $k', jsonPos);
+					Context.warning('Unsupported JSON type "${Type.typeof(val)}" for $k', jsonPos);
 			}
 
 			// Add field and default value
@@ -197,6 +197,29 @@ class ConstDbBuilder {
 			return [];
 		}
 
+		// List sub-values types
+		var subValueTypes : Map<String,{ ct:ComplexType, typeStr:String }> = new Map();
+		for(sheet in json.sheets) {
+			if( sheet.name.indexOf("ConstDb")<0 || sheet.name.indexOf("@subValues")<0 )
+				continue;
+			inline function _unsupported(typeName:String, valueName:String) {
+				Context.fatalError("Unsupported CastleDB type "+typeName+" for sub-value "+valueName, pos);
+				return null;
+			}
+			for(col in sheet.columns) {
+				var ct : ComplexType = switch col.typeStr {
+					case "1": macro:String;
+					case "2": macro:Bool;
+					case "3": macro:Int;
+					case "4": macro:Float;
+					case "11": macro:Int;
+					case _: _unsupported(col.typeStr, col.name);
+				}
+				if( ct!=null )
+					subValueTypes.set(col.name, { ct:ct, typeStr:col.typeStr });
+			}
+		}
+
 		// List constants
 		var fields : Array<Field> = [];
 		var valid = false;
@@ -230,19 +253,29 @@ class ConstDbBuilder {
 								if( k=="_value" )
 									Context.fatalError('[$fileName] "${l.constId}.${v.valueName}" value name "_value" is not allowed.', pos);
 
+								var ct = subValueTypes.exists(k) ? subValueTypes.get(k).ct : (macro:Float);
 								fields.push({
 									name: k,
-									kind: FVar( macro:Float ),
+									kind: FVar(ct),
 									pos: pos,
 									doc: doc,
 								});
 
-								var val : Float = try Reflect.field(v.subValues, k) catch(_) 0;
-								if( !dn.M.isValidNumber(val) )
-									val = 0;
+								var rawVal = Reflect.field(v.subValues, k);
+								var const : Constant = !subValueTypes.exists(k)
+									? CFloat( Std.string(rawVal) )
+									: switch subValueTypes.get(k).typeStr {
+										case "1": CString(rawVal);
+										case "2": CIdent( Std.string(rawVal) );
+										case "3": CInt( Std.string(rawVal) );
+										case "4": CFloat( Std.string(rawVal) );
+										case "11": CInt( Std.string(rawVal) );
+										case _:
+											Context.fatalError("Unexpected CastleDB typeStr "+subValueTypes.get(k).typeStr+" for sub-value init expr", pos);
+									}
 								initers.push({
 									field: k,
-									expr: { expr:EConst(CFloat( Std.string(val) )), pos:pos },
+									expr: { expr:EConst(const), pos:pos },
 								});
 							}
 
@@ -324,7 +357,7 @@ class ConstDbBuilder {
 			return [];
 		}
 
-		// Reloader
+		// CDB hot reloader
 		var cdbJsonType = Context.getType("ConstDbBuilder.CastleDbJson").toComplexType();
 		fields.push({
 			pos:pos,
@@ -357,10 +390,8 @@ class ConstDbBuilder {
 										subObj = {};
 										Reflect.setField(obj, v.valueName, subObj);
 									}
-									for(k in subValues) {
-										var v : Float = Reflect.field(v.subValues, k);
-										Reflect.setField(subObj, k, v);
-									}
+									for(k in subValues)
+										Reflect.setField(subObj, k, Reflect.field(v.subValues, k));
 
 									// Also include (or remove) _value
 									if( v.value!=0 )
