@@ -348,11 +348,28 @@ class ConstDbBuilder {
 								obj = {}
 								Reflect.setField(this, l.constId, obj);
 							}
-							for(v in l.values)
-								if( v.isInteger )
-									Reflect.setField(obj, v.valueName, Std.int(v.value));
-								else
-									Reflect.setField(obj, v.valueName, v.value);
+							for(v in l.values) {
+								var subValues = v.subValues==null ? [] : Reflect.fields(v.subValues);
+								if( subValues.length>0 ) {
+									// Reload sub values object
+									var subObj = Reflect.field(obj, v.valueName);
+									if( subObj==null ) {
+										subObj = {};
+										Reflect.setField(obj, v.valueName, subObj);
+									}
+									for(k in subValues) {
+										var v : Float = Reflect.field(v.subValues, k);
+										Reflect.setField(subObj, k, v);
+									}
+								}
+								else {
+									// Reload int/float value
+									if( v.isInteger )
+										Reflect.setField(obj, v.valueName, Std.int(v.value));
+									else
+										Reflect.setField(obj, v.valueName, v.value);
+								}
+							}
 						}
 					}
 					onReload();
