@@ -19,6 +19,9 @@ class Camera extends GameProcess {
 	/** Height of viewport in level pixels **/
 	public var pxHei(get,never) : Int;
 
+	public var cWid(get,never) : Int;  inline function get_cWid() return M.ceil(pxWid/Const.GRID);
+	public var cHei(get,never) : Int;  inline function get_cHei() return M.ceil(pxHei/Const.GRID);
+
 	/** Horizontal camera dead-zone in percentage of viewport width **/
 	public var deadZonePctX = 0.04;
 
