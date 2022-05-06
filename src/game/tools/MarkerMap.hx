@@ -25,7 +25,7 @@ class MarkerMap<T:EnumValue> {
 
 
 	/** Return TRUE if the mark (including any bits) is present at coordinates **/
-	public inline function hasMark(mark:T, cx:Int, cy:Int) {
+	public inline function has(mark:T, cx:Int, cy:Int) {
 		if( !isValid(cx,cy) || !marks.exists(mark) )
 			return false;
 		else
@@ -34,7 +34,7 @@ class MarkerMap<T:EnumValue> {
 
 
 	/** Return TRUE if both mark and specified bit are present at coordinates **/
-	public inline function hasMarkAndBit(mark:T, subBit:Int, cx:Int, cy:Int) {
+	public inline function hasWithBit(mark:T, subBit:Int, cx:Int, cy:Int) {
 		if( !isValid(cx,cy) || !marks.exists(mark) )
 			return false;
 		else {
@@ -47,8 +47,8 @@ class MarkerMap<T:EnumValue> {
 
 
 	/** Add a mark at coordinates **/
-	public inline function setMark(mark:T, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && !hasMark(mark, cx,cy) ) {
+	public inline function set(mark:T, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && !has(mark, cx,cy) ) {
 			if( !marks.exists(mark) )
 				marks.set(mark, new Map());
 
@@ -60,8 +60,8 @@ class MarkerMap<T:EnumValue> {
 
 
 	/** Add a mark + a specific bit at coordinates **/
-	public inline function setMarkWithBit(mark:T, subBit:Int, cx:Int, cy:Int, clearExistingBits=false) {
-		if( isValid(cx,cy) && !hasMarkAndBit(mark, subBit, cx,cy) ) {
+	public inline function setWithBit(mark:T, subBit:Int, cx:Int, cy:Int, clearExistingBits=false) {
+		if( isValid(cx,cy) && !hasWithBit(mark, subBit, cx,cy) ) {
 			if( !marks.exists(mark) )
 				marks.set(mark, new Map());
 
@@ -75,15 +75,15 @@ class MarkerMap<T:EnumValue> {
 
 
 	/** Remove a mark at coordinates **/
-	public inline function clearMark(mark:T, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && hasMark(mark, cx,cy) )
+	public inline function remove(mark:T, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && has(mark, cx,cy) )
 			marks.get(mark).remove( coordId(cx,cy) );
 	}
 
 
 	/** Remove a specific bit from a mark at coordinates **/
-	public inline function clearMarkBit(mark:T, subBit:Int, cx:Int, cy:Int) {
-		if( isValid(cx,cy) && hasMarkAndBit(mark, subBit, cx,cy) )
+	public inline function removeBit(mark:T, subBit:Int, cx:Int, cy:Int) {
+		if( isValid(cx,cy) && hasWithBit(mark, subBit, cx,cy) )
 			marks.get(mark).set(
 				coordId(cx,cy),
 				M.unsetBit( marks.get(mark).get(coordId(cx,cy)), subBit )

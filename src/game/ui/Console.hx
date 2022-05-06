@@ -75,7 +75,7 @@ class Console extends h2d.Console {
 					var l = Game.ME.level;
 					for(cy in 0...l.cHei)
 					for(cx in 0...l.cWid)
-						if( bit==null && l.marks.hasMark(mark,cx,cy) || bit!=null && l.marks.hasMarkAndBit(mark, bit, cx,cy) )
+						if( bit==null && l.marks.has(mark,cx,cy) || bit!=null && l.marks.hasWithBit(mark, bit, cx,cy) )
 							Game.ME.fx.markerCase(cx,cy, 10, col);
 
 				}
