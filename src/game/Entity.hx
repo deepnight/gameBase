@@ -415,8 +415,8 @@ class Entity {
 
 	/** Check if the grid-based line between this and given target isn't blocked by some obstacle **/
 	public inline function sightCheck(?e:Entity, ?tcx:Int, ?tcy:Int) {
-		if( e!=this )
-			return dn.Bresenham.checkThinLine(cx, cy, e.cx, e.cy, canSeeThrough);
+		if( e!=null)
+			return e==this ? true : dn.Bresenham.checkThinLine(cx, cy, e.cx, e.cy, canSeeThrough);
 		else
 			return dn.Bresenham.checkThinLine(cx, cy, tcx, tcy, canSeeThrough);
 	}
