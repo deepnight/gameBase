@@ -52,27 +52,24 @@ class Camera extends GameProcess {
 	public var clampToLevelBounds = false;
 	var brakeDistNearBounds = 0.1;
 
-	/** Left camera bound in level pixels **/
-	public var left(get,never) : Int;
-		inline function get_left() return Std.int( clampedFocus.levelX - pxWid*0.5 );
 
-	/** Right camera bound in level pixels **/
-	public var right(get,never) : Int;
-		inline function get_right() return Std.int( left + (pxWid - 1) );
+	/** Camera bound coords in level pixels **/
+	public var pxLeft(get,never) : Int;  inline function get_pxLeft() return Std.int( clampedFocus.levelX - pxWid*0.5 );
+	public var pxRight(get,never) : Int;  inline function get_pxRight() return Std.int( pxLeft + (pxWid - 1) );
+	public var pxTop(get,never) : Int;  inline function get_pxTop() return Std.int( clampedFocus.levelY-pxHei*0.5 );
+	public var pxBottom(get,never) : Int;  inline function get_pxBottom() return pxTop + pxHei - 1;
 
-	/** Upper camera bound in level pixels **/
-	public var top(get,never) : Int;
-		inline function get_top() return Std.int( clampedFocus.levelY-pxHei*0.5 );
+	/** Center X in pixels **/
+	public var centerX(get,never) : Int;  inline function get_centerX() return Std.int( (pxLeft+pxRight) * 0.5 );
 
-	/** Lower camera bound in level pixels **/
-	public var bottom(get,never) : Int;
-		inline function get_bottom() return top + pxHei - 1;
+	/** Center Y in pixels **/
+	public var centerY(get,never) : Int;  inline function get_centerY() return Std.int( (pxTop+pxBottom) * 0.5 );
 
-	public var centerX(get,never) : Int;
-		inline function get_centerX() return Std.int( (left+right) * 0.5 );
-
-	public var centerY(get,never) : Int;
-		inline function get_centerY() return Std.int( (top+bottom) * 0.5 );
+	/** Camera bound coords in grid cells **/
+	public var cLeft(get,never) : Int;  inline function get_cLeft() return Std.int( pxLeft/Const.GRID );
+	public var cRight(get,never) : Int;  inline function get_cRight() return M.ceil( pxRight/Const.GRID );
+	public var cTop(get,never) : Int;  inline function get_cTop() return Std.int( pxTop/Const.GRID );
+	public var cBottom(get,never) : Int;  inline function get_cBottom() return M.ceil( pxBottom/Const.GRID );
 
 	// Debugging
 	var invalidateDebugBounds = false;
@@ -128,7 +125,7 @@ class Camera extends GameProcess {
 		Return TRUE if given coords are in current camera bounds. Padding is *added* to the screen bounds (it can be negative to *shrink* these bounds).
 	**/
 	public inline function isOnScreen(levelX:Float, levelY: Float, padding=0.) {
-		return levelX>=left-padding && levelX<=right+padding && levelY>=top-padding && levelY<=bottom+padding;
+		return levelX>=pxLeft-padding && levelX<=pxRight+padding && levelY>=pxTop-padding && levelY<=pxBottom+padding;
 	}
 
 	/**
@@ -136,7 +133,7 @@ class Camera extends GameProcess {
 	**/
 	public inline function isOnScreenRect(x:Float, y:Float, wid:Float, hei:Float, padding=0.) {
 		return Lib.rectangleOverlaps(
-			left-padding, top-padding, pxWid+padding*2, pxHei+padding*2,
+			pxLeft-padding, pxTop-padding, pxWid+padding*2, pxHei+padding*2,
 			x, y, wid, hei
 		);
 	}
@@ -145,8 +142,8 @@ class Camera extends GameProcess {
 		Return TRUE if given grid coords are in current camera bounds. Padding is *added* to the screen bounds (it can be negative to *shrink* these bounds).
 	**/
 	public inline function isOnScreenCase(cx:Int, cy:Int, padding=32) {
-		return cx*Const.GRID>=left-padding && (cx+1)*Const.GRID<=right+padding
-			&& cy*Const.GRID>=top-padding && (cy+1)*Const.GRID<=bottom+padding;
+		return cx*Const.GRID>=pxLeft-padding && (cx+1)*Const.GRID<=pxRight+padding
+			&& cy*Const.GRID>=pxTop-padding && (cy+1)*Const.GRID<=pxBottom+padding;
 	}
 
 
@@ -286,7 +283,7 @@ class Camera extends GameProcess {
 				renderDebugBounds();
 				invalidateDebugBounds = false;
 			}
-			debugBounds.setPosition(left,top);
+			debugBounds.setPosition(pxLeft,pxTop);
 		}
 	}
 
