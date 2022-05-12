@@ -5,43 +5,43 @@ import dn.heaps.HParticle;
 class Fx extends GameProcess {
 	var pool : ParticlePool;
 
-	public var bgAddSb    : h2d.SpriteBatch;
-	public var bgNormalSb    : h2d.SpriteBatch;
-	public var topAddSb       : h2d.SpriteBatch;
-	public var topNormalSb    : h2d.SpriteBatch;
+	public var bg_add    : h2d.SpriteBatch;
+	public var bg_normal    : h2d.SpriteBatch;
+	public var main_add       : h2d.SpriteBatch;
+	public var main_normal    : h2d.SpriteBatch;
 
 	public function new() {
 		super();
 
 		pool = new ParticlePool(Assets.tiles.tile, 2048, Const.FPS);
 
-		bgAddSb = new h2d.SpriteBatch(Assets.tiles.tile);
-		game.scroller.add(bgAddSb, Const.DP_FX_BG);
-		bgAddSb.blendMode = Add;
-		bgAddSb.hasRotationScale = true;
+		bg_add = new h2d.SpriteBatch(Assets.tiles.tile);
+		game.scroller.add(bg_add, Const.DP_FX_BG);
+		bg_add.blendMode = Add;
+		bg_add.hasRotationScale = true;
 
-		bgNormalSb = new h2d.SpriteBatch(Assets.tiles.tile);
-		game.scroller.add(bgNormalSb, Const.DP_FX_BG);
-		bgNormalSb.hasRotationScale = true;
+		bg_normal = new h2d.SpriteBatch(Assets.tiles.tile);
+		game.scroller.add(bg_normal, Const.DP_FX_BG);
+		bg_normal.hasRotationScale = true;
 
-		topNormalSb = new h2d.SpriteBatch(Assets.tiles.tile);
-		game.scroller.add(topNormalSb, Const.DP_FX_FRONT);
-		topNormalSb.hasRotationScale = true;
+		main_normal = new h2d.SpriteBatch(Assets.tiles.tile);
+		game.scroller.add(main_normal, Const.DP_FX_FRONT);
+		main_normal.hasRotationScale = true;
 
-		topAddSb = new h2d.SpriteBatch(Assets.tiles.tile);
-		game.scroller.add(topAddSb, Const.DP_FX_FRONT);
-		topAddSb.blendMode = Add;
-		topAddSb.hasRotationScale = true;
+		main_add = new h2d.SpriteBatch(Assets.tiles.tile);
+		game.scroller.add(main_add, Const.DP_FX_FRONT);
+		main_add.blendMode = Add;
+		main_add.hasRotationScale = true;
 	}
 
 	override public function onDispose() {
 		super.onDispose();
 
 		pool.dispose();
-		bgAddSb.remove();
-		bgNormalSb.remove();
-		topAddSb.remove();
-		topNormalSb.remove();
+		bg_add.remove();
+		bg_normal.remove();
+		main_add.remove();
+		main_normal.remove();
 	}
 
 	/** Clear all particles **/
@@ -49,48 +49,34 @@ class Fx extends GameProcess {
 		pool.clear();
 	}
 
-	/** Create a HParticle instance in the TOP layer, using Additive blendmode **/
-	public inline function allocTopAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
-		return pool.alloc(topAddSb, t, x, y);
-	}
+	/** Create a HParticle instance in the BG layer, using ADDITIVE blendmode **/
+	public inline function allocBg_add(id,x,y) return pool.alloc(bg_add, Assets.tiles.getTileRandom(id), x, y);
 
-	/** Create a HParticle instance in the TOP layer, using default blendmode **/
-	public inline function allocTopNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
-		return pool.alloc(topNormalSb, t,x,y);
-	}
+	/** Create a HParticle instance in the BG layer, using NORMAL blendmode **/
+	public inline function allocBg_normal(id,x,y) return pool.alloc(bg_normal, Assets.tiles.getTileRandom(id), x, y);
 
-	/** Create a HParticle instance in the BG layer, using Additive blendmode **/
-	public inline function allocBgAdd(t:h2d.Tile, x:Float, y:Float) : HParticle {
-		return pool.alloc(bgAddSb, t,x,y);
-	}
+	/** Create a HParticle instance in the MAIN layer, using ADDITIVE blendmode **/
+	public inline function allocMain_add(id,x,y) return pool.alloc( main_add, Assets.tiles.getTileRandom(id), x, y );
 
-	/** Create a HParticle instance in the BG layer, using default blendmode **/
-	public inline function allocBgNormal(t:h2d.Tile, x:Float, y:Float) : HParticle {
-		return pool.alloc(bgNormalSb, t,x,y);
-	}
+	/** Create a HParticle instance in the MAIN layer, using NORMAL blendmode **/
+	public inline function allocMain_normal(id,x,y) return pool.alloc(main_normal, Assets.tiles.getTileRandom(id), x, y);
 
-	/** Gets a random tile variation from the atlas **/
-	public inline function getTile(id:String) : h2d.Tile {
-		return Assets.tiles.getTileRandom(id);
-	}
 
-	public function markerEntity(e:Entity, ?c=0xFF00FF, ?short=false) {
+	public inline function markerEntity(e:Entity, ?c=0xFF00FF, ?short=false) {
 		#if debug
-		if( e==null )
-			return;
-
-		markerCase(e.cx, e.cy, short?0.03:3, c);
+		if( e!=null && e.isAlive() )
+			markerCase(e.cx, e.cy, short?0.03:3, c);
 		#end
 	}
 
-	public function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c=0xFF00FF) {
+	public inline function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile(D.tiles.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocMain_add(D.tiles.fxCircle15, (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.lifeS = sec;
 
-		var p = allocTopAdd(getTile(D.tiles.pixel), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocMain_add(D.tiles.pixel, (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
 		p.setScale(2);
@@ -98,9 +84,9 @@ class Fx extends GameProcess {
 		#end
 	}
 
-	public function markerFree(x:Float, y:Float, ?sec=3.0, ?c=0xFF00FF) {
+	public inline function markerFree(x:Float, y:Float, ?sec=3.0, ?c=0xFF00FF) {
 		#if debug
-		var p = allocTopAdd(getTile(D.tiles.fxDot), x,y);
+		var p = allocMain_add(D.tiles.fxDot, x,y);
 		p.setCenterRatio(0.5,0.5);
 		p.setFadeS(1, 0, 0.06);
 		p.colorize(c);
@@ -109,12 +95,12 @@ class Fx extends GameProcess {
 		#end
 	}
 
-	public function markerText(cx:Int, cy:Int, txt:String, ?t=1.0) {
+	public inline function markerText(cx:Int, cy:Int, txt:String, ?t=1.0) {
 		#if debug
-		var tf = new h2d.Text(Assets.fontPixel, topNormalSb);
+		var tf = new h2d.Text(Assets.fontPixel, main_normal);
 		tf.text = txt;
 
-		var p = allocTopAdd(getTile(D.tiles.fxCircle15), (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
+		var p = allocMain_add(D.tiles.fxCircle15, (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.colorize(0x0080FF);
 		p.alpha = 0.6;
 		p.lifeS = 0.3;
@@ -129,7 +115,7 @@ class Fx extends GameProcess {
 		return level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
 
-	public function flashBangS(c:UInt, a:Float, ?t=0.1) {
+	public inline function flashBangS(c:UInt, a:Float, ?t=0.1) {
 		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
 		game.root.add(e, Const.DP_FX_FRONT);
 		e.scaleX = game.w();
@@ -146,9 +132,9 @@ class Fx extends GameProcess {
 
 		USAGE: fx.dotsExplosionExample(50,50, 0xffcc00)
 	**/
-	public function dotsExplosionExample(x:Float, y:Float, color:UInt) {
+	public inline function dotsExplosionExample(x:Float, y:Float, color:UInt) {
 		for(i in 0...80) {
-			var p = allocTopAdd( getTile(D.tiles.fxDot), x+rnd(0,3,true), y+rnd(0,3,true) );
+			var p = allocMain_add( D.tiles.fxDot, x+rnd(0,3,true), y+rnd(0,3,true) );
 			p.alpha = rnd(0.4,1);
 			p.colorAnimS(color, 0x762087, rnd(0.6, 3)); // fade particle color from given color to some purple
 			p.moveAwayFrom(x,y, rnd(1,3)); // move away from source
@@ -161,7 +147,6 @@ class Fx extends GameProcess {
 
 	override function update() {
 		super.update();
-
 		pool.update(game.tmod);
 	}
 }
