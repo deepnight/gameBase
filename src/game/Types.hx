@@ -20,8 +20,8 @@ enum abstract GameAction(Int) to Int {
 }
 
 /** Entity state machine. Each entity can only have 1 active State at a time. **/
-enum State {
-	Normal;
+enum abstract State(Int) {
+	var Normal;
 }
 
 
