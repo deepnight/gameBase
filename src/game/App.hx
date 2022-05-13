@@ -190,7 +190,7 @@ class App extends dn.Process {
 
 	/** Init game controller and default key bindings **/
 	function initController() {
-		controller = new dn.heaps.input.Controller(GameAction);
+		controller = dn.heaps.input.Controller.createFromAbstractEnum(GameAction);
 
 		// Gamepad bindings
 		controller.bindPadLStick4(MoveLeft, MoveRight, MoveUp, MoveDown);
