@@ -502,7 +502,7 @@ class Entity {
 	}
 
 	function renderDebugBounds() {
-		var c = Color.makeColorHsl((uid%20)/20, 1, 1);
+		var c = Col.fromHsl((uid%20)/20, 1, 1);
 		debugBounds.clear();
 
 		// Bounds rect

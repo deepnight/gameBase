@@ -115,7 +115,7 @@ class Fx extends GameProcess {
 		return level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
 
-	public inline function flashBangS(c:UInt, a:Float, ?t=0.1) {
+	public inline function flashBangS(c:Col, a:Float, ?t=0.1) {
 		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
 		game.root.add(e, Const.DP_FX_FRONT);
 		e.scaleX = game.w();
@@ -132,7 +132,7 @@ class Fx extends GameProcess {
 
 		USAGE: fx.dotsExplosionExample(50,50, 0xffcc00)
 	**/
-	public inline function dotsExplosionExample(x:Float, y:Float, color:UInt) {
+	public inline function dotsExplosionExample(x:Float, y:Float, color:Col) {
 		for(i in 0...80) {
 			var p = allocMain_add( D.tiles.fxDot, x+rnd(0,3,true), y+rnd(0,3,true) );
 			p.alpha = rnd(0.4,1);

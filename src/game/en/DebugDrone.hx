@@ -64,8 +64,8 @@ class DebugDrone extends Entity {
 		// <----- HERE: add your own specific inits, like setting drone gravity to zero, updating collision behaviors etc.
 	}
 
-	inline function setColor(c:Int) {
-		g.color.setColor( Color.addAlphaF(c) );
+	inline function setColor(c:Col) {
+		g.color.setColor( c.withAlpha() );
 	}
 
 	override function dispose() {

@@ -10,7 +10,7 @@ class Bar extends h2d.Object {
 	public var innerBarHeight(get,never) : Float;
 	public var outerWidth(get,never) : Float;
 	public var outerHeight(get,never) : Float;
-	public var color(default,set) : UInt;
+	public var color(default,set) : Col;
 	public var defaultColor(default,null) : UInt;
 	var padding : Int;
 	var oldBarSpeed : Float;
@@ -77,9 +77,9 @@ class Bar extends h2d.Object {
 		gradTg.addTransform( bar.x+Std.int(innerBarMaxWidth*xRatio), bar.y, 1, innerBarHeight, 0, Assets.tiles.getTile(Assets.tilesDict.pixel) );
 	}
 
-	inline function set_color(c) {
-		bar.color.setColor( Color.addAlphaF(c) );
-		bg.color.setColor( Color.addAlphaF(Color.toBlack(c,0.8)) );
+	inline function set_color(c:Col) {
+		bar.color.setColor( c.withAlpha() );
+		bg.color.setColor( c.toBlack(0.8).withAlpha() );
 		return color = c;
 	}
 
@@ -126,8 +126,8 @@ class Bar extends h2d.Object {
 			oldBar.width = 0;
 	}
 
-	public function blink(?c:UInt, ?a=1.0) {
-		blinkColor.setColor( Color.addAlphaF(c==null ? color : c,a) );
+	public function blink(?c:Col, ?a=1.0) {
+		blinkColor.setColor( (c==null ? color : c).withAlpha(a) );
 		cd.setS("blinkMaintain", 0.15 * 1/oldBarSpeed);
 	}
 
