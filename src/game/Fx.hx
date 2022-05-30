@@ -62,14 +62,14 @@ class Fx extends GameProcess {
 	public inline function allocMain_normal(id,x,y) return pool.alloc(main_normal, Assets.tiles.getTileRandom(id), x, y);
 
 
-	public inline function markerEntity(e:Entity, ?c=0xFF00FF, ?short=false) {
+	public inline function markerEntity(e:Entity, ?c:Col=0xFF00FF, ?short=false) {
 		#if debug
 		if( e!=null && e.isAlive() )
 			markerCase(e.cx, e.cy, short?0.03:3, c);
 		#end
 	}
 
-	public inline function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c=0xFF00FF) {
+	public inline function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c:Col=0xFF00FF) {
 		#if debug
 		var p = allocMain_add(D.tiles.fxCircle15, (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
@@ -84,7 +84,7 @@ class Fx extends GameProcess {
 		#end
 	}
 
-	public inline function markerFree(x:Float, y:Float, ?sec=3.0, ?c=0xFF00FF) {
+	public inline function markerFree(x:Float, y:Float, ?sec=3.0, ?c:Col=0xFF00FF) {
 		#if debug
 		var p = allocMain_add(D.tiles.fxDot, x,y);
 		p.setCenterRatio(0.5,0.5);
