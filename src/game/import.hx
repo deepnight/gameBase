@@ -12,6 +12,8 @@ import dn.heaps.slib.*;
 // Project classes
 import Types;
 import ui.Console;
+import ui.Bar;
+import ui.Modal;
 import tools.*;
 import assets.*;
 import en.*;
