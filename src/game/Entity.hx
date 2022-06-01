@@ -460,13 +460,13 @@ class Entity {
 
 
 	/** Print some numeric value below entity **/
-	public inline function debugFloat(v:Float, ?c=0xffffff) {
+	public inline function debugFloat(v:Float, c:Col=0xffffff) {
 		debug( pretty(v), c );
 	}
 
 
 	/** Print some value below entity **/
-	public inline function debug(?v:Dynamic, ?c=0xffffff) {
+	public inline function debug(?v:Dynamic, c:Col=0xffffff) {
 		#if debug
 		if( v==null && debugLabel!=null ) {
 			debugLabel.remove();
@@ -645,7 +645,7 @@ class Entity {
 	}
 
 	/** Blink `spr` briefly (eg. when damaged by something) **/
-	public function blink(c:UInt) {
+	public function blink(c:Col) {
 		blinkColor.setColor(c);
 		cd.setS("keepBlink",0.06);
 	}

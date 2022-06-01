@@ -7,7 +7,7 @@ package en;
 @:access(Camera)
 class DebugDrone extends Entity {
 	public static var ME : DebugDrone;
-	static var DEFAULT_COLOR = 0x00ff00;
+	static var DEFAULT_COLOR : Col = 0x00ff00;
 
 	var ca : ControllerAccess<GameAction>;
 	var prevCamTarget : Null<Entity>;

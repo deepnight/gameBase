@@ -11,7 +11,7 @@ class Bar extends h2d.Object {
 	public var outerWidth(get,never) : Float;
 	public var outerHeight(get,never) : Float;
 	public var color(default,set) : Col;
-	public var defaultColor(default,null) : UInt;
+	public var defaultColor(default,null) : Col;
 	var padding : Int;
 	var oldBarSpeed : Float;
 
@@ -21,7 +21,7 @@ class Bar extends h2d.Object {
 	var curValue : Float;
 	var curMax : Float;
 
-	public function new(wid:Int, hei:Int, c:UInt, ?p:h2d.Object) {
+	public function new(wid:Int, hei:Int, c:Col, ?p:h2d.Object) {
 		super(p);
 
 		curValue = 0;
@@ -37,7 +37,7 @@ class Bar extends h2d.Object {
 		defaultColor = color = c;
 	}
 
-	public function enableOldValue(oldBarColor:UInt, speed=1.0) {
+	public function enableOldValue(oldBarColor:Col, speed=1.0) {
 		if( oldBar!=null )
 			oldBar.remove();
 		oldBar = new h2d.ScaleGrid( h2d.Tile.fromColor(oldBarColor,3,3), 1, 1 );
@@ -68,7 +68,7 @@ class Bar extends h2d.Object {
 		}
 	}
 
-	public function addGraduation(xRatio:Float, c:UInt, ?alpha=1.0) {
+	public function addGraduation(xRatio:Float, c:Col, ?alpha=1.0) {
 		if( gradTg==null ) {
 			gradTg = new h2d.TileGroup(Assets.tiles.tile, this);
 			gradTg.colorAdd = blinkColor;

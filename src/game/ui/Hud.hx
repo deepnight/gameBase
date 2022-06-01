@@ -47,7 +47,7 @@ class Hud extends GameProcess {
 
 
 	/** Pop a quick s in the corner **/
-	public function notify(str:String, color=0xA56DE7) {
+	public function notify(str:String, color:Col=0xA56DE7) {
 		// Bg
 		var t = Assets.tiles.getTile( D.tiles.uiBar );
 		var f = new dn.heaps.FlowBg(t, 2, root);
