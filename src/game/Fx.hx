@@ -62,14 +62,14 @@ class Fx extends GameProcess {
 	public inline function allocMain_normal(id,x,y) return pool.alloc(main_normal, Assets.tiles.getTileRandom(id), x, y);
 
 
-	public inline function markerEntity(e:Entity, ?c:Col=0xFF00FF, ?short=false) {
+	public inline function markerEntity(e:Entity, c:Col=Pink, short=false) {
 		#if debug
 		if( e!=null && e.isAlive() )
 			markerCase(e.cx, e.cy, short?0.03:3, c);
 		#end
 	}
 
-	public inline function markerCase(cx:Int, cy:Int, ?sec=3.0, ?c:Col=0xFF00FF) {
+	public inline function markerCase(cx:Int, cy:Int, sec=3.0, c:Col=Pink) {
 		#if debug
 		var p = allocMain_add(D.tiles.fxCircle15, (cx+0.5)*Const.GRID, (cy+0.5)*Const.GRID);
 		p.setFadeS(1, 0, 0.06);
@@ -84,7 +84,7 @@ class Fx extends GameProcess {
 		#end
 	}
 
-	public inline function markerFree(x:Float, y:Float, ?sec=3.0, ?c:Col=0xFF00FF) {
+	public inline function markerFree(x:Float, y:Float, sec=3.0, c:Col=Pink) {
 		#if debug
 		var p = allocMain_add(D.tiles.fxDot, x,y);
 		p.setCenterRatio(0.5,0.5);
@@ -95,7 +95,7 @@ class Fx extends GameProcess {
 		#end
 	}
 
-	public inline function markerText(cx:Int, cy:Int, txt:String, ?t=1.0) {
+	public inline function markerText(cx:Int, cy:Int, txt:String, t=1.0) {
 		#if debug
 		var tf = new h2d.Text(Assets.fontPixel, main_normal);
 		tf.text = txt;
@@ -115,7 +115,7 @@ class Fx extends GameProcess {
 		return level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
 
-	public inline function flashBangS(c:Col, a:Float, ?t=0.1) {
+	public inline function flashBangS(c:Col, a:Float, t=0.1) {
 		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
 		game.root.add(e, Const.DP_FX_FRONT);
 		e.scaleX = game.w();
