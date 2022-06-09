@@ -105,8 +105,11 @@ class Console extends h2d.Console {
 				stats.destroy();
 				stats = null;
 			}
-			else
+			else {
 				stats = new dn.heaps.StatsBox(App.ME);
+				stats.addFpsChart();
+				stats.addMemoryChart();
+			}
 		});
 		this.addAlias("stats","fps");
 
