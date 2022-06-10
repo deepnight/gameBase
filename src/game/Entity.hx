@@ -454,8 +454,11 @@ class Entity {
 			debugBounds = null;
 		}
 
-		cd.destroy();
+		cd.dispose();
 		cd = null;
+
+		ucd.dispose();
+		ucd = null;
     }
 
 
