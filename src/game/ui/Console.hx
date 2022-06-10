@@ -52,6 +52,16 @@ class Console extends h2d.Console {
 				});
 			});
 
+			this.addCommand("gc", [{ name:"state", t:AInt, opt:true }], (?state:Int)->{
+				if( !dn.Gc.isSupported() )
+					log("GC is not supported on this platform", Red);
+				else {
+					if( state!=null )
+						dn.Gc.setState(state!=0);
+					log("GC is "+(dn.Gc.isActive() ? "running" : "disabled" ), dn.Gc.isActive()?Green:Red);
+				}
+			});
+
 			// Level marks
 			this.addCommand(
 				"mark",
