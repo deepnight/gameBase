@@ -100,19 +100,7 @@ class Console extends h2d.Console {
 		#end
 
 		// Create a stats box
-		this.addCommand("fps", [], ()->{
-			if( stats!=null ) {
-				stats.destroy();
-				stats = null;
-			}
-			else {
-				stats = new dn.heaps.StatsBox(App.ME);
-				stats.addFpsChart();
-				#if hl
-				stats.addMemoryChart();
-				#end
-			}
-		});
+		this.addCommand("fps", [], ()->toggleStats());
 		this.addAlias("stats","fps");
 
 		// Misc flag aliases
@@ -120,6 +108,29 @@ class Console extends h2d.Console {
 		addFlagCommandAlias("affect");
 		addFlagCommandAlias("scroll");
 		addFlagCommandAlias("cam");
+	}
+
+	public function disableStats() {
+		if( stats!=null ) {
+			stats.destroy();
+			stats = null;
+		}
+	}
+
+	public function enableStats() {
+		disableStats();
+		stats = new dn.heaps.StatsBox(App.ME);
+		stats.addFpsChart();
+		#if hl
+		stats.addMemoryChart();
+		#end
+	}
+
+	public function toggleStats() {
+		if( stats!=null )
+			disableStats();
+		else
+			enableStats();
 	}
 
 	override function getCommandSuggestion(cmd:String):String {
