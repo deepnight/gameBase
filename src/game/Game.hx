@@ -96,12 +96,12 @@ class Game extends dn.Process {
 
 	/** Garbage collect any Entity marked for destruction. This is normally done at the end of the frame, but you can call it manually if you want to make sure marked entities are disposed right away, and removed from lists. **/
 	public function garbageCollectEntities() {
-		if( Entity.GC==null || Entity.GC.length==0 )
+		if( Entity.GC==null || Entity.GC.allocated==0 )
 			return;
 
 		for(e in Entity.GC)
 			e.dispose();
-		Entity.GC = [];
+		Entity.GC.empty();
 	}
 
 	/** Called if game is destroyed, but only at the end of the frame **/
