@@ -58,7 +58,8 @@ class Console extends h2d.Console {
 				else {
 					if( state!=null )
 						dn.Gc.setState(state!=0);
-					log("GC is "+(dn.Gc.isActive() ? "running" : "disabled" ), dn.Gc.isActive()?Green:Red);
+					dn.Gc.runNow();
+					log("GC forced (current state: "+(dn.Gc.isActive() ? "active" : "inactive" )+")", dn.Gc.isActive()?Green:Yellow);
 				}
 			});
 
