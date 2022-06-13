@@ -228,6 +228,13 @@ class Entity {
     }
 
 
+	/** Remove sprite from display context. Only do that if you're 100% sure your entity won't need the `spr` instance itself. **/
+	function noSprite() {
+		spr.setEmptyTexture();
+		spr.remove();
+	}
+
+
 	function set_pivotX(v) {
 		pivotX = M.fclamp(v,0,1);
 		if( spr!=null )
