@@ -133,6 +133,7 @@ class Console extends h2d.Console {
 		disableStats();
 		stats = new dn.heaps.StatsBox(App.ME);
 		stats.addFpsChart();
+		stats.addDrawCallsChart();
 		#if hl
 		stats.addMemoryChart();
 		#end

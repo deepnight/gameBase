@@ -35,6 +35,10 @@ class App extends dn.Process {
 		new dn.heaps.GameFocusHelper(scene, Assets.fontPixel);
 		#end
 
+		#if debug
+		Console.ME.enableStats();
+		#end
+
 		startGame();
 	}
 
