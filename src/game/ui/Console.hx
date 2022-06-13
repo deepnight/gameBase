@@ -52,6 +52,7 @@ class Console extends h2d.Console {
 				});
 			});
 
+			// Garbage collector
 			this.addCommand("gc", [{ name:"state", t:AInt, opt:true }], (?state:Int)->{
 				if( !dn.Gc.isSupported() )
 					log("GC is not supported on this platform", Red);
