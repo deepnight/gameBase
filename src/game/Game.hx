@@ -31,6 +31,7 @@ class Game extends dn.Process {
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = isGameControllerLocked;
 		createRootInLayers(App.ME.root, Const.DP_BG);
+		dn.Gc.runNow();
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -69,6 +70,7 @@ class Game extends dn.Process {
 		camera.centerOnTarget();
 		hud.onLevelStart();
 		dn.Process.resizeAll();
+		dn.Gc.runNow();
 	}
 
 
