@@ -12,7 +12,7 @@ class Level extends GameProcess {
 	public var data : World_Level;
 	var tilesetSource : h2d.Tile;
 
-	public var marks : tools.MarkerMap<Types.LevelMark>;
+	public var marks : tools.MarkerMap<LevelMark>;
 	var invalidated = true;
 
 	public function new(ldtkLevel:World.World_Level) {
@@ -25,7 +25,13 @@ class Level extends GameProcess {
 		pxWid = cWid * Const.GRID;
 		pxHei = cHei * Const.GRID;
 		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
+
 		marks = new MarkerMap(cWid, cHei);
+		for(cy in 0...cHei)
+		for(cx in 0...cWid) {
+			if( data.l_Collisions.getInt(cx,cy)==1 )
+				marks.set(Coll_Wall, cx,cy);
+		}
 	}
 
 	override function onDispose() {
@@ -49,7 +55,7 @@ class Level extends GameProcess {
 
 	/** Return TRUE if "Collisions" layer contains a collision value **/
 	public inline function hasCollision(cx,cy) : Bool {
-		return !isValid(cx,cy) ? true : data.l_Collisions.getInt(cx,cy)==1;
+		return !isValid(cx,cy) ? true : marks.has(Coll_Wall, cx,cy);
 	}
 
 	/** Render current level**/
