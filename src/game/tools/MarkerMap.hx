@@ -1,9 +1,9 @@
 package tools;
 
-class MarkerMap<T:EnumValue> {
+class MarkerMap<T:Int> {
 	var wid : Int;
 	var hei : Int;
-	var marks : Map<T, Map<Int,Int>> = new Map();
+	var marks : haxe.ds.IntMap< haxe.ds.IntMap<Int> > = new haxe.ds.IntMap();
 
 
 	public function new(wid:Int, hei:Int) {
@@ -50,7 +50,7 @@ class MarkerMap<T:EnumValue> {
 	public inline function set(mark:T, cx:Int, cy:Int) {
 		if( isValid(cx,cy) && !has(mark, cx,cy) ) {
 			if( !marks.exists(mark) )
-				marks.set(mark, new Map());
+				marks.set(mark, new haxe.ds.IntMap());
 
 			var markMap = marks.get(mark);
 			if( !markMap.exists( coordId(cx,cy) ) )
@@ -59,11 +59,24 @@ class MarkerMap<T:EnumValue> {
 	}
 
 
+	/**
+		Copy all marks and bits at coordinates to target MarkerMap instance
+	**/
+	public function copyAllAt(cx, cy, targetMarks:MarkerMap<T>) {
+		for(m in marks.keyValueIterator())
+			if( m.value.exists( coordId(cx,cy) ) ) {
+				if( !targetMarks.marks.exists(m.key) )
+					targetMarks.marks.set(m.key, new haxe.ds.IntMap());
+				targetMarks.marks.get(m.key).set( coordId(cx,cy), m.value.get(coordId(cx,cy)) );
+			}
+	}
+
+
 	/** Add a mark + a specific bit at coordinates **/
 	public inline function setWithBit(mark:T, subBit:Int, cx:Int, cy:Int, clearExistingBits=false) {
 		if( isValid(cx,cy) && !hasWithBit(mark, subBit, cx,cy) ) {
 			if( !marks.exists(mark) )
-				marks.set(mark, new Map());
+				marks.set(mark, new haxe.ds.IntMap());
 
 			var markMap = marks.get(mark);
 			if( clearExistingBits || !markMap.exists( coordId(cx,cy) ) )
@@ -73,16 +86,29 @@ class MarkerMap<T:EnumValue> {
 		}
 	}
 
+	/** Add a mark + a list of specified bits at coordinates **/
+	public inline function setWithBits(mark:T, subBits:Array<Int>, cx:Int, cy:Int, clearExistingBits=false) {
+		for(bit in subBits)
+			setWithBit(mark, bit, cx,cy, clearExistingBits);
+	}
+
+
+	/** Remove all marks at coordinates **/
+	public inline function clearAllAt(cx:Int, cy:Int) {
+		for(m in marks)
+			m.remove( coordId(cx,cy) );
+	}
+
 
 	/** Remove a mark at coordinates **/
-	public inline function remove(mark:T, cx:Int, cy:Int) {
+	public inline function clearMarkAt(mark:T, cx:Int, cy:Int) {
 		if( isValid(cx,cy) && has(mark, cx,cy) )
 			marks.get(mark).remove( coordId(cx,cy) );
 	}
 
 
 	/** Remove a specific bit from a mark at coordinates **/
-	public inline function removeBit(mark:T, subBit:Int, cx:Int, cy:Int) {
+	public inline function clearBitAt(mark:T, subBit:Int, cx:Int, cy:Int) {
 		if( isValid(cx,cy) && hasWithBit(mark, subBit, cx,cy) )
 			marks.get(mark).set(
 				coordId(cx,cy),
