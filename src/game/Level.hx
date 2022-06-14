@@ -1,9 +1,9 @@
 class Level extends GameProcess {
 	/** Level grid-based width**/
-	public var cWid(get,never) : Int; inline function get_cWid() return data.l_Collisions.cWid;
+	public var cWid(default,null): Int;
 
 	/** Level grid-based height **/
-	public var cHei(get,never) : Int; inline function get_cHei() return data.l_Collisions.cHei;
+	public var cHei(default,null): Int;
 
 	/** Level pixel width**/
 	public var pxWid(get,never) : Int; inline function get_pxWid() return cWid*Const.GRID;
@@ -22,6 +22,8 @@ class Level extends GameProcess {
 
 		createRootInLayers(Game.ME.scroller, Const.DP_BG);
 		data = ldtkLevel;
+		cWid = data.l_Collisions.cWid;
+		cHei = data.l_Collisions.cHei;
 		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
 		marks = new MarkerMap(cWid, cHei);
 	}
