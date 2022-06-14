@@ -12,7 +12,7 @@ class Level extends GameProcess {
 	public var data : World_Level;
 	var tilesetSource : h2d.Tile;
 
-	public var marks : tools.MarkerMap<LevelMark>;
+	public var marks : dn.MarkerMap<LevelMark>;
 	var invalidated = true;
 
 	public function new(ldtkLevel:World.World_Level) {
@@ -26,7 +26,7 @@ class Level extends GameProcess {
 		pxHei = cHei * Const.GRID;
 		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
 
-		marks = new MarkerMap(cWid, cHei);
+		marks = new dn.MarkerMap(cWid, cHei);
 		for(cy in 0...cHei)
 		for(cx in 0...cWid) {
 			if( data.l_Collisions.getInt(cx,cy)==1 )
