@@ -78,10 +78,16 @@ class Entity {
 	/** Pixel width of entity **/
 	public var wid(default,set) : Float = Const.GRID;
 		inline function set_wid(v) { invalidateDebugBounds=true;  return wid=v; }
+	public var iwid(get,set) : Int;
+		inline function get_iwid() return M.round(wid);
+		inline function set_iwid(v:Int) { invalidateDebugBounds=true; wid=v; return iwid; }
 
 	/** Pixel height of entity **/
 	public var hei(default,set) : Float = Const.GRID;
 		inline function set_hei(v) { invalidateDebugBounds=true;  return hei=v; }
+	public var ihei(get,set) : Int;
+		inline function get_ihei() return M.round(hei);
+		inline function set_ihei(v:Int) { invalidateDebugBounds=true; hei=v; return ihei; }
 
 	/** Inner radius in pixels (ie. smallest value between width/height, then divided by 2) **/
 	public var innerRadius(get,never) : Float;

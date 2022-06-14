@@ -38,9 +38,8 @@ class SamplePlayer extends Entity {
 		ca.lockCondition = Game.isGameControllerLocked;
 
 		// Placeholder display
-		var g = new h2d.Graphics(spr);
-		g.beginFill(0x00ff00);
-		g.drawCircle(0,-hei*0.5,9);
+		var b = new h2d.Bitmap( h2d.Tile.fromColor(Green, iwid, ihei), spr );
+		b.tile.setCenterRatio(0.5,1);
 	}
 
 
