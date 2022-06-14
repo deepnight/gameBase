@@ -65,33 +65,42 @@ class Console extends h2d.Console {
 			});
 
 			// Level marks
+			var allLevelMarks : Array<{ name:String, value:Int }>;
+			allLevelMarks = dn.MacroTools.getAbstractEnumValues(Types.LevelMark);
 			this.addCommand(
 				"mark",
 				[
-					{ name:"levelMark", t:AEnum(Types.LevelMark.getConstructors()) },
+					{ name:"levelMark", t:AEnum( allLevelMarks.map(m->m.name) ), opt:true },
 					{ name:"bit", t:AInt, opt:true },
 				],
-				(k, bit:Null<Int>)->{
+				(k:String, bit:Null<Int>)->{
 					if( !Game.exists() ) {
 						error('Game is not running');
 						return;
 					}
-					var mark = try LevelMark.createByName(k) catch(_) null;
-					if( mark==null ) {
+					if( k==null ) {
+						// Game.ME.level.clearDebug();
+						return;
+					}
+
+					var bit : Null<LevelSubMark> = cast bit;
+					var mark = -1;
+					for(m in allLevelMarks)
+						if( m.name==k ) {
+							mark = m.value;
+							break;
+						}
+					if( mark<0 ) {
 						error('Unknown level mark $k');
 						return;
 					}
 
 					var col = 0xffcc00;
 					log('Displaying $mark (bit=$bit)...', col);
-					var l = Game.ME.level;
-					for(cy in 0...l.cHei)
-					for(cx in 0...l.cWid)
-						if( bit==null && l.marks.has(mark,cx,cy) || bit!=null && l.marks.hasWithBit(mark, bit, cx,cy) )
-							Game.ME.fx.markerCase(cx,cy, 10, col);
-
+					// Game.ME.level.renderDebugMark(cast mark, bit);
 				}
 			);
+			this.addAlias("m","mark");
 		#end
 
 		// List all active dn.Process
