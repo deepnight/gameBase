@@ -279,5 +279,13 @@ class App extends dn.Process {
 			cd.setF("consoleRecentlyActive",2);
 
 
+		// Mem track reporting
+		#if debug
+		if( ca.isKeyboardDown(K.SHIFT) && ca.isKeyboardPressed(K.ENTER) ) {
+			Console.ME.runCommand("/cls");
+			dn.debug.MemTrack.report( (v)->Console.ME.log(v,Yellow) );
+		}
+		#end
+
     }
 }
