@@ -13,6 +13,7 @@ class Console extends h2d.Console {
 
 		logTxt.filter = new dn.heaps.filter.PixelOutline();
 		scale(2); // TODO smarter scaling for 4k screens
+		logTxt.condenseWhite = false;
 		errorColor = 0xff6666;
 
 		// Settings
