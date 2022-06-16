@@ -28,7 +28,7 @@ class App extends dn.Process {
 		initController();
 
 		// Create console (open with [²] key)
-		new ui.Console(Assets.fontPixel, scene); // init debug console
+		new ui.Console(Assets.fontPixelMono, scene); // init debug console
 
 		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
 		#if js

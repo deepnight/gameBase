@@ -8,6 +8,7 @@ import dn.heaps.slib.*;
 class Assets {
 	// Fonts
 	public static var fontPixel : h2d.Font;
+	public static var fontPixelMono : h2d.Font;
 
 	/** Main atlas **/
 	public static var tiles : SpriteLib;
@@ -24,6 +25,7 @@ class Assets {
 
 		// Fonts
 		fontPixel = new hxd.res.BitmapFont( hxd.Res.fonts.pixel_unicode_regular_12_xml.entry ).toFont();
+		fontPixelMono = new hxd.res.BitmapFont( hxd.Res.fonts.pixica_mono_regular_16_xml.entry ).toFont();
 
 		// build sprite atlas directly from Aseprite file
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
