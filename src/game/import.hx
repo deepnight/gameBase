@@ -6,6 +6,7 @@ import dn.Lib;
 import dn.Col;
 import dn.Tweenie;
 import dn.data.GetText;
+import dn.struct.*;
 import dn.heaps.input.*;
 import dn.heaps.slib.*;
 

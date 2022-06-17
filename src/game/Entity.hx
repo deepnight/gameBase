@@ -1,6 +1,6 @@
 class Entity {
-    public static var ALL : dn.FixedArray<Entity> = new dn.FixedArray(1024);
-    public static var GC : dn.FixedArray<Entity> = new dn.FixedArray(ALL.maxSize);
+    public static var ALL : FixedArray<Entity> = new FixedArray(1024);
+    public static var GC : FixedArray<Entity> = new FixedArray(ALL.maxSize);
 
 	// Various getters to access all important stuff easily
 	public var app(get,never) : App; inline function get_app() return App.ME;
