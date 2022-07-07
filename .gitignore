@@ -2,6 +2,7 @@ redist/
 bin/
 dump/
 res/.tmp/
+res/**/backups/
 
 # VScode
 .vscode/settings.json
