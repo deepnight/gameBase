@@ -89,6 +89,10 @@ class LPoint {
 		return new LPoint().setLevelPixel(x,y);
 	}
 
+	public static inline function fromScreen(sx:Float, sy:Float) {
+		return new LPoint().setScreen(sx,sy);
+	}
+
 	/** Init using level grid coords **/
 	public inline function setLevelCase(x,y,?xr=0.5,?yr=0.5) {
 		this.cx = x;
@@ -96,6 +100,14 @@ class LPoint {
 		this.xr = xr;
 		this.yr = yr;
 		return this;
+	}
+
+	/** Init from screen coord **/
+	public inline function setScreen(sx:Float, sy:Float) {
+		setLevelPixel(
+			( sx - G.scroller.x ) / Const.SCALE,
+			( sy - G.scroller.y ) / Const.SCALE
+		);
 	}
 
 	/** Init using level pixels coords **/
