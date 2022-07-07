@@ -105,8 +105,8 @@ class LPoint {
 	/** Init from screen coord **/
 	public inline function setScreen(sx:Float, sy:Float) {
 		setLevelPixel(
-			( sx - G.scroller.x ) / Const.SCALE,
-			( sy - G.scroller.y ) / Const.SCALE
+			( sx - Game.ME.scroller.x ) / Const.SCALE,
+			( sy - Game.ME.scroller.y ) / Const.SCALE
 		);
 	}
 
