@@ -23,6 +23,8 @@ class App extends dn.Process {
 		scene = s;
         createRoot(scene);
 
+		hxd.Window.getInstance().addEventTarget(onWindowEvent);
+
 		initEngine();
 		initAssets();
 		initController();
@@ -42,6 +44,29 @@ class App extends dn.Process {
 		startGame();
 	}
 
+
+	function onWindowEvent(ev:hxd.Event) {
+		switch ev.kind {
+			case EPush:
+			case ERelease:
+			case EMove:
+			case EOver: onMouseEnter(ev);
+			case EOut: onMouseLeave(ev);
+			case EWheel:
+			case EFocus: onWindowFocus(ev);
+			case EFocusLost: onWindowBlur(ev);
+			case EKeyDown:
+			case EKeyUp:
+			case EReleaseOutside:
+			case ETextInput:
+			case ECheck:
+		}
+	}
+
+	function onMouseEnter(e:hxd.Event) {}
+	function onMouseLeave(e:hxd.Event) {}
+	function onWindowFocus(e:hxd.Event) {}
+	function onWindowBlur(e:hxd.Event) {}
 
 
 	#if hl
@@ -249,6 +274,8 @@ class App extends dn.Process {
 
 	override function onDispose() {
 		super.onDispose();
+
+		hxd.Window.getInstance().removeEventTarget( onWindowEvent );
 
 		#if hl
 		hxd.System.exit();
