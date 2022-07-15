@@ -48,8 +48,9 @@ Any question? Join the [Official Deepnight Games discord](https://deepnight.net/
 
 # Cleanup for your own usage
 
-You may remove the following files/folders from repo root:
+You can safely remove the following files/folders from repo root:
 
-- `.github`
+- `.github/`
 - `LICENSE`
 - `README.md`
+- `CHANGELOG.md`
