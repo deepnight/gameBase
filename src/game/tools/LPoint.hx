@@ -108,6 +108,7 @@ class LPoint {
 			( sx - Game.ME.scroller.x ) / Const.SCALE,
 			( sy - Game.ME.scroller.y ) / Const.SCALE
 		);
+		return this;
 	}
 
 	/** Init using level pixels coords **/
