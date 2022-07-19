@@ -31,7 +31,7 @@ import assets.Assets as A;
 import assets.AssetsDictionaries as D;
 import hxd.Key as K;
 import tools.LPoint as P;
-import assets.Lang as L;
+import assets.Lang.t as L;
 import Const.db as DB;
 
 import dn.debug.MemTrack.measure as MM;
