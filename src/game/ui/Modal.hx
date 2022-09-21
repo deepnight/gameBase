@@ -5,7 +5,7 @@ class Modal extends ui.Window {
 	static var COUNT = 0;
 
 	var ca : ControllerAccess<GameAction>;
-	var mask : h2d.Bitmap;
+	var mask : h2d.Flow;
 	var modalIdx : Int;
 
 	public function new() {
@@ -19,7 +19,8 @@ class Modal extends ui.Window {
 		ca = App.ME.controller.createAccess();
 		ca.takeExclusivity();
 		ca.lockCondition = ()->App.ME.anyInputHasFocus();
-		mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
+		mask = new h2d.Flow(root);
+		mask.backgroundTile = h2d.Tile.fromColor(0x0, 1, 1, 0.6);
 		root.under(mask);
 		dn.Process.resizeAll();
 	}
@@ -51,8 +52,8 @@ class Modal extends ui.Window {
 		if( mask!=null ) {
 			var w = M.ceil( w()/Const.UI_SCALE );
 			var h = M.ceil( h()/Const.UI_SCALE );
-			mask.scaleX = w;
-			mask.scaleY = h;
+			mask.minWidth = w;
+			mask.minHeight = h;
 		}
 	}
 
