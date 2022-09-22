@@ -65,7 +65,7 @@ class DebugDrone extends Entity {
 	}
 
 	inline function setColor(c:Col) {
-		g.color.setColor( c.withAlpha() );
+		g.color.setColor( c.withAlpha(1) );
 	}
 
 	override function dispose() {

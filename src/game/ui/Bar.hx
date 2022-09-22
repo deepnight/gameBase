@@ -78,8 +78,8 @@ class Bar extends h2d.Object {
 	}
 
 	inline function set_color(c:Col) {
-		bar.color.setColor( c.withAlpha() );
-		bg.color.setColor( c.toBlack(0.8).withAlpha() );
+		bar.color.setColor( c.withAlpha(1) );
+		bg.color.setColor( c.toBlack(0.8).withAlpha(1) );
 		return color = c;
 	}
 
