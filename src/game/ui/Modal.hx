@@ -8,8 +8,8 @@ class Modal extends ui.Window {
 	var mask : h2d.Flow;
 	var modalIdx : Int;
 
-	public function new() {
-		super();
+	public function new(?p) {
+		super(p);
 
 		ALL.push(this);
 		modalIdx = COUNT++;
