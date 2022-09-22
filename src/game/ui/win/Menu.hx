@@ -8,7 +8,7 @@ typedef MenuItem = {
 }
 
 class Menu extends ui.Modal {
-	var padCount = 24;
+	var labelPadLen = 24;
 
 	var curIdx(default,set) = 0;
 	public var cur(get,never) : Null<MenuItem>; inline function get_cur() return items.get(curIdx);
@@ -62,7 +62,7 @@ class Menu extends ui.Modal {
 
 		var tf = new h2d.Text(Assets.fontPixelMono, f);
 		tf.textColor = Col.coldGray(0.6);
-		tf.text = Lib.padRight(str.toUpperCase(), padCount, "_");
+		tf.text = Lib.padRight(str.toUpperCase(), labelPadLen, "_");
 	}
 
 	public function addButton(label:String, cb:Void->Void, close=true) {
@@ -73,7 +73,7 @@ class Menu extends ui.Modal {
 		// Label
 		var tf = new h2d.Text(Assets.fontPixelMono, f);
 		tf.textColor = Black;
-		tf.text = Lib.padRight(label, padCount);
+		tf.text = Lib.padRight(label, labelPadLen);
 
 		var i : MenuItem = { f:f, tf:tf, cb:cb, close:close }
 		items.push(i);
@@ -89,7 +89,7 @@ class Menu extends ui.Modal {
 
 	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
 		addButton(
-			Lib.padRight(label,padCount-4) + '[${curValue?"ON":"  "}]',
+			Lib.padRight(label,labelPadLen-4) + '[${curValue?"ON":"  "}]',
 			()->setter(!curValue),
 			close
 		);
@@ -97,7 +97,7 @@ class Menu extends ui.Modal {
 
 	public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
 		addButton(
-			Lib.padRight(label,padCount-3) + '<${isActive?"X":" "}>',
+			Lib.padRight(label,labelPadLen-3) + '<${isActive?"X":" "}>',
 			()->onPick(),
 			close
 		);
