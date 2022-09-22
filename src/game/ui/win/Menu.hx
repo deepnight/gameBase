@@ -10,7 +10,7 @@ typedef MenuItem = {
 class Menu extends ui.Modal {
 	var padCount = 24;
 
-	var curIdx = 0;
+	var curIdx(default,set) = 0;
 	public var cur(get,never) : Null<MenuItem>; inline function get_cur() return items.get(curIdx);
 	var items : FixedArray<MenuItem> = new FixedArray(40);
 	var cursor : h2d.Bitmap;
@@ -28,8 +28,15 @@ class Menu extends ui.Modal {
 		mask.interactive.onClick = _->close();
 		mask.interactive.enableRightButton = true;
 
+		invalidateCursor();
 		initMenu();
 		ca.lock(0.1);
+	}
+
+	inline function set_curIdx(v) {
+		if( curIdx!=v )
+			invalidateCursor();
+		return curIdx = v;
 	}
 
 
@@ -75,7 +82,7 @@ class Menu extends ui.Modal {
 		f.enableInteractive = true;
 		f.interactive.cursor = Button;
 		f.interactive.onOver = _->moveCursorOn(i);
-		f.interactive.onOut = _->if(cur==i) { curIdx = -1; invalidateCursor(); };
+		f.interactive.onOut = _->if(cur==i) curIdx = -1;
 		f.interactive.onClick = ev->ev.button==0 ? validate(i) : this.close();
 		f.interactive.enableRightButton = true;
 	}
@@ -101,7 +108,6 @@ class Menu extends ui.Modal {
 		for(i in items) {
 			if( i==item ) {
 				curIdx = idx;
-				invalidateCursor();
 				break;
 			}
 			idx++;
@@ -148,15 +154,11 @@ class Menu extends ui.Modal {
 	override function update() {
 		super.update();
 
-		if( ca.isPressedAutoFire(MenuUp) && curIdx>0 ) {
+		if( ca.isPressedAutoFire(MenuUp) && curIdx>0 )
 			curIdx--;
-			invalidateCursor();
-		}
 
-		if( ca.isPressedAutoFire(MenuDown) && curIdx<items.allocated-1 ) {
+		if( ca.isPressedAutoFire(MenuDown) && curIdx<items.allocated-1 )
 			curIdx++;
-			invalidateCursor();
-		}
 
 		if( cur!=null && ca.isPressed(MenuOk) )
 			validate(cur);
