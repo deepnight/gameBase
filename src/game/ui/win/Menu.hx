@@ -8,6 +8,7 @@ typedef MenuItem = {
 }
 
 class Menu extends ui.Modal {
+	var useMouse : Bool;
 	var labelPadLen = 24;
 
 	var curIdx(default,set) = 0;
@@ -17,16 +18,19 @@ class Menu extends ui.Modal {
 	var cursorInvalidated = true;
 
 
-	public function new() {
+	public function new(useMouse=true) {
 		super(App.ME);
 
+		this.useMouse = useMouse;
 		win.padding = 1;
-		win.enableInteractive = true;
+		win.enableInteractive = useMouse;
 		win.verticalSpacing = 0;
 
-		mask.enableInteractive = true;
-		mask.interactive.onClick = _->close();
-		mask.interactive.enableRightButton = true;
+		mask.enableInteractive = useMouse;
+		if( useMouse ) {
+			mask.interactive.onClick = _->close();
+			mask.interactive.enableRightButton = true;
+		}
 
 		invalidateCursor();
 		initMenu();
@@ -79,12 +83,14 @@ class Menu extends ui.Modal {
 		items.push(i);
 
 		// Mouse controls
-		f.enableInteractive = true;
-		f.interactive.cursor = Button;
-		f.interactive.onOver = _->moveCursorOn(i);
-		f.interactive.onOut = _->if(cur==i) curIdx = -1;
-		f.interactive.onClick = ev->ev.button==0 ? validate(i) : this.close();
-		f.interactive.enableRightButton = true;
+		if( useMouse ) {
+			f.enableInteractive = true;
+			f.interactive.cursor = Button;
+			f.interactive.onOver = _->moveCursorOn(i);
+			f.interactive.onOut = _->if(cur==i) curIdx = -1;
+			f.interactive.onClick = ev->ev.button==0 ? validate(i) : this.close();
+			f.interactive.enableRightButton = true;
+		}
 	}
 
 	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
