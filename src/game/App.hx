@@ -230,6 +230,10 @@ class App extends dn.Process {
 		controller.bindPad(MoveRight, DPAD_RIGHT);
 		controller.bindPad(MoveUp, DPAD_UP);
 		controller.bindPad(MoveDown, DPAD_DOWN);
+
+		controller.bindPad(MenuUp, [DPAD_UP, LSTICK_UP]);
+		controller.bindPad(MenuDown, [DPAD_DOWN, LSTICK_DOWN]);
+		controller.bindPad(MenuOk, [A, X]);
 		controller.bindPad(MenuCancel, B);
 
 		// Keyboard bindings
@@ -242,6 +246,10 @@ class App extends dn.Process {
 		controller.bindKeyboard(ScreenshotMode, K.F9);
 		controller.bindKeyboard(Pause, K.P);
 		controller.bindKeyboard(Pause, K.PAUSE_BREAK);
+
+		controller.bindKeyboard(MenuUp, [K.UP, K.Z, K.W]);
+		controller.bindKeyboard(MenuDown, [K.DOWN, K.S]);
+		controller.bindKeyboard(MenuOk, [K.SPACE, K.ENTER, K.F]);
 		controller.bindKeyboard(MenuCancel, K.ESCAPE);
 
 		// Debug controls
