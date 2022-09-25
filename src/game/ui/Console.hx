@@ -175,6 +175,7 @@ class Console extends h2d.Console {
 						case AFloat:
 						case AString:
 						case ABool:
+						case AArray(v):
 						case AEnum(values):
 							for(v in values)
 								if( v.toLowerCase().indexOf(lowArg)==0 )
