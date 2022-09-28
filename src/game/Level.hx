@@ -1,4 +1,4 @@
-class Level extends GameProcess {
+class Level extends GameChildProcess {
 	/** Level grid-based width**/
 	public var cWid(default,null): Int;
 	/** Level grid-based height **/

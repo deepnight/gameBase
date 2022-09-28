@@ -2,7 +2,7 @@ import h2d.Sprite;
 import dn.heaps.HParticle;
 
 
-class Fx extends GameProcess {
+class Fx extends GameChildProcess {
 	var pool : ParticlePool;
 
 	public var bg_add    : h2d.SpriteBatch;

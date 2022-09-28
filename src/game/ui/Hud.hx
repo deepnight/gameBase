@@ -1,6 +1,6 @@
 package ui;
 
-class Hud extends GameProcess {
+class Hud extends GameChildProcess {
 	var flow : h2d.Flow;
 	var invalidated = true;
 	var notifications : Array<h2d.Flow> = [];

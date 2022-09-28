@@ -1,4 +1,4 @@
-class Game extends dn.Process {
+class Game extends AppChildProcess {
 	public static var ME : Game;
 
 	/** Game controller (pad or keyboard) **/
@@ -25,7 +25,7 @@ class Game extends dn.Process {
 
 
 	public function new() {
-		super(App.ME);
+		super();
 
 		ME = this;
 		ca = App.ME.controller.createAccess();

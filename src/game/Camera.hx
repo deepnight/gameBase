@@ -1,4 +1,4 @@
-class Camera extends GameProcess {
+class Camera extends GameChildProcess {
 	public static var MIN_ZOOM : Float = 1.0;
 	public static var MAX_ZOOM : Float = 10;
 
