@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta charset="utf-8"/><title>ld51</title>
+		<style>
+			body {
+				margin : 0px;
+				padding : 0px;
+				background-color: black;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			canvas {
+				width : 100% !important;
+				height : 100% !important;
+			}
+			#fullscreen {
+				position: absolute;
+				top: 4px;
+				right: 2px;
+				border: none;
+				border-radius: 3px;
+				font-size: 12pt;
+				background-color: black;
+				color: white;
+				cursor: pointer;
+			}
+			#fullscreen:hover {
+				background-color: orange;
+			}
+		</style>
+	</head>
+	<body id="body">
+
+		<!-- Client canvas -->
+		<canvas id="webgl"></canvas>
+		<script type="text/javascript" src="client.js"></script>
+
+		<!-- Fullscreen button -->
+		<button id="fullscreen" onclick="fullscreen()">🖵</button>
+		<script type="text/javascript">
+			function inIframe () {
+				try {
+					return window.self !== window.top;
+				} catch (e) {
+					return true;
+				}
+			}
+
+			if( inIframe() )
+				document.getElementById("fullscreen").style.display = "none";
+
+			function fullscreen() {
+				document.getElementById("webgl").requestFullscreen();
+			}
+		</script>
+
+	</body>
+</html>
