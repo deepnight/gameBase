@@ -57,7 +57,7 @@
 		{
 			"text": "📦 Redist",
 			"color": "lightgreen",
-			"command": "haxelib run redistHelper build.directx.hxml build.opengl.hxml build.js.hxml -o redist -p GameBase -zip",
+			"command": "haxelib run redistHelper build.directx.hxml build.js.hxml -o redist -p ld51 -zip",
 			"alignment": "right",
 			"skipTerminateQuickPick": false,
 			"priority": -50
