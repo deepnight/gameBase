@@ -117,8 +117,7 @@ class App extends dn.Process {
 	}
 
 	final function _createGameInstance() {
-		// new Game(); // <---- Uncomment this to start an empty Game instance
-		new sample.SampleGame(); // <---- Uncomment this to start the Sample Game instance
+		new Game();
 	}
 
 
