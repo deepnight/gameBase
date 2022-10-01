@@ -102,6 +102,11 @@ class LPoint {
 		return this;
 	}
 
+	public inline function setBoth(v:Int) {
+		cx = cy = v;
+		xr = yr = 0;
+	}
+
 	/** Init from screen coord **/
 	public inline function setScreen(sx:Float, sy:Float) {
 		setLevelPixel(

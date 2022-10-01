@@ -10,7 +10,6 @@ class Level extends GameChildProcess {
 	public var pxHei(default,null) : Int;
 
 	public var data : World_Level;
-	var tilesetSource : h2d.Tile;
 
 	public var marks : dn.MarkerMap<LevelMark>;
 	var invalidated = true;
@@ -24,7 +23,6 @@ class Level extends GameChildProcess {
 		cHei = data.l_Collisions.cHei;
 		pxWid = cWid * Const.GRID;
 		pxHei = cHei * Const.GRID;
-		tilesetSource = hxd.Res.atlas.world.toAseprite().toTile();
 
 		marks = new dn.MarkerMap(cWid, cHei);
 		for(cy in 0...cHei)
@@ -37,7 +35,6 @@ class Level extends GameChildProcess {
 	override function onDispose() {
 		super.onDispose();
 		data = null;
-		tilesetSource = null;
 		marks.dispose();
 		marks = null;
 	}
@@ -62,7 +59,7 @@ class Level extends GameChildProcess {
 	function render() {
 		root.removeChildren();
 
-		var tg = new h2d.TileGroup(tilesetSource, root);
+		var tg = new h2d.TileGroup(Assets.world.tile, root);
 		data.l_Bg.render(tg);
 	}
 

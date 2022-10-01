@@ -80,6 +80,9 @@ class Game extends AppChildProcess {
 		var d = level.data.l_Entities.all_PlayerStart[0];
 		hero = new Hero(d);
 
+		for(d in level.data.l_Entities.all_Mob)
+			new Mob(d);
+
 
 		camera.centerOnTarget();
 		hud.onLevelStart();
@@ -224,6 +227,13 @@ class Game extends AppChildProcess {
 
 		// Entities final updates
 		for(e in Entity.ALL) if( !e.destroyed ) e.finalUpdate();
+
+		// Z sort
+		if( !cd.hasSetS("zsort",0.1) ) {
+			Entity.ALL.bubbleSort( e->e.attachY );
+			for(e in Entity.ALL)
+				e.over();
+		}
 
 		// Dispose entities marked as "destroyed"
 		garbageCollectEntities();

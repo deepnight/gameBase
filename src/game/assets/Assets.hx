@@ -12,7 +12,11 @@ class Assets {
 
 	public static var tiles : SpriteLib;
 	public static var entities : SpriteLib;
+	public static var world : SpriteLib;
+	static var palette : Array<Col> = [];
+
 	public static var worldData : World;
+
 
 
 	static var _initDone = false;
@@ -25,8 +29,21 @@ class Assets {
 		fontPixel = new hxd.res.BitmapFont( hxd.Res.fonts.pixel_unicode_regular_12_xml.entry ).toFont();
 		fontPixelMono = new hxd.res.BitmapFont( hxd.Res.fonts.pixica_mono_regular_16_xml.entry ).toFont();
 
+		// Palette
+		var pal = hxd.Res.atlas.sweetie_16_1x.getPixels(ARGB);
+		var sizePx = 1;
+		palette = [];
+		for(i in 0...16) {
+			var c : Col = pal.getPixel(i*sizePx, 0);
+			c = c.withoutAlpha();
+			palette.push(c);
+			trace(c);
+		}
+
+		// Atlas
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
 		entities = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.entities.toAseprite());
+		world = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.world.toAseprite());
 
 		// Hot-reloading of CastleDB
 		#if debug
@@ -71,6 +88,16 @@ class Assets {
 		#end
 	}
 
+	public static inline function getCol(idx:Int) : Col {
+		return palette[ M.iclamp(idx,0,palette.length-1) ];
+	}
+	public static inline function black() return getCol(0);
+	public static inline function dark() return getCol(15);
+	public static inline function white() return getCol(12);
+	public static inline function yellow() return getCol(4);
+	public static inline function green() return getCol(5);
+	public static inline function blue() return getCol(10);
+
 
 	/**
 		Pass `tmod` value from the game to atlases, to allow them to play animations at the same speed as the Game.
@@ -81,7 +108,8 @@ class Assets {
 			tmod = 0;
 
 		tiles.tmod = tmod;
-		// <-- add other atlas TMOD updates here
+		entities.tmod = tmod;
+		world.tmod = tmod;
 	}
 
 }

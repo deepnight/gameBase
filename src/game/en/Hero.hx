@@ -2,19 +2,23 @@ package en;
 
 class Hero extends Entity {
 	var ca : ControllerAccess<GameAction>;
-	var moveTarget : LPoint;
+	var pressQueue : Map<GameAction, Float> = new Map();
 
 	public function new(data:Entity_PlayerStart) {
 		super(data.cx, data.cy);
-		ca = App.ME.controller.createAccess();
 		camera.trackEntity(this, true);
-		moveTarget = new LPoint();
-		moveTarget.setLevelPixel(attachX, attachY);
+		ca = App.ME.controller.createAccess();
 
-		spr.set(Assets.entities, D.ent.hIdle);
-		var f = new dn.heaps.filter.PixelOutline();
+		circularWeight = 0.3;
+
+		spr.set(Assets.entities, D.ent.kIdle);
+		var f = new dn.heaps.filter.PixelOutline( Assets.dark() );
 		f.bottom = false;
 		spr.filter = f;
+
+		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("atkB"));
+		spr.anim.registerStateAnim(D.ent.kPunchA_charge, 1, ()->isChargingAction("atkA"));
+		spr.anim.registerStateAnim(D.ent.kIdle, 0);
 	}
 
 	override function dispose() {
@@ -22,37 +26,77 @@ class Hero extends Entity {
 		ca.dispose();
 	}
 
-	public function goto(x,y) {
-		moveTarget.setLevelPixel(x,y);
+	inline function unlockControls() {
+		cd.unset("controlsLock");
 	}
 
-	final brakeDist = 16;
-	override function fixedUpdate() {
-		super.fixedUpdate();
+	inline function lockControlS(t:Float) {
+		cd.setS("controlsLock", t, false);
+	}
 
-		var s = 0.035;
-		var d = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
-		if( d>0 ) {
-			var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
-			dx+=Math.cos(ang)*d*s;
-			dy+=Math.sin(ang)*d*s;
-			dir = ca.isDown(MoveLeft) ? -1 : ca.isDown(MoveRight) ? 1 : dir;
+	inline function queueCommandPress(a:GameAction) {
+		if( ca.isPressed(a) )
+			pressQueue.set(a, stime);
+	}
+
+	inline function isPressedOrQueued(a:GameAction) {
+		if( ca.isPressed(a) || stime-pressQueue.get(a)<=0.3 ) {
+			pressQueue.set(a,-1);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	inline function controlsLocked() {
+		return !isAlive() || cd.has("controlsLock");
+	}
+
+	override function frameUpdate() {
+		super.frameUpdate();
+
+		queueCommandPress(Atk);
+
+		if( !controlsLocked() ) {
+			// Walk around
+			var s = 0.015;
+			var d = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
+			if( d>0 ) {
+				cancelMove();
+				var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
+				dx+=Math.cos(ang)*d*s * tmod;
+				dy+=Math.sin(ang)*d*s * tmod;
+				dir = ca.isDown(MoveLeft) ? -1 : ca.isDown(MoveRight) ? 1 : dir;
+			}
+
+			// Punch
+			if( isPressedOrQueued(Atk) ) {
+				dx*=0.5;
+				dy*=0.5;
+				spr.anim.stopWithStateAnims();
+				if( !cd.has("allowB") ) {
+					cd.setS("allowB",0.6);
+					lockControlS(0.25);
+					chargeAction("atkA", 0.1, ()->{
+						dx += dir*0.05;
+						spr.anim.play(D.ent.kPunchA_hit);
+					});
+				}
+				else {
+					cd.unset("allowB");
+					lockControlS(0.35);
+					chargeAction("atkB", 0.2, ()->{
+						dx += dir*0.1;
+						spr.anim.play(D.ent.kPunchB_hit);
+					});
+				}
+			}
 		}
 
-		// Move to target
-		// var d = distPx(moveTarget.levelX, moveTarget.levelY);
-		// if( d>2 ) {
-		// 	var a = Math.atan2(moveTarget.levelY-attachY, moveTarget.levelX-attachX);
-		// 	var s = 0.05 * M.fmin(1, d/brakeDist);
-		// 	dx+=Math.cos(a)*s;
-		// 	dy+=Math.sin(a)*s;
-		// }
+	}
 
-		// // Brake near target
-		// if( d<=brakeDist ) {
-		// 	dx*=0.8;
-		// 	dy*=0.8;
-		// }
+	override function fixedUpdate() {
+		super.fixedUpdate();
 	}
 
 }

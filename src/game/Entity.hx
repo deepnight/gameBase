@@ -9,6 +9,7 @@ class Entity {
 	public var level(get,never) : Level; inline function get_level() return Game.ME.level;
 	public var destroyed(default,null) = false;
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
+	public var stime(get,never) : Float; inline function get_stime() return game.stime;
 	public var camera(get,never) : Camera; inline function get_camera() return game.camera;
 
 	var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
@@ -206,6 +207,11 @@ class Entity {
 	public var prevFrameAttachY(default,null) : Float = -Const.INFINITE;
 
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+	var moveTarget : LPoint;
+	final brakeDist = 16;
+
+	var circularWeight = 1.;
+	var circularRadius = 4;
 
 
 	/**
@@ -221,6 +227,9 @@ class Entity {
 		initLife(1);
 		state = Normal;
 
+		moveTarget = new LPoint();
+		moveTarget.setBoth(-1);
+
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
 		spr.colorAdd = new h3d.Vector();
@@ -233,6 +242,9 @@ class Entity {
 			enableDebugBounds();
     }
 
+	public function over() {
+		game.scroller.over(spr);
+	}
 
 	/** Remove sprite from display context. Only do that if you're 100% sure your entity won't need the `spr` instance itself. **/
 	function noSprite() {
@@ -240,6 +252,13 @@ class Entity {
 		spr.remove();
 	}
 
+	public function goto(x,y) {
+		moveTarget.setLevelPixel(x,y);
+	}
+
+	public inline function cancelMove() {
+		moveTarget.setBoth(-1);
+	}
 
 	function set_pivotX(v) {
 		pivotX = M.fclamp(v,0,1);
@@ -406,6 +425,10 @@ class Entity {
 	public inline function dirToAng() return dir==1 ? 0. : M.PI;
 	public inline function getMoveAng() return Math.atan2(dyTotal,dxTotal);
 
+	public inline function fastDistPx(e:Entity) : Float {
+		return M.fabs(attachX-e.attachX) + M.fabs(attachY-e.attachY);
+	}
+
 	/** Return a distance (in grid cells) from this to something **/
 	public inline function distCase(?e:Entity, ?tcx:Int, ?tcy:Int, ?txr=0.5, ?tyr=0.5) {
 		if( e!=null )
@@ -450,6 +473,7 @@ class Entity {
     public function dispose() {
         ALL.remove(this);
 
+		moveTarget = null;
 		baseColor = null;
 		blinkColor = null;
 		colorMatrix = null;
@@ -793,6 +817,51 @@ class Entity {
 	**/
 	public function fixedUpdate() {
 		updateLastFixedUpdatePos();
+
+		if( circularWeight>0 ) {
+			var d = 0.;
+			var a = 0.;
+			var repel = 0.03;
+			var wRatio = 0.;
+			for(e in ALL) {
+				if( e==this )
+					continue;
+				if( e.circularWeight<=0 || !e.isAlive() || fastDistPx(e)>Const.GRID*2 )
+					continue;
+
+				d = M.dist(attachX, attachY, e.attachX, e.attachY);
+				if( d>circularRadius+e.circularRadius )
+					continue;
+
+				a = Math.atan2(e.attachY-attachY, e.attachX-attachX);
+				wRatio = circularWeight / ( circularWeight + e.circularWeight );
+				e.dx += Math.cos(a)*repel * wRatio;
+				e.dy += Math.sin(a)*repel * wRatio;
+
+				wRatio = e.circularWeight / ( circularWeight + e.circularWeight );
+				dx -= Math.cos(a)*repel * wRatio;
+				dy -= Math.sin(a)*repel * wRatio;
+			}
+		}
+
+		// Move to target
+		if( moveTarget.cx!=-1 ) {
+			var d = distPx(moveTarget.levelX, moveTarget.levelY);
+			if( d>2 ) {
+				var a = Math.atan2(moveTarget.levelY-attachY, moveTarget.levelX-attachX);
+				var s = 0.05 * M.fmin(1, d/brakeDist);
+				dx+=Math.cos(a)*s;
+				dy+=Math.sin(a)*s;
+			}
+			else
+				cancelMove();
+
+			// Brake near target
+			if( d<=brakeDist ) {
+				dx*=0.8;
+				dy*=0.8;
+			}
+		}
 
 		/*
 			Stepping: any movement greater than 33% of grid size (ie. 0.33) will increase the number of `steps` here. These steps will break down the full movement into smaller iterations to avoid jumping over grid collisions.
