@@ -429,7 +429,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [6,5],
+							"__grid": [9,1],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
@@ -438,14 +438,14 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [104,96],
+							"px": [152,32],
 							"fieldInstances": [
 								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
 								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["ME_Melee"]
 								}] },
-								{ "__identifier": "rank", "__value": 1, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
 							]
 						},
 						{
@@ -471,7 +471,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [5,3],
+							"__grid": [2,2],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
@@ -480,7 +480,28 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [88,64],
+							"px": [40,48],
+							"fieldInstances": [
+								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["ME_Melee"]
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
+							]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [8,7],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "b209f770-2a00-11ed-be67-9ffd0fe1f562",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [136,128],
 							"fieldInstances": [
 								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
 								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{

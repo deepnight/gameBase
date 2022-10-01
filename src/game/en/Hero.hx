@@ -174,6 +174,7 @@ class Hero extends Entity {
 							chargeAction("punchA", 0.1, ()->{
 								lockControlS(0.06);
 								for(e in getVictims()) {
+									e.cancelAction();
 									e.hit(0,this);
 									e.setAffectS(Stun,0.3);
 								}
