@@ -144,7 +144,6 @@ class Hero extends Entity {
 				mulVelocities(0.4);
 				spr.anim.stopWithStateAnims();
 				if( hasSuperCharge ) {
-					hasSuperCharge = false;
 
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					game.addSlowMo("powerAtk", 0.3, 0.25);
@@ -153,11 +152,12 @@ class Hero extends Entity {
 						lockControlS(0.3);
 						for(e in getVictims()) {
 							e.cancelAction();
-							e.hit(1,this);
-							e.bumpAwayFrom(this,0.6);
+							e.hit(hasSuperCharge?1:0, this);
+							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
 							e.setAffectS(Stun, 2);
 							e.cd.setS("pushOthers",1);
+							hasSuperCharge = false;
 						}
 						game.addSlowMo("powerAtk", 0.5, 0.6);
 						dx += dir*0.2;
