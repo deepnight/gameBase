@@ -305,7 +305,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [7,8],
+							"__grid": [9,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 144, "y": 80, "w": 16, "h": 16 },
@@ -314,12 +314,12 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [120,144],
+							"px": [152,144],
 							"fieldInstances": []
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [10,8],
+							"__grid": [3,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -328,12 +328,12 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [168,144],
+							"px": [56,144],
 							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [14,8],
+							"__grid": [15,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -342,7 +342,35 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [232,144],
+							"px": [248,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [10,2],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "cc133fa0-2a00-11ed-be67-f33ecd0a2137",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [168,48],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [10,13],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "cc713e20-2a00-11ed-be67-e945efd48039",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [168,224],
 							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
 						}
 					]
