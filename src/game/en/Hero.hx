@@ -128,7 +128,7 @@ class Hero extends Entity {
 
 								for(e in getVictims()) {
 									e.hit(0,this);
-									e.bump(0.4*dir, 0);
+									e.bump(0.2*dir, 0);
 									e.dz = 0.2;
 									e.setAffectS(Stun, 1.5);
 								}
@@ -140,7 +140,7 @@ class Hero extends Entity {
 							lockControlS(0.25);
 							for(e in getVictims()) {
 								e.hit(0,this);
-								e.bump(0.3*dir, 0);
+								e.bump(0.5*dir, 0);
 								e.dz = 0.1;
 								e.setAffectS(Stun, 1.5);
 							}
