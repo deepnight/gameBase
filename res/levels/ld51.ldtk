@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "1.1.4",
 	"appBuildId": 462327,
-	"nextUid": 34,
+	"nextUid": 35,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "LinearHorizontal",
 	"worldGridWidth": 256,
@@ -262,6 +262,35 @@
 					"allowedRefs": "OnlySame",
 					"allowedRefTags": [],
 					"tilesetUid": null
+				},
+				{
+					"identifier": "rank",
+					"__type": "Int",
+					"uid": 34,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "NameAndValue",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": 0,
+					"max": 2,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [0] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
 				}
 			]
 		}
@@ -365,7 +394,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [8,5],
+							"__grid": [2,5],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 192, "y": 608, "w": 16, "h": 16 },
@@ -374,7 +403,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [136,96],
+							"px": [40,96],
 							"fieldInstances": []
 						},
 						{
@@ -394,12 +423,13 @@
 								{ "__identifier": "equip", "__value": "ME_Gun", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["ME_Gun"]
-								}] }
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
 							]
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [3,5],
+							"__grid": [6,5],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
@@ -408,13 +438,14 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [56,96],
+							"px": [104,96],
 							"fieldInstances": [
 								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
 								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["ME_Melee"]
-								}] }
+								}] },
+								{ "__identifier": "rank", "__value": 1, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
 							]
 						},
 						{
@@ -434,7 +465,29 @@
 								{ "__identifier": "equip", "__value": "ME_Gun", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["ME_Gun"]
-								}] }
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [5,3],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "853b16e0-2a00-11ed-be67-3d4d59921d01",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [88,64],
+							"fieldInstances": [
+								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["ME_Melee"]
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
 							]
 						}
 					]

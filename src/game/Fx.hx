@@ -135,6 +135,14 @@ class Fx extends GameChildProcess {
 		);
 	}
 
+	public function popIcon(icon:String, x:Float, y:Float) {
+		var p = allocMain_normal(icon, x,y);
+		p.dy = -2;
+		p.frict = 0.9;
+		p.lifeS = 1;
+		p.colorAnimS(Yellow,White,0.5);
+	}
+
 
 	/**
 		A small sample to demonstrate how basic particles work. This example produces a small explosion of yellow dots that will fall and slowly fade to purple.

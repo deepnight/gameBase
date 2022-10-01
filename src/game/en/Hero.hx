@@ -175,6 +175,7 @@ class Hero extends Entity {
 								lockControlS(0.06);
 								for(e in getVictims()) {
 									e.hit(0,this);
+									e.setAffectS(Stun,0.3);
 								}
 								dx += dir*0.02;
 								spr.anim.play(D.ent.kPunchA_hit);

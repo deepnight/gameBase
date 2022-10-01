@@ -3,6 +3,10 @@ package en;
 class Mob extends Entity {
 	public static var ALL : FixedArray<Mob> = new FixedArray(40);
 	var data : Entity_Mob;
+	var weapon : Null<HSprite>;
+	public var rank = 0;
+	public var rankRatio(get,never) : Float;
+		inline function get_rankRatio() return rank/2;
 
 	private function new(d) {
 		super();
@@ -10,7 +14,9 @@ class Mob extends Entity {
 		ALL.push(this);
 		data = d;
 		useLdtkEntity(data);
+
 		initLife(data.f_hp);
+		rank = data.f_rank;
 		circularWeightBase = 5;
 		circularRadius = 7;
 
@@ -25,6 +31,26 @@ class Mob extends Entity {
 
 		spr.anim.registerStateAnim(D.ent.mIdle, 0);
 	}
+	override function over() {
+		super.over();
+
+		if( weapon!=null )
+			game.scroller.over(weapon);
+	}
+
+	public function increaseRank() {
+		rank = M.imin(rank+1, 2);
+		fx.popIcon(D.tiles.iconLevelUp, attachX, attachY-hei);
+		blink(Yellow);
+		initRank();
+	}
+
+	function initRank() {
+		if( weapon!=null ) {
+			weapon.remove();
+			weapon = null;
+		}
+	}
 
 	override function hit(dmg:Int, from:Null<Entity>) {
 		super.hit(dmg, from);
@@ -38,18 +64,18 @@ class Mob extends Entity {
 		super.onDie();
 		outline.enable = false;
 		circularWeightBase = 0;
-	}
-
-	override function setAffectS(k:Affect, t:Float, allowLower:Bool = false) {
-		if( isChargingAction() )
-			return;
-
-		super.setAffectS(k, t, allowLower);
+		for(e in ALL)
+			if( e!=this && e.isAlive() )
+				e.increaseRank();
 	}
 
 	override function dispose() {
 		super.dispose();
+
 		ALL.remove(this);
+
+		if( weapon!=null )
+			weapon.remove();
 	}
 
 	override function onLand() {
@@ -106,6 +132,34 @@ class Mob extends Entity {
 				e.dz = rnd(0.15,0.2);
 				e.cd.setS("pushOthers",0.5);
 				e.cd.setS("mobBumpLock",0.2);
+			}
+		}
+	}
+
+	override function preUpdate() {
+		super.preUpdate();
+		if( !cd.hasSetS("rankInitDone",Const.INFINITE) )
+			initRank();
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
+		if( weapon!=null ) {
+			var a = Assets.getAttach(spr.groupName, spr.frame);
+			if( a==null ) {
+				weapon.visible = false;
+			}
+			else {
+				weapon.visible = true;
+				var wx = a.x - spr.pivot.centerFactorX*spr.tile.width*dir;
+				var wy = a.y - spr.pivot.centerFactorY*spr.tile.height;
+				if( dir<0 )
+					wx = spr.tile.width - wx - 1;
+				weapon.x = M.round(spr.x + wx + (a.rot && dir<0?1:0));
+				weapon.y = M.round(spr.y + wy + (!a.rot || dir<0 ?1:0));
+				weapon.rotation = a.rot ? dir==1 ? M.PIHALF : -M.PIHALF : 0;
+				weapon.scaleX = spr.scaleX;
+				weapon.scaleY = spr.scaleY;
 			}
 		}
 	}

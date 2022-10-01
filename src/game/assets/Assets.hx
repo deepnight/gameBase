@@ -2,9 +2,8 @@ package assets;
 
 import dn.heaps.slib.*;
 
-/**
-	This class centralizes all assets management (ie. art, sounds, fonts etc.)
-**/
+typedef AttachInfo = { rot:Bool, x:Int, y:Int }
+
 class Assets {
 	// Fonts
 	public static var fontPixel : h2d.Font;
@@ -17,6 +16,7 @@ class Assets {
 
 	public static var worldData : World;
 
+	static var entitiesAttachPts: Map< String, Map<Int,AttachInfo> >;
 
 
 	static var _initDone = false;
@@ -43,6 +43,28 @@ class Assets {
 		tiles = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.tiles.toAseprite());
 		entities = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.entities.toAseprite());
 		world = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.world.toAseprite());
+
+		// Parse attach points entities
+		entitiesAttachPts = new Map();
+		var pixels = entities.tile.getTexture().capturePixels();
+		var attachCol = Col.fromInt(0xff00ff).withAlpha(1);
+		var attachRotCol = Col.fromInt(0xff0000).withAlpha(1);
+		var p = 0x0;
+		for(g in entities.getGroups()) {
+			var i = 0;
+			for(f in g.frames) {
+				for(y in 0...f.hei)
+				for(x in 0...f.wid) {
+					p = pixels.getPixel(f.x+x, f.y+y);
+					if( p==attachCol || p==attachRotCol ) {
+						if( !entitiesAttachPts.exists(g.id) )
+							entitiesAttachPts.set(g.id, new Map());
+						entitiesAttachPts.get(g.id).set(i, { rot:p==attachRotCol, x:x, y:y });
+					}
+				}
+				i++;
+			}
+		}
 
 		// Hot-reloading of CastleDB
 		#if debug
@@ -97,6 +119,13 @@ class Assets {
 	public static inline function green() return getCol(5);
 	public static inline function blue() return getCol(10);
 	public static inline function red() return getCol(2);
+
+
+	public static inline function getAttach(group:String, frame:Int) : Null<AttachInfo> {
+		return entitiesAttachPts.exists(group) && entitiesAttachPts.get(group).exists(frame)
+			? entitiesAttachPts.get(group).get(frame)
+			: null;
+	}
 
 
 	/**
