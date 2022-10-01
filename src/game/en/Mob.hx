@@ -16,10 +16,11 @@ class Mob extends Entity {
 		spr.set(Assets.entities);
 		outline.color = Assets.red();
 
-		spr.anim.registerStateAnim(D.ent.mFly, 10, ()->!onGround);
+		spr.anim.registerStateAnim(D.ent.mFly, 10.2, ()->!onGround);
+		spr.anim.registerStateAnim(D.ent.mLay, 10.1, ()->hasAffect(LayDown));
+		spr.anim.registerStateAnim(D.ent.mStun, 10.0, ()->hasAffect(Stun));
 
-		spr.anim.registerStateAnim(D.ent.mLay, 2.1, ()->hasAffect(LayDown));
-		spr.anim.registerStateAnim(D.ent.mStun, 2.0, ()->hasAffect(Stun));
+		spr.anim.registerStateAnim(D.ent.mPunch_charge, 2, ()->isChargingAction("punch"));
 
 		spr.anim.registerStateAnim(D.ent.mWalk, 1, ()->isMoving());
 
@@ -62,15 +63,25 @@ class Mob extends Entity {
 	}
 
 	inline function aiLocked() {
-		return !isAlive() || hasAffect(Stun) || hasAffect(LayDown);
+		return !isAlive() || hasAffect(Stun) || hasAffect(LayDown) || isChargingAction();
 	}
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
+		if( isChargingAction("punch") && hasAffect(Stun) ) {
+			cancelAction();
+		}
+
 		if( !aiLocked() ) {
 			dir = dirTo(hero);
 			goto(hero.attachX, hero.attachY);
+
+			if( distPx(hero)<=Const.GRID*1.2 ) {
+				chargeAction("punch",1, ()->{
+					spr.anim.playOverlap(D.ent.mPunch_hit);
+				});
+			}
 		}
 	}
 
