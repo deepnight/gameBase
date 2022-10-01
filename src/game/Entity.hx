@@ -782,8 +782,8 @@ class Entity {
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
 
-		lifeBar.x = Std.int( attachX - lifeBar.outerWidth*0.5 );
-		lifeBar.y = Std.int( attachY - hei - lifeBar.outerHeight - 1 );
+		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
+		lifeBar.y = Std.int( sprY - hei - lifeBar.outerHeight - 1 );
 
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
