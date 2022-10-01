@@ -16,11 +16,18 @@ class Hero extends Entity {
 
 		spr.set(Assets.entities);
 
+		spr.anim.registerStateAnim(D.ent.kDodgeEnd, 2.1, ()->hasAffect(Dodge) && getAffectRemainingS(Dodge)<=0.3);
+		spr.anim.registerStateAnim(D.ent.kDodgeDive, 2.0, ()->hasAffect(Dodge) && !onGround);
+		spr.anim.registerStateAnim(D.ent.kDodgeRoll, 2.0, ()->hasAffect(Dodge) && onGround);
+		spr.anim.registerStateAnim(D.ent.kDodgeCharge, 2.0, ()->isChargingAction("dodge"));
+
 		spr.anim.registerStateAnim(D.ent.kKickA_charge, 1, ()->isChargingAction("kickA"));
 		spr.anim.registerStateAnim(D.ent.kPunchC_charge, 1, ()->isChargingAction("punchC"));
 		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("punchB"));
 		spr.anim.registerStateAnim(D.ent.kPunchA_charge, 1, ()->isChargingAction("punchA"));
 		spr.anim.registerStateAnim(D.ent.kIdle, 0);
+
+		spr.anim.registerTransition(D.ent.kDodgeEnd, "*", D.ent.kDodgeEndToIdle);
 	}
 
 	override function dispose() {
@@ -51,7 +58,7 @@ class Hero extends Entity {
 	}
 
 	inline function controlsLocked() {
-		return !isAlive() || cd.has("controlsLock") || isChargingAction();
+		return !isAlive() || cd.has("controlsLock") || isChargingAction() || hasAffect(Dodge) || hasAffect(Stun);
 	}
 
 	var _atkVictims : FixedArray<Mob> = new FixedArray(20); // alloc cache
@@ -65,26 +72,55 @@ class Hero extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
+		if( spr.anim.isPlaying(D.ent.kDodgeRoll) ) {
+			outline.enable = false;
+			outline.top = false;
+			outline.left = false;
+			outline.right = true;
+		}
+		else {
+			outline.enable = true;
+
+			outline.top = outline.left = outline.right = true;
+		}
 	}
 
 	override function frameUpdate() {
 		super.frameUpdate();
 
 		queueCommandPress(Atk);
+		queueCommandPress(Dodge);
 
 		if( !controlsLocked() ) {
+			var stickDist = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
+
 			// Walk around
 			var s = 0.015;
-			var d = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
-			if( d>0 ) {
+			if( stickDist>0 ) {
 				cancelMove();
 				var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
-				dx+=Math.cos(ang)*d*s * tmod;
-				dy+=Math.sin(ang)*d*s * tmod;
+				dx+=Math.cos(ang)*stickDist*s * tmod;
+				dy+=Math.sin(ang)*stickDist*s * tmod;
 				dir = ca.isDown(MoveLeft) ? -1 : ca.isDown(MoveRight) ? 1 : dir;
 			}
 
-			// Punch
+			// Dodge
+			if( isPressedOrQueued(Dodge) ) {
+				var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
+				if( stickDist<=0.1 )
+					ang = dirToAng();
+				spr.anim.stopWithStateAnims();
+				chargeAction("dodge", 0.1, ()->{
+					game.addSlowMo("dodge", 0.2, 0.5);
+					dz = 0.12;
+					setAffectS(Dodge, 0.8);
+					var s = 0.25;
+					dodgeDx = Math.cos(ang)*s;
+					dodgeDy = Math.sin(ang)*s;
+				});
+			}
+
+			// Attack
 			if( isPressedOrQueued(Atk) ) {
 				mulVelocities(0.4);
 				spr.anim.stopWithStateAnims();
@@ -155,7 +191,7 @@ class Hero extends Entity {
 				cd.setS("keepCombo", 0.4);
 			}
 
-			// Lose combo
+			// Lose attack combo
 			if( comboCpt>0 && !cd.has("keepCombo") )
 				comboCpt = 0;
 		}
@@ -163,6 +199,10 @@ class Hero extends Entity {
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
+
+		if( hasAffect(Dodge) && onGround ) {
+			mulVelocities(0.95);
+		}
 	}
 
 }

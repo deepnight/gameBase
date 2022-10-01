@@ -49,7 +49,7 @@ class Mob extends Entity {
 
 		if( hasAffect(Stun) ) {
 			setAffectS(LayDown, 0.5);
-			setAffectS(Stun, getAffectDurationS(Stun)+getAffectDurationS(LayDown));
+			setAffectS(Stun, getAffectRemainingS(Stun)+getAffectRemainingS(LayDown));
 		}
 
 		if( !cd.has("landBumpLimit") ) {

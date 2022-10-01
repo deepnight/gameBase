@@ -461,8 +461,12 @@ class Entity {
 	public function mulVelocities(f:Float) {
 		dx *= f;
 		dy *= f;
+
 		bdx *= f;
 		bdy *= f;
+
+		dodgeDx *= f;
+		dodgeDy *= f;
 	}
 
 	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
@@ -697,7 +701,7 @@ class Entity {
 		return isAlive() && affects.exists(k) && affects.get(k)>0;
 	}
 
-	public inline function getAffectDurationS(k:Affect) {
+	public inline function getAffectRemainingS(k:Affect) {
 		return hasAffect(k) ? affects.get(k) : 0.;
 	}
 
@@ -719,7 +723,7 @@ class Entity {
 	/** Multiply an Affect duration by a factor `f` **/
 	public function mulAffectS(k:Affect, f:Float) {
 		if( hasAffect(k) )
-			setAffectS(k, getAffectDurationS(k)*f, true);
+			setAffectS(k, getAffectRemainingS(k)*f, true);
 	}
 
 	public function clearAffect(k:Affect) {
@@ -792,7 +796,7 @@ class Entity {
 		if( ui.Console.ME.hasFlag("affect") ) {
 			var all = [];
 			for(k in affects.keys())
-				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
+				all.push( k+"=>"+M.pretty( getAffectRemainingS(k) , 1) );
 			debug(all);
 		}
 
@@ -900,7 +904,7 @@ class Entity {
 	}
 
 	function hasCircularCollisions() {
-		return isAlive() && circularWeightBase>0 && zr<0.5;
+		return isAlive() && circularWeightBase>0 && zr<0.5 && !hasAffect(Dodge);
 	}
 
 	function getCircularCollWeight() {
@@ -934,7 +938,7 @@ class Entity {
 
 			onTouch(e);
 
-			if( !hasCircularCollisions() )
+			if( !hasCircularCollisions() || !e.hasCircularCollisions() )
 				continue;
 
 			a = Math.atan2(e.attachY-attachY, e.attachX-attachX);
