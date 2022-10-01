@@ -211,6 +211,7 @@ class Entity {
 	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
 	var moveTarget : LPoint;
 	final brakeDist = 16;
+	var shadow : HSprite;
 
 	var circularWeight = 1.;
 	var circularRadius = 4;
@@ -235,6 +236,10 @@ class Entity {
 		lifeBar.horizontalSpacing = -1;
 		game.scroller.add(lifeBar, Const.DP_UI);
 		initLife(1);
+
+		shadow = Assets.tiles.h_get(D.tiles.groundShadow);
+		shadow.setCenterRatio();
+		game.scroller.add(shadow,Const.DP_BG);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -499,6 +504,7 @@ class Entity {
         ALL.remove(this);
 
 		lifeBar.remove();
+		shadow.remove();
 
 		moveTarget = null;
 		baseColor = null;
@@ -591,6 +597,10 @@ class Entity {
 		// Center
 		debugBounds.lineStyle(1, c, 0.3);
 		debugBounds.drawCircle(centerX-attachX, centerY-attachY, 3);
+
+		// Circular collision
+		debugBounds.lineStyle(1, c, 0.5);
+		debugBounds.drawCircle(0,0, circularRadius);
 	}
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
@@ -785,6 +795,9 @@ class Entity {
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
 		lifeBar.y = Std.int( sprY - hei - lifeBar.outerHeight - 1 );
 
+		shadow.setPosition(sprX, sprY-1);
+		shadow.alpha = 0.5;
+
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
 
@@ -848,6 +861,11 @@ class Entity {
 	}
 
 
+	function getMoveSpeed() {
+		return 0.01;
+	}
+
+
 	/**
 		Main loop, but it only runs at a "guaranteed" 30 fps (so it might not be called during some frames, if the app runs at 60fps). This is usually where most gameplay elements affecting physics should occur, to ensure these will not depend on FPS at all.
 	**/
@@ -885,7 +903,7 @@ class Entity {
 			var d = distPx(moveTarget.levelX, moveTarget.levelY);
 			if( d>2 ) {
 				var a = Math.atan2(moveTarget.levelY-attachY, moveTarget.levelX-attachX);
-				var s = 0.05 * M.fmin(1, d/brakeDist);
+				var s = getMoveSpeed() * M.fmin(1, d/brakeDist);
 				dx+=Math.cos(a)*s;
 				dy+=Math.sin(a)*s;
 			}

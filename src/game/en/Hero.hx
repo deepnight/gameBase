@@ -11,7 +11,9 @@ class Hero extends Entity {
 		camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
-		circularWeight = 0.3;
+		circularWeight = 1;
+		circularRadius = 3;
+		lifeBar.visible = false;
 
 		spr.set(Assets.entities);
 		var f = new dn.heaps.filter.PixelOutline( Assets.dark() );
@@ -114,8 +116,9 @@ class Hero extends Entity {
 						chargeAction("atkC", 0.2, ()->{
 							lockControlS(0.25);
 							for(e in getVictims()) {
-								e.hit(1,this);
-								e.bump(0.25*dir, 0);
+								e.hit(0,this);
+								e.bump(0.5*dir, 0);
+								e.setAffectS(Stun, 1.5);
 							}
 							dx += dir*0.15;
 							spr.anim.play(D.ent.kPunchC_hit);
