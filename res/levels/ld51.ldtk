@@ -289,7 +289,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [10,8],
+							"__grid": [10,6],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -298,12 +298,12 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [168,144],
+							"px": [168,112],
 							"fieldInstances": []
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [6,8],
+							"__grid": [6,9],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -312,7 +312,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [104,144],
+							"px": [104,160],
 							"fieldInstances": []
 						}
 					]
