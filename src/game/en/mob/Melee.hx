@@ -23,19 +23,19 @@ class Melee extends Mob {
 		switch rank {
 			case 0:
 				weapon = Assets.tiles.h_get(D.tiles.equipEmptyFist);
-				weapon.setCenterRatio(0.5, 1);
-				game.scroller.add(weapon, Const.DP_MAIN);
+				weapon.setCenterRatio(0,0);
+				// weapon.setCenterRatio(0.5, 1);
 
 			case 1:
 				weapon = Assets.tiles.h_get(D.tiles.equipKnife);
-				weapon.setCenterRatio(0.5, 1);
+				weapon.setPivotCoord(2, weapon.tile.height-1);
 
 			case 2:
 				weapon = Assets.tiles.h_get(D.tiles.equipChainsaw);
-				weapon.setCenterRatio(0.5, 1);
+				weapon.setPivotCoord(3, weapon.tile.height-3);
 		}
 
-		game.scroller.add(weapon, Const.DP_MAIN);
+		spr.addChild(weapon);
 	}
 
 	override function getMoveSpeed():Float {

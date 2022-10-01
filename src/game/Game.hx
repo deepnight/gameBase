@@ -84,7 +84,7 @@ class Game extends AppChildProcess {
 		for(d in level.data.l_Entities.all_Mob)
 			switch d.f_equip {
 				case ME_Melee: new en.mob.Melee(d);
-				case ME_Gun:
+				case ME_Gun: new en.mob.Gun(d);
 			}
 
 

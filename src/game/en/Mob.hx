@@ -4,6 +4,7 @@ class Mob extends Entity {
 	public static var ALL : FixedArray<Mob> = new FixedArray(40);
 	var data : Entity_Mob;
 	var weapon : Null<HSprite>;
+	var weaponRot = 0.;
 	public var rank = 0;
 	public var rankRatio(get,never) : Float;
 		inline function get_rankRatio() return rank/2;
@@ -146,20 +147,12 @@ class Mob extends Entity {
 		super.postUpdate();
 		if( weapon!=null ) {
 			var a = Assets.getAttach(spr.groupName, spr.frame);
-			if( a==null ) {
-				weapon.visible = false;
-			}
-			else {
-				weapon.visible = true;
-				var wx = a.x - spr.pivot.centerFactorX*spr.tile.width*dir;
-				var wy = a.y - spr.pivot.centerFactorY*spr.tile.height;
-				if( dir<0 )
-					wx = spr.tile.width - wx - 1;
-				weapon.x = M.round(spr.x + wx + (a.rot && dir<0?1:0));
-				weapon.y = M.round(spr.y + wy + (!a.rot || dir<0 ?1:0));
-				weapon.rotation = a.rot ? dir==1 ? M.PIHALF : -M.PIHALF : 0;
-				weapon.scaleX = spr.scaleX;
-				weapon.scaleY = spr.scaleY;
+			weapon.visible = a!=null;
+			if( a!=null ) {
+				weapon.x = a.x - M.round(spr.pivot.centerFactorX*spr.tile.width) + (a.rot?1:0);
+				weapon.y = a.y - M.round(spr.pivot.centerFactorY*spr.tile.height);
+				weapon.rotation = a.rot ? M.PIHALF : 0;
+				weapon.rotation += weaponRot;
 			}
 		}
 	}
