@@ -26,6 +26,7 @@ class Game extends AppChildProcess {
 	/** Slow mo internal values**/
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
+	var gameTimeS = 0.;
 
 
 	public function new() {
@@ -213,6 +214,12 @@ class Game extends AppChildProcess {
 		for(e in Entity.ALL) if( !e.destroyed ) e.preUpdate();
 	}
 
+	function onCycle() {
+		fx.flashBangEaseInS(Blue, 0.2, 0.3);
+		hero.hasSuperCharge = true;
+		gameTimeS = 0;
+	}
+
 	/** Loop that happens at the end of the frame **/
 	override function postUpdate() {
 		super.postUpdate();
@@ -221,6 +228,11 @@ class Game extends AppChildProcess {
 		updateSlowMos();
 		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
+
+		gameTimeS += tmod * 1/Const.FPS;
+		if( gameTimeS>=Const.CYCLE_S )
+			onCycle();
+		hud.setTimeS(gameTimeS);
 
 		// Entities post-updates
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();

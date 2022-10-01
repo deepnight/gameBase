@@ -121,9 +121,18 @@ class Fx extends GameChildProcess {
 		e.scaleX = game.w();
 		e.scaleY = game.h();
 		e.blendMode = Add;
-		game.tw.createS(e.alpha, 0, t).end( function() {
-			e.remove();
-		});
+		game.tw.createS(e.alpha, 0, t).end(e.remove);
+	}
+
+	public inline function flashBangEaseInS(c:Col, a:Float, t=0.1) {
+		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
+		game.root.add(e, Const.DP_FX_FRONT);
+		e.scaleX = game.w();
+		e.scaleY = game.h();
+		e.blendMode = Add;
+		game.tw.createS(e.alpha, 0>1, 0.1).end(
+			()->game.tw.createS(e.alpha, 0, t).end( e.remove )
+		);
 	}
 
 

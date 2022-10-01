@@ -6,6 +6,8 @@ class Hud extends GameChildProcess {
 	var notifications : Array<h2d.Flow> = [];
 	var notifTw : dn.Tweenie;
 
+	var timeBar : ui.Bar;
+
 	var debugText : h2d.Text;
 
 	public function new() {
@@ -22,6 +24,12 @@ class Hud extends GameChildProcess {
 		debugText = new h2d.Text(Assets.fontPixel, root);
 		debugText.filter = new dn.heaps.filter.PixelOutline();
 		clearDebug();
+
+		timeBar = new Bar(100,2, Yellow, flow);
+	}
+
+	public inline function setTimeS(t:Float) {
+		timeBar.set(t, Const.CYCLE_S);
 	}
 
 	override function onResize() {

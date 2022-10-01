@@ -4,6 +4,7 @@ class Hero extends Entity {
 	var ca : ControllerAccess<GameAction>;
 	var pressQueue : Map<GameAction, Float> = new Map();
 	var comboCpt = 0;
+	public var hasSuperCharge = true;
 
 	public function new(d:Entity_PlayerStart) {
 		super();
@@ -72,24 +73,44 @@ class Hero extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
-		if( spr.anim.isPlaying(D.ent.kDodgeRoll) ) {
-			outline.enable = false;
-			outline.top = false;
-			outline.left = false;
-			outline.right = true;
-		}
-		else {
-			outline.enable = true;
 
-			outline.top = outline.left = outline.right = true;
+		// Super charge outline
+		if( hasSuperCharge ) {
+			var mod = Std.int( game.stime / 0.1 ) % 3;
+			outline.color = switch mod {
+				case 0: Assets.blue();
+				case 1: Assets.dark();
+				case 2: Assets.red();
+				case _: Assets.dark();
+			}
 		}
+		else
+			outline.color = Assets.dark();
+
+		// No outline during roll anim
+		if( spr.anim.isPlaying(D.ent.kDodgeRoll) )
+			outline.enable = false;
+		else
+			outline.enable = true;
 	}
 
 	override function frameUpdate() {
 		super.frameUpdate();
 
+		var stickDist = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
+		var stickAng = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
+
 		queueCommandPress(Atk);
 		queueCommandPress(Dodge);
+
+		// Manual dodge braking
+		if( hasAffect(Dodge) && stickDist>0 ) {
+			var a = getMoveAng();
+			if( M.radDistance(a,stickAng)>=M.PIHALF ) {
+				dodgeDx*=0.98;
+				dodgeDy*=0.98;
+			}
+		}
 
 		if( !controlsLocked() ) {
 			var stickDist = ca.getAnalogDist4(MoveLeft,MoveRight,MoveUp,MoveDown);
@@ -98,25 +119,23 @@ class Hero extends Entity {
 			var s = 0.015;
 			if( stickDist>0 ) {
 				cancelMove();
-				var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
-				dx+=Math.cos(ang)*stickDist*s * tmod;
-				dy+=Math.sin(ang)*stickDist*s * tmod;
+				dx+=Math.cos(stickAng)*stickDist*s * tmod;
+				dy+=Math.sin(stickAng)*stickDist*s * tmod;
 				dir = ca.isDown(MoveLeft) ? -1 : ca.isDown(MoveRight) ? 1 : dir;
 			}
 
 			// Dodge
 			if( isPressedOrQueued(Dodge) ) {
-				var ang = ca.getAnalogAngle4(MoveLeft,MoveRight,MoveUp,MoveDown);
 				if( stickDist<=0.1 )
-					ang = dirToAng();
+					stickAng = dirToAng();
 				spr.anim.stopWithStateAnims();
 				chargeAction("dodge", 0.1, ()->{
 					game.addSlowMo("dodge", 0.2, 0.5);
 					dz = 0.12;
 					setAffectS(Dodge, 0.8);
 					var s = 0.25;
-					dodgeDx = Math.cos(ang)*s;
-					dodgeDy = Math.sin(ang)*s;
+					dodgeDx = Math.cos(stickAng)*s;
+					dodgeDy = Math.sin(stickAng)*s;
 				});
 			}
 
@@ -124,30 +143,55 @@ class Hero extends Entity {
 			if( isPressedOrQueued(Atk) ) {
 				mulVelocities(0.4);
 				spr.anim.stopWithStateAnims();
-				switch comboCpt {
-					case 0,1:
-						chargeAction("punchA", 0.1, ()->{
-							lockControlS(0.06);
-							for(e in getVictims()) {
-								e.hit(0,this);
-							}
-							dx += dir*0.02;
-							spr.anim.play(D.ent.kPunchA_hit);
-						});
-						comboCpt++;
+				if( hasSuperCharge ) {
+					hasSuperCharge = false;
 
-					case 2:
-						chargeAction("punchB", 0.15, ()->{
-							lockControlS(0.1);
-							for(e in getVictims()) {
-								e.hit(0,this);
-								e.bump(dir*0.04, 0);
-							}
-							dx += dir*0.04;
-							spr.anim.play(D.ent.kPunchB_hit);
-							camera.bump(dir*1,0);
-						});
-						comboCpt++;
+					game.addSlowMo("powerAtkCharge", 0.2, 0.3);
+					chargeAction("punchC", 0.2, ()->{
+						lockControlS(0.3);
+						for(e in getVictims()) {
+							e.cancelAction();
+							e.hit(1,this);
+							e.bumpAwayFrom(this,0.6);
+							e.dz = 0.2;
+							e.setAffectS(Stun, 2);
+							e.cd.setS("pushOthers",1);
+						}
+						game.addSlowMo("powerAtk", 0.5, 0.6);
+						dx += dir*0.2;
+						spr.anim.play(D.ent.kPunchC_hit);
+						camera.shakeS(1, 0.2);
+						camera.bumpZoom(0.05);
+					});
+					comboCpt = 0;
+				}
+				else {
+					switch comboCpt {
+						case 0,1:
+							chargeAction("punchA", 0.1, ()->{
+								lockControlS(0.06);
+								for(e in getVictims()) {
+									e.hit(0,this);
+								}
+								dx += dir*0.02;
+								spr.anim.play(D.ent.kPunchA_hit);
+							});
+							comboCpt++;
+
+						case 2:
+							chargeAction("punchB", 0.15, ()->{
+								lockControlS(0.1);
+								for(e in getVictims()) {
+									e.cancelAction();
+									e.hit(0,this);
+									e.setAffectS(Stun, 0.5);
+									e.bump(dir*0.04, 0);
+								}
+								dx += dir*0.04;
+								spr.anim.play(D.ent.kPunchB_hit);
+								camera.bump(dir*1,0);
+							});
+							comboCpt++;
 
 						case 3:
 							game.addSlowMo("heroKick", 0.3, 0.4);
@@ -163,6 +207,7 @@ class Hero extends Entity {
 								spr.anim.play(D.ent.kKickA_hit);
 
 								for(e in getVictims()) {
+									e.cancelAction();
 									e.hit(0,this);
 									e.cd.setS("pushOthers",1);
 									e.bumpAwayFrom(this, 0.3);
@@ -171,22 +216,7 @@ class Hero extends Entity {
 								}
 							});
 							comboCpt = 0;
-
-					case 4:
-						chargeAction("punchC", 0.2, ()->{
-							lockControlS(0.25);
-							for(e in getVictims()) {
-								e.hit(0,this);
-								e.bump(0.5*dir, 0);
-								e.dz = 0.1;
-								e.setAffectS(Stun, 1.5);
-							}
-							game.addSlowMo("powerAtk", 0.5, 0.6);
-							dx += dir*0.15;
-							spr.anim.play(D.ent.kPunchC_hit);
-							camera.bump(dir*4,0);
-						});
-						comboCpt = 0;
+					}
 				}
 				cd.setS("keepCombo", 0.4);
 			}

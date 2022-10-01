@@ -336,7 +336,7 @@ class Entity {
 	function onDamage(dmg:Int, from:Entity) {}
 
 	function onDie() {
-		destroy();
+		cancelAction();
 	}
 
 	inline function set_dir(v) {
@@ -448,7 +448,7 @@ class Entity {
 	public function bumpAwayFrom(e:Entity, velocity:Float) {
 		var a = Math.atan2(attachY-e.attachY, attachX-e.attachX);
 		bdx += Math.cos(a)*velocity;
-		bdy += Math.sin(a)*velocity*0.66;
+		bdy += Math.sin(a)*velocity*0.66; // 2.5D z distortion
 	}
 
 	/** Reset velocities to zero **/
@@ -706,7 +706,7 @@ class Entity {
 	}
 
 	/** Add an Affect. If `allowLower` is TRUE, it is possible to override an existing Affect with a shorter duration. **/
-	public function setAffectS(k:Affect, t:Float, ?allowLower=false) {
+	public function setAffectS(k:Affect, t:Float, allowLower=false) {
 		if( !isAlive() || affects.exists(k) && affects.get(k)>t && !allowLower )
 			return;
 
@@ -904,7 +904,7 @@ class Entity {
 	}
 
 	function hasCircularCollisions() {
-		return isAlive() && circularWeightBase>0 && zr<0.5 && !hasAffect(Dodge);
+		return !destroyed && circularWeightBase>0 && zr<0.5 && !hasAffect(Dodge);
 	}
 
 	function getCircularCollWeight() {

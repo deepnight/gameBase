@@ -13,10 +13,8 @@ class Const {
 	**/
 	public static final FIXED_UPDATE_FPS = 30;
 
-	/** Grid size in pixels **/
 	public static final GRID = 16;
-
-	/** "Infinite", sort-of. More like a "big number" **/
+	public static final CYCLE_S = 10;
 	public static final INFINITE : Int = 0xfffFfff;
 
 	static var _nextUniqueId = 0;
