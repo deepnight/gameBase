@@ -11,7 +11,7 @@ class Hero extends Entity {
 		camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
-		circularWeight = 1;
+		circularWeightBase = 1;
 		circularRadius = 3;
 
 		spr.set(Assets.entities);
@@ -128,7 +128,8 @@ class Hero extends Entity {
 
 								for(e in getVictims()) {
 									e.hit(0,this);
-									e.bump(0.2*dir, 0);
+									e.cd.setS("pushOthers",1);
+									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
 									e.setAffectS(Stun, 1.5);
 								}

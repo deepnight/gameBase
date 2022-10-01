@@ -10,7 +10,7 @@ class Mob extends Entity {
 		useLdtkEntity(data);
 		ALL.push(this);
 		initLife(data.f_hp);
-		circularWeight = 3;
+		circularWeightBase = 5;
 		circularRadius = 7;
 
 		spr.set(Assets.entities);
@@ -43,6 +43,7 @@ class Mob extends Entity {
 	override function onLand() {
 		super.onLand();
 
+		cd.unset("pushOthers");
 		camera.shakeS(0.3, 0.2);
 		setSquashX(0.7);
 
@@ -64,6 +65,17 @@ class Mob extends Entity {
 
 	inline function aiLocked() {
 		return !isAlive() || hasAffect(Stun) || hasAffect(LayDown) || isChargingAction();
+	}
+
+	override function onTouch(e:Entity) {
+		super.onTouch(e);
+		if( cd.has("pushOthers") && !onGround && hasAffect(Stun) && e.is(en.Mob) && e.onGround && !e.cd.has("mobBumpLock") ) {
+			e.bumpAwayFrom(this, 0.2);
+			e.setAffectS(Stun, 0.6);
+			e.dz = 0.15;
+			e.cd.setS("pushOthers",0.5);
+			e.cd.setS("mobBumpLock",0.2);
+		}
 	}
 
 	override function fixedUpdate() {

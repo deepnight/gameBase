@@ -219,7 +219,7 @@ class Entity {
 	var shadow : HSprite;
 	var outline : dn.heaps.filter.PixelOutline;
 
-	var circularWeight = 1.;
+	var circularWeightBase = 1.;
 	var circularRadius = 4;
 
 
@@ -438,6 +438,13 @@ class Entity {
 	public function bump(x:Float,y:Float) {
 		bdx += x;
 		bdy += y;
+	}
+
+	/** Apply a bump/kick force to entity **/
+	public function bumpAwayFrom(e:Entity, velocity:Float) {
+		var a = Math.atan2(attachY-e.attachY, attachX-e.attachX);
+		bdx += Math.cos(a)*velocity;
+		bdy += Math.sin(a)*velocity*0.66;
 	}
 
 	/** Reset velocities to zero **/
@@ -888,6 +895,17 @@ class Entity {
 		return isAlive() && moveTarget.cx>=0;
 	}
 
+	function hasCircularCollisions() {
+		return isAlive() && circularWeightBase>0 && zr<0.5;
+	}
+
+	function getCircularCollWeight() {
+		return circularWeightBase * (onGround?1:0.3);
+	}
+
+	function onTouch(e:Entity) {}
+	function onCircularCollision(with:Entity) {}
+
 	/**
 		Main loop, but it only runs at a "guaranteed" 30 fps (so it might not be called during some frames, if the app runs at 60fps). This is usually where most gameplay elements affecting physics should occur, to ensure these will not depend on FPS at all.
 	**/
@@ -895,30 +913,37 @@ class Entity {
 		updateLastFixedUpdatePos();
 
 		// Circular collisions
-		if( circularWeight>0 ) {
-			var d = 0.;
-			var a = 0.;
-			var repel = 0.03;
-			var wRatio = 0.;
-			for(e in ALL) {
-				if( e==this )
-					continue;
-				if( e.circularWeight<=0 || !e.isAlive() || fastDistPx(e)>Const.GRID*2 )
-					continue;
+		var d = 0.;
+		var a = 0.;
+		var repel = 0.06;
+		var wRatio = 0.;
+		for(e in ALL) {
+			if( e==this )
+				continue;
 
-				d = M.dist(attachX, attachY, e.attachX, e.attachY);
-				if( d>circularRadius+e.circularRadius )
-					continue;
+			if( fastDistPx(e)>Const.GRID*2 )
+				continue;
 
-				a = Math.atan2(e.attachY-attachY, e.attachX-attachX);
-				wRatio = circularWeight / ( circularWeight + e.circularWeight );
-				e.dx += Math.cos(a)*repel * wRatio;
-				e.dy += Math.sin(a)*repel * wRatio;
+			d = M.dist(attachX, attachY, e.attachX, e.attachY);
+			if( d>circularRadius+e.circularRadius )
+				continue;
 
-				wRatio = e.circularWeight / ( circularWeight + e.circularWeight );
-				dx -= Math.cos(a)*repel * wRatio;
-				dy -= Math.sin(a)*repel * wRatio;
-			}
+			onTouch(e);
+
+			if( !hasCircularCollisions() )
+				continue;
+
+			a = Math.atan2(e.attachY-attachY, e.attachX-attachX);
+			wRatio = getCircularCollWeight() / ( getCircularCollWeight() + e.getCircularCollWeight() );
+			e.dx += Math.cos(a)*repel * wRatio;
+			e.dy += Math.sin(a)*repel * wRatio;
+
+			// wRatio = e.getCircularCollWeight() / ( getCircularCollWeight() + e.getCircularCollWeight() );
+			// dx -= Math.cos(a)*repel * wRatio;
+			// dy -= Math.sin(a)*repel * wRatio;
+
+			onCircularCollision(e);
+			// e.onCircularCollision(this);
 		}
 
 		// Move to target
