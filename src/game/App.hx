@@ -225,6 +225,7 @@ class App extends dn.Process {
 		// Gamepad bindings
 		controller.bindPadLStick4(MoveLeft, MoveRight, MoveUp, MoveDown);
 		controller.bindPad(Atk, [A,X]);
+		controller.bindPad(Dodge, [B, RB, RT]);
 		controller.bindPad(Restart, SELECT);
 		controller.bindPad(Pause, START);
 		controller.bindPad(MoveLeft, DPAD_LEFT);
@@ -243,6 +244,7 @@ class App extends dn.Process {
 		controller.bindKeyboard(MoveUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(MoveDown, [K.DOWN, K.S]);
 		controller.bindKeyboard(Atk, [K.SPACE, K.X, K.F, K.E]);
+		controller.bindKeyboard(Dodge, [K.SHIFT, K.CTRL]);
 		controller.bindKeyboard(Restart, K.R);
 		controller.bindKeyboard(ScreenshotMode, K.F9);
 		controller.bindKeyboard(Pause, K.P);

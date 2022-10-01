@@ -6,6 +6,7 @@ enum abstract GameAction(Int) to Int {
 	var MoveDown;
 
 	var Atk;
+	var Dodge;
 
 	var Restart;
 
@@ -33,6 +34,7 @@ enum abstract State(Int) {
 enum abstract Affect(Int) {
 	var Stun;
 	var LayDown;
+	var Dodge;
 }
 
 enum abstract LevelMark(Int) to Int {
