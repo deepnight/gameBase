@@ -128,10 +128,10 @@ class Game extends AppChildProcess {
 	}
 	function onMouseUp(ev:hxd.Event) {
 		updateMouse(ev);
-		switch ev.button {
-			case 0: hero.goto(mouse.levelXi, mouse.levelYi);
-			case 1:
-		}
+		// switch ev.button {
+		// 	case 0: hero.goto(mouse.levelXi, mouse.levelYi);
+		// 	case 1:
+		// }
 	}
 
 
