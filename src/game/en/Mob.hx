@@ -4,11 +4,12 @@ class Mob extends Entity {
 	public static var ALL : FixedArray<Mob> = new FixedArray(40);
 	var data : Entity_Mob;
 
-	public function new(d) {
-		data = d;
+	private function new(d) {
 		super();
-		useLdtkEntity(data);
+
 		ALL.push(this);
+		data = d;
+		useLdtkEntity(data);
 		initLife(data.f_hp);
 		circularWeightBase = 5;
 		circularRadius = 7;
@@ -20,9 +21,7 @@ class Mob extends Entity {
 		spr.anim.registerStateAnim(D.ent.mLay, 10.1, ()->hasAffect(LayDown) || !isAlive());
 		spr.anim.registerStateAnim(D.ent.mStun, 10.0, ()->hasAffect(Stun));
 
-		spr.anim.registerStateAnim(D.ent.mPunch_charge, 2, ()->isChargingAction("punch"));
-
-		spr.anim.registerStateAnim(D.ent.mWalk, 1, ()->isMoving());
+		spr.anim.registerStateAnim(D.ent.mWalk, 0.1, ()->isMoving());
 
 		spr.anim.registerStateAnim(D.ent.mIdle, 0);
 	}
@@ -89,10 +88,10 @@ class Mob extends Entity {
 		// Bounce on walls
 		if( !onGround ) {
 			if( wallX!=0 )
-				bdx = -M.fabs(bdx)*0.6;
+				bdx = -bdx*0.6;
 
 			if( wallY!=0 )
-				bdy = -M.fabs(bdy)*0.6;
+				bdy = -bdy*0.6;
 		}
 	}
 
@@ -109,23 +108,10 @@ class Mob extends Entity {
 				e.cd.setS("mobBumpLock",0.2);
 			}
 		}
-
 	}
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
-
-		if( !aiLocked() ) {
-			dir = dirTo(hero);
-			goto(hero.attachX, hero.attachY);
-
-			if( distPx(hero)<=Const.GRID*1.2 ) {
-				chargeAction("punch", 0.7, ()->{
-					lockAiS(0.5);
-					spr.anim.playOverlap(D.ent.mPunch_hit);
-				});
-			}
-		}
 	}
 
 }

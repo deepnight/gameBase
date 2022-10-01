@@ -159,6 +159,7 @@ class Hero extends Entity {
 							e.cd.setS("pushOthers",1);
 							hasSuperCharge = false;
 						}
+						hasSuperCharge = false;
 						game.addSlowMo("powerAtk", 0.5, 0.6);
 						dx += dir*0.2;
 						spr.anim.play(D.ent.kPunchC_hit);

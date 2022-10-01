@@ -82,7 +82,10 @@ class Game extends AppChildProcess {
 		hero = new Hero(d);
 
 		for(d in level.data.l_Entities.all_Mob)
-			new Mob(d);
+			switch d.f_equip {
+				case ME_Melee: new en.mob.Melee(d);
+				case ME_Gun:
+			}
 
 
 		camera.centerOnTarget();

@@ -44,3 +44,8 @@ enum abstract LevelMark(Int) to Int {
 enum abstract LevelSubMark(Int) to Int {
 	var None; // 0
 }
+
+enum MobEquipment {
+	ME_Melee;
+	ME_Gun;
+}
