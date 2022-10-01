@@ -408,21 +408,21 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [8,5],
+							"__grid": [7,5],
 							"__pivot": [0.5,1],
 							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "853b16e0-2a00-11ed-be67-3d4d59921d01",
+							"iid": "6f79a3d0-2a00-11ed-be67-e12ad40c7e85",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [136,96],
+							"px": [120,96],
 							"fieldInstances": [
 								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
-								{ "__identifier": "equip", "__value": "ME_Gun", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["ME_Gun"]
+									"params": ["ME_Melee"]
 								}] },
 								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
 							]
@@ -432,18 +432,60 @@
 							"__grid": [7,3],
 							"__pivot": [0.5,1],
 							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "3a5cb6e0-2a00-11ed-be67-47cd48d87c51",
+							"iid": "0ed7e8e0-2a00-11ed-be67-11628aa5a08f",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
 							"px": [120,64],
 							"fieldInstances": [
 								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
-								{ "__identifier": "equip", "__value": "ME_Gun", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["ME_Gun"]
+									"params": ["ME_Melee"]
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
+							]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [1,1],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "103ca900-2a00-11ed-be67-0fed98c68ad8",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [24,32],
+							"fieldInstances": [
+								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["ME_Melee"]
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
+							]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [1,8],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "1104b3f0-2a00-11ed-be67-916d63e7a107",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [24,144],
+							"fieldInstances": [
+								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
+								{ "__identifier": "equip", "__value": "ME_Melee", "__type": "ExternEnum.MobEquipment", "__tile": { "tilesetUid": 26, "x": 64, "y": 736, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["ME_Melee"]
 								}] },
 								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [null] }
 							]

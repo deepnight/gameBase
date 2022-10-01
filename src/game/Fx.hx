@@ -143,6 +143,14 @@ class Fx extends GameChildProcess {
 		p.colorAnimS(Yellow,White,0.5);
 	}
 
+	public function stun(x:Float,y:Float) {
+		var p = allocMain_add(D.tiles.fxStun, x,y);
+		p.playAnimLoop(Assets.tiles, D.tiles.fxStun, 0.2);
+		p.setFadeS(rnd(0.2,0.5), 0.1, rnd(0.2,0.5));
+		p.rotation = rnd(0,0.2,true);
+		p.lifeS = R.around(0.5);
+	}
+
 
 	/**
 		A small sample to demonstrate how basic particles work. This example produces a small explosion of yellow dots that will fall and slowly fade to purple.

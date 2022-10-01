@@ -16,7 +16,7 @@ class Gun extends Mob {
 			case Stun,LayDown:
 				t *= 1-0.5*rankRatio;
 
-			case Dodge:
+			case Dodge, Shield:
 		}
 		super.setAffectS(k, t, allowLower);
 	}

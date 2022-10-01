@@ -316,7 +316,7 @@ class Entity {
 
 	/** Inflict damage **/
 	public function hit(dmg:Int, from:Null<Entity>) {
-		if( !isAlive() || dmg<=0 )
+		if( !isAlive() || dmg<=0 || hasAffect(Shield) )
 			return;
 
 		life = M.iclamp(life-dmg, 0, maxLife);
@@ -837,6 +837,10 @@ class Entity {
 			spr.x += Math.cos(ftime*1.1)*shakePowX * cd.getRatio("shaking");
 			spr.y += Math.sin(0.3+ftime*1.7)*shakePowY * cd.getRatio("shaking");
 		}
+
+		// Stun fx
+		if( hasAffect(Stun) && !cd.hasSetS("stunFx",0.4) && onGround && !isMoving() )
+			fx.stun(centerX, attachY-hei);
 
 		// Blink
 		if( !cd.has("keepBlink") ) {

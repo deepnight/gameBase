@@ -12,7 +12,7 @@ class Melee extends Mob {
 			case Stun,LayDown:
 				t *= 1-0.5*rankRatio;
 
-			case Dodge:
+			case Dodge, Shield:
 		}
 		super.setAffectS(k, t, allowLower);
 	}
@@ -49,7 +49,7 @@ class Melee extends Mob {
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
-		if( !aiLocked() ) {
+		if( !aiLocked() && hero.isAlive() ) {
 			dir = dirTo(hero);
 			goto(hero.attachX, hero.attachY);
 
@@ -62,6 +62,9 @@ class Melee extends Mob {
 				chargeAction("punch", ct, ()->{
 					lockAiS(0.5 - rankRatio*0.3);
 					spr.anim.playOverlap(D.ent.mPunch_hit);
+					if( !hero.hasAffect(Dodge) )
+						if( dirTo(hero)==dir && M.fabs(hero.attachX-attachX)<Const.GRID*1.2 && M.fabs(hero.attachY-attachY)<=Const.GRID )
+							hero.hit(1, this);
 				});
 			}
 		}

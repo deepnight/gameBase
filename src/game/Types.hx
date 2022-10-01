@@ -35,6 +35,7 @@ enum abstract Affect(Int) {
 	var Stun;
 	var LayDown;
 	var Dodge;
+	var Shield;
 }
 
 enum abstract LevelMark(Int) to Int {

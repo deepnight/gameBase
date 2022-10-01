@@ -14,8 +14,12 @@ class Hero extends Entity {
 
 		circularWeightBase = 1;
 		circularRadius = 3;
+		initLife(3);
 
 		spr.set(Assets.entities);
+
+		spr.anim.registerStateAnim(D.ent.kFly, 10.2, ()->!onGround && !isAlive());
+		spr.anim.registerStateAnim(D.ent.kLay, 10.1, ()->hasAffect(LayDown) || !isAlive());
 
 		spr.anim.registerStateAnim(D.ent.kDodgeEnd, 2.1, ()->hasAffect(Dodge) && getAffectRemainingS(Dodge)<=0.3);
 		spr.anim.registerStateAnim(D.ent.kDodgeDive, 2.0, ()->hasAffect(Dodge) && !onGround);
@@ -29,6 +33,22 @@ class Hero extends Entity {
 		spr.anim.registerStateAnim(D.ent.kIdle, 0);
 
 		spr.anim.registerTransition(D.ent.kDodgeEnd, "*", D.ent.kDodgeEndToIdle);
+	}
+
+	override function hit(dmg:Int, from:Null<Entity>) {
+		super.hit(dmg, from);
+		setAffectS(Shield, 1);
+		fx.flashBangEaseInS(Red, 0.3, 1);
+		lockControlS(0.2);
+		if( !isAlive() ) {
+			dz = 0.17;
+			bumpAwayFrom(from, 0.4);
+		}
+		else {
+			dz = 0.11;
+			bumpAwayFrom(from, 0.2);
+			spr.anim.playOverlap(D.ent.kHit);
+		}
 	}
 
 	override function dispose() {
@@ -75,7 +95,7 @@ class Hero extends Entity {
 		super.postUpdate();
 
 		// Super charge outline
-		if( hasSuperCharge ) {
+		if( hasSuperCharge && isAlive() ) {
 			var mod = Std.int( game.stime / 0.1 ) % 3;
 			outline.color = switch mod {
 				case 0: Assets.blue();
@@ -217,7 +237,8 @@ class Hero extends Entity {
 									e.cd.setS("pushOthers",1);
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
-									e.setAffectS(Stun, 1.5);
+									e.setAffectS(Stun, 3.5);
+									e.setAffectS(LayDown, 3);
 								}
 							});
 							comboCpt = 0;

@@ -59,6 +59,9 @@ class Mob extends Entity {
 		blink(dmg==0 ? White : Red);
 		if( !isChargingAction() )
 			spr.anim.playOverlap(D.ent.mHit);
+
+		if( onGround && hasAffect(LayDown) )
+			clearAffect(LayDown);
 	}
 
 	override function onDie() {
@@ -145,6 +148,10 @@ class Mob extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
+
+		if( !isAlive() && onGround )
+			spr.alpha = 0.6;
+
 		if( weapon!=null ) {
 			var a = Assets.getAttach(spr.groupName, spr.frame);
 			weapon.visible = a!=null;
