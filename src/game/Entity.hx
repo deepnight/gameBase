@@ -344,6 +344,10 @@ class Entity {
 		return !destroyed && life>0;
 	}
 
+	public inline function isMoving() {
+		return isAlive() && ( M.fabs(dxTotal)>=0.03 || M.fabs(dyTotal)>=0.03 );
+	}
+
 	/** Move entity to grid coordinates **/
 	public function setPosCase(x:Int, y:Int) {
 		cx = x;
@@ -940,7 +944,7 @@ class Entity {
 		// Z physics
 		if( !onGround ) {
 			zr+=dz;
-			dz-=0.06; // gravity
+			dz-=0.027; // gravity
 			dz*=0.94;
 			if( zr<=0 ) {
 				zr = 0;
