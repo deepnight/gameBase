@@ -46,6 +46,10 @@ class Entity {
 	/** Y velocity, in grid fractions **/
 	public var dy = 0.;
 
+	public var dz = 0.;
+	public var z = 0.;
+	public var zPixel(get,never) : Int; inline function get_zPixel() return M.ceil(z);
+
 	/** Uncontrollable bump X velocity, usually applied by external factors (eg. a bumper in Sonic) **/
     public var bdx = 0.;
 	/** Uncontrollable bump Y velocity, usually applied by external factors (eg. a bumper in Sonic) **/
@@ -212,6 +216,7 @@ class Entity {
 	var moveTarget : LPoint;
 	final brakeDist = 16;
 	var shadow : HSprite;
+	var outline : dn.heaps.filter.PixelOutline;
 
 	var circularWeight = 1.;
 	var circularRadius = 4;
@@ -248,6 +253,10 @@ class Entity {
 		blinkColor = new h3d.Vector();
 		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
 		spr.setCenterRatio(pivotX, pivotY);
+
+		outline = new dn.heaps.filter.PixelOutline( Assets.dark() );
+		outline.bottom = false;
+		spr.filter = outline;
 
 		if( ui.Console.ME.hasFlag("bounds") )
 			enableDebugBounds();
@@ -787,13 +796,16 @@ class Entity {
 	**/
     public function postUpdate() {
 		spr.x = sprX;
-		spr.y = sprY;
+		spr.y = sprY - zPixel;
         spr.scaleX = dir*sprScaleX * sprSquashX;
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
 
+		outline.bottom = z!=0;
+
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
-		lifeBar.y = Std.int( sprY - hei - lifeBar.outerHeight - 1 );
+		lifeBar.y = Std.int( sprY - zPixel - hei - lifeBar.outerHeight - 1 );
+		lifeBar.visible = maxLife>1;
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.5;
@@ -865,6 +877,11 @@ class Entity {
 		return 0.01;
 	}
 
+	function onLand() {}
+
+	function canMoveToTarget() {
+		return isAlive() && moveTarget.cx>=0;
+	}
 
 	/**
 		Main loop, but it only runs at a "guaranteed" 30 fps (so it might not be called during some frames, if the app runs at 60fps). This is usually where most gameplay elements affecting physics should occur, to ensure these will not depend on FPS at all.
@@ -872,6 +889,7 @@ class Entity {
 	public function fixedUpdate() {
 		updateLastFixedUpdatePos();
 
+		// Circular collisions
 		if( circularWeight>0 ) {
 			var d = 0.;
 			var a = 0.;
@@ -899,7 +917,7 @@ class Entity {
 		}
 
 		// Move to target
-		if( moveTarget.cx!=-1 ) {
+		if( canMoveToTarget() ) {
 			var d = distPx(moveTarget.levelX, moveTarget.levelY);
 			if( d>2 ) {
 				var a = Math.atan2(moveTarget.levelY-attachY, moveTarget.levelX-attachX);
@@ -916,6 +934,20 @@ class Entity {
 				dy*=0.8;
 			}
 		}
+
+
+		// Z physics
+		if( dz!=0 ) {
+			z+=dz;
+			dz-=0.1;
+			dz*=0.9;
+			if( z<=0 ) {
+				z = 0;
+				dz = 0;
+				onLand();
+			}
+		}
+
 
 		/*
 			Stepping: any movement greater than 33% of grid size (ie. 0.33) will increase the number of `steps` here. These steps will break down the full movement into smaller iterations to avoid jumping over grid collisions.
