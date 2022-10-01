@@ -88,7 +88,7 @@ class Hero extends Entity {
 				switch comboCpt {
 					case 0,1:
 						chargeAction("atkA", 0.1, ()->{
-							lockControlS(0.15);
+							lockControlS(0.06);
 							for(e in getVictims()) {
 								e.hit(0,this);
 							}
@@ -99,7 +99,7 @@ class Hero extends Entity {
 
 					case 2:
 						chargeAction("atkB", 0.15, ()->{
-							lockControlS(0.15);
+							lockControlS(0.1);
 							for(e in getVictims()) {
 								e.hit(0,this);
 								e.bump(dir*0.04, 0);
@@ -111,7 +111,7 @@ class Hero extends Entity {
 						comboCpt++;
 
 					case 3:
-						chargeAction("atkC", 0.23, ()->{
+						chargeAction("atkC", 0.2, ()->{
 							lockControlS(0.25);
 							for(e in getVictims()) {
 								e.hit(1,this);
