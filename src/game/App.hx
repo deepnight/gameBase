@@ -189,6 +189,9 @@ class App extends dn.Process {
       		hxd.Res.initEmbed();
         #end
 
+		var crt = new dn.heaps.filter.Crt(2,White,0.3);
+		scene.filter = crt;
+
 		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
 		hxd.snd.Manager.get();
 		hxd.Timer.skip(); // needed to ignore heavy Sound manager init frame
