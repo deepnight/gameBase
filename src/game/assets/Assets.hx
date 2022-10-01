@@ -37,7 +37,6 @@ class Assets {
 			var c : Col = pal.getPixel(i*sizePx, 0);
 			c = c.withoutAlpha();
 			palette.push(c);
-			trace(c);
 		}
 
 		// Atlas
