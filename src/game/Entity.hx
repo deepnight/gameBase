@@ -11,6 +11,7 @@ class Entity {
 	public var ftime(get,never) : Float; inline function get_ftime() return game.ftime;
 	public var stime(get,never) : Float; inline function get_stime() return game.stime;
 	public var camera(get,never) : Camera; inline function get_camera() return game.camera;
+	public var hero(get,never) : Hero; inline function get_hero() return game.hero;
 
 	var tmod(get,never) : Float; inline function get_tmod() return Game.ME.tmod;
 	var utmod(get,never) : Float; inline function get_utmod() return Game.ME.utmod;
@@ -136,6 +137,7 @@ class Entity {
 	public var maxLife(default,null) : Int;
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
+	var lifeBar : h2d.Flow;
 
 	/** Horizontal direction (left=-1 or right=1): from "last source of damage" to "this" **/
 	public var lastHitDirFromSource(get,never) : Int;
@@ -223,11 +225,16 @@ class Entity {
 
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
-		initLife(1);
 		state = Normal;
 
 		moveTarget = new LPoint();
 		moveTarget.setBoth(-1);
+
+		lifeBar = new h2d.Flow();
+		lifeBar.layout = Horizontal;
+		lifeBar.horizontalSpacing = -1;
+		game.scroller.add(lifeBar, Const.DP_UI);
+		initLife(1);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -276,6 +283,16 @@ class Entity {
 	/** Initialize current and max hit points **/
 	public function initLife(v) {
 		life = maxLife = v;
+		renderLife();
+	}
+
+	function renderLife() {
+		lifeBar.removeChildren();
+		for(i in 0...maxLife)
+			if( i+1<=life )
+				Assets.tiles.getBitmap(D.tiles.iconLife, lifeBar);
+			else
+				Assets.tiles.getBitmap(D.tiles.iconLifeOff, lifeBar);
 	}
 
 	/** Inflict damage **/
@@ -284,6 +301,7 @@ class Entity {
 			return;
 
 		life = M.iclamp(life-dmg, 0, maxLife);
+		renderLife();
 		lastDmgSource = from;
 		onDamage(dmg, from);
 		if( life<=0 )
@@ -479,6 +497,8 @@ class Entity {
 
     public function dispose() {
         ALL.remove(this);
+
+		lifeBar.remove();
 
 		moveTarget = null;
 		baseColor = null;
@@ -761,6 +781,9 @@ class Entity {
         spr.scaleX = dir*sprScaleX * sprSquashX;
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
+
+		lifeBar.x = Std.int( attachX - lifeBar.outerWidth*0.5 );
+		lifeBar.y = Std.int( attachY - hei - lifeBar.outerHeight - 1 );
 
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);

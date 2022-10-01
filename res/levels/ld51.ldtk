@@ -300,6 +300,20 @@
 							"defUid": 25,
 							"px": [168,144],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [6,8],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "136df2c0-2a00-11ed-be67-0fcf2d22f51f",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [104,144],
+							"fieldInstances": []
 						}
 					]
 				},

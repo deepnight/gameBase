@@ -13,7 +13,7 @@ class Hero extends Entity {
 
 		circularWeight = 0.3;
 
-		spr.set(Assets.entities, D.ent.kIdle);
+		spr.set(Assets.entities);
 		var f = new dn.heaps.filter.PixelOutline( Assets.dark() );
 		f.bottom = false;
 		spr.filter = f;
@@ -90,7 +90,7 @@ class Hero extends Entity {
 						chargeAction("atkA", 0.1, ()->{
 							lockControlS(0.15);
 							for(e in getVictims()) {
-								e.setSquashX(0.6);
+								e.hit(0,this);
 							}
 							dx += dir*0.02;
 							spr.anim.play(D.ent.kPunchA_hit);
@@ -101,7 +101,7 @@ class Hero extends Entity {
 						chargeAction("atkB", 0.15, ()->{
 							lockControlS(0.15);
 							for(e in getVictims()) {
-								e.setSquashX(0.6);
+								e.hit(0,this);
 								e.bump(dir*0.04, 0);
 							}
 							dx += dir*0.04;
@@ -114,7 +114,7 @@ class Hero extends Entity {
 						chargeAction("atkC", 0.23, ()->{
 							lockControlS(0.25);
 							for(e in getVictims()) {
-								e.setSquashX(0.3);
+								e.hit(1,this);
 								e.bump(0.25*dir, 0);
 							}
 							dx += dir*0.15;
