@@ -305,7 +305,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [9,8],
+							"__grid": [6,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 144, "y": 80, "w": 16, "h": 16 },
@@ -314,54 +314,12 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [152,144],
+							"px": [104,144],
 							"fieldInstances": []
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [3,8],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "9c308f60-2a00-11ed-be67-0b87fb9d3989",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [56,144],
-							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [15,8],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "41aa77d0-2a00-11ed-be67-713a0a17ac49",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [248,144],
-							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [10,2],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "cc133fa0-2a00-11ed-be67-f33ecd0a2137",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [168,48],
-							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [10,13],
+							"__grid": [12,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -370,7 +328,35 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [168,224],
+							"px": [200,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [13,5],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "0c6819d0-2a00-11ed-be67-f99c6806d139",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [216,96],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [13,12],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "0d160d10-2a00-11ed-be67-734e07ba64df",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [216,208],
 							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
 						}
 					]

@@ -4,7 +4,7 @@ class Hero extends Entity {
 	var ca : ControllerAccess<GameAction>;
 	var pressQueue : Map<GameAction, Float> = new Map();
 	var comboCpt = 0;
-	public var hasSuperCharge = true;
+	public var hasSuperCharge = false;
 
 	public function new(d:Entity_PlayerStart) {
 		super();
@@ -146,8 +146,10 @@ class Hero extends Entity {
 				if( hasSuperCharge ) {
 					hasSuperCharge = false;
 
-					game.addSlowMo("powerAtkCharge", 0.2, 0.3);
+					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
+					game.addSlowMo("powerAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
+						fx.flashBangEaseInS(Assets.blue(), 0.3, 1);
 						lockControlS(0.3);
 						for(e in getVictims()) {
 							e.cancelAction();
