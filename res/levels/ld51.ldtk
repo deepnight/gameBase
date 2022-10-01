@@ -330,6 +330,20 @@
 							"defUid": 25,
 							"px": [168,144],
 							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [3,8],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "4543ece0-2a00-11ed-be67-193a9fc5a5cd",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [56,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
 						}
 					]
 				},
