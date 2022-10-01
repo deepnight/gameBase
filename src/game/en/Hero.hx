@@ -3,6 +3,7 @@ package en;
 class Hero extends Entity {
 	var ca : ControllerAccess<GameAction>;
 	var pressQueue : Map<GameAction, Float> = new Map();
+	var comboCpt = 0;
 
 	public function new(data:Entity_PlayerStart) {
 		super(data.cx, data.cy);
@@ -16,6 +17,7 @@ class Hero extends Entity {
 		f.bottom = false;
 		spr.filter = f;
 
+		spr.anim.registerStateAnim(D.ent.kPunchC_charge, 1, ()->isChargingAction("atkC"));
 		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("atkB"));
 		spr.anim.registerStateAnim(D.ent.kPunchA_charge, 1, ()->isChargingAction("atkA"));
 		spr.anim.registerStateAnim(D.ent.kIdle, 0);
@@ -49,7 +51,7 @@ class Hero extends Entity {
 	}
 
 	inline function controlsLocked() {
-		return !isAlive() || cd.has("controlsLock");
+		return !isAlive() || cd.has("controlsLock") || isChargingAction();
 	}
 
 	override function frameUpdate() {
@@ -71,26 +73,41 @@ class Hero extends Entity {
 
 			// Punch
 			if( isPressedOrQueued(Atk) ) {
-				dx*=0.5;
-				dy*=0.5;
+				mulVelocities(0.4);
 				spr.anim.stopWithStateAnims();
-				if( !cd.has("allowB") ) {
-					cd.setS("allowB",0.6);
-					lockControlS(0.25);
-					chargeAction("atkA", 0.1, ()->{
-						dx += dir*0.05;
-						spr.anim.play(D.ent.kPunchA_hit);
-					});
+				switch comboCpt {
+					case 0,1:
+						chargeAction("atkA", 0.1, ()->{
+							lockControlS(0.15);
+							dx += dir*0.02;
+							spr.anim.play(D.ent.kPunchA_hit);
+						});
+						comboCpt++;
+
+					case 2:
+						chargeAction("atkB", 0.15, ()->{
+							lockControlS(0.15);
+							dx += dir*0.04;
+							spr.anim.play(D.ent.kPunchB_hit);
+							camera.bump(dir*1,0);
+						});
+						comboCpt++;
+
+					case 3:
+						chargeAction("atkC", 0.23, ()->{
+							lockControlS(0.25);
+							dx += dir*0.15;
+							spr.anim.play(D.ent.kPunchC_hit);
+							camera.bump(dir*4,0);
+						});
+						comboCpt = 0;
 				}
-				else {
-					cd.unset("allowB");
-					lockControlS(0.35);
-					chargeAction("atkB", 0.2, ()->{
-						dx += dir*0.1;
-						spr.anim.play(D.ent.kPunchB_hit);
-					});
-				}
+				cd.setS("keepCombo", 0.4);
 			}
+
+			// Lose combo
+			if( comboCpt>0 && !cd.has("keepCombo") )
+				comboCpt = 0;
 		}
 
 	}
