@@ -53,7 +53,6 @@ class Mob extends Entity {
 		}
 
 		if( !cd.has("landBumpLimit") ) {
-			mulVelocities(0.6);
 			cd.setS("landBumpLimit",1.5);
 			dz = 0.12;
 		}
@@ -70,9 +69,10 @@ class Mob extends Entity {
 	override function onTouch(e:Entity) {
 		super.onTouch(e);
 		if( cd.has("pushOthers") && !onGround && hasAffect(Stun) && e.is(en.Mob) && e.onGround && !e.cd.has("mobBumpLock") ) {
-			e.bumpAwayFrom(this, 0.2);
+			setAffectS(Stun, 1);
+			e.bumpAwayFrom(this, 0.3);
 			e.setAffectS(Stun, 0.6);
-			e.dz = 0.15;
+			e.dz = rnd(0.15,0.2);
 			e.cd.setS("pushOthers",0.5);
 			e.cd.setS("mobBumpLock",0.2);
 		}
