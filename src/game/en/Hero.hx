@@ -66,7 +66,7 @@ class Hero extends Entity {
 	function getVictims() {
 		_atkVictims.empty();
 		for(e in en.Mob.ALL)
-			if( distPx(e)<=24 && dirTo(e)==dir )
+			if( e.isAlive() && distPx(e)<=24 && dirTo(e)==dir )
 				_atkVictims.push(e);
 		return _atkVictims;
 	}
