@@ -410,6 +410,14 @@ class Entity {
 		dy = bdy = 0;
 	}
 
+	/** Multiply all velocities by a factor **/
+	public function mulVelocities(f:Float) {
+		dx *= f;
+		dy *= f;
+		bdx *= f;
+		bdy *= f;
+	}
+
 	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
 	public function as<T:Entity>(c:Class<T>) : T return Std.downcast(this, c);
 
