@@ -24,7 +24,7 @@ class Level extends GameChildProcess {
 		cHei = data.l_Collisions.cHei;
 		pxWid = cWid * Const.GRID;
 		pxHei = cHei * Const.GRID;
-		tilesetSource = hxd.Res.levels.sampleWorldTiles.toAseprite().toTile();
+		tilesetSource = hxd.Res.atlas.world.toAseprite().toTile();
 
 		marks = new dn.MarkerMap(cWid, cHei);
 		for(cy in 0...cHei)
@@ -60,16 +60,10 @@ class Level extends GameChildProcess {
 
 	/** Render current level**/
 	function render() {
-		// Placeholder level render
 		root.removeChildren();
 
 		var tg = new h2d.TileGroup(tilesetSource, root);
-
-		var layer = data.l_Collisions;
-		for( autoTile in layer.autoTiles ) {
-			var tile = layer.tileset.getAutoLayerTile(autoTile);
-			tg.add(autoTile.renderX, autoTile.renderY, tile);
-		}
+		data.l_Bg.render(tg);
 	}
 
 	override function postUpdate() {
