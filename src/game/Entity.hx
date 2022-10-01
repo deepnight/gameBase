@@ -56,6 +56,10 @@ class Entity {
 	/** Uncontrollable bump Y velocity, usually applied by external factors (eg. a bumper in Sonic) **/
 	public var bdy = 0.;
 
+	public var dodgeDx = 0.;
+	public var dodgeDy = 0.;
+	public var dodgeFrict = 0.96;
+
 	/** Last known X position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
 	var lastFixedUpdateX = 0.;
 	/** Last known Y position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
@@ -65,8 +69,8 @@ class Entity {
 	var interpolateSprPos = true;
 
 	// Velocities + bump velocities
-	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
-	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
+	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx + bdx + dodgeDx;
+	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy + bdy + dodgeDy;
 
 	/** Multiplier applied on each frame to normal X velocity **/
 	public var frictX = 0.82;
@@ -1012,14 +1016,18 @@ class Entity {
 		// X frictions
 		dx *= frictX;
 		bdx *= bumpFrictX;
+		dodgeDx *= dodgeFrict;
 		if( M.fabs(dx) <= 0.0005 ) dx = 0;
 		if( M.fabs(bdx) <= 0.0005 ) bdx = 0;
+		if( M.fabs(dodgeDx) <= 0.0005 ) dodgeDx = 0;
 
 		// Y frictions
 		dy *= frictY;
 		bdy *= bumpFrictY;
+		dodgeDy *= dodgeFrict;
 		if( M.fabs(dy) <= 0.0005 ) dy = 0;
 		if( M.fabs(bdy) <= 0.0005 ) bdy = 0;
+		if( M.fabs(dodgeDy) <= 0.0005 ) dodgeDy = 0;
 	}
 
 
