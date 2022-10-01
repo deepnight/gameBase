@@ -6,7 +6,8 @@ class Mob extends Entity {
 
 	public function new(d) {
 		data = d;
-		super(data.cx, data.cy);
+		super();
+		useLdtkEntity(data);
 		ALL.push(this);
 
 		spr.set(Assets.entities, D.ent.kIdle);

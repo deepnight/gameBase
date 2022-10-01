@@ -26,7 +26,7 @@ class DebugDrone extends Entity {
 			Game.ME.garbageCollectEntities();
 		}
 
-		super(0,0);
+		super();
 
 		ME = this;
 		setPosPixel(camera.rawFocus.levelX, camera.rawFocus.levelY);

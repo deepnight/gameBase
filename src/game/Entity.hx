@@ -217,13 +217,12 @@ class Entity {
 	/**
 		Constructor
 	**/
-    public function new(x:Int, y:Int) {
+    public function new() {
         uid = Const.makeUniqueId();
 		ALL.push(this);
 
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
-        setPosCase(x,y);
 		initLife(1);
 		state = Normal;
 
@@ -505,6 +504,12 @@ class Entity {
 		ucd.dispose();
 		ucd = null;
     }
+
+	function useLdtkEntity(d:ldtk.Entity) {
+		setPosCase(d.cx, d.cy);
+		xr = 0.5;
+		yr = 0.5;
+	}
 
 
 	/** Print some numeric value below entity **/

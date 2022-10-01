@@ -5,8 +5,9 @@ class Hero extends Entity {
 	var pressQueue : Map<GameAction, Float> = new Map();
 	var comboCpt = 0;
 
-	public function new(data:Entity_PlayerStart) {
-		super(data.cx, data.cy);
+	public function new(d:Entity_PlayerStart) {
+		super();
+		useLdtkEntity(d);
 		camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
