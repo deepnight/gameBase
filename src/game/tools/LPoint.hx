@@ -67,7 +67,7 @@ class LPoint {
 
 
 
-	private inline function new() {
+	public inline function new() {
 		cx = cy = 0;
 		xr = yr = 0;
 	}

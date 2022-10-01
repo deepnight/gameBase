@@ -19,6 +19,10 @@ class Game extends AppChildProcess {
 	/** UI **/
 	public var hud : ui.Hud;
 
+	var interactive : h2d.Interactive;
+	public var mouse : LPoint;
+	public var hero : Hero;
+
 	/** Slow mo internal values**/
 	var curGameSpeed = 1.0;
 	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
@@ -40,6 +44,13 @@ class Game extends AppChildProcess {
 		fx = new Fx();
 		hud = new ui.Hud();
 		camera = new Camera();
+
+		interactive = new h2d.Interactive(1,1,root);
+		interactive.enableRightButton = true;
+		interactive.onMove = onMouseMove;
+		interactive.onPush = onMouseDown;
+		interactive.onRelease = onMouseUp;
+		mouse = new LPoint();
 
 		startLevel(Assets.worldData.all_levels.FirstLevel);
 	}
@@ -65,7 +76,10 @@ class Game extends AppChildProcess {
 		garbageCollectEntities();
 
 		level = new Level(l);
-		// <---- Here: instanciate your level entities
+
+		var d = level.data.l_Entities.all_PlayerStart[0];
+		hero = new Hero(d);
+
 
 		camera.centerOnTarget();
 		hud.onLevelStart();
@@ -93,6 +107,28 @@ class Game extends AppChildProcess {
 	/** Window/app resize event **/
 	override function onResize() {
 		super.onResize();
+		interactive.width = w();
+		interactive.height = h();
+	}
+
+
+	inline function updateMouse(ev:hxd.Event) {
+		mouse.setScreen(ev.relX, ev.relY);
+	}
+
+	function onMouseMove(ev:hxd.Event) {
+		updateMouse(ev);
+	}
+
+	function onMouseDown(ev:hxd.Event) {
+		updateMouse(ev);
+	}
+	function onMouseUp(ev:hxd.Event) {
+		updateMouse(ev);
+		switch ev.button {
+			case 0:
+			case 1: hero.goto(mouse.levelXi, mouse.levelYi);
+		}
 	}
 
 
