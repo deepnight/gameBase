@@ -882,14 +882,34 @@ class Entity {
 		lastFixedUpdateY = attachY;
 	}
 
+	function onTouchWall(wallX:Int, wallY:Int) {}
 
 
 	/** Called at the beginning of each X movement step **/
 	function onPreStepX() {
+		if( xr<0.3 && level.hasCollision(cx-1,cy) ) {
+			xr = 0.3;
+			onTouchWall(-1,0);
+		}
+
+		if( xr>0.7 && level.hasCollision(cx+1,cy) ) {
+			xr = 0.7;
+			onTouchWall(1,0);
+		}
 	}
 
 	/** Called at the beginning of each Y movement step **/
 	function onPreStepY() {
+		if( yr<0.3 && level.hasCollision(cx,cy-1) ) {
+			yr = 0.3;
+			onTouchWall(0,-1);
+		}
+
+		if( yr>0.7 && level.hasCollision(cx,cy+1) ) {
+			yr = 0.7;
+			onTouchWall(0,1);
+		}
+
 	}
 
 
@@ -911,7 +931,7 @@ class Entity {
 		return circularWeightBase * (onGround?1:0.3);
 	}
 
-	function onTouch(e:Entity) {}
+	function onTouchEntity(e:Entity) {}
 	function onCircularCollision(with:Entity) {}
 
 	/**
@@ -936,7 +956,7 @@ class Entity {
 			if( d>circularRadius+e.circularRadius )
 				continue;
 
-			onTouch(e);
+			onTouchEntity(e);
 
 			if( !hasCircularCollisions() || !e.hasCircularCollisions() )
 				continue;
@@ -998,7 +1018,7 @@ class Entity {
 				xr += dxTotal / steps;
 
 				if( dxTotal!=0 )
-					onPreStepX(); // <---- Add X collisions checks and physics in here
+					onPreStepX();
 
 				while( xr>1 ) { xr--; cx++; }
 				while( xr<0 ) { xr++; cx--; }
@@ -1008,7 +1028,7 @@ class Entity {
 				yr += dyTotal / steps;
 
 				if( dyTotal!=0 )
-					onPreStepY(); // <---- Add Y collisions checks and physics in here
+					onPreStepY();
 
 				while( yr>1 ) { yr--; cy++; }
 				while( yr<0 ) { yr++; cy--; }

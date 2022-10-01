@@ -83,8 +83,22 @@ class Mob extends Entity {
 		cd.setS("aiLock",t,false);
 	}
 
-	override function onTouch(e:Entity) {
-		super.onTouch(e);
+	override function onTouchWall(wallX:Int, wallY:Int) {
+		super.onTouchWall(wallX, wallY);
+
+		// Bounce on walls
+		if( !onGround ) {
+			if( wallX!=0 )
+				bdx = -M.fabs(bdx)*0.6;
+
+			if( wallY!=0 )
+				bdy = -M.fabs(bdy)*0.6;
+		}
+	}
+
+	override function onTouchEntity(e:Entity) {
+		super.onTouchEntity(e);
+
 		if( e.is(en.Mob) && e.isAlive() && cd.has("pushOthers") ) {
 			if( !onGround && e.onGround && ( hasAffect(Stun) || !isAlive() ) && !e.cd.has("mobBumpLock") ) {
 				setAffectS(Stun, 1);
@@ -100,10 +114,6 @@ class Mob extends Entity {
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
-
-		// if( isChargingAction("punch") && hasAffect(Stun) ) {
-		// 	cancelAction();
-		// }
 
 		if( !aiLocked() ) {
 			dir = dirTo(hero);
