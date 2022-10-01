@@ -275,7 +275,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [5,6],
+							"__grid": [8,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 144, "y": 80, "w": 16, "h": 16 },
@@ -284,26 +284,12 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [88,112],
+							"px": [136,144],
 							"fieldInstances": []
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [11,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "3a060270-2a00-11ed-be67-2b2e5a713d26",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [184,80],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [8,9],
+							"__grid": [10,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
@@ -312,63 +298,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [136,160],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [9,8],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "b79e9bb0-2a00-11ed-be67-61b3804a7140",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [152,144],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [10,9],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "b82509c0-2a00-11ed-be67-3301579df43b",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [168,160],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [10,6],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "b9a8eaa0-2a00-11ed-be67-19c4fc18baa2",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [168,112],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [8,7],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "ba8f04e0-2a00-11ed-be67-6b5160be6a21",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [136,128],
+							"px": [168,144],
 							"fieldInstances": []
 						}
 					]

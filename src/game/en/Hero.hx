@@ -54,6 +54,15 @@ class Hero extends Entity {
 		return !isAlive() || cd.has("controlsLock") || isChargingAction();
 	}
 
+	var _atkVictims : FixedArray<Mob> = new FixedArray(20); // alloc cache
+	function getVictims() {
+		_atkVictims.empty();
+		for(e in en.Mob.ALL)
+			if( distPx(e)<=24 && dirTo(e)==dir )
+				_atkVictims.push(e);
+		return _atkVictims;
+	}
+
 	override function frameUpdate() {
 		super.frameUpdate();
 
@@ -79,6 +88,9 @@ class Hero extends Entity {
 					case 0,1:
 						chargeAction("atkA", 0.1, ()->{
 							lockControlS(0.15);
+							for(e in getVictims()) {
+								e.setSquashX(0.6);
+							}
 							dx += dir*0.02;
 							spr.anim.play(D.ent.kPunchA_hit);
 						});
@@ -87,6 +99,10 @@ class Hero extends Entity {
 					case 2:
 						chargeAction("atkB", 0.15, ()->{
 							lockControlS(0.15);
+							for(e in getVictims()) {
+								e.setSquashX(0.6);
+								e.bump(dir*0.04, 0);
+							}
 							dx += dir*0.04;
 							spr.anim.play(D.ent.kPunchB_hit);
 							camera.bump(dir*1,0);
@@ -96,6 +112,10 @@ class Hero extends Entity {
 					case 3:
 						chargeAction("atkC", 0.23, ()->{
 							lockControlS(0.25);
+							for(e in getVictims()) {
+								e.setSquashX(0.3);
+								e.bump(0.25*dir, 0);
+							}
 							dx += dir*0.15;
 							spr.anim.play(D.ent.kPunchC_hit);
 							camera.bump(dir*4,0);
