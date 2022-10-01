@@ -16,7 +16,7 @@ class Mob extends Entity {
 		spr.set(Assets.entities);
 		outline.color = Assets.red();
 
-		spr.anim.registerStateAnim(D.ent.mFly, 2, ()->z>0);
+		spr.anim.registerStateAnim(D.ent.mFly, 2, ()->!onGround);
 
 		spr.anim.registerStateAnim(D.ent.mLay, 1.1, ()->hasAffect(LayDown));
 		spr.anim.registerStateAnim(D.ent.mStun, 1.0, ()->hasAffect(Stun));
@@ -41,6 +41,7 @@ class Mob extends Entity {
 		super.onLand();
 
 		camera.shakeS(0.3, 0.2);
+		setSquashX(0.7);
 
 		if( hasAffect(Stun) ) {
 			setAffectS(LayDown, 0.5);
@@ -50,7 +51,7 @@ class Mob extends Entity {
 		if( !cd.has("landBumpLimit") ) {
 			mulVelocities(0.6);
 			cd.setS("landBumpLimit",1.5);
-			dz = 0.2;
+			dz = 0.5;
 		}
 	}
 

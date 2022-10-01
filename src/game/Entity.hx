@@ -47,8 +47,9 @@ class Entity {
 	public var dy = 0.;
 
 	public var dz = 0.;
-	public var z = 0.;
-	public var zPixel(get,never) : Int; inline function get_zPixel() return M.ceil(z);
+	public var zr = 0.;
+	public var zOffsetPx(get,never) : Int; inline function get_zOffsetPx() return -M.ceil(zr*Const.GRID);
+	public var onGround(get,never) : Bool; inline function get_onGround() return zr==0 && dz==0;
 
 	/** Uncontrollable bump X velocity, usually applied by external factors (eg. a bumper in Sonic) **/
     public var bdx = 0.;
@@ -796,15 +797,15 @@ class Entity {
 	**/
     public function postUpdate() {
 		spr.x = sprX;
-		spr.y = sprY - zPixel;
+		spr.y = sprY + zOffsetPx;
         spr.scaleX = dir*sprScaleX * sprSquashX;
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
 
-		outline.bottom = z!=0;
+		outline.bottom = !onGround;
 
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
-		lifeBar.y = Std.int( sprY - zPixel - hei - lifeBar.outerHeight - 1 );
+		lifeBar.y = Std.int( sprY + zOffsetPx - hei - lifeBar.outerHeight - 1 );
 		lifeBar.visible = maxLife>1;
 
 		shadow.setPosition(sprX, sprY-1);
@@ -937,12 +938,12 @@ class Entity {
 
 
 		// Z physics
-		if( dz!=0 ) {
-			z+=dz;
-			dz-=0.1;
-			dz*=0.9;
-			if( z<=0 ) {
-				z = 0;
+		if( !onGround ) {
+			zr+=dz;
+			dz-=0.06; // gravity
+			dz*=0.94;
+			if( zr<=0 ) {
+				zr = 0;
 				dz = 0;
 				onLand();
 			}

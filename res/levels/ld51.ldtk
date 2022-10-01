@@ -319,17 +319,59 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [11,8],
+							"__grid": [12,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "10221ef0-2a00-11ed-be67-53ae46fc2484",
+							"iid": "69b43ff0-2a00-11ed-be67-a386de6d11c8",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [184,144],
-							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
+							"px": [200,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [4,8],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "69fb0cf0-2a00-11ed-be67-4fd07bab5607",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [72,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [7,6],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "6aa1ad30-2a00-11ed-be67-ffd46d9cef9e",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [120,112],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [10,10],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "6ae3e650-2a00-11ed-be67-250ed6fddf27",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [168,176],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 2, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] }]
 						}
 					]
 				},
