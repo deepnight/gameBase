@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "1.1.4",
 	"appBuildId": 462327,
-	"nextUid": 28,
+	"nextUid": 29,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "LinearHorizontal",
 	"worldGridWidth": 256,
@@ -162,7 +162,7 @@
 			"hollow": false,
 			"color": "#FF0000",
 			"renderMode": "Tile",
-			"showName": true,
+			"showName": false,
 			"tilesetId": 26,
 			"tileId": 6,
 			"tileRenderMode": "FitInside",
@@ -173,7 +173,37 @@
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0.5,
 			"pivotY": 1,
-			"fieldDefs": []
+			"fieldDefs": [
+				{
+					"identifier": "hp",
+					"__type": "Int",
+					"uid": 28,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "ValueOnly",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": " HP",
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": 1,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [2] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -289,31 +319,17 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [10,6],
+							"__grid": [11,8],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "3a4b96f0-2a00-11ed-be67-092fea7022f7",
+							"iid": "10221ef0-2a00-11ed-be67-53ae46fc2484",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [168,112],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [6,9],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 96, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "136df2c0-2a00-11ed-be67-0fcf2d22f51f",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [104,160],
-							"fieldInstances": []
+							"px": [184,144],
+							"fieldInstances": [{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }]
 						}
 					]
 				},

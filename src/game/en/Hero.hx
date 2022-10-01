@@ -13,12 +13,8 @@ class Hero extends Entity {
 
 		circularWeight = 1;
 		circularRadius = 3;
-		lifeBar.visible = false;
 
 		spr.set(Assets.entities);
-		var f = new dn.heaps.filter.PixelOutline( Assets.dark() );
-		f.bottom = false;
-		spr.filter = f;
 
 		spr.anim.registerStateAnim(D.ent.kPunchC_charge, 1, ()->isChargingAction("atkC"));
 		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("atkB"));
@@ -64,6 +60,10 @@ class Hero extends Entity {
 			if( distPx(e)<=24 && dirTo(e)==dir )
 				_atkVictims.push(e);
 		return _atkVictims;
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
 	}
 
 	override function frameUpdate() {
@@ -118,8 +118,10 @@ class Hero extends Entity {
 							for(e in getVictims()) {
 								e.hit(0,this);
 								e.bump(0.5*dir, 0);
+								e.dz = 1;
 								e.setAffectS(Stun, 1.5);
 							}
+							game.addSlowMo("powerAtk", 0.5, 0.6);
 							dx += dir*0.15;
 							spr.anim.play(D.ent.kPunchC_hit);
 							camera.bump(dir*4,0);
@@ -133,7 +135,6 @@ class Hero extends Entity {
 			if( comboCpt>0 && !cd.has("keepCombo") )
 				comboCpt = 0;
 		}
-
 	}
 
 	override function fixedUpdate() {
