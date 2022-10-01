@@ -146,7 +146,7 @@ class Entity {
 	public var maxLife(default,null) : Int;
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
-	var lifeBar : h2d.Flow;
+	var lifeBar : ui.Bar;
 
 	/** Horizontal direction (left=-1 or right=1): from "last source of damage" to "this" **/
 	public var lastHitDirFromSource(get,never) : Int;
@@ -241,10 +241,9 @@ class Entity {
 		moveTarget = new LPoint();
 		moveTarget.setBoth(-1);
 
-		lifeBar = new h2d.Flow();
-		lifeBar.layout = Horizontal;
-		lifeBar.horizontalSpacing = -1;
+		lifeBar = new ui.Bar(10,1, Assets.yellow());
 		game.scroller.add(lifeBar, Const.DP_UI);
+		lifeBar.enableOldValue(Assets.red());
 		initLife(1);
 
 		shadow = Assets.tiles.h_get(D.tiles.groundShadow);
@@ -305,13 +304,8 @@ class Entity {
 		renderLife();
 	}
 
-	function renderLife() {
-		lifeBar.removeChildren();
-		for(i in 0...maxLife)
-			if( i+1<=life )
-				Assets.tiles.getBitmap(D.tiles.iconLife, lifeBar);
-			else
-				Assets.tiles.getBitmap(D.tiles.iconLifeOff, lifeBar);
+	inline function renderLife() {
+		lifeBar.set(life,maxLife);
 	}
 
 	/** Inflict damage **/
