@@ -51,7 +51,7 @@ class Mob extends Entity {
 		if( !cd.has("landBumpLimit") ) {
 			mulVelocities(0.6);
 			cd.setS("landBumpLimit",1.5);
-			dz = 0.5;
+			dz = 0.2;
 		}
 	}
 

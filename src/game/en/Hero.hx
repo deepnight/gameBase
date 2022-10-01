@@ -101,21 +101,6 @@ class Hero extends Entity {
 						comboCpt++;
 
 					case 2:
-						game.addSlowMo("heroKick", 0.3, 0.4);
-						dz = 0.12;
-						dx+=dir*0.1;
-						chargeAction("kickA", 0.16, ()->{
-							dx+=dir*0.1;
-							dz = 0.05;
-							camera.bumpZoom(-0.03);
-							game.addSlowMo("heroKick", 0.5, 0.8);
-							lockControlS(0.3);
-							camera.bump(dir*1, 0);
-							spr.anim.play(D.ent.kKickA_hit);
-						});
-						comboCpt++;
-
-					case 3:
 						chargeAction("punchB", 0.15, ()->{
 							lockControlS(0.1);
 							for(e in getVictims()) {
@@ -128,13 +113,35 @@ class Hero extends Entity {
 						});
 						comboCpt++;
 
+						case 3:
+							game.addSlowMo("heroKick", 0.3, 0.4);
+							dz = 0.12;
+							dx+=dir*0.1;
+							chargeAction("kickA", 0.16, ()->{
+								dx+=dir*0.1;
+								dz = 0.05;
+								camera.bumpZoom(-0.03);
+								game.addSlowMo("heroKick", 0.5, 0.8);
+								lockControlS(0.3);
+								camera.bump(dir*1, 0);
+								spr.anim.play(D.ent.kKickA_hit);
+
+								for(e in getVictims()) {
+									e.hit(0,this);
+									e.bump(0.5*dir, 0);
+									e.dz = 0.1;
+									e.setAffectS(Stun, 1.5);
+								}
+							});
+							comboCpt = 0;
+
 					case 4:
 						chargeAction("punchC", 0.2, ()->{
 							lockControlS(0.25);
 							for(e in getVictims()) {
 								e.hit(0,this);
 								e.bump(0.3*dir, 0);
-								e.dz = 0.1;
+								e.dz = 0.13;
 								e.setAffectS(Stun, 1.5);
 							}
 							game.addSlowMo("powerAtk", 0.5, 0.6);
