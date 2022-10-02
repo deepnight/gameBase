@@ -485,6 +485,7 @@ class Entity {
 	public inline function dirTo(e:Entity) return e.centerX<centerX ? -1 : 1;
 	public inline function dirToAng() return dir==1 ? 0. : M.PI;
 	public inline function getMoveAng() return Math.atan2(dyTotal,dxTotal);
+	public inline function angTo(e:Entity) return Math.atan2(e.attachY-attachY, e.attachX-attachX);
 
 	public inline function fastDistPx(e:Entity) : Float {
 		return M.fabs(attachX-e.attachX) + M.fabs(attachY-e.attachY);
@@ -698,6 +699,9 @@ class Entity {
 		}
 	}
 
+	public inline function canBeHit() {
+		return isAlive() && !hasAffect(Shield) && !hasAffect(Dodge);
+	}
 
 	public inline function hasAffect(k:Affect) {
 		return isAlive() && affects.exists(k) && affects.get(k)>0;

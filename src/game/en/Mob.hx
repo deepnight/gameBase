@@ -99,7 +99,7 @@ class Mob extends Entity {
 		return super.canMoveToTarget() && !aiLocked();
 	}
 
-	inline function aiLocked() {
+	function aiLocked() {
 		return !isAlive() || hasAffect(Stun) || isChargingAction() || cd.has("aiLock");
 	}
 
