@@ -158,6 +158,17 @@ class Fx extends GameChildProcess {
 		p.colorAnimS(Yellow,White,0.5);
 	}
 
+	public function stampIcon(icon:String, e:Entity) {
+		var p = allocMain_add(icon, e.centerX, e.centerY);
+		p.moveAng(e.getMoveAng(), 2);
+		p.frict = 0.9;
+		p.setFadeS(1, 0, 0.1);
+		p.setScale(5);
+		p.ds = -0.4;
+		p.dsFrict = 0.9;
+		p.lifeS = 0.3;
+	}
+
 	public function stun(x:Float,y:Float) {
  		var p = allocAnim(D.ent.stun, x,y, true);
 		// p.randomizeAnimCursor();

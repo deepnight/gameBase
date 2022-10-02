@@ -92,8 +92,8 @@ class Game extends AppChildProcess {
 		var d = level.data.l_Entities.all_PlayerStart[0];
 		hero = new Hero(d);
 
-		for(d in level.data.l_Entities.all_Destructible)
-			new en.Destructible(d);
+		for(d in level.data.l_Entities.all_Destructible) new en.Destructible(d);
+		for(d in level.data.l_Entities.all_Message) new en.Message(d);
 
 		for(d in level.data.l_Entities.all_Mob)
 			switch d.f_type {
@@ -109,6 +109,19 @@ class Game extends AppChildProcess {
 		dn.Gc.runNow();
 	}
 
+
+	public function nextLevel() {
+		var next = false;
+		for(l in Assets.worldData.levels) {
+			if( l==level.data )
+				next = true;
+			else if( next ) {
+				startLevel(l);
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 	/** Called when either CastleDB or `const.json` changes on disk **/
@@ -273,7 +286,7 @@ class Game extends AppChildProcess {
 			for(e in en.Mob.ALL) {
 				if( !e.isAlive() )
 					continue;
-				
+
 				if( e.rageCharges==0 ) {
 					e.bumpAwayFrom(hero, 0.1);
 					e.setAffectS(Stun, 0.5);
@@ -370,6 +383,8 @@ class Game extends AppChildProcess {
 			#if debug
 			if( ca.isPressed(ToggleDebugDrone) )
 				new DebugDrone(); // <-- HERE: provide an Entity as argument to attach Drone near it
+			if( ca.isKeyboardPressed(K.N) )
+				nextLevel();
 			#end
 
 			// Restart whole game

@@ -204,26 +204,28 @@ class Hero extends Entity {
 				spr.anim.stopWithStateAnims();
 				if( rage>0) {
 
-					// Super attack
+					// Marking attack
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
-					game.addSlowMo("powerAtk", 0.3, 0.25);
+					game.addSlowMo("markAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
 						onAnyAttack();
-						fx.flashBangEaseInS(Assets.green(), 0.3, 1);
+						fx.flashBangEaseInS(Assets.green(), 0.15, 1);
 						lockControlS(0.3);
 						for(e in getVictims(2)) {
+							e.dir = e.dirTo(this);
 							e.cancelAction();
 							e.addRageMarks(rage);
-							e.bumpAwayFrom(this,0.4);
-							e.dz = 0.2;
-							e.setAffectS(Stun, 1.5);
+							e.bumpAwayFrom(this,0.2);
+							e.dz = 0.14;
+							e.setAffectS(Stun, 0.3);
 							e.cd.setS("pushOthers",1);
+							fx.stampIcon(D.tiles.itemCharge, e);
 						}
 						clearRage();
-						game.addSlowMo("powerAtk", 0.5, 0.6);
+						game.addSlowMo("markAtk", 0.5, 0.7);
 						dx += dir*0.2;
 						spr.anim.play(D.ent.kPunchC_hit);
-						camera.shakeS(1, 0.2);
+						// camera.shakeS(1, 0.2);
 						camera.bumpZoom(0.05);
 					});
 					comboCpt = 0;

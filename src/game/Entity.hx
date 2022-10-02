@@ -962,8 +962,8 @@ class Entity {
 
 	/** Called at the beginning of each Y movement step **/
 	function onPreStepY() {
-		if( yr<0.3 && level.hasCollision(cx,cy-1) ) {
-			yr = 0.3;
+		if( yr<0.6 && level.hasCollision(cx,cy-1) ) {
+			yr = 0.6;
 			onTouchWall(0,-1);
 		}
 
