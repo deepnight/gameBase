@@ -4,7 +4,17 @@ class Trash extends Mob {
 	public function new(d) {
 		super(d);
 		initLife(5);
+
+		spr.anim.removeAllStateAnims();
 		spr.anim.registerStateAnim(D.ent.mPunch_charge, 1, ()->isChargingAction("punch"));
+
+		spr.anim.registerStateAnim(D.ent.tFly, 10.2, ()->!onGround);
+		spr.anim.registerStateAnim(D.ent.tLay, 10.1, ()->isLayingDown());
+		spr.anim.registerStateAnim(D.ent.tStun, 10.0, ()->hasAffect(Stun));
+
+		spr.anim.registerStateAnim(D.ent.tWalk, 0.1, ()->isMoving());
+
+		spr.anim.registerStateAnim(D.ent.tIdle, 0);
 	}
 
 	override function increaseRank() {} // nope

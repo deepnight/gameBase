@@ -8,6 +8,8 @@ class Melee extends Mob {
 		super(d);
 
 		initLife(12);
+		sprScaleX = sprScaleY = 1.5;
+
 
 		spr.anim.registerStateAnim(D.ent.mDash, 1, ()->cd.has("dashing"));
 		spr.anim.registerStateAnim(D.ent.mDash_charge, 1, ()->isChargingAction("dash"));
