@@ -45,11 +45,25 @@ class Mob extends Entity {
 
 	public function addRageMarks(n:Int) {
 		rageCharges+=n;
+		iconBar.empty();
+		// iconBar.addIcons(D.tiles.iconMark, M.imin(life,rageCharges));
+		var r = M.round( 100*M.imin(maxLife,rageCharges)/maxLife );
+		switch r {
+			case 100 : iconBar.addIcons(D.tiles.iconMark100);
+			case 75 : iconBar.addIcons(D.tiles.iconMark75);
+			case 67 : iconBar.addIcons(D.tiles.iconMark67);
+			case 50 : iconBar.addIcons(D.tiles.iconMark50);
+			case 33 : iconBar.addIcons(D.tiles.iconMark33);
+			case 25 : iconBar.addIcons(D.tiles.iconMark25);
+			case _: iconBar.addIcons(D.tiles.iconMark25); trace("warning no skull icon for "+r);
+		}
+		// iconBar.addIcons(D.tiles.iconMark, M.imin(life,rageCharges));
 		renderLife();
 	}
 
 	public function clearRage() {
 		rageCharges = 0;
+		iconBar.empty();
 		renderLife();
 	}
 
@@ -202,7 +216,7 @@ class Mob extends Entity {
 			blink(Red);
 
 		if( !isAlive() && onGround )
-			spr.alpha = 0.6;
+			spr.alpha = 0.33;
 
 		if( weapon!=null ) {
 			weapon.colorMatrix = colorMatrix;

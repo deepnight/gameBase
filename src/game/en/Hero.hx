@@ -40,7 +40,7 @@ class Hero extends Entity {
 	public function addRage(n=1) {
 		rage+=n;
 		iconBar.empty();
-		iconBar.addIcons(D.tiles.iconMark, rage);
+		iconBar.addIcons(D.tiles.iconMark100, rage);
 	}
 
 	public function clearRage() {

@@ -265,16 +265,23 @@ class Game extends AppChildProcess {
 			hero.spr.anim.play(D.ent.kSuper_hit);
 			for(e in en.Mob.ALL) {
 				if( e.rageCharges==0 ) {
+					e.bumpAwayFrom(hero, 0.1);
 					e.setAffectS(Stun, 0.5);
 					continue;
 				}
 
 				e.setAffectS(Stun, 2);
-				e.bumpAwayFrom(hero, 0.3);
-				e.dz = 0.2;
-				e.hit(e.rageCharges, hero);
+				if( e.rageCharges>=e.maxLife ) {
+					// Kill
+					e.bumpAwayFrom(hero, 0.3);
+					e.dz = 0.2;
+					e.hit(e.rageCharges, hero);
+					fx.dotsExplosionExample(e.centerX, e.centerY, Red);
+				}
+				else {
+					e.bumpAwayFrom(hero, 0.1);
+				}
 				e.clearRage();
-				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 			}
 
 			for(e in Entity.ALL)

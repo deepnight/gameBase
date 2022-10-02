@@ -19,7 +19,10 @@ class Melee extends Mob {
 	override function setAffectS(k:Affect, t:Float, allowLower:Bool = false) {
 		switch k {
 			case Stun:
-				t *= 1-0.2*rankRatio;
+				switch rank {
+					case 0:
+					case _: t*=0.5;
+				}
 
 			case Dodge, Shield:
 		}
@@ -54,8 +57,8 @@ class Melee extends Mob {
 		return super.getMoveSpeed()
 			* switch rank {
 				case 0: 1;
-				case 1: 1.5;
-				case _: 2.5;
+				case 1: 2.5;
+				case _: 1.5;
 			}
 	}
 

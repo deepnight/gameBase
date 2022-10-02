@@ -19,6 +19,7 @@ class Item extends Entity {
 		spr.set(switch type {
 			case RageCharge: D.tiles.itemCharge;
 		});
+		spr.blendMode = Add;
 	}
 
 	override function dispose() {

@@ -329,6 +329,7 @@ class Entity {
 
 	function renderLife() {
 		lifeBar.visible = armor==0 && isAlive() && maxLife>0;
+		lifeBar.visible = false;
 		if( lifeBar.visible ) {
 			lifeBar.empty();
 			lifeBar.addIcons(D.tiles.iconHeart, life);

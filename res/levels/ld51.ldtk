@@ -791,7 +791,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [9,3],
+							"__grid": [8,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
@@ -800,7 +800,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [152,64],
+							"px": [136,80],
 							"fieldInstances": [
 								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
@@ -865,26 +865,6 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [10,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 768, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "40569270-2a00-11ed-bcca-d7797dd24fee",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [168,80],
-							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Trash", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 768, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["MT_Trash"]
-								}] },
-								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
-							]
-						},
-						{
-							"__identifier": "Mob",
 							"__grid": [10,6],
 							"__pivot": [0.5,1],
 							"__tags": [],
@@ -905,22 +885,22 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [9,5],
+							"__grid": [1,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "a99970e0-2a00-11ed-bcca-a94de8a381cc",
+							"iid": "f4b47170-2a00-11ed-bcca-595cb33e45ec",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [152,96],
+							"px": [24,80],
 							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["MT_Melee"]
+									"params": ["MT_Gun"]
 								}] },
-								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [{ "id": "V_Int", "params": [0] }] }
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
 							]
 						}
 					]
