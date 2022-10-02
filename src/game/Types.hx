@@ -45,7 +45,8 @@ enum abstract LevelSubMark(Int) to Int {
 	var None; // 0
 }
 
-enum MobEquipment {
-	ME_Melee;
-	ME_Gun;
+enum MobType {
+	MT_Melee;
+	MT_Gun;
+	MT_Trash;
 }

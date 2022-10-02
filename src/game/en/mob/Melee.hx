@@ -7,6 +7,8 @@ class Melee extends Mob {
 	public function new(d) {
 		super(d);
 
+		initLife(12);
+
 		spr.anim.registerStateAnim(D.ent.mDash, 1, ()->cd.has("dashing"));
 		spr.anim.registerStateAnim(D.ent.mDash_charge, 1, ()->isChargingAction("dash"));
 		spr.anim.registerStateAnim(D.ent.mPunch_charge, 1, ()->isChargingAction("punch"));

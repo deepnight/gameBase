@@ -68,6 +68,11 @@ class Mob extends Entity {
 
 	override function onDie() {
 		super.onDie();
+		if( lastDmgSource!=null ) {
+			dir = lastHitDirToSource;
+			bumpAwayFrom(lastDmgSource, 0.3);
+			dz = R.around(0.15);
+		}
 		outline.enable = false;
 		circularWeightBase = 0;
 		for(e in ALL)
@@ -117,6 +122,9 @@ class Mob extends Entity {
 
 		// Bounce on walls
 		if( !onGround ) {
+			if( cd.has("pushOthers") )
+			hit(1,null);
+
 			if( wallX!=0 )
 				bdx = -bdx*0.6;
 
@@ -148,6 +156,9 @@ class Mob extends Entity {
 
 	override function postUpdate() {
 		super.postUpdate();
+
+		if( !isAlive() && !onGround && !cd.hasSetS("deathBlink",0.2) )
+			blink(Red);
 
 		if( !isAlive() && onGround )
 			spr.alpha = 0.6;

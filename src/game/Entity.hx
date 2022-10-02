@@ -836,7 +836,7 @@ class Entity {
 
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
 		lifeBar.y = Std.int( sprY + zOffsetPx - hei - lifeBar.outerHeight - 1 );
-		lifeBar.visible = maxLife>1;
+		lifeBar.visible = isAlive() && maxLife>1;
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.5;

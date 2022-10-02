@@ -86,7 +86,7 @@ class Hero extends Entity {
 	function getVictims() {
 		_atkVictims.empty();
 		for(e in en.Mob.ALL)
-			if( e.isAlive() && distPx(e)<=24 && dirTo(e)==dir )
+			if( e.isAlive() && distPx(e)<=24 && M.fabs(attachY-e.attachY)<=12 && dirTo(e)==dir )
 				_atkVictims.push(e);
 		return _atkVictims;
 	}
@@ -172,7 +172,7 @@ class Hero extends Entity {
 						lockControlS(0.3);
 						for(e in getVictims()) {
 							e.cancelAction();
-							e.hit(hasSuperCharge?1:0, this);
+							e.hit(hasSuperCharge?99:0, this);
 							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
 							e.setAffectS(Stun, 2);
@@ -195,7 +195,7 @@ class Hero extends Entity {
 								lockControlS(0.06);
 								for(e in getVictims()) {
 									e.cancelAction();
-									e.hit(0,this);
+									e.hit(1,this);
 									e.setAffectS(Stun,0.3);
 								}
 								dx += dir*0.02;
@@ -208,7 +208,7 @@ class Hero extends Entity {
 								lockControlS(0.1);
 								for(e in getVictims()) {
 									e.cancelAction();
-									e.hit(0,this);
+									e.hit(1,this);
 									e.setAffectS(Stun, 0.5);
 									e.bump(dir*0.04, 0);
 								}
@@ -233,7 +233,7 @@ class Hero extends Entity {
 
 								for(e in getVictims()) {
 									e.cancelAction();
-									e.hit(0,this);
+									e.hit(5,this);
 									e.cd.setS("pushOthers",1);
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
