@@ -16,7 +16,7 @@ class Destructible extends Entity {
 		setPosPixel(d.pixelX, d.pixelY-G*0.5);
 		spr.set(Assets.world);
 		spr.useCustomTile( d.f_tile_getTile() );
-		circularRadius = 8;
+		circularRadius = 6;
 		circularWeightBase = 5;
 		col1 = d.f_breakColor1_int;
 		col2 = d.f_breakColor2_int;

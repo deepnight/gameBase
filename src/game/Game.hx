@@ -294,8 +294,7 @@ class Game extends AppChildProcess {
 	function onCycle() {
 		fx.flashBangEaseInS(Blue, 0.2, 0.3);
 		hero.hasSuperCharge = true;
-		cd.setS("gameTimeLock",1);
-		gameTimeS = 0;
+		cd.setS("gameTimeLock",99);
 
 		hero.clearAffect(Dodge);
 		hero.cancelVelocities();
@@ -357,6 +356,8 @@ class Game extends AppChildProcess {
 				e.undarken();
 
 			level.undarken();
+			gameTimeS = 0;
+			cd.unset("gameTimeLock");
 
 			// Open exits
 			if( en.Mob.alives()==0 )
@@ -380,10 +381,11 @@ class Game extends AppChildProcess {
 		Assets.tiles.tmod = tmod;
 
 		if( hero.isAlive() && en.Mob.alives()>0 ) {
-			if( !cd.has("gameTimeLock") )
+			if( !cd.has("gameTimeLock") ) {
 				gameTimeS += tmod * 1/Const.FPS;
-			if( gameTimeS>=Const.CYCLE_S )
-				onCycle();
+				if( gameTimeS>=Const.CYCLE_S )
+					onCycle();
+			}
 			hud.setTimeS(gameTimeS);
 		}
 		else {

@@ -100,6 +100,11 @@ class Hero extends Entity {
 		return !isAlive() || cd.has("controlsLock") || isChargingAction() || hasAffect(Dodge) || hasAffect(Stun);
 	}
 
+	override function renderLife() {
+		super.renderLife();
+		hud.setLife(life,maxLife);
+	}
+
 	function onAnyAttack() {
 		for(e in en.Destructible.ALL)
 			if( inHitRange(e,1) )

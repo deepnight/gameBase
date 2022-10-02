@@ -13,7 +13,7 @@ class Bar extends h2d.Object {
 	public var color(default,set) : Col;
 	public var defaultColor(default,null) : Col;
 	var padding : Int;
-	var oldBarSpeed : Float;
+	var oldBarSpeed = 1.;
 
 	var blinkColor : h3d.Vector;
 	var gradTg : Null<h2d.TileGroup>;

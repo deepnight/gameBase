@@ -72,6 +72,8 @@ class Level extends GameChildProcess {
 		root.removeChildren();
 
 		var tg = new h2d.TileGroup(Assets.world.tile, root);
+		data.l_AutoFloors.render(tg);
+		data.l_Floors.render(tg);
 		data.l_Collisions.render(tg);
 		data.l_Details.render(tg);
 	}

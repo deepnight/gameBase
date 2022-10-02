@@ -1,14 +1,18 @@
 package ui;
 
 class Hud extends GameChildProcess {
+	var timeBarCol : Col = "#94b0c2";
 	var flow : h2d.Flow;
 	var invalidated = true;
 	var notifications : Array<h2d.Flow> = [];
 	var notifTw : dn.Tweenie;
 
+	var timeFlow : h2d.Flow;
 	var timeBar : ui.Bar;
+	var lifeBar : ui.IconBar;
 
 	var debugText : h2d.Text;
+	var timeS = 0.;
 
 	public function new() {
 		super();
@@ -19,23 +23,48 @@ class Hud extends GameChildProcess {
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		flow = new h2d.Flow(root);
+		flow.layout = Vertical;
+		flow.horizontalAlign = Middle;
+		flow.verticalSpacing = 1;
+
 		notifications = [];
 
 		debugText = new h2d.Text(Assets.fontPixel, root);
 		debugText.filter = new dn.heaps.filter.PixelOutline();
 		clearDebug();
 
-		timeBar = new Bar(100,2, Yellow, flow);
+		lifeBar = new ui.IconBar(flow);
+		lifeBar.overlap = 0;
+		lifeBar.scale(2);
+
+		timeFlow = new h2d.Flow(flow);
+		timeFlow.verticalAlign = Middle;
+		Assets.tiles.getBitmap(D.tiles.iconTime,timeFlow);
+		timeBar = new Bar(40,4, timeBarCol, timeFlow);
+
 	}
 
 	public inline function setTimeS(t:Float) {
-		timeBar.visible = t>=0;
+		timeFlow.alpha = t>=0 ? 1 : 0;
 		timeBar.set(t, Const.CYCLE_S);
+		timeS = t;
+		if( Const.CYCLE_S-t<=2 )
+			timeBar.color = Yellow;
+		else
+			timeBar.color = timeBarCol;
 	}
 
 	override function onResize() {
 		super.onResize();
 		root.setScale(Const.UI_SCALE);
+		flow.x = Std.int( 0.5 * w()/Const.SCALE - flow.outerWidth*0.5 );
+		flow.y = 1;
+	}
+
+	public function setLife(n,max) {
+		lifeBar.empty();
+		lifeBar.addIcons(D.tiles.iconHudHeart, n);
+		lifeBar.addIcons(D.tiles.iconHudHeartOff, max-n);
 	}
 
 	/** Clear debug printing **/
@@ -110,6 +139,13 @@ class Hud extends GameChildProcess {
 
 	override function postUpdate() {
 		super.postUpdate();
+
+		var remainS = Const.CYCLE_S-timeS;
+		if( remainS<=2 && !cd.hasSetS("timeBlink",0.25) )
+			timeBar.blink(White);
+
+		if( remainS<=4 && !cd.hasSetS("timeBlink",0.5) )
+			timeBar.blink(White);
 
 		if( invalidated ) {
 			invalidated = false;

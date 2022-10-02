@@ -4,6 +4,7 @@ class IconBar extends h2d.TileGroup {
 	var curX = 0;
 	public var width(default,null) = 0;
 	public var height(default,null) = 0;
+	public var overlap = 0.5;
 
 	public function new(?p) {
 		super(Assets.tiles.tile, p);
@@ -20,7 +21,7 @@ class IconBar extends h2d.TileGroup {
 			add(curX, 0, t);
 			width = curX + t.iwidth;
 			height = M.imax(height, t.iheight);
-			curX += M.ceil(t.width*0.5);
+			curX += M.ceil(t.width*(1-overlap));
 		}
 	}
 }
