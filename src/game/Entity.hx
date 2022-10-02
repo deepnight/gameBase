@@ -987,7 +987,7 @@ class Entity {
 	}
 
 	function hasCircularCollisions() {
-		return !destroyed && circularWeightBase>0 && zr<0.5 && !hasAffect(Dodge);
+		return !destroyed && circularWeightBase>0 && zr<0.5 && !hasAffect(Dodge) && !isLayingDown();
 	}
 
 	function getCircularCollWeight() {

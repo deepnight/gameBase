@@ -67,6 +67,10 @@ class Game extends AppChildProcess {
 	}
 
 
+	public function restartLevel() {
+		startLevel(level.data);
+	}
+
 	/** Load a level **/
 	function startLevel(l:World.World_Level) {
 		if( level!=null )
@@ -75,6 +79,8 @@ class Game extends AppChildProcess {
 		for(e in Entity.ALL) // <---- Replace this with more adapted entity destruction (eg. keep the player alive)
 			e.destroy();
 		garbageCollectEntities();
+		gameTimeS = 0;
+		cd.unset("gameTimeLock");
 
 		level = new Level(l);
 
@@ -227,7 +233,11 @@ class Game extends AppChildProcess {
 		cd.setS("gameTimeLock",1);
 		gameTimeS = 0;
 
+		hero.clearAffect(Dodge);
+		hero.cancelVelocities();
+		hero.dodgeDx = hero.dodgeDy = 0;
 		hero.cancelAction();
+		hero.clearRage();
 		hero.spr.anim.stopWithStateAnims();
 		level.darken();
 		for(e in en.Mob.ALL) {
@@ -244,8 +254,6 @@ class Game extends AppChildProcess {
 
 		for(e in en.Destructible.ALL)
 			e.darken();
-
-		hero.clearRage();
 
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
@@ -347,7 +355,7 @@ class Game extends AppChildProcess {
 
 			// Restart whole game
 			if( ca.isPressed(Restart) )
-				App.ME.startGame();
+				restartLevel();
 
 		}
 	}
