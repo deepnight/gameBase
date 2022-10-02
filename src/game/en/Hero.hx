@@ -106,7 +106,7 @@ class Hero extends Entity {
 		super.postUpdate();
 
 		// Super charge outline
-		if( isChargingAction("execute") ) {
+		if( rage>0 && isAlive() ) {
 			var mod = Std.int( game.stime / 0.1 ) % 3;
 			outline.color = switch mod {
 				case 0: Assets.green();
@@ -145,7 +145,7 @@ class Hero extends Entity {
 
 		// Dodge can cancel a few stuff
 		if( isPressedOrQueued(Dodge, false) && controlsLocked() ) {
-			if( isChargingAction() && !isChargingAction("dodge") )
+			if( isChargingAction() && !isChargingAction("dodge") && !isChargingAction("execute") )
 				cancelAction();
 
 			if( !isChargingAction() && !hasAffect(Stun) && getLockRemainingS()<=0.09 ) {
