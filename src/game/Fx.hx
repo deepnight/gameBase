@@ -169,6 +169,48 @@ class Fx extends GameChildProcess {
 		p.lifeS = 0.3;
 	}
 
+	function _dirtPhysics(p:HParticle) {
+		if( collides(p) || p.y>=p.data0 && p.dy>0 ) {
+			if( p.inc1()==1 ) {
+				p.gy = p.dy = 0;
+				p.dx*=0.5;
+				p.dr = 0;
+			}
+			else {
+				p.dy = -p.dy;
+				p.dx*=0.6;
+				p.dr*=0.3;
+			}
+		}
+	}
+
+	public function brokenProp(x:Float, y:Float, c:Col, ang:Float) {
+		var n = 60;
+		for(i in 0...n) {
+			var pix = i<n*0.75;
+			var p = allocMain_normal(pix ? D.tiles.pixel : D.tiles.fxDirt, x+rnd(0,5,true), y+rnd(0,5,true));
+			p.setFadeS(rnd(0.7,1), 0, rnd(8,15));
+			p.colorize(c);
+			if( !pix ) {
+				p.rotation = R.fullCircle();
+				p.setScale(rnd(0.1,0.2));
+				p.ds = R.around(0.1);
+				p.dsFrict = 0.85;
+				p.dr = rnd(0.1,0.3,true);
+			}
+			p.moveAwayFrom(x,y+9, rnd(1,2));
+			if( ang!=-999 ) {
+				p.dx += Math.cos(ang)*R.around(2);
+				p.dy += Math.sin(ang)*R.around(2);
+			}
+			p.gy = R.around(0.1);
+			p.frict = R.aroundBO(0.94,5);
+
+			p.data0 = y+rnd(0,8);
+			p.onUpdate = _dirtPhysics;
+		}
+	}
+
 	public function stun(x:Float,y:Float) {
  		var p = allocAnim(D.ent.stun, x,y, true);
 		// p.randomizeAnimCursor();

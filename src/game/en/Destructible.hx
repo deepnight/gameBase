@@ -18,15 +18,16 @@ class Destructible extends Entity {
 		ALL.remove(this);
 	}
 
-	public function explode() {
+	public function explode(?e:Entity) {
 		new Item(attachX, attachY, RageCharge);
+		fx.brokenProp(centerX, centerY, Col.inlineHex("#ef7d57"), e==null ? -999 : e.getMoveAng());
 		destroy();
 	}
 
 	public static function checkEnt(e:Entity) {
 		for(d in ALL)
 			if( d.distCase(e)<=1 )
-				d.explode();
+				d.explode(e);
 	}
 
 	override function postUpdate() {

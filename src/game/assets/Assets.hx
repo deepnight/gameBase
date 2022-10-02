@@ -31,10 +31,9 @@ class Assets {
 
 		// Palette
 		var pal = hxd.Res.atlas.sweetie_16_1x.getPixels(ARGB);
-		var sizePx = 1;
 		palette = [];
-		for(i in 0...16) {
-			var c : Col = pal.getPixel(i*sizePx, 0);
+		for(i in 0...pal.width) {
+			var c : Col = pal.getPixel(i, 0);
 			c = c.withoutAlpha();
 			palette.push(c);
 		}
@@ -121,7 +120,7 @@ class Assets {
 	public static inline function green() return getCol(5);
 	public static inline function blue() return getCol(10);
 	public static inline function red() return getCol(2);
-	public static inline function walls() return getCol(0);
+	public static inline function walls() return getCol(17);
 
 
 	public static inline function getAttach(group:String, frame:Int) : Null<AttachInfo> {
