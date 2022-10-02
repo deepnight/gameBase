@@ -15,7 +15,7 @@ class Hero extends Entity {
 
 		circularWeightBase = 0.4;
 		circularRadius = 3;
-		initLife(1);
+		initLife(3);
 
 		spr.set(Assets.entities);
 
