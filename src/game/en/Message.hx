@@ -10,6 +10,7 @@ class Message extends Entity {
 		setPosCase(d.cx, d.cy);
 		spr.set(D.tiles.empty);
 		circularRadius = 0;
+		shadow.visible = false;
 
 		wrapper = new h2d.Object();
 		game.scroller.add(wrapper, Const.DP_BG);
@@ -21,7 +22,8 @@ class Message extends Entity {
 		tf.y = 0;
 		tf.textColor = d.f_color_int;
 		tf.text = d.f_text;
-		tf.dropShadow = { dx:0, dy:1, color:0x0, alpha:0.6 }
+		// tf.dropShadow = { dx:0, dy:1, color:0x0, alpha:0.6 }
+		tf.filter = new dn.heaps.filter.PixelOutline(Assets.dark());
 		tf.colorMatrix = spr.colorMatrix;
 
 		bg.width = tf.x*2 + tf.textWidth;

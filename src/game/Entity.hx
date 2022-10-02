@@ -603,7 +603,6 @@ class Entity {
 
 	/** Print some value below entity **/
 	public inline function debug(?v:Dynamic, c:Col=0xffffff) {
-		#if debug
 		if( v==null && debugLabel!=null ) {
 			debugLabel.remove();
 			debugLabel = null;
@@ -616,7 +615,6 @@ class Entity {
 			debugLabel.text = Std.string(v);
 			debugLabel.textColor = c;
 		}
-		#end
 	}
 
 	/** Hide entity debug bounds **/
@@ -866,7 +864,7 @@ class Entity {
 		lifeBar.x = Std.int( sprX - lifeBar.width*0.5 );
 		lifeBar.y = Std.int( sprY + zOffsetPx - hei*sprScaleY - lifeBar.height - 1 );
 		iconBar.x = Std.int( sprX - iconBar.width*0.5 );
-		iconBar.y = lifeBar.y-iconBar.height;
+		iconBar.y = Std.int( sprY + zOffsetPx - hei*sprScaleY - iconBar.height - 1 );
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.8;

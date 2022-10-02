@@ -149,8 +149,12 @@ class Mob extends Entity {
 	}
 
 	function dropChargeItem() {
-		if( !data.f_neverDropCharge )
-			dropItem(RageCharge);
+		if( !data.f_neverDropCharge ) {
+			var i = dropItem(RageCharge);
+			i.bumpAwayFrom(hero, 0.2);
+			i.bumpAwayFrom(this, 0.2);
+		}
+
 	}
 
 	public static inline function alives() {
@@ -162,7 +166,7 @@ class Mob extends Entity {
 	}
 
 	function dropItem(i:ItemType) {
-		new Item(attachX, attachY, i);
+		return new Item(attachX, attachY, i);
 	}
 
 	override function canMoveToTarget():Bool {

@@ -130,6 +130,7 @@ class Hero extends Entity {
 		super.onDie();
 		fx.flashBangS(Red, 0.6, 1.5);
 		S.die02(1);
+		debug("Hit R to restart");
 	}
 
 	override function onLand() {
