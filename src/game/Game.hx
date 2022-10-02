@@ -53,7 +53,7 @@ class Game extends AppChildProcess {
 		interactive.onRelease = onMouseUp;
 		mouse = new LPoint();
 
-		startLevel(Assets.worldData.all_levels.FirstLevel);
+		startLevel(Assets.worldData.all_levels.Lab);
 	}
 
 
