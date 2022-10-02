@@ -5,7 +5,7 @@ class Trash extends Mob {
 		super(d);
 		initLife(1);
 
-		outline.color = Assets.dark();
+		outline.color = Assets.black();
 
 		spr.anim.removeAllStateAnims();
 		spr.anim.registerStateAnim(D.ent.tPunch_charge, 1, ()->isChargingAction("punch"));

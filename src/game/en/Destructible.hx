@@ -19,7 +19,6 @@ class Destructible extends Entity {
 	}
 
 	public function explode() {
-		fx.dotsExplosionExample(centerX, centerY, White);
 		new Item(attachX, attachY, RageCharge);
 		destroy();
 	}

@@ -26,7 +26,7 @@ class Mob extends Entity {
 		lockAiS(1);
 
 		spr.set(Assets.entities);
-		outline.color = Assets.red();
+		outline.color = Assets.black();
 
 		spr.anim.registerStateAnim(D.ent.mFly, 10.2, ()->!onGround);
 		spr.anim.registerStateAnim(D.ent.mLay, 10.1, ()->isLayingDown());
@@ -136,7 +136,6 @@ class Mob extends Entity {
 
 	function dropItem(i:ItemType) {
 		new Item(attachX, attachY, i);
-		fx.dotsExplosionExample(centerX, centerY, Assets.green());
 	}
 
 	override function canMoveToTarget():Bool {

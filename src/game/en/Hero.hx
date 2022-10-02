@@ -117,13 +117,13 @@ class Hero extends Entity {
 			var mod = Std.int( game.stime / 0.1 ) % 3;
 			outline.color = switch mod {
 				case 0: Assets.green();
-				case 1: Assets.dark();
+				case 1: Assets.black();
 				case 2: Assets.blue();
-				case _: Assets.dark();
+				case _: Assets.black();
 			}
 		}
 		else
-			outline.color = Assets.dark();
+			outline.color = Assets.black();
 
 		// No outline during roll anim
 		if( spr.anim.isPlaying(D.ent.kDodgeRoll) )

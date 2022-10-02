@@ -266,7 +266,7 @@ class Entity {
 		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
 		spr.setCenterRatio(pivotX, pivotY);
 
-		outline = new dn.heaps.filter.PixelOutline( Assets.dark() );
+		outline = new dn.heaps.filter.PixelOutline( Assets.black() );
 		outline.bottom = false;
 		spr.filter = outline;
 
