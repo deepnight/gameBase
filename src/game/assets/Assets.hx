@@ -5,6 +5,7 @@ import dn.heaps.slib.*;
 typedef AttachInfo = { rot:Bool, x:Int, y:Int }
 
 class Assets {
+	public static var SLIB = dn.heaps.assets.SfxDirectory.load("sfx",true);
 	// Fonts
 	public static var fontPixel : h2d.Font;
 	public static var fontPixelMono : h2d.Font;

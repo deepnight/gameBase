@@ -321,12 +321,15 @@ class Game extends AppChildProcess {
 		// for(e in en.Item.ALL)
 		// 	e.destroy();
 
+		S.charge01(0.4);
+
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
 			addSlowMo("execute", 0.5, 0.2);
 			camera.shakeS(1, 0.3);
 			camera.bumpZoom(0.2);
 			hero.spr.anim.play(D.ent.kSuper_hit);
+			S.exp02(1);
 			for(e in en.Mob.ALL) {
 				if( !e.isAlive() )
 					continue;
@@ -360,12 +363,14 @@ class Game extends AppChildProcess {
 			cd.unset("gameTimeLock");
 
 			// Open exits
-			if( en.Mob.alives()==0 )
+			if( en.Mob.alives()==0 ) {
+				S.win02(1);
 				for(e in en.Door.ALL)
 					if( e.data.f_openOnComplete ) {
 						e.blink(White);
 						e.open();
 					}
+			}
 
 		});
 

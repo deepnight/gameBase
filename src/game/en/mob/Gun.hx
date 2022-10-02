@@ -91,6 +91,7 @@ class Gun extends Mob {
 
 			// Shoot bullet
 			new Bullet(attachX+dir*2, attachY, aimAng, 0.2);
+			S.shoot02(0.3).pitchRandomly();
 			camera.shakeS(0.2, 0.1);
 			spr.anim.playOverlap(D.ent.mGun_shoot);
 			weaponRot = -0.3;

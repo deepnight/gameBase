@@ -31,6 +31,7 @@ class Item extends Entity {
 		switch type {
 			case RageCharge:
 				fx.flashBangS(Assets.green(), 0.2, 1);
+				S.pick01(1);
 				hero.addRage(1);
 		}
 		destroy();

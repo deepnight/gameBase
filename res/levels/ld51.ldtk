@@ -2390,6 +2390,20 @@
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
 								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
 							]
+						},
+						{
+							"__identifier": "DebugStart",
+							"__grid": [15,8],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 208, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#FF00FF",
+							"iid": "09055f90-2a00-11ed-bcca-43dea75ed095",
+							"width": 16,
+							"height": 16,
+							"defUid": 73,
+							"px": [248,136],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -6060,20 +6074,6 @@
 								{ "__identifier": "color", "__value": "#FFFFFF", "__type": "Color", "__tile": null, "defUid": 59, "realEditorValues": [] },
 								{ "__identifier": "showBackground", "__value": true, "__type": "Bool", "__tile": null, "defUid": 72, "realEditorValues": [] }
 							]
-						},
-						{
-							"__identifier": "DebugStart",
-							"__grid": [8,3],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 208, "y": 16, "w": 16, "h": 16 },
-							"__smartColor": "#FF00FF",
-							"iid": "09055f90-2a00-11ed-bcca-43dea75ed095",
-							"width": 16,
-							"height": 16,
-							"defUid": 73,
-							"px": [136,56],
-							"fieldInstances": []
 						}
 					]
 				},

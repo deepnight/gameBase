@@ -15,7 +15,7 @@ class Hero extends Entity {
 
 		circularWeightBase = 0.4;
 		circularRadius = 3;
-		initLife(3);
+		initLife(1);
 
 		spr.set(Assets.entities);
 
@@ -32,6 +32,7 @@ class Hero extends Entity {
 		spr.anim.registerStateAnim(D.ent.kPunchC_charge, 1, ()->isChargingAction("punchC"));
 		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("punchB"));
 		spr.anim.registerStateAnim(D.ent.kPunchA_charge, 1, ()->isChargingAction("punchA"));
+		spr.anim.registerStateAnim(D.ent.kRun, 0.1, ()->isMoving());
 		spr.anim.registerStateAnim(D.ent.kIdle, 0);
 
 		spr.anim.registerTransition(D.ent.kDodgeEnd, "*", D.ent.kDodgeEndToIdle);
@@ -51,7 +52,8 @@ class Hero extends Entity {
 	override function hit(dmg:Int, from:Null<Entity>) {
 		super.hit(dmg, from);
 		setAffectS(Shield, 1);
-		fx.flashBangEaseInS(Red, 0.3, 1);
+		fx.flashBangEaseInS(Red, 0.4, 1);
+		S.ouch04(1);
 		lockControlS(0.2);
 		if( !isAlive() ) {
 			dz = 0.17;
@@ -122,6 +124,18 @@ class Hero extends Entity {
 			if( inHitRange(e, rangeMul) )
 				_atkVictims.push(e);
 		return _atkVictims;
+	}
+
+	override function onDie() {
+		super.onDie();
+		fx.flashBangS(Red, 0.6, 1.5);
+		S.die02(1);
+	}
+
+	override function onLand() {
+		super.onLand();
+		if( hasAffect(Dodge) )
+			S.rollLand(1);
 	}
 
 	override function onTouchWall(wallX:Int, wallY:Int) {
@@ -209,6 +223,7 @@ class Hero extends Entity {
 				spr.anim.stopWithStateAnims();
 				cancelAction();
 				chargeAction("dodge", 0.1, ()->{
+					S.rollStart02(1);
 					game.addSlowMo("dodge", 0.2, 0.5);
 					dz = 0.12;
 					setAffectS(Dodge, 0.8);
@@ -225,13 +240,16 @@ class Hero extends Entity {
 				if( rage>0) {
 
 					// Marking attack
+					S.atk05(0.5).pitchRandomly();
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					game.addSlowMo("markAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
 						onAnyAttack();
 						fx.flashBangEaseInS(Assets.green(), 0.15, 1);
 						lockControlS(0.3);
+						var any = false;
 						for(e in getVictims(2)) {
+							any = true;
 							e.dir = e.dirTo(this);
 							e.cancelAction();
 							e.addRageMarks(rage);
@@ -241,6 +259,8 @@ class Hero extends Entity {
 							e.cd.setS("pushOthers",1);
 							fx.stampIcon(D.tiles.itemCharge, e);
 						}
+						if( any )
+							S.mark01(1).pitchRandomly();
 						clearRage();
 						game.addSlowMo("markAtk", 0.5, 0.7);
 						dx += dir*0.2;
@@ -255,13 +275,19 @@ class Hero extends Entity {
 					switch comboCpt {
 						case 0,1: // Punch A
 							chargeAction("punchA", 0.1, ()->{
+								S.atk03(0.5).pitchRandomly();
 								onAnyAttack();
 								lockControlS(0.06);
+
+								var any = false;
 								for(e in getVictims(1)) {
+									any = true;
 									e.cancelAction();
 									e.hit(0,this);
 									e.setAffectS(Stun,0.3);
 								}
+								if( any )
+									S.hit04(1);
 								dx += dir*0.02;
 								spr.anim.play(D.ent.kPunchA_hit);
 							});
@@ -269,14 +295,19 @@ class Hero extends Entity {
 
 						case 2: // Punch B
 							chargeAction("punchB", 0.15, ()->{
+								S.atk02(0.5).pitchRandomly();
 								onAnyAttack();
 								lockControlS(0.25);
+								var any = false;
 								for(e in getVictims(1.3)) {
+									any = true;
 									e.cancelAction();
 									e.hit(0,this);
 									e.setAffectS(Stun, 0.5);
 									e.bump(dir*0.04, 0);
 								}
+								if( any )
+									S.hit02(1).pitchRandomly();
 								dx += dir*0.04;
 								spr.anim.play(D.ent.kPunchB_hit);
 								camera.bump(dir*1,0);
@@ -284,6 +315,7 @@ class Hero extends Entity {
 							comboCpt++;
 
 						case 3: // Kick
+							S.atk04(0.5).pitchRandomly();
 							game.addSlowMo("heroKick", 0.3, 0.4);
 							dz = 0.12;
 							dx+=dir*0.1;
@@ -297,15 +329,25 @@ class Hero extends Entity {
 								camera.bump(dir*1, 0);
 								spr.anim.play(D.ent.kKickA_hit);
 
+								var any = false;
 								for(e in getVictims(1.5)) {
+									any = true;
 									e.cancelAction();
-									e.hit(0,this);
 									e.cd.setS("pushOthers",1);
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
+									e.hit(0,this);
 									e.dropCharge = true;
 									e.setAffectS(Stun, 3.5);
+									if( e.is(en.mob.Melee) )
+										S.ouch01(0.5).pitchRandomly();
+									else if( e.is(en.mob.Trash) )
+										S.ouch02(0.5).pitchRandomly();
+									else if( e.is(en.mob.Gun) )
+										S.ouch03(0.5).pitchRandomly();
 								}
+								if( any )
+									S.hit01(1).pitchRandomly();
 							});
 							comboCpt = 0;
 					}
