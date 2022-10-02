@@ -65,6 +65,7 @@ class Level extends GameChildProcess {
 
 		var tg = new h2d.TileGroup(Assets.world.tile, root);
 		data.l_Bg.render(tg);
+		data.l_Collisions.render(tg);
 	}
 
 	public function darken() {
