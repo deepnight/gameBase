@@ -5,8 +5,10 @@ class Trash extends Mob {
 		super(d);
 		initLife(4);
 
+		sprScaleX = sprScaleY = 0.75;
+
 		spr.anim.removeAllStateAnims();
-		spr.anim.registerStateAnim(D.ent.mPunch_charge, 1, ()->isChargingAction("punch"));
+		spr.anim.registerStateAnim(D.ent.tPunch_charge, 1, ()->isChargingAction("punch"));
 
 		spr.anim.registerStateAnim(D.ent.tFly, 10.2, ()->!onGround);
 		spr.anim.registerStateAnim(D.ent.tLay, 10.1, ()->isLayingDown());
@@ -31,7 +33,7 @@ class Trash extends Mob {
 			if( distPx(hero)<=Const.GRID*1.2 ) {
 				chargeAction("punch", 1, ()->{
 					lockAiS(0.6);
-					spr.anim.play(D.ent.mPunch_hit);
+					spr.anim.play(D.ent.tPunch_hit);
 					if( hero.canBeHit() )
 						if( dirTo(hero)==dir && M.fabs(hero.attachX-attachX)<Const.GRID*1.2 && M.fabs(hero.attachY-attachY)<=Const.GRID )
 							hero.hit(1, this);

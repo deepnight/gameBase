@@ -9,8 +9,6 @@ class Melee extends Mob {
 
 		armor = 1;
 		initLife(12);
-		sprScaleX = sprScaleY = 1.5;
-
 
 		spr.anim.registerStateAnim(D.ent.mDash, 1, ()->cd.has("dashing"));
 		spr.anim.registerStateAnim(D.ent.mDash_charge, 1, ()->isChargingAction("dash"));
@@ -45,6 +43,7 @@ class Melee extends Mob {
 				weapon = Assets.tiles.h_get(D.tiles.equipChainsaw);
 				weapon.setPivotCoord(3, weapon.tile.height-3);
 				hitDmg = 2;
+				sprScaleX = sprScaleY = 1.5;
 		}
 
 		spr.addChild(weapon);

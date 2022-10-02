@@ -865,7 +865,7 @@ class Entity {
 		outline.bottom = !onGround;
 
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
-		lifeBar.y = Std.int( sprY + zOffsetPx - hei - lifeBar.outerHeight - 1 );
+		lifeBar.y = Std.int( sprY + zOffsetPx - hei*sprScaleY - lifeBar.outerHeight - 1 );
 		armorBar.x = Std.int( sprX - armorBar.outerWidth*0.5 );
 		armorBar.y = lifeBar.y;
 

@@ -18,7 +18,7 @@ class Gun extends Mob {
 		super(d);
 
 		armor = 1;
-		initLife(15);
+		initLife(5);
 
 		spr.anim.registerStateAnim(D.ent.mGun_hold, 2, ()->pendingBullets>0);
 		spr.anim.registerStateAnim(D.ent.mGun_reload, 1, ()->isChargingAction("reload"));
@@ -60,6 +60,7 @@ class Gun extends Mob {
 			case 2:
 				weapon = Assets.tiles.h_get(D.tiles.equipMachineGun);
 				weapon.setPivotCoord(3,2);
+				sprScaleX = sprScaleY = 1.5;
 		}
 
 		spr.addChild(weapon);
@@ -89,7 +90,7 @@ class Gun extends Mob {
 			aimAng = M.radClamp(aimAng, dirToAng(), 0.4);
 
 			// Shoot bullet
-			new Bullet(centerX, centerY+4, aimAng, 0.2);
+			new Bullet(attachX+dir*2, attachY, aimAng, 0.2);
 			camera.shakeS(0.2, 0.1);
 			spr.anim.playOverlap(D.ent.mGun_shoot);
 			weaponRot = -0.3;

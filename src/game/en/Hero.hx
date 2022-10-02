@@ -88,10 +88,10 @@ class Hero extends Entity {
 	}
 
 	var _atkVictims : FixedArray<Mob> = new FixedArray(20); // alloc cache
-	function getVictims() {
+	function getVictims(rangeMul:Float) {
 		_atkVictims.empty();
 		for(e in en.Mob.ALL)
-			if( e.isAlive() && distPx(e)<=24 && M.fabs(attachY-e.attachY)<=12 && dirTo(e)==dir )
+			if( e.isAlive() && distPx(e)<=24*rangeMul && M.fabs(attachY-e.attachY)<=6+6*rangeMul && dirTo(e)==dir )
 				_atkVictims.push(e);
 		return _atkVictims;
 	}
@@ -164,6 +164,7 @@ class Hero extends Entity {
 				if( stickDist<=0.1 )
 					stickAng = dirToAng();
 				spr.anim.stopWithStateAnims();
+				cancelAction();
 				chargeAction("dodge", 0.1, ()->{
 					game.addSlowMo("dodge", 0.2, 0.5);
 					dz = 0.12;
@@ -180,19 +181,21 @@ class Hero extends Entity {
 				spr.anim.stopWithStateAnims();
 				if( hasSuperCharge ) {
 
+					// Super attack
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					game.addSlowMo("powerAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
 						fx.flashBangEaseInS(Assets.blue(), 0.3, 1);
 						lockControlS(0.3);
-						for(e in getVictims()) {
+						for(e in getVictims(2)) {
 							e.cancelAction();
 							if( hasSuperCharge && e.armor>0 )
 								e.loseArmor();
-							e.hit(2, this);
+							else
+								e.hit(4, this);
 							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
-							e.setAffectS(Stun, 2);
+							e.setAffectS(Stun, 1.5);
 							e.cd.setS("pushOthers",1);
 							hasSuperCharge = false;
 						}
@@ -206,11 +209,12 @@ class Hero extends Entity {
 					comboCpt = 0;
 				}
 				else {
+
 					switch comboCpt {
-						case 0,1:
+						case 0,1: // Punch A
 							chargeAction("punchA", 0.1, ()->{
 								lockControlS(0.06);
-								for(e in getVictims()) {
+								for(e in getVictims(1)) {
 									e.cancelAction();
 									e.hit(1,this);
 									e.setAffectS(Stun,0.3);
@@ -220,10 +224,10 @@ class Hero extends Entity {
 							});
 							comboCpt++;
 
-						case 2:
+						case 2: // Punch B
 							chargeAction("punchB", 0.15, ()->{
 								lockControlS(0.1);
-								for(e in getVictims()) {
+								for(e in getVictims(1.3)) {
 									e.cancelAction();
 									e.hit(1,this);
 									e.setAffectS(Stun, 0.5);
@@ -235,7 +239,7 @@ class Hero extends Entity {
 							});
 							comboCpt++;
 
-						case 3:
+						case 3: // Kick
 							game.addSlowMo("heroKick", 0.3, 0.4);
 							dz = 0.12;
 							dx+=dir*0.1;
@@ -248,7 +252,7 @@ class Hero extends Entity {
 								camera.bump(dir*1, 0);
 								spr.anim.play(D.ent.kKickA_hit);
 
-								for(e in getVictims()) {
+								for(e in getVictims(1.5)) {
 									e.cancelAction();
 									e.hit(5,this);
 									e.cd.setS("pushOthers",1);
