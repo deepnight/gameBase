@@ -346,6 +346,10 @@ class Entity {
 		return !destroyed && life>0;
 	}
 
+	public inline function isLayingDown() {
+		return onGround && ( !isAlive() || getAffectRemainingS(Stun)>2 );
+	}
+
 	public inline function isMoving() {
 		return isAlive() && ( M.fabs(dxTotal)>=0.03 || M.fabs(dyTotal)>=0.03 );
 	}
@@ -722,6 +726,11 @@ class Entity {
 	public function mulAffectS(k:Affect, f:Float) {
 		if( hasAffect(k) )
 			setAffectS(k, getAffectRemainingS(k)*f, true);
+	}
+
+	/** Increase/reduce an Affect duration by an increment of `v` **/
+	public inline function incAffectS(k:Affect, v:Float) {
+		setAffectS(k, getAffectRemainingS(k)+v, true);
 	}
 
 	public function clearAffect(k:Affect) {

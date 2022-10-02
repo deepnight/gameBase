@@ -33,7 +33,6 @@ enum abstract State(Int) {
 /** Entity Affects have a limited duration in time and you can stack different affects. **/
 enum abstract Affect(Int) {
 	var Stun;
-	var LayDown;
 	var Dodge;
 	var Shield;
 }

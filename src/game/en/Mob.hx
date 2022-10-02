@@ -25,7 +25,7 @@ class Mob extends Entity {
 		outline.color = Assets.red();
 
 		spr.anim.registerStateAnim(D.ent.mFly, 10.2, ()->!onGround);
-		spr.anim.registerStateAnim(D.ent.mLay, 10.1, ()->hasAffect(LayDown) || !isAlive());
+		spr.anim.registerStateAnim(D.ent.mLay, 10.1, ()->isLayingDown());
 		spr.anim.registerStateAnim(D.ent.mStun, 10.0, ()->hasAffect(Stun));
 
 		spr.anim.registerStateAnim(D.ent.mWalk, 0.1, ()->isMoving());
@@ -57,11 +57,8 @@ class Mob extends Entity {
 		super.hit(dmg, from);
 		setSquashX(0.4);
 		blink(dmg==0 ? White : Red);
-		if( !isChargingAction() )
+		if( !isChargingAction() && !isLayingDown() )
 			spr.anim.playOverlap(D.ent.mHit);
-
-		if( onGround && hasAffect(LayDown) )
-			clearAffect(LayDown);
 	}
 
 	override function onDie() {
@@ -89,10 +86,8 @@ class Mob extends Entity {
 		camera.shakeS(0.3, 0.2);
 		setSquashX(0.7);
 
-		if( hasAffect(Stun) ) {
-			setAffectS(LayDown, 0.5);
-			setAffectS(Stun, getAffectRemainingS(Stun)+getAffectRemainingS(LayDown));
-		}
+		if( hasAffect(Stun) )
+			incAffectS(Stun, 0.5);
 
 		if( !cd.has("landBumpLimit") ) {
 			cd.setS("landBumpLimit",1.5);
@@ -105,7 +100,7 @@ class Mob extends Entity {
 	}
 
 	inline function aiLocked() {
-		return !isAlive() || hasAffect(Stun) || hasAffect(LayDown) || isChargingAction() || cd.has("aiLock");
+		return !isAlive() || hasAffect(Stun) || isChargingAction() || cd.has("aiLock");
 	}
 
 	inline function lockAiS(t:Float) {

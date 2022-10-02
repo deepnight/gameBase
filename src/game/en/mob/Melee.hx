@@ -9,7 +9,7 @@ class Melee extends Mob {
 
 	override function setAffectS(k:Affect, t:Float, allowLower:Bool = false) {
 		switch k {
-			case Stun,LayDown:
+			case Stun:
 				t *= 1-0.5*rankRatio;
 
 			case Dodge, Shield:

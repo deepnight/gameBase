@@ -19,7 +19,7 @@ class Hero extends Entity {
 		spr.set(Assets.entities);
 
 		spr.anim.registerStateAnim(D.ent.kFly, 10.2, ()->!onGround && !isAlive());
-		spr.anim.registerStateAnim(D.ent.kLay, 10.1, ()->hasAffect(LayDown) || !isAlive());
+		spr.anim.registerStateAnim(D.ent.kLay, 10.1, ()->isLayingDown());
 
 		spr.anim.registerStateAnim(D.ent.kDodgeEnd, 2.1, ()->hasAffect(Dodge) && getAffectRemainingS(Dodge)<=0.3);
 		spr.anim.registerStateAnim(D.ent.kDodgeDive, 2.0, ()->hasAffect(Dodge) && !onGround);
@@ -238,7 +238,6 @@ class Hero extends Entity {
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
 									e.setAffectS(Stun, 3.5);
-									e.setAffectS(LayDown, 3);
 								}
 							});
 							comboCpt = 0;
