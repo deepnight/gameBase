@@ -5,6 +5,7 @@ class Hero extends Entity {
 	var pressQueue : Map<GameAction, Float> = new Map();
 	var comboCpt = 0;
 	public var hasSuperCharge = false;
+	public var rage = 0;
 
 	public function new(d:Entity_PlayerStart) {
 		super();
@@ -26,6 +27,7 @@ class Hero extends Entity {
 		spr.anim.registerStateAnim(D.ent.kDodgeRoll, 2.0, ()->hasAffect(Dodge) && onGround);
 		spr.anim.registerStateAnim(D.ent.kDodgeCharge, 2.0, ()->isChargingAction("dodge"));
 
+		spr.anim.registerStateAnim(D.ent.kSuper_charge, 1, ()->isChargingAction("execute"));
 		spr.anim.registerStateAnim(D.ent.kKickA_charge, 1, ()->isChargingAction("kickA"));
 		spr.anim.registerStateAnim(D.ent.kPunchC_charge, 1, ()->isChargingAction("punchC"));
 		spr.anim.registerStateAnim(D.ent.kPunchB_charge, 1, ()->isChargingAction("punchB"));
@@ -33,6 +35,10 @@ class Hero extends Entity {
 		spr.anim.registerStateAnim(D.ent.kIdle, 0);
 
 		spr.anim.registerTransition(D.ent.kDodgeEnd, "*", D.ent.kDodgeEndToIdle);
+	}
+
+	public function addRage(n=1) {
+		rage+=n;
 	}
 
 	override function hit(dmg:Int, from:Null<Entity>) {
@@ -100,12 +106,12 @@ class Hero extends Entity {
 		super.postUpdate();
 
 		// Super charge outline
-		if( hasSuperCharge && isAlive() ) {
+		if( isChargingAction("execute") ) {
 			var mod = Std.int( game.stime / 0.1 ) % 3;
 			outline.color = switch mod {
-				case 0: Assets.blue();
+				case 0: Assets.green();
 				case 1: Assets.dark();
-				case 2: Assets.red();
+				case 2: Assets.blue();
 				case _: Assets.dark();
 			}
 		}
@@ -179,27 +185,28 @@ class Hero extends Entity {
 			if( isPressedOrQueued(Atk) ) {
 				mulVelocities(0.4);
 				spr.anim.stopWithStateAnims();
-				if( hasSuperCharge ) {
+				if( rage>0) {
 
 					// Super attack
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					game.addSlowMo("powerAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
-						fx.flashBangEaseInS(Assets.blue(), 0.3, 1);
+						fx.flashBangEaseInS(Assets.green(), 0.3, 1);
 						lockControlS(0.3);
 						for(e in getVictims(2)) {
 							e.cancelAction();
-							if( hasSuperCharge && e.armor>0 )
-								e.loseArmor();
-							else
-								e.hit(4, this);
+							e.addRageMarks(rage);
+							// if( hasSuperCharge && e.armor>0 )
+							// 	e.loseArmor();
+							// else
+							// e.hit(4, this);
 							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
 							e.setAffectS(Stun, 1.5);
 							e.cd.setS("pushOthers",1);
-							hasSuperCharge = false;
+							// superCharge = 0;
 						}
-						hasSuperCharge = false;
+						rage = 0;
 						game.addSlowMo("powerAtk", 0.5, 0.6);
 						dx += dir*0.2;
 						spr.anim.play(D.ent.kPunchC_hit);
@@ -216,7 +223,7 @@ class Hero extends Entity {
 								lockControlS(0.06);
 								for(e in getVictims(1)) {
 									e.cancelAction();
-									e.hit(1,this);
+									e.hit(0,this);
 									e.setAffectS(Stun,0.3);
 								}
 								dx += dir*0.02;
@@ -229,7 +236,7 @@ class Hero extends Entity {
 								lockControlS(0.1);
 								for(e in getVictims(1.3)) {
 									e.cancelAction();
-									e.hit(1,this);
+									e.hit(0,this);
 									e.setAffectS(Stun, 0.5);
 									e.bump(dir*0.04, 0);
 								}
@@ -254,10 +261,11 @@ class Hero extends Entity {
 
 								for(e in getVictims(1.5)) {
 									e.cancelAction();
-									e.hit(5,this);
+									e.hit(0,this);
 									e.cd.setS("pushOthers",1);
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
+									e.dropCharge = true;
 									e.setAffectS(Stun, 3.5);
 								}
 							});
@@ -275,6 +283,8 @@ class Hero extends Entity {
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
+
+		debug(rage);
 
 		if( hasAffect(Dodge) && onGround ) {
 			mulVelocities(0.95);

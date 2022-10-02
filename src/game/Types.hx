@@ -50,3 +50,7 @@ enum MobType {
 	MT_Gun;
 	MT_Trash;
 }
+
+enum ItemType {
+	RageCharge;
+}

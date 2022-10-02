@@ -67,6 +67,19 @@ class Level extends GameChildProcess {
 		data.l_Bg.render(tg);
 	}
 
+	public function darken() {
+		var m = new h3d.Matrix();
+		m.identity();
+		final v = 0.15;
+		m._11 = v;
+		m._22 = v;
+		m._33 = v;
+		root.filter = new h2d.filter.ColorMatrix(m);
+	}
+	public function undarken() {
+		root.filter = null;
+	}
+
 	override function postUpdate() {
 		super.postUpdate();
 

@@ -7,8 +7,8 @@ class Melee extends Mob {
 	public function new(d) {
 		super(d);
 
-		armor = 1;
-		initLife(12);
+		// armor = 1;
+		initLife(3);
 
 		spr.anim.registerStateAnim(D.ent.mDash, 1, ()->cd.has("dashing"));
 		spr.anim.registerStateAnim(D.ent.mDash_charge, 1, ()->isChargingAction("dash"));
@@ -88,7 +88,10 @@ class Melee extends Mob {
 			final s = 0.06;
 			dx += Math.cos(dashAng)*s;
 			dy += Math.sin(dashAng)*s;
+			weaponRot += 0.6;
 		}
+		else
+			weaponRot = 0;
 
 		if( !aiLocked() && hero.isAlive() ) {
 			// Follow hero

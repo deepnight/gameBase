@@ -5,6 +5,9 @@ class Mob extends Entity {
 	var data : Entity_Mob;
 	var weapon : Null<HSprite>;
 	var weaponRot = 0.;
+
+	public var rageCharges = 0;
+	public var dropCharge = false;
 	public var rank = 0;
 	public var rankRatio(get,never) : Float;
 		inline function get_rankRatio() return rank/2;
@@ -38,6 +41,16 @@ class Mob extends Entity {
 
 		if( weapon!=null )
 			game.scroller.over(weapon);
+	}
+
+	public function addRageMarks(n:Int) {
+		rageCharges+=n;
+		debug(rageCharges);
+	}
+
+	public function clearRage() {
+		rageCharges = 0;
+		debug();
 	}
 
 	public function increaseRank() {
@@ -107,6 +120,16 @@ class Mob extends Entity {
 			cd.setS("landBumpLimit",1.5);
 			dz = 0.12;
 		}
+
+		if( dropCharge ) {
+			dropCharge = false;
+			dropItem(RageCharge);
+		}
+	}
+
+	function dropItem(i:ItemType) {
+		new Item(attachX, attachY, i);
+		fx.dotsExplosionExample(centerX, centerY, Assets.green());
 	}
 
 	override function canMoveToTarget():Bool {
@@ -117,7 +140,7 @@ class Mob extends Entity {
 		return !isAlive() || hasAffect(Stun) || isChargingAction() || cd.has("aiLock");
 	}
 
-	inline function lockAiS(t:Float) {
+	public inline function lockAiS(t:Float) {
 		cd.setS("aiLock",t,false);
 	}
 
@@ -127,7 +150,12 @@ class Mob extends Entity {
 		// Bounce on walls
 		if( !onGround ) {
 			if( cd.has("pushOthers") )
-			hit(1,null);
+				hit(0,null);
+
+			if( dropCharge ) {
+				dropCharge = false;
+				dropItem(RageCharge);
+			}
 
 			if( wallX!=0 )
 				bdx = -bdx*0.6;
@@ -148,6 +176,8 @@ class Mob extends Entity {
 				e.dz = rnd(0.15,0.2);
 				e.cd.setS("pushOthers",0.5);
 				e.cd.setS("mobBumpLock",0.2);
+				if( dropCharge )
+					dropItem(RageCharge);
 			}
 		}
 	}
@@ -168,6 +198,7 @@ class Mob extends Entity {
 			spr.alpha = 0.6;
 
 		if( weapon!=null ) {
+			weapon.colorMatrix = colorMatrix;
 			var a = Assets.getAttach(spr.groupName, spr.frame);
 			weapon.visible = a!=null;
 			if( a!=null ) {

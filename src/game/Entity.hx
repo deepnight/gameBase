@@ -226,7 +226,7 @@ class Entity {
 	var shadow : HSprite;
 	var outline : dn.heaps.filter.PixelOutline;
 
-	var circularWeightBase = 1.;
+	var circularWeightBase = 0;
 	var circularRadius = 4;
 
 
@@ -663,7 +663,7 @@ class Entity {
 	}
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
-	function chargeAction(id:String, sec:Float, complete:Void->Void, ?chargeCb:Float->Void) {
+	public function chargeAction(id:String, sec:Float, complete:Void->Void, ?chargeCb:Float->Void) {
 		if( !isAlive() )
 			return;
 
@@ -862,6 +862,7 @@ class Entity {
         spr.scaleY = sprScaleY * sprSquashY;
 		spr.visible = entityVisible;
 
+		outline.alpha = isDarkened ? 0.2 : 1;
 		outline.bottom = !onGround;
 
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
@@ -914,6 +915,21 @@ class Entity {
 			debugBounds.x = Std.int(attachX);
 			debugBounds.y = Std.int(attachY);
 		}
+	}
+
+	var isDarkened = false;
+	public function darken() {
+		isDarkened = true;
+		colorMatrix.identity();
+		final v = 0.15;
+		colorMatrix._11 = v;
+		colorMatrix._22 = v;
+		colorMatrix._33 = v;
+	}
+
+	public function undarken() {
+		isDarkened = false;
+		colorMatrix.identity();
 	}
 
 	/**

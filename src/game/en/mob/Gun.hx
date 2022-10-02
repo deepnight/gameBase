@@ -17,8 +17,8 @@ class Gun extends Mob {
 	public function new(d) {
 		super(d);
 
-		armor = 1;
-		initLife(5);
+		// armor = 1;
+		initLife(2);
 
 		spr.anim.registerStateAnim(D.ent.mGun_hold, 2, ()->pendingBullets>0);
 		spr.anim.registerStateAnim(D.ent.mGun_reload, 1, ()->isChargingAction("reload"));

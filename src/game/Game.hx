@@ -221,7 +221,39 @@ class Game extends AppChildProcess {
 	function onCycle() {
 		fx.flashBangEaseInS(Blue, 0.2, 0.3);
 		hero.hasSuperCharge = true;
+		cd.setS("gameTimeLock",1);
 		gameTimeS = 0;
+
+		hero.cancelAction();
+		hero.spr.anim.stopWithStateAnims();
+		level.darken();
+		for(e in en.Mob.ALL) {
+			e.cancelAction();
+			e.cancelMove();
+			e.lockAiS(1);
+			if( e.rageCharges==0 )
+				e.darken();
+		}
+
+		addSlowMo("execute", 1, 0.4);
+		hero.chargeAction("execute", 1, ()->{
+			camera.shakeS(1, 0.3);
+			camera.bumpZoom(0.2);
+			hero.spr.anim.play(D.ent.kSuper_hit);
+			for(e in en.Mob.ALL) {
+				e.undarken();
+				if( e.rageCharges==0 )
+					continue;
+
+				e.setAffectS(Stun, 2);
+				e.bumpAwayFrom(hero, 0.6);
+				e.hit(e.rageCharges, hero);
+				e.clearRage();
+				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
+			}
+			level.undarken();
+		});
+
 	}
 
 	/** Loop that happens at the end of the frame **/
@@ -233,7 +265,8 @@ class Game extends AppChildProcess {
 		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
 
-		gameTimeS += tmod * 1/Const.FPS;
+		if( !cd.has("gameTimeLock") )
+			gameTimeS += tmod * 1/Const.FPS;
 		if( gameTimeS>=Const.CYCLE_S )
 			onCycle();
 		hud.setTimeS(gameTimeS);
