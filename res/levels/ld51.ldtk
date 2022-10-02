@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "1.1.4",
 	"appBuildId": 462327,
-	"nextUid": 88,
+	"nextUid": 89,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
@@ -1044,6 +1044,35 @@
 					"allowedRefs": "OnlySame",
 					"allowedRefTags": [],
 					"tilesetUid": null
+				},
+				{
+					"identifier": "yOff",
+					"__type": "Int",
+					"uid": 88,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [-6] },
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": null
 				}
 			]
 		},
@@ -1222,11 +1251,13 @@
 				{ "ids": [91,107,92,108,93,109], "mode": "Random" },
 				{ "ids": [123,139,124,140], "mode": "Random" },
 				{ "ids": [126,142,127,143], "mode": "Random" },
-				{ "ids": [21,22], "mode": "Random" }
+				{ "ids": [21,22], "mode": "Random" },
+				{ "ids": [158,174,190,159,175,191], "mode": "Random" },
+				{ "ids": [37,38], "mode": "Random" }
 			],
 			"cachedPixelData": {
 				"opaqueTiles": "1111100000011100110010001001110000000000100111001110000000000000111000111000000000000011100111000000001110011100100000000001101100000000000110110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-				"averageColors": "f525f525f525f525f5256c756c750000000000000000f846f645f85684250000f935f93500000000f525662566250000f43500000000f646f224f6468425000055250000000000000000000000000000f53500000000f956f846f94684250000f435f435f5350000000000000000000000000000000084258425842534250000f525f435f525000000000000f425f425f4250000000000000000000000000000000000000000000000000000f425f425f42500000000f335f335f335000000006d964a968c768e96878c0000f425f425f42500000000f335f335f33500000000fb650000000000000000000000000000000000000000f336f3360000f355f35600000000000000000000000000000000000000000000f335f3360000f355f3550000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"averageColors": "f525f525f525f525f5256c756c750000000000000000f846f645f85684250000f935f93500000000f525462446240000f43500000000f646f224f6468425000055250000000000000000462446240000f53500000000f956f846f94684250000f435f435f5350000000000000000000000000000000084258425842534250000f525f435f525000000000000f425f425f4250000000000000000000000000000000000000000000000000000f425f425f42500000000f335f335f335000000006d964a868c768e96878c0000f425f425f42500000000f335f335f33500000000fb650000000000000000000000000000000000000000f336f3360000f355f35500000000000000000000000000000000000000000000f335f3360000f355f355000000000000000000000000000000000000000000000000000000000edc0fdb000000000000000000000000000000000000000000000000000000000ebb0fc7000000000000000000000000000000000000000000000000000000000edd0e850000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		},
 		{
@@ -1406,7 +1437,8 @@
 								}] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -1432,7 +1464,8 @@
 								}] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -1546,7 +1579,8 @@
 									"params": [ false ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [null] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [null] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -1572,7 +1606,8 @@
 									"params": [ false ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [null] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [null] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -2010,7 +2045,8 @@
 								}] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2036,7 +2072,8 @@
 								}] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2065,7 +2102,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2120,7 +2158,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2149,7 +2188,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2178,7 +2218,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2201,7 +2242,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2224,7 +2266,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2247,7 +2290,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2270,7 +2314,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2325,7 +2370,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -2354,7 +2400,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -2997,6 +3044,20 @@
 							]
 						},
 						{
+							"__identifier": "DebugStart",
+							"__grid": [1,6],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 208, "y": 16, "w": 16, "h": 16 },
+							"__smartColor": "#FF00FF",
+							"iid": "ffa8ef74-2a00-11ed-bcca-1fc19f7ec10d",
+							"width": 16,
+							"height": 16,
+							"defUid": 73,
+							"px": [24,104],
+							"fieldInstances": []
+						},
+						{
 							"__identifier": "Destructible",
 							"__grid": [12,3],
 							"__pivot": [0.5,1],
@@ -3022,7 +3083,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3051,7 +3113,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3080,7 +3143,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3109,7 +3173,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3138,7 +3203,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3167,7 +3233,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3190,7 +3257,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3213,7 +3281,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -3280,122 +3349,6 @@
 							]
 						},
 						{
-							"__identifier": "Destructible",
-							"__grid": [9,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 },
-							"__smartColor": "#EF7D57",
-							"iid": "0248f940-2a00-11ed-bcca-5d48609c2615",
-							"width": 16,
-							"height": 16,
-							"defUid": 36,
-							"px": [152,80],
-							"fieldInstances": [
-								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["16,96,16,16"]
-								}] },
-								{ "__identifier": "empty", "__value": true, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "playerDestructible", "__value": true, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
-							]
-						},
-						{
-							"__identifier": "Destructible",
-							"__grid": [8,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 },
-							"__smartColor": "#EF7D57",
-							"iid": "036d06e0-2a00-11ed-bcca-b922e52ed883",
-							"width": 16,
-							"height": 16,
-							"defUid": 36,
-							"px": [136,80],
-							"fieldInstances": [
-								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["16,96,16,16"]
-								}] },
-								{ "__identifier": "empty", "__value": true, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "playerDestructible", "__value": true, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
-							]
-						},
-						{
-							"__identifier": "Destructible",
-							"__grid": [9,7],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 },
-							"__smartColor": "#EF7D57",
-							"iid": "0409bc10-2a00-11ed-bcca-07149917c01e",
-							"width": 16,
-							"height": 16,
-							"defUid": 36,
-							"px": [152,128],
-							"fieldInstances": [
-								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["16,96,16,16"]
-								}] },
-								{ "__identifier": "empty", "__value": true, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "playerDestructible", "__value": true, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
-							]
-						},
-						{
-							"__identifier": "Destructible",
-							"__grid": [8,7],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 },
-							"__smartColor": "#EF7D57",
-							"iid": "04754f20-2a00-11ed-bcca-13601d971391",
-							"width": 16,
-							"height": 16,
-							"defUid": 36,
-							"px": [136,128],
-							"fieldInstances": [
-								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 16, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["16,96,16,16"]
-								}] },
-								{ "__identifier": "empty", "__value": true, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "playerDestructible", "__value": true, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] },
-								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
-							]
-						},
-						{
 							"__identifier": "Door",
 							"__grid": [0,5],
 							"__pivot": [0,0],
@@ -3411,6 +3364,102 @@
 								"id": "V_Bool",
 								"params": [ false ]
 							}] }]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [11,4],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 },
+							"__smartColor": "#EF7D57",
+							"iid": "3b2edfa0-2a00-11ed-bcca-59853b5d405c",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,80],
+							"fieldInstances": [
+								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["0,96,16,16"]
+								}] },
+								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
+								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
+								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [null] }
+							]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [11,7],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 },
+							"__smartColor": "#EF7D57",
+							"iid": "3df7eab0-2a00-11ed-bcca-ed737e985c63",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [184,128],
+							"fieldInstances": [
+								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["0,96,16,16"]
+								}] },
+								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
+								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
+								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": 0, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [{ "id": "V_Int", "params": [0] }] }
+							]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [19,4],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 },
+							"__smartColor": "#EF7D57",
+							"iid": "40afb7b0-2a00-11ed-bcca-f57a513e5213",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [312,80],
+							"fieldInstances": [
+								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["0,96,16,16"]
+								}] },
+								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
+								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
+								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [null] }
+							]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [19,7],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 },
+							"__smartColor": "#EF7D57",
+							"iid": "41637750-2a00-11ed-bcca-e726f2ebd994",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [312,128],
+							"fieldInstances": [
+								{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 96, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["0,96,16,16"]
+								}] },
+								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [null] },
+								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
+								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": 0, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [{ "id": "V_Int", "params": [0] }] }
+							]
 						}
 					]
 				},
@@ -3437,50 +3486,135 @@
 					"seed": 1669949,
 					"overrideTilesetUid": null,
 					"gridTiles": [
-						{ "px": [192,64], "src": [96,16], "f": 2, "t": 22, "d": [112] },
-						{ "px": [208,64], "src": [80,16], "f": 2, "t": 21, "d": [113] },
-						{ "px": [224,64], "src": [96,16], "f": 2, "t": 22, "d": [114] },
-						{ "px": [240,64], "src": [80,16], "f": 2, "t": 21, "d": [115] },
-						{ "px": [256,64], "src": [80,16], "f": 2, "t": 21, "d": [116] },
-						{ "px": [272,64], "src": [80,16], "f": 2, "t": 21, "d": [117] },
-						{ "px": [288,64], "src": [96,16], "f": 2, "t": 22, "d": [118] },
-						{ "px": [16,80], "src": [96,16], "f": 2, "t": 22, "d": [126] },
-						{ "px": [32,80], "src": [96,16], "f": 2, "t": 22, "d": [127] },
-						{ "px": [48,80], "src": [96,16], "f": 2, "t": 22, "d": [128] },
-						{ "px": [64,80], "src": [80,16], "f": 2, "t": 21, "d": [129] },
-						{ "px": [80,80], "src": [80,16], "f": 2, "t": 21, "d": [130] },
-						{ "px": [96,80], "src": [96,16], "f": 2, "t": 22, "d": [131] },
-						{ "px": [112,80], "src": [80,16], "f": 2, "t": 21, "d": [132] },
-						{ "px": [128,80], "src": [96,16], "f": 2, "t": 22, "d": [133] },
-						{ "px": [144,80], "src": [80,16], "f": 2, "t": 21, "d": [134] },
-						{ "px": [160,80], "src": [80,16], "f": 2, "t": 21, "d": [135] },
-						{ "px": [176,80], "src": [80,16], "f": 2, "t": 21, "d": [136] },
-						{ "px": [304,80], "src": [96,16], "f": 2, "t": 22, "d": [144] },
-						{ "px": [320,80], "src": [96,16], "f": 2, "t": 22, "d": [145] },
-						{ "px": [336,80], "src": [96,16], "f": 2, "t": 22, "d": [146] },
-						{ "px": [352,80], "src": [96,16], "f": 2, "t": 22, "d": [147] },
-						{ "px": [16,96], "src": [96,16], "f": 0, "t": 22, "d": [151] },
-						{ "px": [32,96], "src": [96,16], "f": 0, "t": 22, "d": [152] },
-						{ "px": [48,96], "src": [80,16], "f": 0, "t": 21, "d": [153] },
-						{ "px": [64,96], "src": [96,16], "f": 0, "t": 22, "d": [154] },
-						{ "px": [80,96], "src": [80,16], "f": 0, "t": 21, "d": [155] },
-						{ "px": [96,96], "src": [80,16], "f": 0, "t": 21, "d": [156] },
-						{ "px": [112,96], "src": [80,16], "f": 0, "t": 21, "d": [157] },
-						{ "px": [128,96], "src": [80,16], "f": 0, "t": 21, "d": [158] },
-						{ "px": [144,96], "src": [80,16], "f": 0, "t": 21, "d": [159] },
-						{ "px": [160,96], "src": [96,16], "f": 0, "t": 22, "d": [160] },
-						{ "px": [176,96], "src": [96,16], "f": 0, "t": 22, "d": [161] },
-						{ "px": [304,96], "src": [96,16], "f": 0, "t": 22, "d": [169] },
-						{ "px": [320,96], "src": [96,16], "f": 0, "t": 22, "d": [170] },
-						{ "px": [336,96], "src": [96,16], "f": 0, "t": 22, "d": [171] },
-						{ "px": [352,96], "src": [96,16], "f": 0, "t": 22, "d": [172] },
-						{ "px": [192,112], "src": [96,16], "f": 0, "t": 22, "d": [187] },
-						{ "px": [208,112], "src": [80,16], "f": 0, "t": 21, "d": [188] },
-						{ "px": [224,112], "src": [80,16], "f": 0, "t": 21, "d": [189] },
-						{ "px": [240,112], "src": [80,16], "f": 0, "t": 21, "d": [190] },
-						{ "px": [256,112], "src": [96,16], "f": 0, "t": 22, "d": [191] },
-						{ "px": [272,112], "src": [80,16], "f": 0, "t": 21, "d": [192] },
-						{ "px": [288,112], "src": [80,16], "f": 0, "t": 21, "d": [193] }
+						{ "px": [48,16], "src": [224,144], "f": 0, "t": 158, "d": [28] },
+						{ "px": [192,16], "src": [240,144], "f": 0, "t": 159, "d": [37] },
+						{ "px": [48,32], "src": [224,176], "f": 0, "t": 190, "d": [53] },
+						{ "px": [176,32], "src": [240,160], "f": 0, "t": 175, "d": [61] },
+						{ "px": [192,32], "src": [240,144], "f": 0, "t": 159, "d": [62] },
+						{ "px": [256,32], "src": [224,160], "f": 0, "t": 174, "d": [66] },
+						{ "px": [272,32], "src": [224,176], "f": 0, "t": 190, "d": [67] },
+						{ "px": [288,32], "src": [240,160], "f": 0, "t": 175, "d": [68] },
+						{ "px": [320,32], "src": [240,176], "f": 0, "t": 191, "d": [70] },
+						{ "px": [336,32], "src": [224,144], "f": 0, "t": 158, "d": [71] },
+						{ "px": [16,48], "src": [240,176], "f": 0, "t": 191, "d": [76] },
+						{ "px": [32,48], "src": [224,144], "f": 0, "t": 158, "d": [77] },
+						{ "px": [32,48], "src": [240,144], "f": 0, "t": 159, "d": [77] },
+						{ "px": [48,48], "src": [240,160], "f": 0, "t": 175, "d": [78] },
+						{ "px": [48,48], "src": [224,160], "f": 0, "t": 174, "d": [78] },
+						{ "px": [48,48], "src": [240,176], "f": 0, "t": 191, "d": [78] },
+						{ "px": [64,48], "src": [240,160], "f": 0, "t": 175, "d": [79] },
+						{ "px": [64,48], "src": [240,144], "f": 0, "t": 159, "d": [79] },
+						{ "px": [80,48], "src": [240,176], "f": 0, "t": 191, "d": [80] },
+						{ "px": [80,48], "src": [224,160], "f": 0, "t": 174, "d": [80] },
+						{ "px": [96,48], "src": [224,176], "f": 0, "t": 190, "d": [81] },
+						{ "px": [96,48], "src": [240,160], "f": 0, "t": 175, "d": [81] },
+						{ "px": [112,48], "src": [224,144], "f": 0, "t": 158, "d": [82] },
+						{ "px": [112,48], "src": [240,160], "f": 0, "t": 175, "d": [82] },
+						{ "px": [128,48], "src": [224,144], "f": 0, "t": 158, "d": [83] },
+						{ "px": [128,48], "src": [224,160], "f": 0, "t": 174, "d": [83] },
+						{ "px": [144,48], "src": [240,160], "f": 0, "t": 175, "d": [84] },
+						{ "px": [144,48], "src": [240,176], "f": 0, "t": 191, "d": [84] },
+						{ "px": [160,48], "src": [224,160], "f": 0, "t": 174, "d": [85] },
+						{ "px": [160,48], "src": [224,176], "f": 0, "t": 190, "d": [85] },
+						{ "px": [160,48], "src": [224,144], "f": 0, "t": 158, "d": [85] },
+						{ "px": [176,48], "src": [224,176], "f": 0, "t": 190, "d": [86] },
+						{ "px": [192,48], "src": [224,176], "f": 0, "t": 190, "d": [87] },
+						{ "px": [192,48], "src": [80,16], "f": 0, "t": 21, "d": [87] },
+						{ "px": [208,48], "src": [80,16], "f": 0, "t": 21, "d": [88] },
+						{ "px": [224,48], "src": [80,16], "f": 0, "t": 21, "d": [89] },
+						{ "px": [240,48], "src": [96,16], "f": 0, "t": 22, "d": [90] },
+						{ "px": [256,48], "src": [96,16], "f": 0, "t": 22, "d": [91] },
+						{ "px": [272,48], "src": [80,16], "f": 0, "t": 21, "d": [92] },
+						{ "px": [288,48], "src": [224,176], "f": 0, "t": 190, "d": [93] },
+						{ "px": [288,48], "src": [80,16], "f": 0, "t": 21, "d": [93] },
+						{ "px": [304,48], "src": [224,160], "f": 0, "t": 174, "d": [94] },
+						{ "px": [320,48], "src": [224,160], "f": 0, "t": 174, "d": [95] },
+						{ "px": [336,48], "src": [224,144], "f": 0, "t": 158, "d": [96] },
+						{ "px": [352,48], "src": [224,144], "f": 0, "t": 158, "d": [97] },
+						{ "px": [16,64], "src": [80,16], "f": 0, "t": 21, "d": [101] },
+						{ "px": [32,64], "src": [80,16], "f": 0, "t": 21, "d": [102] },
+						{ "px": [48,64], "src": [96,16], "f": 0, "t": 22, "d": [103] },
+						{ "px": [64,64], "src": [240,144], "f": 0, "t": 159, "d": [104] },
+						{ "px": [64,64], "src": [80,16], "f": 0, "t": 21, "d": [104] },
+						{ "px": [80,64], "src": [96,16], "f": 0, "t": 22, "d": [105] },
+						{ "px": [96,64], "src": [96,16], "f": 0, "t": 22, "d": [106] },
+						{ "px": [112,64], "src": [80,16], "f": 0, "t": 21, "d": [107] },
+						{ "px": [128,64], "src": [96,16], "f": 0, "t": 22, "d": [108] },
+						{ "px": [144,64], "src": [80,16], "f": 0, "t": 21, "d": [109] },
+						{ "px": [160,64], "src": [96,16], "f": 0, "t": 22, "d": [110] },
+						{ "px": [176,64], "src": [80,16], "f": 0, "t": 21, "d": [111] },
+						{ "px": [176,64], "src": [80,32], "f": 1, "t": 37, "d": [111] },
+						{ "px": [304,64], "src": [96,16], "f": 0, "t": 22, "d": [119] },
+						{ "px": [304,64], "src": [96,32], "f": 0, "t": 38, "d": [119] },
+						{ "px": [320,64], "src": [80,16], "f": 0, "t": 21, "d": [120] },
+						{ "px": [336,64], "src": [224,144], "f": 0, "t": 158, "d": [121] },
+						{ "px": [336,64], "src": [96,16], "f": 0, "t": 22, "d": [121] },
+						{ "px": [16,112], "src": [80,16], "f": 2, "t": 21, "d": [176] },
+						{ "px": [32,112], "src": [80,16], "f": 2, "t": 21, "d": [177] },
+						{ "px": [48,112], "src": [240,176], "f": 0, "t": 191, "d": [178] },
+						{ "px": [48,112], "src": [96,16], "f": 2, "t": 22, "d": [178] },
+						{ "px": [64,112], "src": [224,176], "f": 0, "t": 190, "d": [179] },
+						{ "px": [64,112], "src": [80,16], "f": 2, "t": 21, "d": [179] },
+						{ "px": [80,112], "src": [80,16], "f": 2, "t": 21, "d": [180] },
+						{ "px": [96,112], "src": [80,16], "f": 2, "t": 21, "d": [181] },
+						{ "px": [112,112], "src": [80,16], "f": 2, "t": 21, "d": [182] },
+						{ "px": [128,112], "src": [80,16], "f": 2, "t": 21, "d": [183] },
+						{ "px": [144,112], "src": [96,16], "f": 2, "t": 22, "d": [184] },
+						{ "px": [160,112], "src": [96,16], "f": 2, "t": 22, "d": [185] },
+						{ "px": [176,112], "src": [96,16], "f": 2, "t": 22, "d": [186] },
+						{ "px": [176,112], "src": [96,32], "f": 1, "t": 38, "d": [186] },
+						{ "px": [304,112], "src": [96,16], "f": 2, "t": 22, "d": [194] },
+						{ "px": [304,112], "src": [80,32], "f": 0, "t": 37, "d": [194] },
+						{ "px": [320,112], "src": [224,176], "f": 0, "t": 190, "d": [195] },
+						{ "px": [320,112], "src": [96,16], "f": 2, "t": 22, "d": [195] },
+						{ "px": [336,112], "src": [240,160], "f": 0, "t": 175, "d": [196] },
+						{ "px": [336,112], "src": [96,16], "f": 2, "t": 22, "d": [196] },
+						{ "px": [16,128], "src": [224,144], "f": 0, "t": 158, "d": [201] },
+						{ "px": [32,128], "src": [240,160], "f": 0, "t": 175, "d": [202] },
+						{ "px": [32,128], "src": [224,160], "f": 0, "t": 174, "d": [202] },
+						{ "px": [48,128], "src": [224,144], "f": 0, "t": 158, "d": [203] },
+						{ "px": [48,128], "src": [240,144], "f": 0, "t": 159, "d": [203] },
+						{ "px": [64,128], "src": [240,160], "f": 0, "t": 175, "d": [204] },
+						{ "px": [64,128], "src": [240,144], "f": 0, "t": 159, "d": [204] },
+						{ "px": [80,128], "src": [240,160], "f": 0, "t": 175, "d": [205] },
+						{ "px": [80,128], "src": [224,144], "f": 0, "t": 158, "d": [205] },
+						{ "px": [96,128], "src": [240,176], "f": 0, "t": 191, "d": [206] },
+						{ "px": [96,128], "src": [224,176], "f": 0, "t": 190, "d": [206] },
+						{ "px": [96,128], "src": [240,144], "f": 0, "t": 159, "d": [206] },
+						{ "px": [112,128], "src": [240,144], "f": 0, "t": 159, "d": [207] },
+						{ "px": [112,128], "src": [240,160], "f": 0, "t": 175, "d": [207] },
+						{ "px": [128,128], "src": [240,160], "f": 0, "t": 175, "d": [208] },
+						{ "px": [128,128], "src": [240,144], "f": 0, "t": 159, "d": [208] },
+						{ "px": [128,128], "src": [240,176], "f": 0, "t": 191, "d": [208] },
+						{ "px": [144,128], "src": [224,160], "f": 0, "t": 174, "d": [209] },
+						{ "px": [144,128], "src": [240,176], "f": 0, "t": 191, "d": [209] },
+						{ "px": [144,128], "src": [240,144], "f": 0, "t": 159, "d": [209] },
+						{ "px": [160,128], "src": [224,144], "f": 0, "t": 158, "d": [210] },
+						{ "px": [176,128], "src": [240,144], "f": 0, "t": 159, "d": [211] },
+						{ "px": [192,128], "src": [96,16], "f": 2, "t": 22, "d": [212] },
+						{ "px": [208,128], "src": [80,16], "f": 2, "t": 21, "d": [213] },
+						{ "px": [224,128], "src": [96,16], "f": 2, "t": 22, "d": [214] },
+						{ "px": [240,128], "src": [80,16], "f": 2, "t": 21, "d": [215] },
+						{ "px": [256,128], "src": [96,16], "f": 2, "t": 22, "d": [216] },
+						{ "px": [272,128], "src": [96,16], "f": 2, "t": 22, "d": [217] },
+						{ "px": [288,128], "src": [240,176], "f": 0, "t": 191, "d": [218] },
+						{ "px": [288,128], "src": [80,16], "f": 2, "t": 21, "d": [218] },
+						{ "px": [304,128], "src": [240,144], "f": 0, "t": 159, "d": [219] },
+						{ "px": [320,128], "src": [240,176], "f": 0, "t": 191, "d": [220] },
+						{ "px": [336,128], "src": [224,176], "f": 0, "t": 190, "d": [221] },
+						{ "px": [32,144], "src": [240,176], "f": 0, "t": 191, "d": [227] },
+						{ "px": [64,144], "src": [224,176], "f": 0, "t": 190, "d": [229] },
+						{ "px": [80,144], "src": [224,176], "f": 0, "t": 190, "d": [230] },
+						{ "px": [96,144], "src": [224,176], "f": 0, "t": 190, "d": [231] },
+						{ "px": [112,144], "src": [224,160], "f": 0, "t": 174, "d": [232] },
+						{ "px": [144,144], "src": [224,144], "f": 0, "t": 158, "d": [234] },
+						{ "px": [160,144], "src": [240,160], "f": 0, "t": 175, "d": [235] },
+						{ "px": [176,144], "src": [224,176], "f": 0, "t": 190, "d": [236] },
+						{ "px": [192,144], "src": [224,160], "f": 0, "t": 174, "d": [237] },
+						{ "px": [288,144], "src": [224,176], "f": 0, "t": 190, "d": [243] },
+						{ "px": [304,144], "src": [224,144], "f": 0, "t": 158, "d": [244] },
+						{ "px": [320,144], "src": [240,176], "f": 0, "t": 191, "d": [245] },
+						{ "px": [336,144], "src": [224,176], "f": 0, "t": 190, "d": [246] }
 					],
 					"entityInstances": []
 				},
@@ -3795,6 +3929,7 @@
 						{ "px": [144,48], "src": [224,128], "f": 0, "t": 142, "d": [84] },
 						{ "px": [160,48], "src": [240,128], "f": 0, "t": 143, "d": [85] },
 						{ "px": [176,48], "src": [224,128], "f": 0, "t": 142, "d": [86] },
+						{ "px": [176,48], "src": [224,48], "f": 3, "t": 62, "d": [86] },
 						{ "px": [192,48], "src": [224,128], "f": 0, "t": 142, "d": [87] },
 						{ "px": [192,48], "src": [208,48], "f": 2, "t": 61, "d": [87] },
 						{ "px": [208,48], "src": [240,128], "f": 0, "t": 143, "d": [88] },
@@ -3810,6 +3945,7 @@
 						{ "px": [288,48], "src": [224,112], "f": 0, "t": 126, "d": [93] },
 						{ "px": [288,48], "src": [176,48], "f": 2, "t": 59, "d": [93] },
 						{ "px": [304,48], "src": [224,128], "f": 0, "t": 142, "d": [94] },
+						{ "px": [304,48], "src": [224,48], "f": 2, "t": 62, "d": [94] },
 						{ "px": [320,48], "src": [224,112], "f": 0, "t": 126, "d": [95] },
 						{ "px": [336,48], "src": [224,128], "f": 0, "t": 142, "d": [96] },
 						{ "px": [352,48], "src": [224,112], "f": 0, "t": 126, "d": [97] },
@@ -3851,19 +3987,29 @@
 						{ "px": [320,64], "src": [208,48], "f": 2, "t": 61, "d": [120] },
 						{ "px": [336,64], "src": [240,128], "f": 0, "t": 143, "d": [121] },
 						{ "px": [336,64], "src": [176,48], "f": 2, "t": 59, "d": [121] },
-						{ "px": [352,64], "src": [240,112], "f": 0, "t": 127, "d": [122] },
-						{ "px": [352,64], "src": [192,48], "f": 2, "t": 60, "d": [122] },
+						{ "px": [352,64], "src": [16,16], "f": 0, "t": 17, "d": [122] },
 						{ "px": [16,80], "src": [192,96], "f": 0, "t": 108, "d": [126] },
+						{ "px": [16,80], "src": [176,48], "f": 0, "t": 59, "d": [126] },
 						{ "px": [32,80], "src": [192,96], "f": 0, "t": 108, "d": [127] },
+						{ "px": [32,80], "src": [208,48], "f": 0, "t": 61, "d": [127] },
 						{ "px": [48,80], "src": [192,80], "f": 0, "t": 92, "d": [128] },
+						{ "px": [48,80], "src": [176,48], "f": 0, "t": 59, "d": [128] },
 						{ "px": [64,80], "src": [192,96], "f": 0, "t": 108, "d": [129] },
+						{ "px": [64,80], "src": [208,48], "f": 0, "t": 61, "d": [129] },
 						{ "px": [80,80], "src": [192,80], "f": 0, "t": 92, "d": [130] },
+						{ "px": [80,80], "src": [192,48], "f": 0, "t": 60, "d": [130] },
 						{ "px": [96,80], "src": [176,80], "f": 0, "t": 91, "d": [131] },
+						{ "px": [96,80], "src": [208,48], "f": 0, "t": 61, "d": [131] },
 						{ "px": [112,80], "src": [192,80], "f": 0, "t": 92, "d": [132] },
+						{ "px": [112,80], "src": [192,48], "f": 0, "t": 60, "d": [132] },
 						{ "px": [128,80], "src": [208,96], "f": 0, "t": 109, "d": [133] },
+						{ "px": [128,80], "src": [208,48], "f": 0, "t": 61, "d": [133] },
 						{ "px": [144,80], "src": [176,96], "f": 0, "t": 107, "d": [134] },
+						{ "px": [144,80], "src": [192,48], "f": 0, "t": 60, "d": [134] },
 						{ "px": [160,80], "src": [176,96], "f": 0, "t": 107, "d": [135] },
+						{ "px": [160,80], "src": [176,48], "f": 0, "t": 59, "d": [135] },
 						{ "px": [176,80], "src": [176,96], "f": 0, "t": 107, "d": [136] },
+						{ "px": [176,80], "src": [192,48], "f": 0, "t": 60, "d": [136] },
 						{ "px": [192,80], "src": [176,128], "f": 0, "t": 139, "d": [137] },
 						{ "px": [208,80], "src": [208,80], "f": 0, "t": 93, "d": [138] },
 						{ "px": [224,80], "src": [208,96], "f": 0, "t": 109, "d": [139] },
@@ -3872,8 +4018,11 @@
 						{ "px": [272,80], "src": [176,96], "f": 0, "t": 107, "d": [142] },
 						{ "px": [288,80], "src": [176,128], "f": 0, "t": 139, "d": [143] },
 						{ "px": [304,80], "src": [176,128], "f": 0, "t": 139, "d": [144] },
+						{ "px": [304,80], "src": [192,48], "f": 0, "t": 60, "d": [144] },
 						{ "px": [320,80], "src": [176,128], "f": 0, "t": 139, "d": [145] },
+						{ "px": [320,80], "src": [192,48], "f": 0, "t": 60, "d": [145] },
 						{ "px": [336,80], "src": [176,112], "f": 0, "t": 123, "d": [146] },
+						{ "px": [336,80], "src": [176,48], "f": 0, "t": 59, "d": [146] },
 						{ "px": [352,80], "src": [192,112], "f": 0, "t": 124, "d": [147] },
 						{ "px": [16,96], "src": [176,96], "f": 0, "t": 107, "d": [151] },
 						{ "px": [32,96], "src": [208,96], "f": 0, "t": 109, "d": [152] },
@@ -3935,8 +4084,7 @@
 						{ "px": [320,112], "src": [208,48], "f": 0, "t": 61, "d": [195] },
 						{ "px": [336,112], "src": [240,112], "f": 0, "t": 127, "d": [196] },
 						{ "px": [336,112], "src": [176,48], "f": 0, "t": 59, "d": [196] },
-						{ "px": [352,112], "src": [240,112], "f": 0, "t": 127, "d": [197] },
-						{ "px": [352,112], "src": [176,48], "f": 0, "t": 59, "d": [197] },
+						{ "px": [352,112], "src": [16,16], "f": 0, "t": 17, "d": [197] },
 						{ "px": [0,128], "src": [224,112], "f": 0, "t": 126, "d": [200] },
 						{ "px": [16,128], "src": [240,112], "f": 0, "t": 127, "d": [201] },
 						{ "px": [32,128], "src": [240,128], "f": 0, "t": 143, "d": [202] },
@@ -3949,6 +4097,7 @@
 						{ "px": [144,128], "src": [240,112], "f": 0, "t": 127, "d": [209] },
 						{ "px": [160,128], "src": [240,128], "f": 0, "t": 143, "d": [210] },
 						{ "px": [176,128], "src": [240,112], "f": 0, "t": 127, "d": [211] },
+						{ "px": [176,128], "src": [224,48], "f": 1, "t": 62, "d": [211] },
 						{ "px": [192,128], "src": [224,112], "f": 0, "t": 126, "d": [212] },
 						{ "px": [192,128], "src": [176,48], "f": 0, "t": 59, "d": [212] },
 						{ "px": [208,128], "src": [224,112], "f": 0, "t": 126, "d": [213] },
@@ -3964,6 +4113,7 @@
 						{ "px": [288,128], "src": [240,112], "f": 0, "t": 127, "d": [218] },
 						{ "px": [288,128], "src": [176,48], "f": 0, "t": 59, "d": [218] },
 						{ "px": [304,128], "src": [240,112], "f": 0, "t": 127, "d": [219] },
+						{ "px": [304,128], "src": [224,48], "f": 0, "t": 62, "d": [219] },
 						{ "px": [320,128], "src": [224,128], "f": 0, "t": 142, "d": [220] },
 						{ "px": [336,128], "src": [224,128], "f": 0, "t": 142, "d": [221] },
 						{ "px": [352,128], "src": [240,128], "f": 0, "t": 143, "d": [222] },
@@ -4322,7 +4472,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4345,7 +4496,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4389,7 +4541,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4412,7 +4565,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4508,7 +4662,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4531,7 +4686,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4554,7 +4710,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -4577,7 +4734,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -5165,7 +5323,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5188,7 +5347,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5211,7 +5371,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5234,7 +5395,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5257,7 +5419,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5280,7 +5443,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5306,7 +5470,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5332,7 +5497,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -5358,7 +5524,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -5977,7 +6144,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6000,7 +6168,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6023,7 +6192,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6046,7 +6216,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6069,7 +6240,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6092,7 +6264,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6115,7 +6288,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6138,7 +6312,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6164,7 +6339,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6190,7 +6366,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6216,7 +6393,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6242,7 +6420,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -6831,7 +7010,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6854,7 +7034,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6877,7 +7058,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -6900,7 +7082,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7593,7 +7776,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7616,7 +7800,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7639,7 +7824,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7662,7 +7848,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7685,7 +7872,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7708,7 +7896,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7731,7 +7920,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7754,7 +7944,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -7808,7 +7999,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -8354,7 +8546,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8380,7 +8573,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8406,7 +8600,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8432,7 +8627,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8455,7 +8651,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8478,7 +8675,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -8501,7 +8699,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9400,7 +9599,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9429,7 +9629,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9573,7 +9774,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9599,7 +9801,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9625,7 +9828,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9648,7 +9852,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9671,7 +9876,8 @@
 								{ "__identifier": "empty", "__value": false, "__type": "Bool", "__tile": null, "defUid": 60, "realEditorValues": [] },
 								{ "__identifier": "playerDestructible", "__value": false, "__type": "Bool", "__tile": null, "defUid": 74, "realEditorValues": [null] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9697,7 +9903,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9723,7 +9930,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9749,7 +9957,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] }
+								{ "__identifier": "breakColor2", "__value": "#1AB85B", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [1751131] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9775,7 +9984,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9801,7 +10011,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9827,7 +10038,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9853,7 +10065,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -9879,7 +10092,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#0056FF", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [{ "id": "V_Int", "params": [22271] }] },
-								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] }
+								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -10856,7 +11070,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -10882,7 +11097,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -10908,7 +11124,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -10934,7 +11151,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						},
 						{
@@ -10960,7 +11178,8 @@
 									"params": [ true ]
 								}] },
 								{ "__identifier": "breakColor1", "__value": "#EF7D57", "__type": "Color", "__tile": null, "defUid": 75, "realEditorValues": [] },
-								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] }
+								{ "__identifier": "breakColor2", "__value": "#964023", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [] },
+								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
 						}
 					]
@@ -10987,7 +11206,16 @@
 					"autoLayerTiles": [],
 					"seed": 3377025,
 					"overrideTilesetUid": null,
-					"gridTiles": [],
+					"gridTiles": [
+						{ "px": [96,64], "src": [224,144], "f": 0, "t": 158, "d": [70] },
+						{ "px": [160,64], "src": [224,176], "f": 0, "t": 190, "d": [74] },
+						{ "px": [176,64], "src": [224,160], "f": 0, "t": 174, "d": [75] },
+						{ "px": [80,80], "src": [240,176], "f": 0, "t": 191, "d": [85] },
+						{ "px": [96,80], "src": [240,144], "f": 0, "t": 159, "d": [86] },
+						{ "px": [176,80], "src": [224,144], "f": 0, "t": 158, "d": [91] },
+						{ "px": [160,112], "src": [240,144], "f": 0, "t": 159, "d": [122] },
+						{ "px": [176,112], "src": [224,144], "f": 0, "t": 158, "d": [123] }
+					],
 					"entityInstances": []
 				},
 				{

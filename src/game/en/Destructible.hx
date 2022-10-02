@@ -13,7 +13,7 @@ class Destructible extends Entity {
 		initLife(4);
 		isEmpty = d.f_empty;
 		player = d.f_playerDestructible;
-		setPosPixel(d.pixelX, d.pixelY-G*0.5);
+		setPosPixel(d.pixelX, d.pixelY+d.f_yOff);
 		spr.set(Assets.world);
 		spr.useCustomTile( d.f_tile_getTile() );
 		circularRadius = 6;
