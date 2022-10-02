@@ -168,10 +168,13 @@ class Camera extends GameChildProcess {
 		target = null;
 	}
 
+	inline function getTargetX() return ( target.centerX + targetOffX )*0.5 + 0.5*( level.pxWid*0.5 );
+	inline function getTargetY() return ( target.centerY + targetOffY )*0.7 + 0.3*( level.pxHei*0.5 );
+
 	public function centerOnTarget() {
 		if( target!=null ) {
-			rawFocus.levelX = target.centerX + targetOffX;
-			rawFocus.levelY = target.centerY + targetOffY;
+			rawFocus.levelX = getTargetX();
+			rawFocus.levelY = getTargetY();
 		}
 	}
 
@@ -328,8 +331,8 @@ class Camera extends GameChildProcess {
 		if( target!=null ) {
 			var spdX = 0.015*trackingSpeed*zoom;
 			var spdY = 0.023*trackingSpeed*zoom;
-			var tx = target.centerX + targetOffX;
-			var ty = target.centerY + targetOffY;
+			var tx = getTargetX();
+			var ty = getTargetY();
 
 			var a = rawFocus.angTo(tx,ty);
 			var distX = M.fabs( tx - rawFocus.levelX );

@@ -2,15 +2,24 @@ package en;
 
 class Destructible extends Entity {
 	public static var ALL : FixedArray<Destructible> = new FixedArray(40);
+	var isEmpty = false;
+	var player = false;
+	var col1 : Col;
+	var col2 : Col;
 
 	public function new(d:Entity_Destructible) {
 		super();
 		ALL.push(this);
-		setPosPixel(d.pixelX, d.pixelY);
+		initLife(4);
+		isEmpty = d.f_empty;
+		player = d.f_playerDestructible;
+		setPosPixel(d.pixelX, d.pixelY-G*0.5);
 		spr.set(Assets.world);
 		spr.useCustomTile( d.f_tile_getTile() );
 		circularRadius = 8;
 		circularWeightBase = 5;
+		col1 = d.f_breakColor1_int;
+		col2 = d.f_breakColor2_int;
 	}
 
 	override function dispose() {
@@ -19,8 +28,9 @@ class Destructible extends Entity {
 	}
 
 	public function explode(?e:Entity) {
-		new Item(attachX, attachY, RageCharge);
-		fx.brokenProp(centerX, centerY, Col.inlineHex("#ef7d57"), e==null ? -999 : e.getMoveAng());
+		if( !isEmpty )
+			new Item(attachX, attachY, RageCharge);
+		fx.brokenProp(centerX, centerY, col1, col2, e==null ? -999 : M.PI+angTo(e));
 		destroy();
 	}
 
@@ -30,15 +40,25 @@ class Destructible extends Entity {
 				d.explode(e);
 	}
 
+	override function onDie() {
+		super.onDie();
+		explode(lastDmgSource);
+	}
+
 	override function postUpdate() {
 		super.postUpdate();
 		if( cd.has("shake") ) {
 			spr.x+=Math.cos(ftime*8)*1*cd.getRatio("shake");
+			spr.rotation = rnd(0,0.1,true);
 		}
+		else
+			spr.rotation = 0;
 	}
 
 	public function onPunch() {
-		cd.setS("shake", R.around(0.7));
+		if( player )
+			hit(1,hero);
+		cd.setS("shake", R.around(0.3));
 		dz = rnd(0, 0.12);
 	}
 

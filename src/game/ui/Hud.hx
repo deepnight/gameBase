@@ -29,6 +29,7 @@ class Hud extends GameChildProcess {
 	}
 
 	public inline function setTimeS(t:Float) {
+		timeBar.visible = t>=0;
 		timeBar.set(t, Const.CYCLE_S);
 	}
 

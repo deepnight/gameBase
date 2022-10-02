@@ -1,8 +1,11 @@
 package en;
 
 class Bullet extends Entity {
+	public static var ALL : FixedArray<Bullet> = new FixedArray(40);
+
 	public function new(x, y, ang:Float, speed:Float) {
 		super();
+		ALL.push(this);
 
 		setPosPixel(x,y);
 		zr = 0.5;
@@ -17,6 +20,11 @@ class Bullet extends Entity {
 		spr.set(Assets.entities);
 		spr.anim.playAndLoop(D.ent.bullet);
 		setPivots(0.5, 0.5);
+	}
+
+	override function dispose() {
+		super.dispose();
+		ALL.remove(this);
 	}
 
 	override function onTouchEntity(e:Entity) {

@@ -591,7 +591,7 @@ class Entity {
 	function useLdtkEntity(d:ldtk.Entity) {
 		setPosCase(d.cx, d.cy);
 		xr = 0.5;
-		yr = 0.5;
+		yr = 1;
 	}
 
 
@@ -913,6 +913,21 @@ class Entity {
 			debugBounds.x = Std.int(attachX);
 			debugBounds.y = Std.int(attachY);
 		}
+	}
+
+	public function popText(str:String, col:Col=0xffcc00) {
+		var f = new h2d.Flow();
+		game.scroller.add(f, Const.DP_UI);
+
+		var tf = new h2d.Text(Assets.fontPixel, f);
+		tf.text = str;
+		tf.textColor = col;
+
+		f.reflow();
+		f.x = Std.int( attachX-f.outerWidth*0.5 );
+		f.y = Std.int( attachY-hei*0.5-f.outerHeight*0.5 );
+
+		game.tw.createS(f.y, f.y-20, 0.1).end( ()->game.tw.createMs(f.alpha, 300|0, 1).end( f.remove ) );
 	}
 
 	var isDarkened = false;

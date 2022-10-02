@@ -54,9 +54,17 @@ class Level extends GameChildProcess {
 		invalidated = true;
 	}
 
+	public inline function setTempCollision(cx,cy, v) {
+		if( isValid(cx,cy) )
+			if( v )
+				marks.set(Coll_Temp, cx,cy);
+			else
+				marks.clearMarkAt(Coll_Temp, cx,cy);
+	}
+
 	/** Return TRUE if "Collisions" layer contains a collision value **/
 	public inline function hasCollision(cx,cy) : Bool {
-		return !isValid(cx,cy) ? true : marks.has(Coll_Wall, cx,cy);
+		return !isValid(cx,cy) ? true : marks.has(Coll_Wall, cx,cy) || marks.has(Coll_Temp, cx,cy);
 	}
 
 	/** Render current level**/

@@ -7,9 +7,9 @@ class Hero extends Entity {
 	public var hasSuperCharge = false;
 	public var rage(default,null) = 0;
 
-	public function new(d:Entity_PlayerStart) {
+	public function new(x,y) {
 		super();
-		useLdtkEntity(d);
+		setPosPixel(x,y);
 		// camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
@@ -117,6 +117,21 @@ class Hero extends Entity {
 			if( inHitRange(e, rangeMul) )
 				_atkVictims.push(e);
 		return _atkVictims;
+	}
+
+	override function onTouchWall(wallX:Int, wallY:Int) {
+		super.onTouchWall(wallX, wallY);
+		if( wallX>0 && cx>=level.cWid-1 )
+			game.exitToLevel(1,0);
+
+		if( wallX<0 && cx<=0 )
+			game.exitToLevel(-1,0);
+
+		if( wallY>0 && cy>=level.cHei-1 )
+			game.exitToLevel(0,1);
+
+		if( wallY<0 && cy<=0 )
+			game.exitToLevel(0,-1);
 	}
 
 	override function postUpdate() {

@@ -39,6 +39,7 @@ enum abstract Affect(Int) {
 
 enum abstract LevelMark(Int) to Int {
 	var Coll_Wall;
+	var Coll_Temp;
 }
 
 enum abstract LevelSubMark(Int) to Int {

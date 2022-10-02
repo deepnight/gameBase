@@ -57,7 +57,18 @@ class Game extends AppChildProcess {
 		interactive.onRelease = onMouseUp;
 		mouse = new LPoint();
 
-		startLevel(Assets.worldData.all_levels.Lab);
+		var start = Assets.worldData.all_levels.Entrance;
+		#if debug
+		for(l in Assets.worldData.levels)
+			if( l.l_Entities.all_DebugStart.length>0 ) {
+				var e = l.l_Entities.all_DebugStart[0];
+				start = l;
+				lastStartX = e.pixelX;
+				lastStartY = e.pixelY;
+				break;
+			}
+		#end
+		startLevel(start);
 	}
 
 
@@ -75,8 +86,24 @@ class Game extends AppChildProcess {
 		startLevel(level.data);
 	}
 
+	public function exitToLevel(dx:Int, dy:Int) {
+		var gx = level.data.worldX + hero.attachX + dx*2*G;
+		var gy = level.data.worldY + hero.attachY + dy*2*G;
+		for(l in Assets.worldData.levels) {
+			if( gx>=l.worldX && gx<l.worldX+l.pxWid && gy>=l.worldY && gy<l.worldY+l.pxHei ) {
+				var x = gx-l.worldX;
+				var y = gy-l.worldY;
+				startLevel(l, x, y);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/** Load a level **/
-	function startLevel(l:World.World_Level) {
+	var lastStartX = -1.;
+	var lastStartY = -1.;
+	function startLevel(l:World.World_Level, startX=-1., startY=-1.) {
 		if( level!=null )
 			level.destroy();
 		fx.clear();
@@ -87,13 +114,31 @@ class Game extends AppChildProcess {
 		cd.unset("gameTimeLock");
 
 		level = new Level(l);
-		camera.rawFocus.setLevelPixel(level.pxWid*0.5, level.pxHei*0.5);
+		// camera.rawFocus.setLevelPixel(level.pxWid*0.5, level.pxHei*0.5);
 
-		var d = level.data.l_Entities.all_PlayerStart[0];
-		hero = new Hero(d);
+		if( startX<0 && lastStartX<0 ) {
+			var d = level.data.l_Entities.all_PlayerStart[0];
+			hero = new Hero(d.pixelX, d.pixelY-G*0.5);
+		}
+		else {
+			if( startX<0 ) {
+				if( lastStartX<0 ) {
+					lastStartX = level.pxWid*0.5;
+					lastStartY = level.pxHei*0.5;
+				}
+				startX = lastStartX;
+				startY = lastStartY;
+			}
+			hero = new Hero(startX, startY);
+		}
+		lastStartX = hero.attachX;
+		lastStartY = hero.attachY;
+		camera.trackEntity(hero, true);
 
 		for(d in level.data.l_Entities.all_Destructible) new en.Destructible(d);
+		for(d in level.data.l_Entities.all_Door) new en.Door(d);
 		for(d in level.data.l_Entities.all_Message) new en.Message(d);
+		for(d in level.data.l_Entities.all_Item) new en.Item(d.pixelX, d.pixelY, d.f_type);
 
 		for(d in level.data.l_Entities.all_Mob)
 			switch d.f_type {
@@ -101,7 +146,6 @@ class Game extends AppChildProcess {
 				case MT_Gun: new en.mob.Gun(d);
 				case MT_Trash: new en.mob.Trash(d);
 			}
-
 
 		camera.centerOnTarget();
 		hud.onLevelStart();
@@ -257,25 +301,26 @@ class Game extends AppChildProcess {
 		hero.cancelVelocities();
 		hero.dodgeDx = hero.dodgeDy = 0;
 		hero.cancelAction();
-		hero.clearRage();
 		hero.dz = M.fmax(0,hero.dz);
 		hero.zr*=0.5;
 		hero.spr.anim.stopWithStateAnims();
+
 		level.darken();
+		for(e in Entity.ALL) e.darken();
+		for(e in en.Bullet.ALL) e.destroy();
+		hero.undarken();
+
 		for(e in en.Mob.ALL) {
 			e.cancelAction();
 			e.cancelMove();
 			e.lockAiS(1);
-			if( e.rageCharges==0 )
-				e.darken();
+			if( e.rageCharges>0 )
+				e.undarken();
 		}
 
-
-		for(e in en.Item.ALL)
-			e.destroy();
-
-		for(e in en.Destructible.ALL)
-			e.darken();
+		hero.clearRage();
+		// for(e in en.Item.ALL)
+		// 	e.destroy();
 
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
@@ -302,6 +347,7 @@ class Game extends AppChildProcess {
 					fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 				}
 				else {
+					e.popText("Not enough");
 					e.bumpAwayFrom(hero, 0.1);
 				}
 				e.clearRage();
@@ -311,6 +357,15 @@ class Game extends AppChildProcess {
 				e.undarken();
 
 			level.undarken();
+
+			// Open exits
+			if( en.Mob.alives()==0 )
+				for(e in en.Door.ALL)
+					if( e.data.f_openOnComplete ) {
+						e.blink(White);
+						e.open();
+					}
+
 		});
 
 	}
@@ -324,12 +379,15 @@ class Game extends AppChildProcess {
 		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
 
-		if( hero.isAlive() ) {
+		if( hero.isAlive() && en.Mob.alives()>0 ) {
 			if( !cd.has("gameTimeLock") )
 				gameTimeS += tmod * 1/Const.FPS;
 			if( gameTimeS>=Const.CYCLE_S )
 				onCycle();
 			hud.setTimeS(gameTimeS);
+		}
+		else {
+			hud.setTimeS(-1);
 		}
 
 		// Entities post-updates
@@ -388,8 +446,12 @@ class Game extends AppChildProcess {
 			#end
 
 			// Restart whole game
-			if( ca.isPressed(Restart) )
-				restartLevel();
+			if( ca.isPressed(Restart) ) {
+				if( ca.isKeyboardDown(K.SHIFT) )
+					App.ME.startGame();
+				else
+					restartLevel();
+			}
 
 		}
 	}

@@ -144,8 +144,21 @@ class Mob extends Entity {
 
 		if( dropCharge ) {
 			dropCharge = false;
-			dropItem(RageCharge);
+			dropChargeItem();
 		}
+	}
+
+	function dropChargeItem() {
+		if( !data.f_neverDropCharge )
+			dropItem(RageCharge);
+	}
+
+	public static inline function alives() {
+		var n = 0;
+		for(e in ALL)
+			if( e.isAlive() )
+				n++;
+		return n;
 	}
 
 	function dropItem(i:ItemType) {
@@ -173,7 +186,7 @@ class Mob extends Entity {
 				hit(0,null);
 
 			// if( dropCharge )
-				// dropItem(RageCharge);
+				// dropChargeItem();
 
 			if( wallX!=0 )
 				bdx = -bdx*0.6;
@@ -195,7 +208,7 @@ class Mob extends Entity {
 				e.cd.setS("pushOthers",0.5);
 				e.cd.setS("mobBumpLock",0.2);
 				// if( dropCharge )
-					// dropItem(RageCharge);
+					// dropChargeItem();
 			}
 		}
 	}
