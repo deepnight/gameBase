@@ -244,9 +244,9 @@ class Entity {
 		moveTarget = new LPoint();
 		moveTarget.setBoth(-1);
 
-		lifeBar = new ui.Bar(10,1, Assets.yellow());
+		lifeBar = new ui.Bar(8,1, Assets.yellow());
 		game.scroller.add(lifeBar, Const.DP_UI);
-		lifeBar.enableOldValue(Assets.red());
+		lifeBar.enableOldValue(Red);
 
 		armorBar = new h2d.Flow();
 		game.scroller.add(armorBar, Const.DP_UI);
@@ -329,7 +329,7 @@ class Entity {
 
 	function renderLife() {
 		lifeBar.set(life,maxLife);
-		lifeBar.visible = armor==0 && isAlive() && maxLife>1 ;
+		lifeBar.visible = armor==0 && isAlive() && maxLife>1 && life<maxLife;
 		armorBar.visible = armor>0;
 		if( armor>0 ) {
 			armorBar.removeChildren();

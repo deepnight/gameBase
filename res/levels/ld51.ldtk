@@ -368,26 +368,6 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Mob",
-							"__grid": [1,1],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "470527d0-2a00-11ed-bcca-29fd5ade61b8",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
-							"px": [24,32],
-							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["MT_Gun"]
-								}] },
-								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
-							]
-						},
-						{
 							"__identifier": "PlayerStart",
 							"__grid": [6,4],
 							"__pivot": [0.5,1],
@@ -448,7 +428,7 @@
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
-							"iid": "c81040a0-2a00-11ed-bcca-bdd7006bdb8d",
+							"iid": "355243b0-2a00-11ed-bcca-57cedf2e3dec",
 							"width": 16,
 							"height": 16,
 							"defUid": 25,

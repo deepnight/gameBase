@@ -5,8 +5,6 @@ class Trash extends Mob {
 		super(d);
 		initLife(4);
 
-		sprScaleX = sprScaleY = 0.75;
-
 		spr.anim.removeAllStateAnims();
 		spr.anim.registerStateAnim(D.ent.tPunch_charge, 1, ()->isChargingAction("punch"));
 
