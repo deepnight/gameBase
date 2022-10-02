@@ -245,6 +245,8 @@ class Game extends AppChildProcess {
 		for(e in en.Destructible.ALL)
 			e.darken();
 
+		hero.clearRage();
+
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
 			addSlowMo("execute", 0.5, 0.2);
@@ -264,8 +266,6 @@ class Game extends AppChildProcess {
 				e.clearRage();
 				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 			}
-
-			hero.rage = 0;
 
 			for(e in Entity.ALL)
 				e.undarken();

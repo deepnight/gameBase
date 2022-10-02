@@ -45,12 +45,19 @@ class Mob extends Entity {
 
 	public function addRageMarks(n:Int) {
 		rageCharges+=n;
-		debug(rageCharges);
+		renderLife();
 	}
 
 	public function clearRage() {
 		rageCharges = 0;
-		debug();
+		renderLife();
+	}
+
+	override function renderLife() {
+		super.renderLife();
+		lifeBar.empty();
+		lifeBar.addIcons(D.tiles.iconHeart, M.imax(0, life-rageCharges));
+		lifeBar.addIcons(D.tiles.iconHeartMarked, M.imin(life, rageCharges));
 	}
 
 	public function increaseRank() {

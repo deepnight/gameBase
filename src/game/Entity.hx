@@ -148,8 +148,9 @@ class Entity {
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
 	public var armor = 0;
-	var lifeBar : ui.Bar;
+	var lifeBar : ui.IconBar;
 	var armorBar : h2d.Flow;
+	var iconBar : ui.IconBar;
 
 	/** Horizontal direction (left=-1 or right=1): from "last source of damage" to "this" **/
 	public var lastHitDirFromSource(get,never) : Int;
@@ -244,14 +245,11 @@ class Entity {
 		moveTarget = new LPoint();
 		moveTarget.setBoth(-1);
 
-		lifeBar = new ui.Bar(8,1, Assets.yellow());
+		lifeBar = new ui.IconBar();
 		game.scroller.add(lifeBar, Const.DP_UI);
-		lifeBar.enableOldValue(Red);
 
-		armorBar = new h2d.Flow();
-		game.scroller.add(armorBar, Const.DP_UI);
-		armorBar.layout = Horizontal;
-		armorBar.horizontalSpacing = -3;
+		iconBar = new ui.IconBar();
+		game.scroller.add(iconBar, Const.DP_UI);
 
 		armor = 0;
 		initLife(1);
@@ -328,13 +326,10 @@ class Entity {
 	}
 
 	function renderLife() {
-		lifeBar.set(life,maxLife);
-		lifeBar.visible = armor==0 && isAlive() && maxLife>1 && life<maxLife;
-		armorBar.visible = armor>0;
-		if( armor>0 ) {
-			armorBar.removeChildren();
-			for(i in 0...armor)
-				Assets.tiles.getBitmap( D.tiles.iconArmor, armorBar);
+		lifeBar.visible = armor==0 && isAlive() && maxLife>1;
+		if( lifeBar.visible ) {
+			lifeBar.empty();
+			lifeBar.addIcons(D.tiles.iconHeart, life);
 		}
 	}
 
@@ -563,7 +558,7 @@ class Entity {
 
 		lifeBar.remove();
 		shadow.remove();
-		armorBar.remove();
+		iconBar.remove();
 
 		moveTarget = null;
 		baseColor = null;
@@ -865,10 +860,10 @@ class Entity {
 		outline.alpha = isDarkened ? 0.2 : 1;
 		outline.bottom = !onGround;
 
-		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
-		lifeBar.y = Std.int( sprY + zOffsetPx - hei*sprScaleY - lifeBar.outerHeight - 1 );
-		armorBar.x = Std.int( sprX - armorBar.outerWidth*0.5 );
-		armorBar.y = lifeBar.y;
+		lifeBar.x = Std.int( sprX - lifeBar.width*0.5 );
+		lifeBar.y = Std.int( sprY + zOffsetPx - hei*sprScaleY - lifeBar.height - 1 );
+		iconBar.x = Std.int( sprX - iconBar.width*0.5 );
+		iconBar.y = lifeBar.y-iconBar.height;
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.5;

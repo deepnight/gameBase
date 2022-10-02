@@ -5,7 +5,7 @@ class Hero extends Entity {
 	var pressQueue : Map<GameAction, Float> = new Map();
 	var comboCpt = 0;
 	public var hasSuperCharge = false;
-	public var rage = 0;
+	public var rage(default,null) = 0;
 
 	public function new(d:Entity_PlayerStart) {
 		super();
@@ -39,6 +39,13 @@ class Hero extends Entity {
 
 	public function addRage(n=1) {
 		rage+=n;
+		iconBar.empty();
+		iconBar.addIcons(D.tiles.iconMark, rage);
+	}
+
+	public function clearRage() {
+		rage = 0;
+		iconBar.empty();
 	}
 
 	override function hit(dmg:Int, from:Null<Entity>) {
@@ -206,7 +213,7 @@ class Hero extends Entity {
 							e.cd.setS("pushOthers",1);
 							// superCharge = 0;
 						}
-						rage = 0;
+						clearRage();
 						game.addSlowMo("powerAtk", 0.5, 0.6);
 						dx += dir*0.2;
 						spr.anim.play(D.ent.kPunchC_hit);
@@ -283,8 +290,6 @@ class Hero extends Entity {
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
-
-		debug(rage);
 
 		if( hasAffect(Dodge) && onGround ) {
 			mulVelocities(0.95);

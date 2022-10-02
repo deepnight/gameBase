@@ -430,7 +430,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [3,4],
+							"__grid": [5,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 192, "y": 608, "w": 16, "h": 16 },
@@ -439,28 +439,8 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [56,80],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Mob",
-							"__grid": [5,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "ec733fb0-2a00-11ed-bcca-e5caf80e5749",
-							"width": 16,
-							"height": 16,
-							"defUid": 25,
 							"px": [88,80],
-							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["MT_Melee"]
-								}] },
-								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
-							]
+							"fieldInstances": []
 						},
 						{
 							"__identifier": "Destructible",
@@ -474,23 +454,6 @@
 							"height": 16,
 							"defUid": 36,
 							"px": [136,48],
-							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["0,0,16,16"]
-							}] }]
-						},
-						{
-							"__identifier": "Destructible",
-							"__grid": [8,4],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
-							"__smartColor": "#8B674A",
-							"iid": "3c06e530-2a00-11ed-bcca-b1bce9b3cd1d",
-							"width": 16,
-							"height": 16,
-							"defUid": 36,
-							"px": [136,80],
 							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["0,0,16,16"]
@@ -514,17 +477,37 @@
 							}] }]
 						},
 						{
+							"__identifier": "Mob",
+							"__grid": [7,4],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "e13a4760-2a00-11ed-bcca-99ac8fabdb14",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [120,80],
+							"fieldInstances": [
+								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MT_Melee"]
+								}] },
+								{ "__identifier": "rank", "__value": 1, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
+							]
+						},
+						{
 							"__identifier": "Destructible",
-							"__grid": [9,5],
+							"__grid": [4,2],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
 							"__smartColor": "#8B674A",
-							"iid": "de72ca50-2a00-11ed-bcca-57cfab99045b",
+							"iid": "5a5fa800-2a00-11ed-bcca-d75237d11e6d",
 							"width": 16,
 							"height": 16,
 							"defUid": 36,
-							"px": [152,96],
+							"px": [72,48],
 							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["0,0,16,16"]
@@ -532,16 +515,16 @@
 						},
 						{
 							"__identifier": "Destructible",
-							"__grid": [9,3],
+							"__grid": [4,6],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
 							"__smartColor": "#8B674A",
-							"iid": "dec50900-2a00-11ed-bcca-3df13289f403",
+							"iid": "5afc5d30-2a00-11ed-bcca-cb2e88263c04",
 							"width": 16,
 							"height": 16,
 							"defUid": 36,
-							"px": [152,64],
+							"px": [72,112],
 							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["0,0,16,16"]
