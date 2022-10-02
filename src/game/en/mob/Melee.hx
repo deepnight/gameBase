@@ -112,8 +112,8 @@ class Melee extends Mob {
 			// Melee attack
 			if( distPx(hero)<=Const.GRID*1.2 ) {
 				var ct = switch rank {
-					case 0 : 0.7;
-					case 1 : 0.3;
+					case 0 : 0.3;
+					case 1 : 0.5;
 					case _ : 0.5;
 				}
 				chargeAction("punch", ct, ()->{

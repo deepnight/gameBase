@@ -158,8 +158,8 @@ class Mob extends Entity {
 			if( cd.has("pushOthers") )
 				hit(0,null);
 
-			if( dropCharge )
-				dropItem(RageCharge);
+			// if( dropCharge )
+				// dropItem(RageCharge);
 
 			if( wallX!=0 )
 				bdx = -bdx*0.6;
@@ -180,8 +180,8 @@ class Mob extends Entity {
 				e.dz = rnd(0.15,0.2);
 				e.cd.setS("pushOthers",0.5);
 				e.cd.setS("mobBumpLock",0.2);
-				if( dropCharge )
-					dropItem(RageCharge);
+				// if( dropCharge )
+					// dropItem(RageCharge);
 			}
 		}
 	}
