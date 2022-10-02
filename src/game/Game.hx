@@ -237,16 +237,20 @@ class Game extends AppChildProcess {
 
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
+			addSlowMo("execute", 0.5, 0.2);
 			camera.shakeS(1, 0.3);
 			camera.bumpZoom(0.2);
 			hero.spr.anim.play(D.ent.kSuper_hit);
 			for(e in en.Mob.ALL) {
 				e.undarken();
-				if( e.rageCharges==0 )
+				if( e.rageCharges==0 ) {
+					e.setAffectS(Stun, 0.5);
 					continue;
+				}
 
 				e.setAffectS(Stun, 2);
-				e.bumpAwayFrom(hero, 0.6);
+				e.bumpAwayFrom(hero, 0.3);
+				e.dz = 0.2;
 				e.hit(e.rageCharges, hero);
 				e.clearRage();
 				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
@@ -265,11 +269,13 @@ class Game extends AppChildProcess {
 		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
 		Assets.tiles.tmod = tmod;
 
-		if( !cd.has("gameTimeLock") )
-			gameTimeS += tmod * 1/Const.FPS;
-		if( gameTimeS>=Const.CYCLE_S )
-			onCycle();
-		hud.setTimeS(gameTimeS);
+		if( hero.isAlive() ) {
+			if( !cd.has("gameTimeLock") )
+				gameTimeS += tmod * 1/Const.FPS;
+			if( gameTimeS>=Const.CYCLE_S )
+				onCycle();
+			hud.setTimeS(gameTimeS);
+		}
 
 		// Entities post-updates
 		for(e in Entity.ALL) if( !e.destroyed ) e.postUpdate();

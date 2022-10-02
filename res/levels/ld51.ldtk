@@ -409,7 +409,7 @@
 							"__grid": [9,2],
 							"__pivot": [0.5,1],
 							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 768, "w": 16, "h": 16 },
+							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
 							"iid": "ec733fb0-2a00-11ed-bcca-e5caf80e5749",
 							"width": 16,
@@ -417,9 +417,9 @@
 							"defUid": 25,
 							"px": [152,48],
 							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Trash", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 768, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["MT_Trash"]
+									"params": ["MT_Melee"]
 								}] },
 								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
 							]
