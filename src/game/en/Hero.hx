@@ -60,6 +60,10 @@ class Hero extends Entity {
 		cd.unset("controlsLock");
 	}
 
+	inline function getLockRemainingS() {
+		return cd.getS("controlsLock");
+	}
+
 	inline function lockControlS(t:Float) {
 		cd.setS("controlsLock", t, false);
 	}
@@ -69,9 +73,10 @@ class Hero extends Entity {
 			pressQueue.set(a, stime);
 	}
 
-	inline function isPressedOrQueued(a:GameAction) {
+	inline function isPressedOrQueued(a:GameAction, remove=true) {
 		if( ca.isPressed(a) || pressQueue.exists(a) && stime-pressQueue.get(a)<=0.3 ) {
-			pressQueue.set(a,-1);
+			if( remove )
+				pressQueue.set(a,-1);
 			return true;
 		}
 		else
@@ -129,6 +134,16 @@ class Hero extends Entity {
 			if( M.radDistance(a,stickAng)>=M.PIHALF ) {
 				dodgeDx*=0.98;
 				dodgeDy*=0.98;
+			}
+		}
+
+		// Dodge can cancel a few stuff
+		if( isPressedOrQueued(Dodge, false) && controlsLocked() ) {
+			if( isChargingAction() && !isChargingAction("dodge") )
+				cancelAction();
+
+			if( !isChargingAction() && !hasAffect(Stun) && getLockRemainingS()<=0.09 ) {
+				unlockControls();
 			}
 		}
 
