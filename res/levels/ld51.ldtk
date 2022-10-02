@@ -430,7 +430,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "PlayerStart",
-							"__grid": [5,4],
+							"__grid": [6,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 192, "y": 608, "w": 16, "h": 16 },
@@ -439,7 +439,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 21,
-							"px": [88,80],
+							"px": [104,80],
 							"fieldInstances": []
 						},
 						{
@@ -478,7 +478,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [7,4],
+							"__grid": [11,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
@@ -487,7 +487,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [120,80],
+							"px": [184,80],
 							"fieldInstances": [
 								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
@@ -529,6 +529,46 @@
 								"id": "V_String",
 								"params": ["0,0,16,16"]
 							}] }]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [1,1],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "d71c55a0-2a00-11ed-bcca-7dd7ad1274d4",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [24,32],
+							"fieldInstances": [
+								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MT_Gun"]
+								}] },
+								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
+							]
+						},
+						{
+							"__identifier": "Mob",
+							"__grid": [1,7],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
+							"__smartColor": "#FF0000",
+							"iid": "d94688a0-2a00-11ed-bcca-1525ee7d1983",
+							"width": 16,
+							"height": 16,
+							"defUid": 25,
+							"px": [24,128],
+							"fieldInstances": [
+								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MT_Gun"]
+								}] },
+								{ "__identifier": "rank", "__value": 1, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
+							]
 						}
 					]
 				},
