@@ -139,10 +139,8 @@ class Gun extends Mob {
 						ammo--;
 					}, (t)->{
 						// Aim during charge
-						if( t>0.2 ) {
-							fx.markerFree(hero.attachX, hero.attachY, 0.06, Red);
+						if( t>0.2 )
 							aimAng = angTo(hero);
-						}
 					});
 				}
 				else {
