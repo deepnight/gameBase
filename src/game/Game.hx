@@ -12,6 +12,7 @@ class Game extends AppChildProcess {
 
 	/** Container of all visual game objects. Ths wrapper is moved around by Camera. **/
 	public var scroller : h2d.Layers;
+	public var bg : h2d.Bitmap;
 
 	/** Level data **/
 	public var level : Level;
@@ -37,6 +38,9 @@ class Game extends AppChildProcess {
 		ca.lockCondition = isGameControllerLocked;
 		createRootInLayers(App.ME.root, Const.DP_BG);
 		dn.Gc.runNow();
+
+		bg = new h2d.Bitmap( h2d.Tile.fromColor(Assets.walls()) );
+		root.add(bg,Const.DP_BG);
 
 		scroller = new h2d.Layers();
 		root.add(scroller, Const.DP_BG);
@@ -83,6 +87,7 @@ class Game extends AppChildProcess {
 		cd.unset("gameTimeLock");
 
 		level = new Level(l);
+		camera.rawFocus.setLevelPixel(level.pxWid*0.5, level.pxHei*0.5);
 
 		var d = level.data.l_Entities.all_PlayerStart[0];
 		hero = new Hero(d);
@@ -126,6 +131,8 @@ class Game extends AppChildProcess {
 		super.onResize();
 		interactive.width = w();
 		interactive.height = h();
+		bg.scaleX = w();
+		bg.scaleY = h();
 	}
 
 
@@ -264,6 +271,9 @@ class Game extends AppChildProcess {
 			camera.bumpZoom(0.2);
 			hero.spr.anim.play(D.ent.kSuper_hit);
 			for(e in en.Mob.ALL) {
+				if( !e.isAlive() )
+					continue;
+				
 				if( e.rageCharges==0 ) {
 					e.bumpAwayFrom(hero, 0.1);
 					e.setAffectS(Stun, 0.5);

@@ -10,7 +10,7 @@ class Hero extends Entity {
 	public function new(d:Entity_PlayerStart) {
 		super();
 		useLdtkEntity(d);
-		camera.trackEntity(this, true);
+		// camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
 		circularWeightBase = 0.4;
@@ -214,15 +214,10 @@ class Hero extends Entity {
 						for(e in getVictims(2)) {
 							e.cancelAction();
 							e.addRageMarks(rage);
-							// if( hasSuperCharge && e.armor>0 )
-							// 	e.loseArmor();
-							// else
-							// e.hit(4, this);
 							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
 							e.setAffectS(Stun, 1.5);
 							e.cd.setS("pushOthers",1);
-							// superCharge = 0;
 						}
 						clearRage();
 						game.addSlowMo("powerAtk", 0.5, 0.6);
@@ -253,7 +248,7 @@ class Hero extends Entity {
 						case 2: // Punch B
 							chargeAction("punchB", 0.15, ()->{
 								onAnyAttack();
-								lockControlS(0.1);
+								lockControlS(0.25);
 								for(e in getVictims(1.3)) {
 									e.cancelAction();
 									e.hit(0,this);

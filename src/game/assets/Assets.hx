@@ -121,6 +121,7 @@ class Assets {
 	public static inline function green() return getCol(5);
 	public static inline function blue() return getCol(10);
 	public static inline function red() return getCol(2);
+	public static inline function walls() return getCol(0);
 
 
 	public static inline function getAttach(group:String, frame:Int) : Null<AttachInfo> {
