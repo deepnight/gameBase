@@ -255,6 +255,9 @@ class Game extends AppChildProcess {
 				e.clearRage();
 				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 			}
+
+			for(e in en.Item.ALL)
+				e.destroy();
 			level.undarken();
 		});
 

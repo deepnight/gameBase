@@ -1,10 +1,13 @@
 package en;
 
 class Item extends Entity {
+	public static var ALL = new FixedArray(40);
+
 	public var type : ItemType;
 
 	public function new(x,y, t:ItemType) {
 		super();
+		ALL.push(this);
 		type = t;
 		setPosPixel(x,y);
 
@@ -15,6 +18,11 @@ class Item extends Entity {
 		spr.set(switch type {
 			case RageCharge: D.tiles.itemCharge;
 		});
+	}
+
+	override function dispose() {
+		super.dispose();
+		ALL.remove(this);
 	}
 
 	function onPick() {

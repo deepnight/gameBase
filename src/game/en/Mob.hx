@@ -152,10 +152,8 @@ class Mob extends Entity {
 			if( cd.has("pushOthers") )
 				hit(0,null);
 
-			if( dropCharge ) {
-				dropCharge = false;
+			if( dropCharge )
 				dropItem(RageCharge);
-			}
 
 			if( wallX!=0 )
 				bdx = -bdx*0.6;

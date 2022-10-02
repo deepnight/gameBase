@@ -19,6 +19,12 @@ class Trash extends Mob {
 		spr.anim.registerStateAnim(D.ent.tIdle, 0);
 	}
 
+	override function hit(dmg:Int, from:Null<Entity>) {
+		super.hit(dmg, from);
+		if( !isChargingAction() && !isLayingDown() )
+			spr.anim.playOverlap(D.ent.tHit);
+	}
+
 	override function increaseRank() {} // nope
 
 	override function fixedUpdate() {
