@@ -81,6 +81,9 @@ class Game extends AppChildProcess {
 		var d = level.data.l_Entities.all_PlayerStart[0];
 		hero = new Hero(d);
 
+		for(d in level.data.l_Entities.all_Destructible)
+			new en.Destructible(d);
+
 		for(d in level.data.l_Entities.all_Mob)
 			switch d.f_type {
 				case MT_Melee: new en.mob.Melee(d);
@@ -235,6 +238,13 @@ class Game extends AppChildProcess {
 				e.darken();
 		}
 
+
+		for(e in en.Item.ALL)
+			e.destroy();
+
+		for(e in en.Destructible.ALL)
+			e.darken();
+
 		addSlowMo("execute", 1, 0.4);
 		hero.chargeAction("execute", 1, ()->{
 			addSlowMo("execute", 0.5, 0.2);
@@ -242,7 +252,6 @@ class Game extends AppChildProcess {
 			camera.bumpZoom(0.2);
 			hero.spr.anim.play(D.ent.kSuper_hit);
 			for(e in en.Mob.ALL) {
-				e.undarken();
 				if( e.rageCharges==0 ) {
 					e.setAffectS(Stun, 0.5);
 					continue;
@@ -256,12 +265,11 @@ class Game extends AppChildProcess {
 				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 			}
 
-			// for(e in en.Mob.ALL)
-			// 	if( e.isAlive() )
-			// 		e.increaseRank();
+			hero.rage = 0;
 
-			for(e in en.Item.ALL)
-				e.destroy();
+			for(e in Entity.ALL)
+				e.undarken();
+
 			level.undarken();
 		});
 

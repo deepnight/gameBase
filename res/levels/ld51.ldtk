@@ -10,7 +10,7 @@
 	},
 	"jsonVersion": "1.1.4",
 	"appBuildId": 462327,
-	"nextUid": 36,
+	"nextUid": 38,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "LinearHorizontal",
 	"worldGridWidth": 256,
@@ -264,6 +264,64 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "Destructible",
+			"uid": 36,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#8B674A",
+			"renderMode": "Tile",
+			"showName": false,
+			"tilesetId": 26,
+			"tileId": 1128,
+			"tileRenderMode": "FitInside",
+			"tileRect": { "tilesetUid": 26, "x": 128, "y": 560, "w": 16, "h": 16 },
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0.5,
+			"pivotY": 1,
+			"fieldDefs": [
+				{
+					"identifier": "tile",
+					"__type": "Tile",
+					"uid": 37,
+					"type": "F_Tile",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "EntityTile",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefTags": [],
+					"tilesetUid": 23
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -386,7 +444,7 @@
 						},
 						{
 							"__identifier": "Mob",
-							"__grid": [9,2],
+							"__grid": [5,4],
 							"__pivot": [0.5,1],
 							"__tags": [],
 							"__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 },
@@ -395,7 +453,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 25,
-							"px": [152,48],
+							"px": [88,80],
 							"fieldInstances": [
 								{ "__identifier": "type", "__value": "MT_Melee", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 16, "y": 432, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
@@ -405,24 +463,89 @@
 							]
 						},
 						{
-							"__identifier": "Mob",
-							"__grid": [8,5],
+							"__identifier": "Destructible",
+							"__grid": [8,2],
 							"__pivot": [0.5,1],
 							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 },
-							"__smartColor": "#FF0000",
-							"iid": "eee5ad00-2a00-11ed-bcca-09bf41e97551",
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#8B674A",
+							"iid": "f3c323b0-2a00-11ed-bcca-59be055d0390",
 							"width": 16,
 							"height": 16,
-							"defUid": 25,
-							"px": [136,96],
-							"fieldInstances": [
-								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["MT_Gun"]
-								}] },
-								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] }
-							]
+							"defUid": 36,
+							"px": [136,48],
+							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["0,0,16,16"]
+							}] }]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [8,4],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#8B674A",
+							"iid": "3c06e530-2a00-11ed-bcca-b1bce9b3cd1d",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [136,80],
+							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["0,0,16,16"]
+							}] }]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [8,6],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#8B674A",
+							"iid": "3c681800-2a00-11ed-bcca-716a7b3c1218",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [136,112],
+							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["0,0,16,16"]
+							}] }]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [9,5],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#8B674A",
+							"iid": "de72ca50-2a00-11ed-bcca-57cfab99045b",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [152,96],
+							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["0,0,16,16"]
+							}] }]
+						},
+						{
+							"__identifier": "Destructible",
+							"__grid": [9,3],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#8B674A",
+							"iid": "dec50900-2a00-11ed-bcca-3df13289f403",
+							"width": 16,
+							"height": 16,
+							"defUid": 36,
+							"px": [152,64],
+							"fieldInstances": [{ "__identifier": "tile", "__value": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "__type": "Tile", "__tile": { "tilesetUid": 23, "x": 0, "y": 0, "w": 16, "h": 16 }, "defUid": 37, "realEditorValues": [{
+								"id": "V_String",
+								"params": ["0,0,16,16"]
+							}] }]
 						}
 					]
 				},

@@ -15,6 +15,7 @@ class Item extends Entity {
 		dz = 0.2;
 		cd.setS("pickLock",0.2);
 
+		game.scroller.add(spr, Const.DP_TOP);
 		spr.set(switch type {
 			case RageCharge: D.tiles.itemCharge;
 		});
@@ -36,6 +37,9 @@ class Item extends Entity {
 
 	override function fixedUpdate() {
 		super.fixedUpdate();
+
+		if( onGround )
+			dz = 0.15;
 
 		if( distCase(hero)<=1 && !cd.has("pickLock") )
 			onPick();

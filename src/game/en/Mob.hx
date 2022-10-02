@@ -189,6 +189,9 @@ class Mob extends Entity {
 	override function postUpdate() {
 		super.postUpdate();
 
+		if( hasAffect(Stun) && !onGround )
+			en.Destructible.checkEnt(this);
+
 		if( !isAlive() && !onGround && !cd.hasSetS("deathBlink",0.2) )
 			blink(Red);
 
