@@ -48,6 +48,7 @@ class Entity {
 
 	public var dz = 0.;
 	public var zr = 0.;
+	var zGravity = 0.027;
 	public var zOffsetPx(get,never) : Int; inline function get_zOffsetPx() return -M.ceil(zr*Const.GRID);
 	public var onGround(get,never) : Bool; inline function get_onGround() return zr==0 && dz==0;
 
@@ -217,7 +218,7 @@ class Entity {
 	/** attachY value during last frame **/
 	public var prevFrameAttachY(default,null) : Float = -Const.INFINITE;
 
-	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+	var actions : Array<{ id:String, complete:Void->Void, charge:Null<Float->Void>, sec:Float }> = [];
 	var moveTarget : LPoint;
 	final brakeDist = 16;
 	var shadow : HSprite;
@@ -636,16 +637,16 @@ class Entity {
 	}
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
-	function chargeAction(id:String, sec:Float, cb:Void->Void) {
+	function chargeAction(id:String, sec:Float, complete:Void->Void, ?chargeCb:Float->Void) {
 		if( !isAlive() )
 			return;
 
 		if( isChargingAction(id) )
 			cancelAction(id);
 		if( sec<=0 )
-			cb();
+			complete();
 		else
-			actions.push({ id:id, cb:cb, t:sec});
+			actions.push({ id:id, complete:complete, charge:chargeCb, sec:sec});
 	}
 
 	/** If id is null, return TRUE if any action is charging. If id is provided, return TRUE if this specific action is charging nokw. **/
@@ -688,11 +689,14 @@ class Entity {
 		var i = 0;
 		while( i<actions.length ) {
 			var a = actions[i];
-			a.t -= tmod/Const.FPS;
-			if( a.t<=0 ) {
+			a.sec -= tmod/Const.FPS;
+			if( a.charge!=null && isAlive() )
+				a.charge(a.sec);
+
+			if( a.sec<=0 ) {
 				actions.splice(i,1);
 				if( isAlive() )
-					a.cb();
+					a.complete();
 			}
 			else
 				i++;
@@ -840,6 +844,8 @@ class Entity {
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.5;
+		shadow.scaleX = M.fabs(spr.scaleX);
+		shadow.scaleY = 1;
 
 		sprSquashX += (1-sprSquashX) * M.fmin(1, 0.2*tmod);
 		sprSquashY += (1-sprSquashY) * M.fmin(1, 0.2*tmod);
@@ -1016,7 +1022,7 @@ class Entity {
 		// Z physics
 		if( !onGround ) {
 			zr+=dz;
-			dz-=0.027; // gravity
+			dz-=zGravity; // gravity
 			dz*=0.94;
 			if( zr<=0 ) {
 				zr = 0;

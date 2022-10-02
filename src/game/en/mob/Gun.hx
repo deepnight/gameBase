@@ -1,27 +1,38 @@
 package en.mob;
 
 class Gun extends Mob {
+	var aimAng = 0.;
 	var maxAmmo = 0;
+	var burstCount = 1;
+	var burstDelayS = 0.;
+	var chargeTimeS = 0.;
+	var reloadTimeS = 0.;
 	var ammo = 0;
+	var pendingBullets = 0;
+
 	var maxDistY = 3;
-	var minDistX = 3;
+	var minDistX = 1.5;
 	var maxDistX = 6;
 
 	public function new(d) {
 		super(d);
 
+		initLife(15);
+
+		spr.anim.registerStateAnim(D.ent.mGun_hold, 2, ()->pendingBullets>0);
 		spr.anim.registerStateAnim(D.ent.mGun_reload, 1, ()->isChargingAction("reload"));
 		spr.anim.registerStateAnim(D.ent.mGun_charge, 1, ()->isChargingAction("shoot"));
 	}
 
 	override function setAffectS(k:Affect, t:Float, allowLower:Bool = false) {
-		// switch k {
-		// 	case Stun,LayDown:
-		// 		t *= 1-0.5*rankRatio;
-
-		// 	case Dodge, Shield:
-		// }
+		if( k==Stun )
+			pendingBullets = 0;
 		super.setAffectS(k, t, allowLower);
+	}
+
+	override function onDie() {
+		super.onDie();
+		pendingBullets = 0;
 	}
 
 	override function initRank() {
@@ -31,12 +42,19 @@ class Gun extends Mob {
 			case 0:
 				weapon = Assets.tiles.h_get(D.tiles.equipPistol);
 				weapon.setPivotCoord(1,1);
-				maxAmmo = 1;
+				ammo = maxAmmo = 2;
+				burstCount = 1;
+				chargeTimeS = 0.7;
+				reloadTimeS = 0.5;
 
 			case 1:
 				weapon = Assets.tiles.h_get(D.tiles.equipMachineGun);
 				weapon.setPivotCoord(3,2);
-				maxAmmo = 1;
+				ammo = maxAmmo = 2;
+				burstCount = 5;
+				burstDelayS = 0.1;
+				chargeTimeS = 1;
+				reloadTimeS = 1;
 
 			case 2:
 				weapon = Assets.tiles.h_get(D.tiles.equipMachineGun);
@@ -63,7 +81,26 @@ class Gun extends Mob {
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
-		if( !aiLocked() ) {
+		if( !aiLocked() && pendingBullets>0 && !cd.has("bulletLock") ) {
+			// Aim follow
+			var delta = M.radSubstract( angTo(hero), aimAng );
+			aimAng += delta*0.8;
+			aimAng = M.radClamp(aimAng, dirToAng(), 0.4);
+
+			// Shoot bullet
+			new Bullet(centerX, centerY+4, aimAng, 0.2);
+			camera.shakeS(0.2, 0.1);
+			spr.anim.playOverlap(D.ent.mGun_shoot);
+			weaponRot = -0.3;
+			cd.setS("keepWeaponRot",0.2);
+
+			pendingBullets--;
+			cd.setS("bulletLock", burstDelayS);
+			if( pendingBullets==0 )
+				lockAiS(0.25);
+		}
+
+		if( !aiLocked() && pendingBullets==0 ) {
 			dir = dirTo(hero);
 
 
@@ -94,18 +131,21 @@ class Gun extends Mob {
 			if( !hasMoveTarget() ) {
 				if( ammo>0 ) {
 					// Attack
-					chargeAction("shoot", 1, ()->{
-						camera.shakeS(0.2, 0.1);
-						lockAiS(0.8 - rankRatio*0.3);
-						spr.anim.playOverlap(D.ent.mGun_shoot);
-						weaponRot = -0.3;
-						cd.setS("keepWeaponRot",0.2);
+					aimAng = angTo(hero);
+					chargeAction("shoot", chargeTimeS, ()->{
+						pendingBullets = burstCount;
 						ammo--;
+					}, (t)->{
+						// Aim during charge
+						if( t>0.2 ) {
+							fx.markerFree(hero.attachX, hero.attachY, 0.06, Red);
+							aimAng = angTo(hero);
+						}
 					});
 				}
 				else {
 					// Reload
-					chargeAction("reload", 0.6, ()->{
+					chargeAction("reload", reloadTimeS, ()->{
 						ammo = maxAmmo;
 						lockAiS(0.3);
 					});
