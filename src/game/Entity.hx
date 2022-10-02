@@ -227,8 +227,8 @@ class Entity {
 	var shadow : HSprite;
 	var outline : dn.heaps.filter.PixelOutline;
 
-	var circularWeightBase = 0;
-	var circularRadius = 4;
+	var circularWeightBase : Float = 0;
+	var circularRadius : Float = 4;
 
 
 	/**
@@ -866,7 +866,7 @@ class Entity {
 		iconBar.y = lifeBar.y-iconBar.height;
 
 		shadow.setPosition(sprX, sprY-1);
-		shadow.alpha = 0.5;
+		shadow.alpha = 0.8;
 		shadow.scaleX = M.fabs(spr.scaleX);
 		shadow.scaleY = 1;
 

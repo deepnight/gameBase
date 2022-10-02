@@ -21,7 +21,7 @@ class Mob extends Entity {
 
 		initLife(3);
 		rank = data.f_rank;
-		circularWeightBase = 5;
+		circularWeightBase = 8;
 		circularRadius = 7;
 		lockAiS(1);
 

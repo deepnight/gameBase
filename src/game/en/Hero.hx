@@ -13,7 +13,7 @@ class Hero extends Entity {
 		camera.trackEntity(this, true);
 		ca = App.ME.controller.createAccess();
 
-		circularWeightBase = 1;
+		circularWeightBase = 0.4;
 		circularRadius = 3;
 		initLife(3);
 
@@ -100,11 +100,21 @@ class Hero extends Entity {
 		return !isAlive() || cd.has("controlsLock") || isChargingAction() || hasAffect(Dodge) || hasAffect(Stun);
 	}
 
+	function onAnyAttack() {
+		for(e in en.Destructible.ALL)
+			if( inHitRange(e,1) )
+				e.onPunch();
+	}
+
+	inline function inHitRange(e:Entity, rangeMul:Float) {
+		return e.isAlive() && distPx(e)<=24*rangeMul && M.fabs(attachY-e.attachY)<=6+6*rangeMul && dirTo(e)==dir;
+	}
+
 	var _atkVictims : FixedArray<Mob> = new FixedArray(20); // alloc cache
 	function getVictims(rangeMul:Float) {
 		_atkVictims.empty();
 		for(e in en.Mob.ALL)
-			if( e.isAlive() && distPx(e)<=24*rangeMul && M.fabs(attachY-e.attachY)<=6+6*rangeMul && dirTo(e)==dir )
+			if( inHitRange(e, rangeMul) )
 				_atkVictims.push(e);
 		return _atkVictims;
 	}
@@ -198,6 +208,7 @@ class Hero extends Entity {
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					game.addSlowMo("powerAtk", 0.3, 0.25);
 					chargeAction("punchC", 0.2, ()->{
+						onAnyAttack();
 						fx.flashBangEaseInS(Assets.green(), 0.3, 1);
 						lockControlS(0.3);
 						for(e in getVictims(2)) {
@@ -227,6 +238,7 @@ class Hero extends Entity {
 					switch comboCpt {
 						case 0,1: // Punch A
 							chargeAction("punchA", 0.1, ()->{
+								onAnyAttack();
 								lockControlS(0.06);
 								for(e in getVictims(1)) {
 									e.cancelAction();
@@ -240,6 +252,7 @@ class Hero extends Entity {
 
 						case 2: // Punch B
 							chargeAction("punchB", 0.15, ()->{
+								onAnyAttack();
 								lockControlS(0.1);
 								for(e in getVictims(1.3)) {
 									e.cancelAction();
@@ -258,6 +271,7 @@ class Hero extends Entity {
 							dz = 0.12;
 							dx+=dir*0.1;
 							chargeAction("kickA", 0.16, ()->{
+								onAnyAttack();
 								dx+=dir*0.1;
 								dz = 0.05;
 								camera.bumpZoom(-0.03);

@@ -10,7 +10,7 @@ class Destructible extends Entity {
 		spr.set(Assets.world);
 		spr.useCustomTile( d.f_tile_getTile() );
 		circularRadius = 8;
-		circularWeightBase = 2;
+		circularWeightBase = 5;
 	}
 
 	override function dispose() {
@@ -27,6 +27,18 @@ class Destructible extends Entity {
 		for(d in ALL)
 			if( d.distCase(e)<=1 )
 				d.explode();
+	}
+
+	override function postUpdate() {
+		super.postUpdate();
+		if( cd.has("shake") ) {
+			spr.x+=Math.cos(ftime*8)*1*cd.getRatio("shake");
+		}
+	}
+
+	public function onPunch() {
+		cd.setS("shake", R.around(0.7));
+		dz = rnd(0, 0.12);
 	}
 
 	override function fixedUpdate() {
