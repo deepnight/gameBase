@@ -20,6 +20,7 @@ class Mob extends Entity {
 		rank = data.f_rank;
 		circularWeightBase = 5;
 		circularRadius = 7;
+		lockAiS(1);
 
 		spr.set(Assets.entities);
 		outline.color = Assets.red();
@@ -44,6 +45,10 @@ class Mob extends Entity {
 		fx.popIcon(D.tiles.iconLevelUp, attachX, attachY-hei);
 		blink(Yellow);
 		initRank();
+
+		lockAiS(0.5);
+		cancelAction();
+		cancelMove();
 	}
 
 	function initRank() {
