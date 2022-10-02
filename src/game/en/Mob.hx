@@ -92,9 +92,9 @@ class Mob extends Entity {
 		}
 		outline.enable = false;
 		circularWeightBase = 0;
-		for(e in ALL)
-			if( e!=this && e.isAlive() )
-				e.increaseRank();
+		// for(e in ALL)
+		// 	if( e!=this && e.isAlive() )
+		// 		e.increaseRank();
 	}
 
 	override function dispose() {

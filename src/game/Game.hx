@@ -256,6 +256,10 @@ class Game extends AppChildProcess {
 				fx.dotsExplosionExample(e.centerX, e.centerY, Red);
 			}
 
+			// for(e in en.Mob.ALL)
+			// 	if( e.isAlive() )
+			// 		e.increaseRank();
+
 			for(e in en.Item.ALL)
 				e.destroy();
 			level.undarken();
