@@ -31,13 +31,13 @@ class Melee extends Mob {
 
 		switch rank {
 			case 0:
-				weapon = Assets.tiles.h_get(D.tiles.equipEmptyFist);
-				weapon.setCenterRatio(0,0);
+				weapon = Assets.tiles.h_get(D.tiles.equipKnife);
+				weapon.setPivotCoord(2, weapon.tile.height-1);
 				hitDmg = 1;
 
 			case 1:
-				weapon = Assets.tiles.h_get(D.tiles.equipKnife);
-				weapon.setPivotCoord(2, weapon.tile.height-1);
+				weapon = Assets.tiles.h_get(D.tiles.equipShovel);
+				weapon.setPivotCoord(2, weapon.tile.height-7);
 				hitDmg = 1;
 
 			case 2:

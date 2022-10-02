@@ -238,6 +238,8 @@ class Game extends AppChildProcess {
 		hero.dodgeDx = hero.dodgeDy = 0;
 		hero.cancelAction();
 		hero.clearRage();
+		hero.dz = M.fmax(0,hero.dz);
+		hero.zr*=0.5;
 		hero.spr.anim.stopWithStateAnims();
 		level.darken();
 		for(e in en.Mob.ALL) {

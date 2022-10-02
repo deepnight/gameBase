@@ -241,6 +241,7 @@ class Entity {
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
 		state = Normal;
+		colorMatrix = h3d.Matrix.I();
 
 		moveTarget = new LPoint();
 		moveTarget.setBoth(-1);
@@ -252,18 +253,19 @@ class Entity {
 		game.scroller.add(iconBar, Const.DP_UI);
 
 		armor = 0;
-		initLife(1);
+		initLife(0);
 
 		shadow = Assets.tiles.h_get(D.tiles.groundShadow);
 		shadow.setCenterRatio();
 		game.scroller.add(shadow,Const.DP_BG);
+		shadow.colorMatrix = colorMatrix;
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
 		spr.colorAdd = new h3d.Vector();
 		baseColor = new h3d.Vector();
 		blinkColor = new h3d.Vector();
-		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
+		spr.colorMatrix = colorMatrix;
 		spr.setCenterRatio(pivotX, pivotY);
 
 		outline = new dn.heaps.filter.PixelOutline( Assets.black() );
@@ -326,7 +328,7 @@ class Entity {
 	}
 
 	function renderLife() {
-		lifeBar.visible = armor==0 && isAlive() && maxLife>1;
+		lifeBar.visible = armor==0 && isAlive() && maxLife>0;
 		if( lifeBar.visible ) {
 			lifeBar.empty();
 			lifeBar.addIcons(D.tiles.iconHeart, life);
@@ -364,7 +366,7 @@ class Entity {
 
 	/** Return TRUE if current entity wasn't destroyed or killed **/
 	public inline function isAlive() {
-		return !destroyed && life>0;
+		return !destroyed && ( life>0 || maxLife==0 );
 	}
 
 	public inline function isLayingDown() {
