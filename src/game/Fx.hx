@@ -5,10 +5,11 @@ import dn.heaps.HParticle;
 class Fx extends GameChildProcess {
 	var pool : ParticlePool;
 
-	public var bg_add    : h2d.SpriteBatch;
-	public var bg_normal    : h2d.SpriteBatch;
-	public var main_add       : h2d.SpriteBatch;
-	public var main_normal    : h2d.SpriteBatch;
+	public var bg_add : h2d.SpriteBatch;
+	public var bg_normal : h2d.SpriteBatch;
+	public var main_add : h2d.SpriteBatch;
+	public var main_normal : h2d.SpriteBatch;
+	public var anims : h2d.SpriteBatch;
 
 	public function new() {
 		super();
@@ -32,6 +33,11 @@ class Fx extends GameChildProcess {
 		game.scroller.add(main_add, Const.DP_FX_FRONT);
 		main_add.blendMode = Add;
 		main_add.hasRotationScale = true;
+
+		anims = new h2d.SpriteBatch(Assets.entities.tile);
+		game.scroller.add(anims, Const.DP_FX_FRONT);
+		anims.blendMode = Add;
+		anims.hasRotationScale = true;
 	}
 
 	override public function onDispose() {
@@ -60,6 +66,15 @@ class Fx extends GameChildProcess {
 
 	/** Create a HParticle instance in the MAIN layer, using NORMAL blendmode **/
 	public inline function allocMain_normal(id,x,y) return pool.alloc(main_normal, Assets.tiles.getTileRandom(id), x, y);
+
+	public inline function allocAnim(id:String, x,y, loop=true, speed=1.0) {
+		var p = pool.alloc(anims, Assets.entities.getTile(id), x, y);
+		if( loop )
+			p.playAnimLoop(Assets.entities, id, speed);
+		else
+			p.playAnimAndKill(Assets.entities, id, speed);
+		return p;
+	}
 
 
 	public inline function markerEntity(e:Entity, c:Col=Pink, short=false) {
@@ -144,11 +159,11 @@ class Fx extends GameChildProcess {
 	}
 
 	public function stun(x:Float,y:Float) {
-		var p = allocMain_add(D.tiles.fxStun, x,y);
-		p.playAnimLoop(Assets.tiles, D.tiles.fxStun, 0.2);
-		p.setFadeS(rnd(0.2,0.5), 0.1, rnd(0.2,0.5));
+ 		var p = allocAnim(D.ent.stun, x,y, true);
+		// p.randomizeAnimCursor();
+		p.setFadeS(rnd(0.3,0.4), 0.1, rnd(0.3,0.4));
 		p.rotation = rnd(0,0.2,true);
-		p.lifeS = R.around(0.5);
+		p.lifeS = R.around(0.4);
 	}
 
 

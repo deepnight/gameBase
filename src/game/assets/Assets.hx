@@ -44,7 +44,7 @@ class Assets {
 		entities = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.entities.toAseprite());
 		world = dn.heaps.assets.Aseprite.convertToSLib(Const.FPS, hxd.Res.atlas.world.toAseprite());
 
-		tiles.defineAnim("fxStun", "0,1,2");
+		// tiles.defineAnim("fxStun", "0,1,2");
 
 		// Parse attach points entities
 		entitiesAttachPts = new Map();
