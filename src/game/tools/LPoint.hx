@@ -164,4 +164,13 @@ class LPoint {
 		else
 			return Math.atan2(lvlY-levelY, lvlX-levelX);
 	}
+
+	public inline function xDist(?e:Entity, ?pt:LPoint, ?tcx=0., ?txr=0.5) {
+		if( e!=null )
+			return M.fabs(e.cx+e.xr - cxf);
+		else if( pt!=null )
+			return M.fabs(pt.cxf - cxf);
+		else
+			return M.fabs(tcx+txr - cxf);
+	}
 }

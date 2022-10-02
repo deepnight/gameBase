@@ -276,8 +276,12 @@ class Entity {
 		spr.remove();
 	}
 
-	public function goto(x,y) {
+	public function gotoPx(x,y) {
 		moveTarget.setLevelPixel(x,y);
+	}
+
+	public function gotoCase(x,y) {
+		moveTarget.setLevelCase(x,y, 0.5, 0.5);
 	}
 
 	public inline function cancelMove() {
@@ -919,6 +923,10 @@ class Entity {
 
 	function canMoveToTarget() {
 		return isAlive() && moveTarget.cx>=0;
+	}
+
+	inline function hasMoveTarget() {
+		return moveTarget.cx>=0;
 	}
 
 	function hasCircularCollisions() {

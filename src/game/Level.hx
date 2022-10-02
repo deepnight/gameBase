@@ -13,6 +13,7 @@ class Level extends GameChildProcess {
 
 	public var marks : dn.MarkerMap<LevelMark>;
 	var invalidated = true;
+	public var cachedEmptyPoints : Array<LPoint> = [];
 
 	public function new(ldtkLevel:World.World_Level) {
 		super();
@@ -29,6 +30,9 @@ class Level extends GameChildProcess {
 		for(cx in 0...cWid) {
 			if( data.l_Collisions.getInt(cx,cy)==1 )
 				marks.set(Coll_Wall, cx,cy);
+
+			if( !hasCollision(cx,cy) )
+				cachedEmptyPoints.push( LPoint.fromCase(cx,cy) );
 		}
 	}
 

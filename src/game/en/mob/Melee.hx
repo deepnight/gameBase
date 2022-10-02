@@ -51,7 +51,7 @@ class Melee extends Mob {
 
 		if( !aiLocked() && hero.isAlive() ) {
 			dir = dirTo(hero);
-			goto(hero.attachX, hero.attachY);
+			gotoPx(hero.attachX, hero.attachY);
 
 			if( distPx(hero)<=Const.GRID*1.2 ) {
 				var ct = switch rank {
