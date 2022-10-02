@@ -16,7 +16,7 @@ class Mob extends Entity {
 		data = d;
 		useLdtkEntity(data);
 
-		initLife(data.f_hp);
+		initLife(3);
 		rank = data.f_rank;
 		circularWeightBase = 5;
 		circularRadius = 7;
@@ -59,7 +59,11 @@ class Mob extends Entity {
 	}
 
 	override function hit(dmg:Int, from:Null<Entity>) {
+		if( armor>0 )
+			dmg = 0;
+
 		super.hit(dmg, from);
+
 		setSquashX(0.4);
 		blink(dmg==0 ? White : Red);
 		if( !isChargingAction() && !isLayingDown() )

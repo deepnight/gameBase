@@ -12,11 +12,12 @@ class Gun extends Mob {
 
 	var maxDistY = 3;
 	var minDistX = 1.5;
-	var maxDistX = 6;
+	var maxDistX = 4;
 
 	public function new(d) {
 		super(d);
 
+		armor = 1;
 		initLife(15);
 
 		spr.anim.registerStateAnim(D.ent.mGun_hold, 2, ()->pendingBullets>0);
@@ -66,7 +67,7 @@ class Gun extends Mob {
 
 	override function getMoveSpeed():Float {
 		return super.getMoveSpeed() * switch rank {
-			case 0: 1.8;
+			case 0: 2;
 			case 1: 2;
 			case _: 2.2;
 		};

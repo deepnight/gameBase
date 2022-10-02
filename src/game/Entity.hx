@@ -147,7 +147,9 @@ class Entity {
 	public var maxLife(default,null) : Int;
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
+	public var armor = 0;
 	var lifeBar : ui.Bar;
+	var armorBar : h2d.Flow;
 
 	/** Horizontal direction (left=-1 or right=1): from "last source of damage" to "this" **/
 	public var lastHitDirFromSource(get,never) : Int;
@@ -245,6 +247,13 @@ class Entity {
 		lifeBar = new ui.Bar(10,1, Assets.yellow());
 		game.scroller.add(lifeBar, Const.DP_UI);
 		lifeBar.enableOldValue(Assets.red());
+
+		armorBar = new h2d.Flow();
+		game.scroller.add(armorBar, Const.DP_UI);
+		armorBar.layout = Horizontal;
+		armorBar.horizontalSpacing = -3;
+
+		armor = 0;
 		initLife(1);
 
 		shadow = Assets.tiles.h_get(D.tiles.groundShadow);
@@ -309,8 +318,24 @@ class Entity {
 		renderLife();
 	}
 
-	inline function renderLife() {
+	public function loseArmor() {
+		if( armor<=0 )
+			return false;
+		armor--;
+		fx.dotsExplosionExample(centerX, centerY, Assets.blue());
+		renderLife();
+		return true;
+	}
+
+	function renderLife() {
 		lifeBar.set(life,maxLife);
+		lifeBar.visible = armor==0 && isAlive() && maxLife>1 ;
+		armorBar.visible = armor>0;
+		if( armor>0 ) {
+			armorBar.removeChildren();
+			for(i in 0...armor)
+				Assets.tiles.getBitmap( D.tiles.iconArmor, armorBar);
+		}
 	}
 
 	/** Inflict damage **/
@@ -538,6 +563,7 @@ class Entity {
 
 		lifeBar.remove();
 		shadow.remove();
+		armorBar.remove();
 
 		moveTarget = null;
 		baseColor = null;
@@ -840,7 +866,8 @@ class Entity {
 
 		lifeBar.x = Std.int( sprX - lifeBar.outerWidth*0.5 );
 		lifeBar.y = Std.int( sprY + zOffsetPx - hei - lifeBar.outerHeight - 1 );
-		lifeBar.visible = isAlive() && maxLife>1;
+		armorBar.x = Std.int( sprX - armorBar.outerWidth*0.5 );
+		armorBar.y = lifeBar.y;
 
 		shadow.setPosition(sprX, sprY-1);
 		shadow.alpha = 0.5;

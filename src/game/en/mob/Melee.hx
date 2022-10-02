@@ -7,6 +7,7 @@ class Melee extends Mob {
 	public function new(d) {
 		super(d);
 
+		armor = 1;
 		initLife(12);
 		sprScaleX = sprScaleY = 1.5;
 

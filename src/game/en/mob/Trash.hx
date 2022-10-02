@@ -3,7 +3,7 @@ package en.mob;
 class Trash extends Mob {
 	public function new(d) {
 		super(d);
-		initLife(5);
+		initLife(4);
 
 		spr.anim.removeAllStateAnims();
 		spr.anim.registerStateAnim(D.ent.mPunch_charge, 1, ()->isChargingAction("punch"));

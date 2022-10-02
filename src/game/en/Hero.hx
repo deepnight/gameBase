@@ -187,7 +187,9 @@ class Hero extends Entity {
 						lockControlS(0.3);
 						for(e in getVictims()) {
 							e.cancelAction();
-							e.hit(hasSuperCharge?99:0, this);
+							if( hasSuperCharge && e.armor>0 )
+								e.loseArmor();
+							e.hit(2, this);
 							e.bumpAwayFrom(this,0.4);
 							e.dz = 0.2;
 							e.setAffectS(Stun, 2);

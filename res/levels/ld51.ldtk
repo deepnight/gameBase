@@ -160,7 +160,7 @@
 			"resizableY": false,
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
-			"fillOpacity": 0.08,
+			"fillOpacity": 0,
 			"lineOpacity": 0,
 			"hollow": false,
 			"color": "#75FF00",
@@ -189,7 +189,7 @@
 			"keepAspectRatio": false,
 			"tileOpacity": 1,
 			"fillOpacity": 0.08,
-			"lineOpacity": 0,
+			"lineOpacity": 0.5,
 			"hollow": false,
 			"color": "#FF0000",
 			"renderMode": "Tile",
@@ -206,36 +206,7 @@
 			"pivotY": 1,
 			"fieldDefs": [
 				{
-					"identifier": "hp",
-					"__type": "Int",
-					"uid": 28,
-					"type": "F_Int",
-					"isArray": false,
-					"canBeNull": false,
-					"arrayMinLength": null,
-					"arrayMaxLength": null,
-					"editorDisplayMode": "ValueOnly",
-					"editorDisplayPos": "Above",
-					"editorAlwaysShow": false,
-					"editorCutLongValues": true,
-					"editorTextSuffix": " HP",
-					"editorTextPrefix": null,
-					"useForSmartColor": false,
-					"min": 1,
-					"max": null,
-					"regex": null,
-					"acceptFileTypes": null,
-					"defaultOverride": { "id": "V_Int", "params": [1] },
-					"textLanguageMode": null,
-					"symmetricalRef": false,
-					"autoChainRef": true,
-					"allowOutOfLevelRef": true,
-					"allowedRefs": "OnlySame",
-					"allowedRefTags": [],
-					"tilesetUid": null
-				},
-				{
-					"identifier": "equip",
+					"identifier": "type",
 					"__type": "ExternEnum.MobType",
 					"uid": 31,
 					"type": "F_Enum(30)",
@@ -423,8 +394,7 @@
 							"defUid": 25,
 							"px": [152,112],
 							"fieldInstances": [
-								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
-								{ "__identifier": "equip", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MT_Gun"]
 								}] },
@@ -444,8 +414,7 @@
 							"defUid": 25,
 							"px": [152,32],
 							"fieldInstances": [
-								{ "__identifier": "hp", "__value": 1, "__type": "Int", "__tile": null, "defUid": 28, "realEditorValues": [] },
-								{ "__identifier": "equip", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
+								{ "__identifier": "type", "__value": "MT_Gun", "__type": "ExternEnum.MobType", "__tile": { "tilesetUid": 26, "x": 0, "y": 560, "w": 16, "h": 16 }, "defUid": 31, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MT_Gun"]
 								}] },
