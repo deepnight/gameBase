@@ -1469,23 +1469,6 @@
 							]
 						},
 						{
-							"__identifier": "Item",
-							"__grid": [4,5],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#94D9B3",
-							"iid": "60d9e650-2a00-11ed-bcca-09be1ba4b9dd",
-							"width": 16,
-							"height": 16,
-							"defUid": 69,
-							"px": [72,96],
-							"fieldInstances": [{ "__identifier": "type", "__value": "RageCharge", "__type": "ExternEnum.ItemType", "__tile": null, "defUid": 70, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["RageCharge"]
-							}] }]
-						},
-						{
 							"__identifier": "Message",
 							"__grid": [8,8],
 							"__pivot": [0.5,1],
@@ -1550,10 +1533,7 @@
 									"params": ["MT_Trash"]
 								}] },
 								{ "__identifier": "rank", "__value": 0, "__type": "Int", "__tile": null, "defUid": 34, "realEditorValues": [] },
-								{ "__identifier": "neverDropCharge", "__value": true, "__type": "Bool", "__tile": null, "defUid": 71, "realEditorValues": [{
-									"id": "V_Bool",
-									"params": [ true ]
-								}] }
+								{ "__identifier": "neverDropCharge", "__value": false, "__type": "Bool", "__tile": null, "defUid": 71, "realEditorValues": [null] }
 							]
 						},
 						{
