@@ -202,6 +202,7 @@ class TitleScreen extends AppChildProcess {
 		box.colorAdd.r = box.colorAdd.g = box.colorAdd.b = 1;
 		logo.colorAdd.r = logo.colorAdd.g = logo.colorAdd.b = 1;
 
+		var s = 0.2*upscale;
 		createChildProcess( (p)->{
 			box.colorAdd.r *= 0.93;
 			box.colorAdd.g *= 0.7;
@@ -210,6 +211,10 @@ class TitleScreen extends AppChildProcess {
 			logo.colorAdd.r *= 0.99;
 			logo.colorAdd.g *= 0.94;
 			logo.colorAdd.b *= 0.94;
+
+			box.setScale(upscale+s);
+			logo.setScale(upscale+s);
+			s*=0.9;
 		});
 
 		fadeOut( 1, ()->{
