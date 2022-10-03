@@ -215,6 +215,8 @@ class App extends dn.Process {
 
 		crt = new dn.heaps.filter.Crt(2,White,0.3);
 		scene.filter = crt;
+		crt.autoUpdateSize = ()->Const.SCALE;
+		crt.vignetting = 1;
 
 		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
 		hxd.snd.Manager.get();
