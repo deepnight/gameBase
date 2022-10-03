@@ -9,8 +9,8 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "1.1.4",
-	"appBuildId": 462327,
-	"nextUid": 90,
+	"appBuildId": 460664,
+	"nextUid": 91,
 	"identifierStyle": "Capitalize",
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
@@ -6303,20 +6303,6 @@
 								{ "__identifier": "breakColor2", "__value": "#00FEFF", "__type": "Color", "__tile": null, "defUid": 76, "realEditorValues": [{ "id": "V_Int", "params": [65279] }] },
 								{ "__identifier": "yOff", "__value": -6, "__type": "Int", "__tile": null, "defUid": 88, "realEditorValues": [] }
 							]
-						},
-						{
-							"__identifier": "DebugStart",
-							"__grid": [6,6],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": { "tilesetUid": 26, "x": 208, "y": 16, "w": 16, "h": 16 },
-							"__smartColor": "#FF00FF",
-							"iid": "ffa8ef74-2a00-11ed-bcca-1fc19f7ec10d",
-							"width": 16,
-							"height": 16,
-							"defUid": 73,
-							"px": [104,104],
-							"fieldInstances": []
 						}
 					]
 				},
