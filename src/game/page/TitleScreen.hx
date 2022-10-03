@@ -19,18 +19,27 @@ class TitleScreen extends AppChildProcess {
 	public function new() {
 		super();
 
+		fadeIn();
+
 		pool = new dn.heaps.HParticle.ParticlePool(Assets.tiles.tile, 2048, Const.FPS);
 
 		cm = new dn.Cinematic(Const.FPS);
 		ca = App.ME.controller.createAccess();
 
-		bgCol = new h2d.Bitmap( h2d.Tile.fromColor(Col.inlineHex("#24223d")), root);
-		bg = new h2d.Bitmap(hxd.Res.atlas.title.bg.toTile(), root);
+		bgCol = new h2d.Bitmap( h2d.Tile.fromColor(Col.inlineHex("#24223d")) );
+		root.add(bgCol, Const.DP_MAIN);
+
+		bg = new h2d.Bitmap( hxd.Res.atlas.title.bg.toTile() );
+		root.add(bg, Const.DP_MAIN);
 		bg.tile.setCenterRatio();
-		box = new h2d.Bitmap( hxd.Res.atlas.title.box.toTile(), root );
+
+		box = new h2d.Bitmap( hxd.Res.atlas.title.box.toTile() );
 		box.tile.setCenterRatio();
-		logo = new h2d.Bitmap( hxd.Res.atlas.title.logo.toTile(), root );
+		root.add(box, Const.DP_MAIN);
+
+		logo = new h2d.Bitmap( hxd.Res.atlas.title.logo.toTile() );
 		logo.tile.setCenterRatio();
+		root.add(logo, Const.DP_MAIN);
 
 		fxNormal = new h2d.SpriteBatch(Assets.tiles.tile);
 		root.add(fxNormal, Const.DP_FX_FRONT);
@@ -65,6 +74,7 @@ class TitleScreen extends AppChildProcess {
 		logo.colorAdd.g = -1;
 		logo.colorAdd.b = -1;
 		logo.alpha = 0;
+		var swordSfx = S.__samsterbirdies__sword_draw_unsheathe();
 		cm.create({
 			700;
 			tw.createS(bg.scaleX, s, 1);
@@ -79,6 +89,7 @@ class TitleScreen extends AppChildProcess {
 			tw.createS(box.colorAdd.r, 0, 0.5);
 			tw.createS(box.colorAdd.g, 0, 0.2);
 			tw.createS(box.colorAdd.b, 0, 0.4);
+			swordSfx.play(1);
 			200;
 			tw.createS(logo.alpha, 1, 0.3);
 			tw.createS(pressStart.alpha, 1, 1);
@@ -130,6 +141,7 @@ class TitleScreen extends AppChildProcess {
 	}
 	override function postUpdate() {
 		super.postUpdate();
+
 		if( cd.has("shake") ) {
 			var r = cd.getRatio("shake");
 			root.y = Math.sin(ftime*10)*r*2*Const.SCALE;
@@ -184,6 +196,28 @@ class TitleScreen extends AppChildProcess {
 		}
 	}
 
+	function skip() {
+		S.startGame(1);
+		shake(0.1);
+		box.colorAdd.r = box.colorAdd.g = box.colorAdd.b = 1;
+		logo.colorAdd.r = logo.colorAdd.g = logo.colorAdd.b = 1;
+
+		createChildProcess( (p)->{
+			box.colorAdd.r *= 0.93;
+			box.colorAdd.g *= 0.7;
+			box.colorAdd.b *= 0.7;
+
+			logo.colorAdd.r *= 0.99;
+			logo.colorAdd.g *= 0.94;
+			logo.colorAdd.b *= 0.94;
+		});
+
+		fadeOut( 1, ()->{
+			App.ME.startGame();
+			destroy();
+		});
+	}
+
 	override function onDispose() {
 		super.onDispose();
 		ca.dispose();
@@ -191,6 +225,15 @@ class TitleScreen extends AppChildProcess {
 
 	override function update() {
 		super.update();
+
+		if( ca.isKeyboardPressed(K.ESCAPE) ) {
+			App.ME.exit();
+		}
+		else if( ca.anyStandardContinuePressed() ) {
+			ca.lock();
+			skip();
+		}
+
 		#if debug
 		if( ca.isKeyboardPressed(K.R) )
 			run();

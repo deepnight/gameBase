@@ -18,6 +18,7 @@ class App extends dn.Process {
 	public var screenshotMode(default,null) = false;
 
 	var crt : dn.heaps.filter.Crt;
+	var bg : h2d.Bitmap;
 
 	public function new(s:h2d.Scene) {
 		super();
@@ -42,8 +43,17 @@ class App extends dn.Process {
 		Console.ME.enableStats();
 		#end
 
+		bg = new h2d.Bitmap( h2d.Tile.fromColor(Assets.black()) );
+		root.add(bg,0);
+
 		startTitle();
 		// startGame();
+	}
+
+	override function onResize() {
+		super.onResize();
+		bg.scaleX = w();
+		bg.scaleY = h();
 	}
 
 	public function startTitle() {
@@ -185,7 +195,7 @@ class App extends dn.Process {
 	**/
 	function initEngine() {
 		// Engine settings
-		engine.backgroundColor = Assets.blue().withAlpha(1);
+		engine.backgroundColor = Assets.black().withAlpha(1);
         #if( hl && !debug )
         engine.fullScreen = true;
         #end

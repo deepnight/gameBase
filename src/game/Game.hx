@@ -36,7 +36,6 @@ class Game extends AppChildProcess {
 		ME = this;
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = isGameControllerLocked;
-		createRootInLayers(App.ME.root, Const.DP_BG);
 		dn.Gc.runNow();
 
 		bg = new h2d.Bitmap( h2d.Tile.fromColor(Assets.walls()) );
@@ -112,6 +111,7 @@ class Game extends AppChildProcess {
 		garbageCollectEntities();
 		gameTimeS = 0;
 		cd.unset("gameTimeLock");
+		fadeIn();
 
 		level = new Level(l);
 		// camera.rawFocus.setLevelPixel(level.pxWid*0.5, level.pxHei*0.5);
@@ -440,8 +440,10 @@ class Game extends AppChildProcess {
 			if( ca.isKeyboardPressed(K.ESCAPE) )
 				if( !cd.hasSetS("exitWarn",3) )
 					hud.notify(Lang.t._("Press ESCAPE again to exit."));
-				else
-					App.ME.exit();
+				else {
+					ca.lock();
+					fadeOut( ()->App.ME.startTitle() );
+				}
 			#end
 
 			// Attach debug drone (CTRL-SHIFT-D)
