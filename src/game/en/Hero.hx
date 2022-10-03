@@ -243,19 +243,19 @@ class Hero extends Entity {
 					// Marking attack
 					S.atk05(0.5).pitchRandomly();
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
-					game.addSlowMo("markAtk", 0.3, 0.25);
-					chargeAction("punchC", 0.2, ()->{
+					// game.addSlowMo("markAtk", 0.3, 0.25);
+					chargeAction("punchC", 0.1, ()->{
 						onAnyAttack();
 						fx.flashBangEaseInS(Assets.green(), 0.15, 1);
-						lockControlS(0.3);
+						lockControlS(0.2);
 						var any = false;
 						for(e in getVictims(2)) {
 							any = true;
 							e.dir = e.dirTo(this);
 							e.cancelAction();
 							e.addRageMarks(rage);
-							e.bumpAwayFrom(this,0.2);
-							e.dz = 0.14;
+							e.bumpAwayFrom(this,0.15);
+							// e.dz = 0.14;
 							e.setAffectS(Stun, 0.3);
 							e.cd.setS("pushOthers",1);
 							fx.stampIcon(D.tiles.itemCharge, e);
@@ -338,6 +338,7 @@ class Hero extends Entity {
 									e.bumpAwayFrom(this, 0.3);
 									e.dz = 0.2;
 									e.hit(0,this);
+									e.spr.anim.clearOverlapAnim();
 									e.dropCharge = true;
 									e.setAffectS(Stun, 3.5);
 									if( e.is(en.mob.Melee) )
