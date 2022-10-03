@@ -32,9 +32,6 @@ class TitleScreen extends AppChildProcess {
 		logo = new h2d.Bitmap( hxd.Res.atlas.title.logo.toTile(), root );
 		logo.tile.setCenterRatio();
 
-		pressStart = new h2d.Text(Assets.fontPixel, root);
-		pressStart.text = "Press any key";
-
 		fxNormal = new h2d.SpriteBatch(Assets.tiles.tile);
 		root.add(fxNormal, Const.DP_FX_FRONT);
 		fxNormal.hasRotationScale = true;
@@ -43,6 +40,10 @@ class TitleScreen extends AppChildProcess {
 		root.add(fxAdd, Const.DP_FX_FRONT);
 		fxAdd.blendMode = Add;
 		fxAdd.hasRotationScale = true;
+
+		pressStart = new h2d.Text(Assets.fontPixel);
+		root.add(pressStart, Const.DP_FX_FRONT);
+		pressStart.text = "Press any key";
 
 		run();
 	}
@@ -136,7 +137,7 @@ class TitleScreen extends AppChildProcess {
 		else
 			root.y = 0;
 
-		// pressStart.visible = Std.int( stime/0.5 ) % 2 == 0;
+		pressStart.visible = Std.int( stime/0.25 ) % 2 == 0;
 
 		if( ready && !cd.hasSetS("fx",0.03) ) {
 			var w = w()/upscale;
