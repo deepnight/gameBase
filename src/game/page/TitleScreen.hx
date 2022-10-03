@@ -155,10 +155,10 @@ class TitleScreen extends AppChildProcess {
 			var w = w()/upscale;
 			var h = h()/upscale;
 			// Black smoke
-			for(i in 0...3) {
-				var r = rnd(0,1);
-				var p = allocNormal(D.tiles.fxSmoke, w*r, h+rnd(0,20,true)-r*100 );
-				p.setFadeS(rnd(0.2, 0.4), 1, rnd(1,2) );
+			for(i in 0...4) {
+				var xr = rnd(0,1);
+				var p = allocNormal(R.pct(70)?D.tiles.fxDirt:D.tiles.fxSmoke, w*xr, h+rnd(0,10,true)-rnd(0,xr*70) );
+				p.setFadeS(rnd(0.1, 0.35), 1, rnd(1,2) );
 				p.colorize( Assets.dark() );
 				p.rotation = R.fullCircle();
 				p.setScale(rnd(3,4,true));
@@ -168,8 +168,8 @@ class TitleScreen extends AppChildProcess {
 				p.lifeS = rnd(1,3);
 			}
 			for(i in 0...1) {
-				var r = rnd(0,1);
-				var p = allocAdd(D.tiles.fxSmoke, w*r, h+30-rnd(0,40,true)-r*50 );
+				var xr = rnd(0,1);
+				var p = allocAdd(D.tiles.fxSmoke, w*xr, h+30-rnd(0,40,true)-rnd(0,xr*50) );
 				p.setFadeS(rnd(0.04, 0.10), 1, rnd(1,2) );
 				p.colorize( Assets.blue() );
 				p.rotation = R.fullCircle();
