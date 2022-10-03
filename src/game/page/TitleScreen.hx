@@ -117,7 +117,7 @@ class TitleScreen extends AppChildProcess {
 		bgCol.scaleX = w();
 		bgCol.scaleY = h();
 
-		upscale = dn.heaps.Scaler.bestFit_i(box.tile.width, box.tile.height);
+		upscale = dn.heaps.Scaler.bestFit_i(box.tile.height, box.tile.height); // only height matters
 		box.setScale(upscale);
 		bg.setScale(upscale);
 		logo.setScale(upscale);
@@ -126,7 +126,7 @@ class TitleScreen extends AppChildProcess {
 		fxNormal.setScale(upscale);
 
 		pressStart.setScale(upscale);
-		pressStart.setPosition( Std.int( w()*0.5-pressStart.textWidth*0.5*pressStart.scaleX ), Std.int( h()*0.7-pressStart.textHeight*0.5*pressStart.scaleY ) );
+		pressStart.setPosition( Std.int( w()*0.5-pressStart.textWidth*0.5*pressStart.scaleX ), Std.int( h()*0.82-pressStart.textHeight*0.5*pressStart.scaleY ) );
 
 		box.setPosition( Std.int( w()*0.5 ), Std.int( h()*0.5 ) );
 		bg.setPosition( Std.int( w()*0.5 ), Std.int( h()*0.5 ) );
