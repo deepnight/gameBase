@@ -42,7 +42,14 @@ class App extends dn.Process {
 		Console.ME.enableStats();
 		#end
 
-		startGame();
+		startTitle();
+		// startGame();
+	}
+
+	public function startTitle() {
+		if( Game.exists() )
+			Game.ME.destroy();
+		new page.TitleScreen();
 	}
 
 

@@ -7,6 +7,7 @@ class AppChildProcess extends dn.Process {
 
 	public function new() {
 		super(App.ME);
+		createRootInLayers(App.ME.root, Const.DP_MAIN);
 		ALL.push(this);
 	}
 

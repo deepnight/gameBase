@@ -1,0 +1,198 @@
+package page;
+
+import dn.heaps.HParticle;
+
+class TitleScreen extends AppChildProcess {
+	var ca : ControllerAccess<GameAction>;
+	var bgCol : h2d.Bitmap;
+	var bg : h2d.Bitmap;
+	var box : h2d.Bitmap;
+	var logo : h2d.Bitmap;
+	var pressStart : h2d.Text;
+	var cm : dn.Cinematic;
+
+	var pool : dn.heaps.HParticle.ParticlePool;
+	var fxAdd : h2d.SpriteBatch;
+	var fxNormal : h2d.SpriteBatch;
+	var upscale = 1.;
+
+	public function new() {
+		super();
+
+		pool = new dn.heaps.HParticle.ParticlePool(Assets.tiles.tile, 2048, Const.FPS);
+
+		cm = new dn.Cinematic(Const.FPS);
+		ca = App.ME.controller.createAccess();
+
+		bgCol = new h2d.Bitmap( h2d.Tile.fromColor(Col.inlineHex("#24223d")), root);
+		bg = new h2d.Bitmap(hxd.Res.atlas.title.bg.toTile(), root);
+		bg.tile.setCenterRatio();
+		box = new h2d.Bitmap( hxd.Res.atlas.title.box.toTile(), root );
+		box.tile.setCenterRatio();
+		logo = new h2d.Bitmap( hxd.Res.atlas.title.logo.toTile(), root );
+		logo.tile.setCenterRatio();
+
+		pressStart = new h2d.Text(Assets.fontPixel, root);
+		pressStart.text = "Press any key";
+
+		fxNormal = new h2d.SpriteBatch(Assets.tiles.tile);
+		root.add(fxNormal, Const.DP_FX_FRONT);
+		fxNormal.hasRotationScale = true;
+
+		fxAdd = new h2d.SpriteBatch(Assets.tiles.tile);
+		root.add(fxAdd, Const.DP_FX_FRONT);
+		fxAdd.blendMode = Add;
+		fxAdd.hasRotationScale = true;
+
+		run();
+	}
+
+	var ready = true;
+	function run() {
+		onResize();
+		var s = upscale;
+		pressStart.alpha = 0;
+		bg.scale(0.94);
+		bg.alpha = 0;
+		box.alpha = 0;
+		box.colorAdd = new h3d.Vector();
+		box.colorAdd.r = 0.5;
+		box.colorAdd.g = 1;
+		box.colorAdd.b = 1;
+		logo.colorAdd = new h3d.Vector();
+		logo.colorAdd.r = 0;
+		logo.colorAdd.g = -1;
+		logo.colorAdd.b = -1;
+		logo.alpha = 0;
+		cm.create({
+			700;
+			tw.createS(bg.scaleX, s, 1);
+			tw.createS(bg.scaleY, s, 1);
+			tw.createS(bg.alpha, 1, 1);
+			700;
+			box.alpha = 1;
+			box.scale(2);
+			150 >> shake(0.4);
+			tw.createS(box.scaleX, s, 0.15);
+			tw.createS(box.scaleY, s, 0.15);
+			tw.createS(box.colorAdd.r, 0, 0.5);
+			tw.createS(box.colorAdd.g, 0, 0.2);
+			tw.createS(box.colorAdd.b, 0, 0.4);
+			200;
+			tw.createS(logo.alpha, 1, 0.3);
+			tw.createS(pressStart.alpha, 1, 1);
+			200;
+			ready = true;
+			tw.createS(logo.colorAdd.r, 0, 0.5);
+			tw.createS(logo.colorAdd.g, 0, 0.2);
+			tw.createS(logo.colorAdd.b, 0, 0.4);
+		});
+	}
+
+	function shake(t) {
+		cd.setS("shake",t);
+	}
+
+	override function preUpdate() {
+		super.preUpdate();
+		cm.update(tmod);
+		pool.update(tmod);
+	}
+
+	override function onResize() {
+		super.onResize();
+
+		bgCol.scaleX = w();
+		bgCol.scaleY = h();
+
+		upscale = dn.heaps.Scaler.bestFit_i(box.tile.width, box.tile.height);
+		box.setScale(upscale);
+		bg.setScale(upscale);
+		logo.setScale(upscale);
+
+		fxAdd.setScale(upscale);
+		fxNormal.setScale(upscale);
+
+		pressStart.setScale(upscale);
+		pressStart.setPosition( Std.int( w()*0.5-pressStart.textWidth*0.5*pressStart.scaleX ), Std.int( h()*0.7-pressStart.textHeight*0.5*pressStart.scaleY ) );
+
+		box.setPosition( Std.int( w()*0.5 ), Std.int( h()*0.5 ) );
+		bg.setPosition( Std.int( w()*0.5 ), Std.int( h()*0.5 ) );
+		logo.setPosition( Std.int( w()*0.5 ), Std.int( h()*0.5 ) );
+	}
+
+	inline function allocAdd(id:String, x:Float, y:Float) : HParticle {
+		return pool.alloc( fxAdd, Assets.tiles.getTile(id), x, y );
+	}
+	inline function allocNormal(id:String, x:Float, y:Float) : HParticle {
+		return pool.alloc( fxNormal, Assets.tiles.getTile(id), x, y );
+	}
+	override function postUpdate() {
+		super.postUpdate();
+		if( cd.has("shake") ) {
+			var r = cd.getRatio("shake");
+			root.y = Math.sin(ftime*10)*r*2*Const.SCALE;
+		}
+		else
+			root.y = 0;
+
+		// pressStart.visible = Std.int( stime/0.5 ) % 2 == 0;
+
+		if( ready && !cd.hasSetS("fx",0.03) ) {
+			var w = w()/upscale;
+			var h = h()/upscale;
+			// Black smoke
+			for(i in 0...3) {
+				var r = rnd(0,1);
+				var p = allocNormal(D.tiles.fxSmoke, w*r, h+rnd(0,20,true)-r*100 );
+				p.setFadeS(rnd(0.2, 0.4), 1, rnd(1,2) );
+				p.colorize( Assets.dark() );
+				p.rotation = R.fullCircle();
+				p.setScale(rnd(3,4,true));
+				p.gy = -R.around(0.02);
+				p.gx = rnd(0, 0.01);
+				p.frict = R.aroundBO(0.9, 5);
+				p.lifeS = rnd(1,3);
+			}
+			for(i in 0...1) {
+				var r = rnd(0,1);
+				var p = allocAdd(D.tiles.fxSmoke, w*r, h+30-rnd(0,40,true)-r*50 );
+				p.setFadeS(rnd(0.04, 0.10), 1, rnd(1,2) );
+				p.colorize( Assets.blue() );
+				p.rotation = R.fullCircle();
+				p.setScale(rnd(2,3,true));
+				p.gy = -R.around(0.01);
+				p.gx = rnd(0, 0.01);
+				p.frict = R.aroundBO(0.9, 5);
+				p.lifeS = rnd(1,2);
+			}
+			for(i in 0...4) {
+				var p = allocAdd(D.tiles.pixel, rnd(0,w*0.8), rnd(0,h*0.7) );
+				p.setFadeS(rnd(0.2, 0.5), 1, rnd(1,2) );
+				p.colorAnimS( Col.inlineHex("#ff6900"), Assets.dark(), rnd(1,3) );
+				p.alphaFlicker = rnd(0.2,0.5);
+				p.setScale(irnd(1,2));
+				p.dr = rnd(0,0.1,true);
+				p.gx = rnd(0, 0.03);
+				p.gy = rnd(-0.02, 0.08);
+				p.dx = rnd(0,1);
+				// p.dy = rnd(0,1,true);
+				p.frict = R.aroundBO(0.98, 5);
+				p.lifeS = rnd(1,2);
+			}
+		}
+	}
+
+	override function onDispose() {
+		super.onDispose();
+		ca.dispose();
+	}
+
+	override function update() {
+		super.update();
+		#if debug
+		if( ca.isKeyboardPressed(K.R) )
+			run();
+		#end
+	}
+}
