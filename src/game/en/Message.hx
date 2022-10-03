@@ -35,6 +35,11 @@ class Message extends Entity {
 		wrapper.y = Std.int( (cy+d.f_pivotY)*G - bg.height*d.f_pivotY );
 	}
 
+	override function onScreenshotMode(v:Bool) {
+		super.onScreenshotMode(v);
+		wrapper.visible = !v;
+	}
+
 	override function dispose() {
 		super.dispose();
 		wrapper.remove();

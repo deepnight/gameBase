@@ -913,6 +913,16 @@ class Entity {
 		}
 	}
 
+	public function onScreenshotMode(v:Bool) {
+		if( v ) {
+			colorMatrix.identity();
+			sprSquashX = 1;
+			sprSquashY = 1;
+			postUpdate();
+			spr.colorAdd.load(baseColor);
+		}
+	}
+
 	public function popText(str:String, col:Col=0xffcc00) {
 		var f = new h2d.Flow();
 		game.scroller.add(f, Const.DP_UI);

@@ -17,6 +17,8 @@ class App extends dn.Process {
 	/** If TRUE, game is paused, and a Contrast filter is applied **/
 	public var screenshotMode(default,null) = false;
 
+	var crt : dn.heaps.filter.Crt;
+
 	public function new(s:h2d.Scene) {
 		super();
 		ME = this;
@@ -131,19 +133,24 @@ class App extends dn.Process {
 	**/
 	public function setScreenshotMode(v:Bool) {
 		screenshotMode = v;
+		crt.enable = !v;
+
+		if( Game.exists() )
+			for(e in Entity.ALL)
+				e.onScreenshotMode(v);
 
 		if( screenshotMode ) {
 			var f = new h2d.filter.ColorMatrix();
 			f.matrix.colorContrast(0.2);
 			root.filter = f;
 			if( Game.exists() ) {
-				Game.ME.hud.root.visible = false;
+				// Game.ME.hud.root.visible = false;
 				Game.ME.pause();
 			}
 		}
 		else {
 			if( Game.exists() ) {
-				Game.ME.hud.root.visible = true;
+				// Game.ME.hud.root.visible = true;
 				Game.ME.resume();
 			}
 			root.filter = null;
@@ -189,7 +196,7 @@ class App extends dn.Process {
       		hxd.Res.initEmbed();
         #end
 
-		var crt = new dn.heaps.filter.Crt(2,White,0.3);
+		crt = new dn.heaps.filter.Crt(2,White,0.3);
 		scene.filter = crt;
 
 		// Sound manager (force manager init on startup to avoid a freeze on first sound playback)
