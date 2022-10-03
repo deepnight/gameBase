@@ -74,7 +74,7 @@ class TitleScreen extends AppChildProcess {
 		logo.colorAdd.g = -1;
 		logo.colorAdd.b = -1;
 		logo.alpha = 0;
-		var swordSfx = S.__samsterbirdies__sword_draw_unsheathe();
+		var appearSfx = S.exp02();
 		cm.create({
 			700;
 			tw.createS(bg.scaleX, s, 1);
@@ -84,12 +84,12 @@ class TitleScreen extends AppChildProcess {
 			box.alpha = 1;
 			box.scale(2);
 			150 >> shake(0.4);
+			150 >> appearSfx.play(1);
 			tw.createS(box.scaleX, s, 0.15);
 			tw.createS(box.scaleY, s, 0.15);
 			tw.createS(box.colorAdd.r, 0, 0.5);
 			tw.createS(box.colorAdd.g, 0, 0.2);
 			tw.createS(box.colorAdd.b, 0, 0.4);
-			swordSfx.play(1);
 			200;
 			tw.createS(logo.alpha, 1, 0.3);
 			tw.createS(pressStart.alpha, 1, 1);
@@ -197,7 +197,7 @@ class TitleScreen extends AppChildProcess {
 	}
 
 	function skip() {
-		S.startGame(1);
+		S.__samsterbirdies__sword_draw_unsheathe(1);
 		shake(0.1);
 		box.colorAdd.r = box.colorAdd.g = box.colorAdd.b = 1;
 		logo.colorAdd.r = logo.colorAdd.g = logo.colorAdd.b = 1;
