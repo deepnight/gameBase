@@ -36,8 +36,8 @@ class App extends dn.Process {
 		new ui.Console(Assets.fontPixelMono, scene); // init debug console
 
 		// Optional screen that shows a "Click to start/continue" message when the game client looses focus
-		if( dn.heaps.GameFocusHelper.isUseful() )
-			new dn.heaps.GameFocusHelper(scene, Assets.fontPixel);
+		// if( dn.heaps.GameFocusHelper.isUseful() )
+		// 	new dn.heaps.GameFocusHelper(scene, Assets.fontPixel);
 
 		#if debug
 		Console.ME.enableStats();
