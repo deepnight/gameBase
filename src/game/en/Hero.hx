@@ -241,10 +241,11 @@ class Hero extends Entity {
 				if( rage>0) {
 
 					// Marking attack
-					S.atk05(0.5).pitchRandomly();
 					fx.flashBangEaseInS(Assets.blue(), 0.1, 0.3);
 					// game.addSlowMo("markAtk", 0.3, 0.25);
+					S.rollStart(0.7).pitchRandomly();
 					chargeAction("punchC", 0.1, ()->{
+						S.atk05(1).pitchRandomly();
 						onAnyAttack();
 						fx.flashBangEaseInS(Assets.green(), 0.15, 1);
 						lockControlS(0.2);
@@ -276,7 +277,7 @@ class Hero extends Entity {
 					switch comboCpt {
 						case 0,1: // Punch A
 							chargeAction("punchA", 0.1, ()->{
-								S.atk03(0.5).pitchRandomly();
+								S.atk03(0.7).pitchRandomly();
 								onAnyAttack();
 								lockControlS(0.06);
 
@@ -296,7 +297,7 @@ class Hero extends Entity {
 
 						case 2: // Punch B
 							chargeAction("punchB", 0.15, ()->{
-								S.atk02(0.5).pitchRandomly();
+								S.atk02(0.9).pitchRandomly();
 								onAnyAttack();
 								lockControlS(0.25);
 								var any = false;
@@ -316,11 +317,12 @@ class Hero extends Entity {
 							comboCpt++;
 
 						case 3: // Kick
-							S.atk04(0.5).pitchRandomly();
 							game.addSlowMo("heroKick", 0.3, 0.4);
 							dz = 0.12;
 							dx+=dir*0.1;
+							S.rollStart(0.7).pitchRandomly();
 							chargeAction("kickA", 0.16, ()->{
+								S.atk04(0.9).pitchRandomly();
 								onAnyAttack();
 								dx+=dir*0.1;
 								dz = 0.05;

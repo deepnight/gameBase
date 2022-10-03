@@ -32,7 +32,7 @@ class Destructible extends Entity {
 			new Item(attachX, attachY, RageCharge);
 		fx.brokenProp(centerX, centerY, col1, col2, e==null ? -999 : M.PI+angTo(e));
 		destroy();
-		S.break01(0.4).pitchRandomly();
+		S.break01(1).pitchRandomly();
 	}
 
 	public static function checkEnt(e:Entity) {
@@ -61,6 +61,7 @@ class Destructible extends Entity {
 			hit(1,hero);
 		cd.setS("shake", R.around(0.3));
 		dz = rnd(0, 0.12);
+		S.hit01(1);
 	}
 
 	override function fixedUpdate() {
