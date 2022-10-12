@@ -407,7 +407,7 @@ class Entity {
 	public inline function getMoveAng() return Math.atan2(dyTotal,dxTotal);
 
 	/** Return a distance (in grid cells) from this to something **/
-	public inline function distCase(?e:Entity, ?tcx:Int, ?tcy:Int, ?txr=0.5, ?tyr=0.5) {
+	public inline function distCase(?e:Entity, ?tcx:Int, ?tcy:Int, txr=0.5, tyr=0.5) {
 		if( e!=null )
 			return M.dist(cx+xr, cy+yr, e.cx+e.xr, e.cy+e.yr);
 		else
@@ -610,7 +610,7 @@ class Entity {
 	}
 
 	/** Add an Affect. If `allowLower` is TRUE, it is possible to override an existing Affect with a shorter duration. **/
-	public function setAffectS(k:Affect, t:Float, ?allowLower=false) {
+	public function setAffectS(k:Affect, t:Float, allowLower=false) {
 		if( !isAlive() || affects.exists(k) && affects.get(k)>t && !allowLower )
 			return;
 
