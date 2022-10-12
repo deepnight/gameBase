@@ -9,6 +9,9 @@ class Velocity {
 	public var frict(never,set) : Float;
 		inline function set_frict(v) return frictX = frictY = v;
 
+	public var dirX(get,never) : Int; inline function get_dirX() return M.sign(dx);
+	public var dirY(get,never) : Int; inline function get_dirY() return M.sign(dy);
+
 	public var killThreshold = 0.0005;
 
 	public inline function new(frict=0.9) {
@@ -47,6 +50,7 @@ class Velocity {
 
 	public inline function isZero() return dx==0 && dy==0;
 	public inline function getAng() return Math.atan2(dy,dx);
+
 
 	public inline function fixedUpdate() {
 		dx*=frictX;
