@@ -40,3 +40,7 @@ enum abstract LevelMark(Int) to Int {
 enum abstract LevelSubMark(Int) to Int {
 	var None; // 0
 }
+
+enum abstract SlowMoId(Int) to Int {
+	var S_Default; // 0
+}

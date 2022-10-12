@@ -21,7 +21,7 @@ class Game extends AppChildProcess {
 
 	/** Slow mo internal values**/
 	var curGameSpeed = 1.0;
-	var slowMos : Map<String, { id:String, t:Float, f:Float }> = new Map();
+	var slowMos : Map<SlowMoId, { id:SlowMoId, t:Float, f:Float }> = new Map();
 
 
 	public function new() {
@@ -127,7 +127,7 @@ class Game extends AppChildProcess {
 		@param sec Realtime second duration of this slowmo
 		@param speedFactor Cumulative multiplier to the Process `tmod`
 	**/
-	public function addSlowMo(id:String, sec:Float, speedFactor=0.3) {
+	public function addSlowMo(id:SlowMoId, sec:Float, speedFactor=0.3) {
 		if( slowMos.exists(id) ) {
 			var s = slowMos.get(id);
 			s.f = speedFactor;
