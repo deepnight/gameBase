@@ -119,9 +119,7 @@ class SamplePlayer extends Entity {
 			v.dy+=0.05;
 
 		// Apply requested walk movement
-		if( walkSpeed!=0 ) {
-			var speed = 0.045;
-			v.dx += walkSpeed * speed;
-		}
+		if( walkSpeed!=0 )
+			v.dx += walkSpeed * 0.045; // some arbitrary speed
 	}
 }
