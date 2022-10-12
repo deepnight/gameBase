@@ -1,18 +1,21 @@
 package tools;
 
+/**
+	A generic X/Y velocity utility class
+**/
 class Velocity {
 	public var dx : Float;
 	public var dy : Float;
-
 	public var frictX : Float;
 	public var frictY : Float;
+	public var killThreshold = 0.0005;
+
 	public var frict(never,set) : Float;
 		inline function set_frict(v) return frictX = frictY = v;
 
 	public var dirX(get,never) : Int; inline function get_dirX() return M.sign(dx);
 	public var dirY(get,never) : Int; inline function get_dirY() return M.sign(dy);
 
-	public var killThreshold = 0.0005;
 
 	public inline function new(frict=0.9) {
 		dx = dy = 0;
