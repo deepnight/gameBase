@@ -14,7 +14,7 @@ class SamplePlayer extends Entity {
 
 	// This is TRUE if the player is not falling
 	var onGround(get,never) : Bool;
-		inline function get_onGround() return !destroyed && dy==0 && yr==1 && level.hasCollision(cx,cy+1);
+		inline function get_onGround() return !destroyed && v.dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
 
 	public function new() {
@@ -26,8 +26,7 @@ class SamplePlayer extends Entity {
 			setPosCase(start.cx, start.cy);
 
 		// Misc inits
-		frictX = 0.84;
-		frictY = 0.94;
+		v.setFricts(0.84, 0.94);
 
 		// Camera tracks this
 		camera.trackEntity(this, true);
@@ -70,7 +69,8 @@ class SamplePlayer extends Entity {
 		// Land on ground
 		if( yr>1 && level.hasCollision(cx,cy+1) ) {
 			setSquashY(0.5);
-			dy = 0;
+			v.dy = 0;
+			vBump.dy = 0;
 			yr = 1;
 			ca.rumble(0.2, 0.06);
 			onPosManuallyChangedY();
@@ -96,7 +96,7 @@ class SamplePlayer extends Entity {
 
 		// Jump
 		if( cd.has("recentlyOnGround") && ca.isPressed(Jump) ) {
-			dy = -0.85;
+			v.dy = -0.85;
 			setSquashX(0.6);
 			cd.unset("recentlyOnGround");
 			fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
@@ -116,12 +116,12 @@ class SamplePlayer extends Entity {
 
 		// Gravity
 		if( !onGround )
-			dy+=0.05;
+			v.dy+=0.05;
 
 		// Apply requested walk movement
 		if( walkSpeed!=0 ) {
 			var speed = 0.045;
-			dx += walkSpeed * speed;
+			v.dx += walkSpeed * speed;
 		}
 	}
 }
