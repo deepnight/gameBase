@@ -219,6 +219,14 @@ class App extends dn.Process {
 	/** Init game controller and default key bindings **/
 	function initController() {
 		controller = dn.heaps.input.Controller.createFromAbstractEnum(GameAction);
+		ca = controller.createAccess();
+		ca.lockCondition = ()->return destroyed || anyInputHasFocus();
+
+		initControllerBindings();
+	}
+
+	public function initControllerBindings() {
+		controller.removeBindings();
 
 		// Gamepad bindings
 		controller.bindPadLStick4(MoveLeft, MoveRight, MoveUp, MoveDown);
@@ -265,9 +273,6 @@ class App extends dn.Process {
 		controller.bindPadCombo(ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
 		controller.bindKeyboardCombo(ToggleDebugDrone, [K.D, K.CTRL, K.SHIFT]);
 		#end
-
-		ca = controller.createAccess();
-		ca.lockCondition = ()->return destroyed || anyInputHasFocus();
 	}
 
 
