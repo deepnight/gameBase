@@ -39,6 +39,8 @@ class Entity {
 	/** Sub-grid Y coordinate (from 0.0 to 1.0) **/
     public var yr = 1.0;
 
+	var allVelocities : FixedArray<Velocity>;
+
 	/** Base X/Y velocity of the Entity **/
 	public var v : tools.Velocity;
 	/** "External bump" velocity. It is used to push the Entity in some direction, independently of the "user-controlled" base velocity. **/
@@ -53,9 +55,17 @@ class Entity {
 	var interpolateSprPos = true;
 
 	/** Total of all X velocities **/
-	public var dxTotal(get,never) : Float; inline function get_dxTotal() return v.dx + vBump.dx;
+	public var dxTotal(get,never) : Float; inline function get_dxTotal() {
+		var t = 0.;
+		for(v in allVelocities) t+=v.dx;
+		return t;
+	}
 	/** Total of all Y velocities **/
-	public var dyTotal(get,never) : Float; inline function get_dyTotal() return v.dy + vBump.dy;
+	public var dyTotal(get,never) : Float; inline function get_dyTotal() {
+		var t = 0.;
+		for(v in allVelocities) t+=v.dy;
+		return t;
+	}
 
 	/** Pixel width of entity **/
 	public var wid(default,set) : Float = Const.GRID;
@@ -205,6 +215,9 @@ class Entity {
 
 		v = new Velocity(0.82);
 		vBump = new Velocity(0.93);
+		allVelocities = new FixedArray(10);
+		allVelocities.push(v);
+		allVelocities.push(vBump);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -434,6 +447,7 @@ class Entity {
     public function dispose() {
         ALL.remove(this);
 
+		allVelocities = null;
 		baseColor = null;
 		blinkColor = null;
 		colorMatrix = null;
