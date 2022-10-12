@@ -47,14 +47,14 @@ class Hud extends GameChildProcess {
 
 
 	/** Pop a quick s in the corner **/
-	public function notify(str:String, color:Col=0xA56DE7) {
+	public function notify(str:String, color:Col=0x0) {
 		// Bg
-		var t = Assets.tiles.getTile( D.tiles.uiBar );
-		var f = new dn.heaps.FlowBg(t, 2, root);
+		var t = Assets.tiles.getTile( D.tiles.uiNotification );
+		var f = new dn.heaps.FlowBg(t, 5, root);
 		f.colorizeBg(color);
 		f.paddingHorizontal = 6;
 		f.paddingBottom = 4;
-		f.paddingTop = 2;
+		f.paddingTop = 0;
 		f.paddingLeft = 9;
 		f.y = 4;
 
@@ -63,6 +63,7 @@ class Hud extends GameChildProcess {
 		tf.text = str;
 		tf.maxWidth = 0.6 * w()/Const.UI_SCALE;
 		tf.textColor = 0xffffff;
+		tf.filter = new dn.heaps.filter.PixelOutline( color.toBlack(0.2) );
 
 		// Notification lifetime
 		var durationS = 2 + str.length*0.04;
