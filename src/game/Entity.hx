@@ -39,15 +39,12 @@ class Entity {
 	/** Sub-grid Y coordinate (from 0.0 to 1.0) **/
     public var yr = 1.0;
 
-	/** X velocity, in grid fractions **/
-    public var dx = 0.;
-	/** Y velocity, in grid fractions **/
-	public var dy = 0.;
+	var allVelocities : FixedArray<Velocity>;
 
-	/** Uncontrollable bump X velocity, usually applied by external factors (eg. a bumper in Sonic) **/
-    public var bdx = 0.;
-	/** Uncontrollable bump Y velocity, usually applied by external factors (eg. a bumper in Sonic) **/
-	public var bdy = 0.;
+	/** Base X/Y velocity of the Entity **/
+	public var v : tools.Velocity;
+	/** "External bump" velocity. It is used to push the Entity in some direction, independently of the "user-controlled" base velocity. **/
+	public var vBump : tools.Velocity;
 
 	/** Last known X position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
 	var lastFixedUpdateX = 0.;
@@ -57,23 +54,18 @@ class Entity {
 	/** If TRUE, the sprite display coordinates will be an interpolation between the last known position and the current one. This is useful if the gameplay happens in the `fixedUpdate()` (so at 30 FPS), but you still want the sprite position to move smoothly at 60 FPS or more. **/
 	var interpolateSprPos = true;
 
-	// Velocities + bump velocities
-	public var dxTotal(get,never) : Float; inline function get_dxTotal() return dx+bdx;
-	public var dyTotal(get,never) : Float; inline function get_dyTotal() return dy+bdy;
-
-	/** Multiplier applied on each frame to normal X velocity **/
-	public var frictX = 0.82;
-	/** Multiplier applied on each frame to normal Y velocity **/
-	public var frictY = 0.82;
-
-	/** Sets both frictX/Y at the same time **/
-	public var frict(never,set) : Float;
-		inline function set_frict(v) return frictX = frictY = v;
-
-	/** Multiplier applied on each frame to bump X velocity **/
-	public var bumpFrictX = 0.93;
-	/** Multiplier applied on each frame to bump Y velocity **/
-	public var bumpFrictY = 0.93;
+	/** Total of all X velocities **/
+	public var dxTotal(get,never) : Float; inline function get_dxTotal() {
+		var t = 0.;
+		for(v in allVelocities) t+=v.dx;
+		return t;
+	}
+	/** Total of all Y velocities **/
+	public var dyTotal(get,never) : Float; inline function get_dyTotal() {
+		var t = 0.;
+		for(v in allVelocities) t+=v.dy;
+		return t;
+	}
 
 	/** Pixel width of entity **/
 	public var wid(default,set) : Float = Const.GRID;
@@ -221,6 +213,12 @@ class Entity {
 		initLife(1);
 		state = Normal;
 		actions = new FixedArray(15);
+
+		v = new Velocity(0.82);
+		vBump = new Velocity(0.93);
+		allVelocities = new FixedArray(10);
+		allVelocities.push(v);
+		allVelocities.push(vBump);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -382,14 +380,13 @@ class Entity {
 
 	/** Apply a bump/kick force to entity **/
 	public function bump(x:Float,y:Float) {
-		bdx += x;
-		bdy += y;
+		vBump.add(x,y);
 	}
 
 	/** Reset velocities to zero **/
 	public function cancelVelocities() {
-		dx = bdx = 0;
-		dy = bdy = 0;
+		v.clear();
+		vBump.clear();
 	}
 
 	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
@@ -451,6 +448,7 @@ class Entity {
     public function dispose() {
         ALL.remove(this);
 
+		allVelocities = null;
 		baseColor = null;
 		blinkColor = null;
 		colorMatrix = null;
@@ -825,17 +823,9 @@ class Entity {
 			}
 		}
 
-		// X frictions
-		dx *= frictX;
-		bdx *= bumpFrictX;
-		if( M.fabs(dx) <= 0.0005 ) dx = 0;
-		if( M.fabs(bdx) <= 0.0005 ) bdx = 0;
-
-		// Y frictions
-		dy *= frictY;
-		bdy *= bumpFrictY;
-		if( M.fabs(dy) <= 0.0005 ) dy = 0;
-		if( M.fabs(bdy) <= 0.0005 ) bdy = 0;
+		// Update velocities
+		v.fixedUpdate();
+		vBump.fixedUpdate();
 	}
 
 
