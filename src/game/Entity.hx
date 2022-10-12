@@ -205,7 +205,7 @@ class Entity {
 	/** attachY value during last frame **/
 	public var prevFrameAttachY(default,null) : Float = -Const.INFINITE;
 
-	var actions : Array<{ id:String, cb:Void->Void, t:Float }> = [];
+	var actions : FixedArray<{ id:ChargedAction, cb:Void->Void, t:Float }>;
 
 
 	/**
@@ -220,6 +220,7 @@ class Entity {
         setPosCase(x,y);
 		initLife(1);
 		state = Normal;
+		actions = new FixedArray(15);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -537,7 +538,7 @@ class Entity {
 	}
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
-	function chargeAction(id:String, sec:Float, cb:Void->Void) {
+	function chargeAction(id:ChargedAction, sec:Float, cb:Void->Void) {
 		if( !isAlive() )
 			return;
 
@@ -550,12 +551,12 @@ class Entity {
 	}
 
 	/** If id is null, return TRUE if any action is charging. If id is provided, return TRUE if this specific action is charging nokw. **/
-	public function isChargingAction(?id:String) {
+	public function isChargingAction(?id:ChargedAction) {
 		if( !isAlive() )
 			return false;
 
 		if( id==null )
-			return actions.length>0;
+			return actions.allocated>0;
 
 		for(a in actions)
 			if( a.id==id )
@@ -564,17 +565,17 @@ class Entity {
 		return false;
 	}
 
-	public function cancelAction(?id:String) {
+	public function cancelAction(?id:ChargedAction) {
 		if( !isAlive() )
 			return;
 
 		if( id==null )
-			actions = [];
+			actions.empty();
 		else {
 			var i = 0;
-			while( i<actions.length ) {
-				if( actions[i].id==id )
-					actions.splice(i,1);
+			while( i<actions.allocated ) {
+				if( actions.get(i).id==id )
+					actions.removeIndex(i);
 				else
 					i++;
 			}
@@ -587,11 +588,11 @@ class Entity {
 			return;
 
 		var i = 0;
-		while( i<actions.length ) {
-			var a = actions[i];
+		while( i<actions.allocated ) {
+			var a = actions.get(i);
 			a.t -= tmod/Const.FPS;
 			if( a.t<=0 ) {
-				actions.splice(i,1);
+				actions.removeIndex(i);
 				if( isAlive() )
 					a.cb();
 			}
