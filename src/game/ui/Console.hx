@@ -1,9 +1,17 @@
 package ui;
 
+enum abstract ConsoleFlag(Int) to Int from Int {
+	var F_Camera;
+	var F_CameraScrolling;
+	var F_Bounds;
+	var F_Affects;
+}
+
 class Console extends h2d.Console {
 	public static var ME : Console;
 	#if debug
-	var flags : Map<String,Bool>;
+	var flags : Map<ConsoleFlag,Bool>;
+	var allFlags : Array<{ name:String, value:Int }> = [];
 	#end
 
 	var stats : Null<dn.heaps.StatsBox>;
@@ -22,29 +30,26 @@ class Console extends h2d.Console {
 		Lib.redirectTracesToH2dConsole(this);
 
 		#if debug
-			// Debug flags (/set, /unset, /list commands)
+			// Debug console flags
 			flags = new Map();
-			this.addCommand("set", [{ name:"k", t:AString }], function(k:String) {
-				setFlag(k,true);
-				log("+ "+k.toLowerCase(), 0x80FF00);
+			allFlags = dn.MacroTools.getAbstractEnumValues(ConsoleFlag);
+			allFlags.sort( (a,b)->Reflect.compare(a.name, b.name) );
+			this.addCommand("flags", "Open the console flags window", [], function() {
+				this.hide();
+				var w = new ui.win.Menu();
+				for(f in allFlags)
+					w.addButton("["+(hasFlag(f.value)?"X":" ")+"] "+f.name.substr(2), ()->{
+						setFlag( f.value, !hasFlag(f.value) );
+					});
 			});
-			this.addCommand("unset", [{ name:"k", t:AString, opt:true } ], function(?k:String) {
-				if( k==null ) {
-					log("Reset all.",0xFF0000);
-					for(k in flags.keys())
-						setFlag(k,false);
-				}
-				else {
-					log("- "+k,0xFF8000);
-					setFlag(k,false);
-				}
-			});
+			this.addAlias("f","flags");
+			this.addAlias("flag","flags");
+
+			// List all console flags
 			this.addCommand("list", [], function() {
-				for(k in flags.keys())
-					log(k, 0x80ff00);
+				for(f in allFlags)
+					log( (hasFlag(f.value) ? "+" : "-")+f.name, hasFlag(f.value)?0x80ff00:0xff8888 );
 			});
-			this.addAlias("+","set");
-			this.addAlias("-","unset");
 
 			// Controller debugger
 			this.addCommand("ctrl", [], ()->{
@@ -125,11 +130,11 @@ class Console extends h2d.Console {
 		this.addCommand("fps", [], ()->toggleStats());
 		this.addAlias("stats","fps");
 
-		// Misc flag aliases
-		addFlagCommandAlias("bounds");
-		addFlagCommandAlias("affect");
-		addFlagCommandAlias("scroll");
-		addFlagCommandAlias("cam");
+		// All flag aliases
+		for(f in allFlags)
+			addCommand(f.name.substr(2), [], ()->{
+				setFlag(f.value, !hasFlag(f.value));
+			});
 	}
 
 	public function disableStats() {
@@ -187,13 +192,19 @@ class Console extends h2d.Console {
 	}
 
 	/** Creates a shortcut command "/flag" to toggle specified flag state **/
-	inline function addFlagCommandAlias(flag:String) {
-		#if debug
-		addCommand(flag, [], ()->{
-			setFlag(flag, !hasFlag(flag));
-		});
-		#end
-	}
+	// inline function addFlagCommandAlias(flag:ConsoleFlag) {
+	// 	#if debug
+	// 	var str = Std.string(flag);
+	// 	for(f in allFlags)
+	// 		if( f.value==flag ) {
+	// 			str = f.name;
+	// 			break;
+	// 		}
+	// 	addCommand(str, [], ()->{
+	// 		setFlag(flag, !hasFlag(flag));
+	// 	});
+	// 	#end
+	// }
 
 	override function handleCommand(command:String) {
 		var flagReg = ~/[\/ \t]*\+[ \t]*([\w]+)/g; // cleanup missing spaces
@@ -206,25 +217,24 @@ class Console extends h2d.Console {
 	}
 
 	#if debug
-	public function setFlag(k:String,v) {
-		k = k.toLowerCase();
-		var hadBefore = hasFlag(k);
+	public function setFlag(f:ConsoleFlag, v:Bool) {
+		var hadBefore = hasFlag(f);
 
 		if( v )
-			flags.set(k,v);
+			flags.set(f,v);
 		else
-			flags.remove(k);
+			flags.remove(f);
 
 		if( v && !hadBefore || !v && hadBefore )
-			onFlagChange(k,v);
+			onFlagChange(f,v);
 		return v;
 	}
-	public function hasFlag(k:String) return flags.get( k.toLowerCase() )==true;
+	public function hasFlag(f:ConsoleFlag) return flags.get(f)==true;
 	#else
-	public function hasFlag(k:String) return false;
+	public inline function hasFlag(f:ConsoleFlag) return false;
 	#end
 
-	public function onFlagChange(k:String, v:Bool) {}
+	public function onFlagChange(f:ConsoleFlag, v:Bool) {}
 
 
 	public inline function clearAndLog(str:Dynamic) {
