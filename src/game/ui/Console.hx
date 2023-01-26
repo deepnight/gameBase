@@ -131,10 +131,12 @@ class Console extends h2d.Console {
 		this.addAlias("stats","fps");
 
 		// All flag aliases
+		#if debug
 		for(f in allFlags)
 			addCommand(f.name.substr(2), [], ()->{
 				setFlag(f.value, !hasFlag(f.value));
 			});
+		#end
 	}
 
 	public function disableStats() {
