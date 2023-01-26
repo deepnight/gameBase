@@ -197,7 +197,7 @@ class Camera extends GameChildProcess {
 
 	/** Apply camera values to Game scroller **/
 	function apply() {
-		if( ui.Console.ME.hasFlag("scroll") )
+		if( ui.Console.ME.hasFlag(F_CameraScrolling) )
 			return;
 
 		var level = Game.ME.level;
@@ -276,9 +276,9 @@ class Camera extends GameChildProcess {
 		apply();
 
 		// Debug bounds
-		if( ui.Console.ME.hasFlag("cam") && debugBounds==null )
+		if( ui.Console.ME.hasFlag(F_Camera) && debugBounds==null )
 			enableDebugBounds();
-		else if( !ui.Console.ME.hasFlag("cam") && debugBounds!=null )
+		else if( !ui.Console.ME.hasFlag(F_Camera) && debugBounds!=null )
 			disableDebugBounds();
 
 		if( debugBounds!=null ) {

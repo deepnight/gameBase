@@ -228,7 +228,7 @@ class Entity {
 		spr.colorMatrix = colorMatrix = h3d.Matrix.I();
 		spr.setCenterRatio(pivotX, pivotY);
 
-		if( ui.Console.ME.hasFlag("bounds") )
+		if( ui.Console.ME.hasFlag(F_Bounds) )
 			enableDebugBounds();
     }
 
@@ -696,7 +696,7 @@ class Entity {
 
 		#if debug
 		// Display the list of active "affects" (with `/set affect` in console)
-		if( ui.Console.ME.hasFlag("affect") ) {
+		if( ui.Console.ME.hasFlag(F_Affects) ) {
 			var all = [];
 			for(k in affects.keys())
 				all.push( k+"=>"+M.pretty( getAffectDurationS(k) , 1) );
@@ -704,11 +704,11 @@ class Entity {
 		}
 
 		// Show bounds (with `/bounds` in console)
-		if( ui.Console.ME.hasFlag("bounds") && debugBounds==null )
+		if( ui.Console.ME.hasFlag(F_Bounds) && debugBounds==null )
 			enableDebugBounds();
 
 		// Hide bounds
-		if( !ui.Console.ME.hasFlag("bounds") && debugBounds!=null )
+		if( !ui.Console.ME.hasFlag(F_Bounds) && debugBounds!=null )
 			disableDebugBounds();
 		#end
 
