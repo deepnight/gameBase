@@ -102,6 +102,15 @@ class LPoint {
 		return this;
 	}
 
+
+	/** Set this point using another LPoint **/
+	public inline function usePoint(other:LPoint) {
+		cx = other.cx;
+		cy = other.cy;
+		xr = other.xr;
+		yr = other.yr;
+	}
+
 	/** Init from screen coord **/
 	public inline function setScreen(sx:Float, sy:Float) {
 		setLevelPixel(
