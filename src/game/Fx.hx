@@ -111,6 +111,19 @@ class Fx extends GameChildProcess {
 		#end
 	}
 
+
+	public inline function markerLine(fx:Float, fy:Float, tx:Float, ty:Float, c:Col, sec=3.) {
+		#if debug
+		var p = allocMain_add(D.tiles.fxLine, fx,fy);
+		p.setFadeS(1, 0, 0);
+		p.colorize(c);
+		p.setCenterRatio(0,0.5);
+		p.scaleX = M.dist(fx,fy,tx,ty) / p.t.width;
+		p.rotation = Math.atan2(ty-fy, tx-fx);
+		p.lifeS = sec;
+		#end
+	}
+
 	inline function collides(p:HParticle, offX=0., offY=0.) {
 		return level.hasCollision( Std.int((p.x+offX)/Const.GRID), Std.int((p.y+offY)/Const.GRID) );
 	}
