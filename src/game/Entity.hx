@@ -42,9 +42,9 @@ class Entity {
 	var allVelocities : FixedArray<Velocity>;
 
 	/** Base X/Y velocity of the Entity **/
-	public var v : tools.Velocity;
+	public var v : Velocity;
 	/** "External bump" velocity. It is used to push the Entity in some direction, independently of the "user-controlled" base velocity. **/
-	public var vBump : tools.Velocity;
+	public var vBump : Velocity;
 
 	/** Last known X position of the attach point (in pixels), at the beginning of the latest fixedUpdate **/
 	var lastFixedUpdateX = 0.;

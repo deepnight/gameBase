@@ -9,6 +9,7 @@ import dn.data.GetText;
 import dn.struct.*;
 import dn.heaps.input.*;
 import dn.heaps.slib.*;
+import dn.phys.Velocity;
 
 // Project classes
 import Types;
