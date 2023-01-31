@@ -214,8 +214,10 @@ class Entity {
 		state = Normal;
 		actions = new FixedArray(15);
 
-		v = new Velocity(0.82);
-		vBump = new Velocity(0.93);
+		v = new Velocity();
+		v.frict = 0.82;
+		vBump = new Velocity();
+		vBump.frict = 0.93;
 		allVelocities = new FixedArray(10);
 		allVelocities.push(v);
 		allVelocities.push(vBump);
