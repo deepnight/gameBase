@@ -163,7 +163,7 @@ class Game extends AppChildProcess {
 		like when hitting an opponent in Street Fighter ;)
 	**/
 	public inline function stopFrame() {
-		ucd.setS("stopFrame", 0.2);
+		ucd.setS("stopFrame", 4/Const.FPS);
 	}
 
 
@@ -180,7 +180,7 @@ class Game extends AppChildProcess {
 
 		// Update slow-motions
 		updateSlowMos();
-		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.3 : 1 );
+		baseTimeMul = ( 0.2 + 0.8*curGameSpeed ) * ( ucd.has("stopFrame") ? 0.1 : 1 );
 		Assets.tiles.tmod = tmod;
 
 		// Entities post-updates
