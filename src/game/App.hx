@@ -133,6 +133,7 @@ class App extends dn.Process {
 	public function setScreenshotMode(v:Bool) {
 		screenshotMode = v;
 
+		Console.ME.runCommand("cls");
 		if( screenshotMode ) {
 			var f = new h2d.filter.ColorMatrix();
 			f.matrix.colorContrast(0.2);

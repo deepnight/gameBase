@@ -239,6 +239,11 @@ class Console extends h2d.Console {
 	public function onFlagChange(f:ConsoleFlag, v:Bool) {}
 
 
+	override function log(text:String, ?color:Int) {
+		if( !App.ME.screenshotMode )
+			super.log(text, color);
+	}
+
 	public inline function clearAndLog(str:Dynamic) {
 		runCommand("cls");
 		log( Std.string(str) );
