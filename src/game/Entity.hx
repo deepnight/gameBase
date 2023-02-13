@@ -122,9 +122,7 @@ class Entity {
 	public var entityVisible = true;
 
 	/** Current hit points **/
-	public var life(default,null) : Int;
-	/** Max hit points **/
-	public var maxLife(default,null) : Int;
+	public var life(default,null) : dn.struct.Stat<Int>;
 	/** Last source of damage if it was an Entity **/
 	public var lastDmgSource(default,null) : Null<Entity>;
 
@@ -258,7 +256,7 @@ class Entity {
 
 	/** Initialize current and max hit points **/
 	public function initLife(v) {
-		life = maxLife = v;
+		life.initMaxOnMax(v);
 	}
 
 	/** Inflict damage **/
@@ -266,17 +264,17 @@ class Entity {
 		if( !isAlive() || dmg<=0 )
 			return;
 
-		life = M.iclamp(life-dmg, 0, maxLife);
+		life.v -= dmg;
 		lastDmgSource = from;
 		onDamage(dmg, from);
-		if( life<=0 )
+		if( life.v<=0 )
 			onDie();
 	}
 
 	/** Kill instantly **/
 	public function kill(by:Null<Entity>) {
 		if( isAlive() )
-			hit(life,by);
+			hit(life.v, by);
 	}
 
 	function onDamage(dmg:Int, from:Entity) {}
@@ -291,7 +289,7 @@ class Entity {
 
 	/** Return TRUE if current entity wasn't destroyed or killed **/
 	public inline function isAlive() {
-		return !destroyed && life>0;
+		return !destroyed && life.v>0;
 	}
 
 	/** Move entity to grid coordinates **/
