@@ -207,6 +207,7 @@ class Entity {
 
 		cd = new dn.Cooldown(Const.FPS);
 		ucd = new dn.Cooldown(Const.FPS);
+		life = new Stat();
         setPosCase(x,y);
 		initLife(1);
 		state = Normal;
