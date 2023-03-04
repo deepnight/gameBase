@@ -2,9 +2,9 @@ package sample;
 
 /**
 	SamplePlayer is an Entity with some extra functionalities:
+	- user controlled (using gamepad or keyboard)
 	- falls with gravity
 	- has basic level collisions
-	- controllable (using gamepad or keyboard)
 	- some squash animations, because it's cheap and they do the job
 **/
 
