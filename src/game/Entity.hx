@@ -39,10 +39,10 @@ class Entity {
 	/** Sub-grid Y coordinate (from 0.0 to 1.0) **/
     public var yr = 1.0;
 
-	var allVelocities : FixedArray<Velocity>;
+	var allVelocities : VelocityArray;
 
 	/** Base X/Y velocity of the Entity **/
-	public var v : Velocity;
+	public var vBase : Velocity;
 	/** "External bump" velocity. It is used to push the Entity in some direction, independently of the "user-controlled" base velocity. **/
 	public var vBump : Velocity;
 
@@ -55,17 +55,9 @@ class Entity {
 	var interpolateSprPos = true;
 
 	/** Total of all X velocities **/
-	public var dxTotal(get,never) : Float; inline function get_dxTotal() {
-		var t = 0.;
-		for(v in allVelocities) t+=v.dx;
-		return t;
-	}
+	public var dxTotal(get,never) : Float; inline function get_dxTotal() return allVelocities.getSumX();
 	/** Total of all Y velocities **/
-	public var dyTotal(get,never) : Float; inline function get_dyTotal() {
-		var t = 0.;
-		for(v in allVelocities) t+=v.dy;
-		return t;
-	}
+	public var dyTotal(get,never) : Float; inline function get_dyTotal() return allVelocities.getSumY();
 
 	/** Pixel width of entity **/
 	public var wid(default,set) : Float = Const.GRID;
@@ -213,13 +205,9 @@ class Entity {
 		state = Normal;
 		actions = new RecyclablePool(15, ()->new tools.ChargedAction());
 
-		v = new Velocity();
-		v.frict = 0.82;
-		vBump = new Velocity();
-		vBump.frict = 0.93;
-		allVelocities = new FixedArray(10);
-		allVelocities.push(v);
-		allVelocities.push(vBump);
+		allVelocities = new VelocityArray(15);
+		vBase = registerNewVelocity(0.82);
+		vBump = registerNewVelocity(0.93);
 
         spr = new HSprite(Assets.tiles);
 		Game.ME.scroller.add(spr, Const.DP_MAIN);
@@ -232,6 +220,13 @@ class Entity {
 		if( ui.Console.ME.hasFlag(F_Bounds) )
 			enableDebugBounds();
     }
+
+
+	public function registerNewVelocity(frict:Float) : Velocity {
+		var v = Velocity.createFrict(frict);
+		allVelocities.push(v);
+		return v;
+	}
 
 
 	/** Remove sprite from display context. Only do that if you're 100% sure your entity won't need the `spr` instance itself. **/
@@ -381,13 +376,12 @@ class Entity {
 
 	/** Apply a bump/kick force to entity **/
 	public function bump(x:Float,y:Float) {
-		vBump.add(x,y);
+		vBump.addXY(x,y);
 	}
 
 	/** Reset velocities to zero **/
 	public function cancelVelocities() {
-		v.clear();
-		vBump.clear();
+		allVelocities.clearAll();
 	}
 
 	public function is<T:Entity>(c:Class<T>) return Std.isOfType(this, c);
@@ -449,6 +443,7 @@ class Entity {
     public function dispose() {
         ALL.remove(this);
 
+		allVelocities.dispose();
 		allVelocities = null;
 		baseColor = null;
 		blinkColor = null;
@@ -823,8 +818,8 @@ class Entity {
 		}
 
 		// Update velocities
-		v.fixedUpdate();
-		vBump.fixedUpdate();
+		for(v in allVelocities)
+			v.fixedUpdate();
 	}
 
 

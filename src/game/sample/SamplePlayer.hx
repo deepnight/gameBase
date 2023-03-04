@@ -14,7 +14,7 @@ class SamplePlayer extends Entity {
 
 	// This is TRUE if the player is not falling
 	var onGround(get,never) : Bool;
-		inline function get_onGround() return !destroyed && v.dy==0 && yr==1 && level.hasCollision(cx,cy+1);
+		inline function get_onGround() return !destroyed && vBase.dy==0 && yr==1 && level.hasCollision(cx,cy+1);
 
 
 	public function new() {
@@ -26,7 +26,7 @@ class SamplePlayer extends Entity {
 			setPosCase(start.cx, start.cy);
 
 		// Misc inits
-		v.setFricts(0.84, 0.94);
+		vBase.setFricts(0.84, 0.94);
 
 		// Camera tracks this
 		camera.trackEntity(this, true);
@@ -69,7 +69,7 @@ class SamplePlayer extends Entity {
 		// Land on ground
 		if( yr>1 && level.hasCollision(cx,cy+1) ) {
 			setSquashY(0.5);
-			v.dy = 0;
+			vBase.dy = 0;
 			vBump.dy = 0;
 			yr = 1;
 			ca.rumble(0.2, 0.06);
@@ -96,7 +96,7 @@ class SamplePlayer extends Entity {
 
 		// Jump
 		if( cd.has("recentlyOnGround") && ca.isPressed(Jump) ) {
-			v.dy = -0.85;
+			vBase.dy = -0.85;
 			setSquashX(0.6);
 			cd.unset("recentlyOnGround");
 			fx.dotsExplosionExample(centerX, centerY, 0xffcc00);
@@ -104,7 +104,7 @@ class SamplePlayer extends Entity {
 		}
 
 		// Walk
-		if( ca.getAnalogDist2(MoveLeft,MoveRight)>0 ) {
+		if( !isChargingAction() && ca.getAnalogDist2(MoveLeft,MoveRight)>0 ) {
 			// As mentioned above, we don't touch physics values (eg. `dx`) here. We just store some "requested walk speed", which will be applied to actual physics in fixedUpdate.
 			walkSpeed = ca.getAnalogValue2(MoveLeft,MoveRight); // -1 to 1
 		}
@@ -116,10 +116,10 @@ class SamplePlayer extends Entity {
 
 		// Gravity
 		if( !onGround )
-			v.dy+=0.05;
+			vBase.dy+=0.05;
 
 		// Apply requested walk movement
 		if( walkSpeed!=0 )
-			v.dx += walkSpeed * 0.045; // some arbitrary speed
+			vBase.dx += walkSpeed * 0.045; // some arbitrary speed
 	}
 }
