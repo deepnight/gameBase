@@ -195,7 +195,7 @@ class Entity {
 	/** attachY value during last frame **/
 	public var prevFrameAttachY(default,null) : Float = -Const.INFINITE;
 
-	var actions : FixedArray<{ id:ChargedAction, cb:Void->Void, t:Float }>;
+	var actions : RecyclablePool<tools.ChargedAction>;
 
 
 	/**
@@ -211,7 +211,7 @@ class Entity {
         setPosCase(x,y);
 		initLife(1);
 		state = Normal;
-		actions = new FixedArray(15);
+		actions = new RecyclablePool(15, ()->new tools.ChargedAction());
 
 		v = new Velocity();
 		v.frict = 0.82;
@@ -537,20 +537,23 @@ class Entity {
 	}
 
 	/** Wait for `sec` seconds, then runs provided callback. **/
-	function chargeAction(id:ChargedAction, sec:Float, cb:Void->Void) {
+	function chargeAction(id:ChargedActionId, sec:Float, onComplete:ChargedAction->Void, ?onProgress:ChargedAction->Void) {
 		if( !isAlive() )
 			return;
 
 		if( isChargingAction(id) )
 			cancelAction(id);
-		if( sec<=0 )
-			cb();
-		else
-			actions.push({ id:id, cb:cb, t:sec});
+
+		var a = actions.alloc();
+		a.id = id;
+		a.onComplete = onComplete;
+		a.durationS = sec;
+		if( onProgress!=null )
+			a.onProgress = onProgress;
 	}
 
 	/** If id is null, return TRUE if any action is charging. If id is provided, return TRUE if this specific action is charging nokw. **/
-	public function isChargingAction(?id:ChargedAction) {
+	public function isChargingAction(?id:ChargedActionId) {
 		if( !isAlive() )
 			return false;
 
@@ -564,17 +567,17 @@ class Entity {
 		return false;
 	}
 
-	public function cancelAction(?id:ChargedAction) {
+	public function cancelAction(?onlyId:ChargedActionId) {
 		if( !isAlive() )
 			return;
 
-		if( id==null )
-			actions.empty();
+		if( onlyId==null )
+			actions.freeAll();
 		else {
 			var i = 0;
 			while( i<actions.allocated ) {
-				if( actions.get(i).id==id )
-					actions.removeIndex(i);
+				if( actions.get(i).id==onlyId )
+					actions.freeIndex(i);
 				else
 					i++;
 			}
@@ -588,13 +591,8 @@ class Entity {
 
 		var i = 0;
 		while( i<actions.allocated ) {
-			var a = actions.get(i);
-			a.t -= tmod/Const.FPS;
-			if( a.t<=0 ) {
-				actions.removeIndex(i);
-				if( isAlive() )
-					a.cb();
-			}
+			if( actions.get(i).update(tmod) )
+				actions.freeIndex(i);
 			else
 				i++;
 		}

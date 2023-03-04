@@ -46,5 +46,6 @@ enum abstract SlowMoId(Int) to Int {
 	var S_Default; // 0
 }
 
-enum abstract ChargedAction(Int) to Int {
+enum abstract ChargedActionId(Int) to Int {
+	var CA_Unknown;
 }
