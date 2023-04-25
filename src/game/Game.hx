@@ -41,7 +41,7 @@ class Game extends AppChildProcess {
 		hud = new ui.Hud();
 		camera = new Camera();
 
-		startLevel(Assets.worldData.all_levels.FirstLevel);
+		startLevel(Assets.worldData.all_worlds.SampleWorld.all_levels.FirstLevel);
 	}
 
 
@@ -87,7 +87,7 @@ class Game extends AppChildProcess {
 	function onLdtkReload() {
 		hud.notify("LDtk reloaded");
 		if( level!=null )
-			startLevel( Assets.worldData.getLevel(level.data.uid) );
+			startLevel( Assets.worldData.all_worlds.SampleWorld.getLevel(level.data.uid) );
 	}
 
 	/** Window/app resize event **/
