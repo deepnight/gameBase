@@ -7,8 +7,8 @@
 --cmd haxelib --always git heaps-aseprite https://github.com/deepnight/heaps-aseprite.git
 
 # Heaps
---cmd haxelib --always install hldx
---cmd haxelib --always install hlsdl
+--cmd haxelib --always git hlsdl https://github.com/HaxeFoundation/hashlink.git master libs/sdl
+--cmd haxelib --always git hldx https://github.com/HaxeFoundation/hashlink.git master libs/directx
 --cmd haxelib --always git heaps https://github.com/deepnight/heaps.git
 
 # Deepnight
