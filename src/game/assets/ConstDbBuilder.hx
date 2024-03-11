@@ -123,13 +123,13 @@ class ConstDbBuilder {
 					kind = FVar(macro:Int, macro $v{val});
 
 				case TFloat:
-					kind = FVar(macro:Float);
+					kind = FVar(macro:Float, macro $v{val});
 
 				case TBool:
-					kind = FVar(macro:Bool);
+					kind = FVar(macro:Bool, macro $v{val});
 
 				case TClass(String):
-					kind = FVar(macro:String);
+					kind = FVar(macro:String, macro $v{val});
 
 				case _:
 					Context.warning('Unsupported JSON type "${Type.typeof(val)}" for $k', jsonPos);
