@@ -30,27 +30,15 @@ class SimpleMenu extends ui.Window {
 	}
 
 	public function addTitle(str:String) {
-		var c = new ui.comp.Title(str, Col.coldGray(0.6));
-		group.addNonInteractive(c);
+		group.addNonInteractive( new ui.comp.Title( str, Col.coldGray(0.6) ) );
 	}
 
 	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		var c = new ui.comp.Button(label);
-		group.addInteractive(c, ()->{
+		group.addInteractive(new ui.comp.Button(label), ()->{
 			cb();
 			if( autoClose )
 				close();
 		});
-
-		// Mouse controls
-		// if( useMouse ) {
-		// 	f.enableInteractive = true;
-		// 	f.interactive.cursor = Button;
-		// 	f.interactive.onOver = _->moveCursorOn(i);
-		// 	f.interactive.onOut = _->if(cur==i) curIdx = -1;
-		// 	f.interactive.onClick = ev->ev.button==0 ? validate(i) : this.close();
-		// 	f.interactive.enableRightButton = true;
-		// }
 	}
 
 	// public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
