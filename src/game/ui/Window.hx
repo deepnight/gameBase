@@ -8,7 +8,7 @@ class Window extends dn.Process {
 
 	var ca : ControllerAccess<GameAction>;
 	var mask : Null<h2d.Flow>;
-	var modalIdx = -1;
+	var modalIdx = 0;
 
 	public var isModal(default, null) = false;
 
@@ -28,7 +28,7 @@ class Window extends dn.Process {
 		win.verticalSpacing = 2;
 
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus();
+		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus() || !isLatestModal();
 
 		emitResizeAtEndOfFrame();
 	}
@@ -47,6 +47,10 @@ class Window extends dn.Process {
 			Game.ME.resume();
 	}
 
+	@:keep override function toString():String {
+		return isModal ? 'ModalWin${isLatestModal()?"*":""}($modalIdx)' : 'Win';
+	}
+
 	public function makeModal() {
 		if( isModal )
 			return;
@@ -58,8 +62,23 @@ class Window extends dn.Process {
 			Game.ME.pause();
 
 		mask = new h2d.Flow(root);
-		mask.backgroundTile = h2d.Tile.fromColor(0x0, 1, 1, 0.6);
+		mask.backgroundTile = h2d.Tile.fromColor(0x0, 1, 1, 0.8);
 		root.under(mask);
+	}
+
+	public function isLatestModal() {
+		var idx = ALL.length-1;
+		while( idx>=0 ) {
+			var w = ALL[idx];
+			if( !w.destroyed ) {
+				if( w!=this && w.isModal )
+					return false;
+				if( w==this )
+					return true;
+			}
+			idx--;
+		}
+		return false;
 	}
 
 	public static function hasAnyModal() {
@@ -87,6 +106,9 @@ class Window extends dn.Process {
 		var hei = M.ceil( h()/Const.UI_SCALE );
 		win.x = Std.int( wid*0.5 - win.outerWidth*0.5 );
 		win.y = Std.int( hei*0.5 - win.outerHeight*0.5 );
+
+		win.x += modalIdx * 8;
+		win.y += modalIdx * 4;
 
 		if( mask!=null ) {
 			var w = M.ceil( w()/Const.UI_SCALE );

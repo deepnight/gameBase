@@ -19,7 +19,7 @@ class Menu extends ui.Window {
 
 
 	public function new(useMouse=true) {
-		super(App.ME);
+		super();
 
 		makeModal();
 
@@ -126,8 +126,8 @@ class Menu extends ui.Window {
 		item.cb();
 		if( item.close )
 			close();
-		else
-			initMenu();
+		// else
+		// 	initMenu();
 	}
 
 	inline function invalidateCursor() {
