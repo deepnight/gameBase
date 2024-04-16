@@ -7,7 +7,7 @@ typedef MenuItem = {
 	var cb: Void->Void;
 }
 
-class Menu extends ui.Modal {
+class Menu extends ui.Window {
 	var useMouse : Bool;
 	var labelPadLen = 24;
 
@@ -20,6 +20,8 @@ class Menu extends ui.Modal {
 
 	public function new(useMouse=true) {
 		super(App.ME);
+
+		makeModal();
 
 		this.useMouse = useMouse;
 		win.padding = 1;
