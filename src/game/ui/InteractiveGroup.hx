@@ -1,9 +1,6 @@
 package ui;
 
-// import dn.Geom;
-// import dn.Lib;
-
-enum abstract MenuDir(Int) {
+enum abstract GroupDir(Int) {
 	var North;
 	var East;
 	var South;
@@ -11,35 +8,54 @@ enum abstract MenuDir(Int) {
 }
 
 
-@:allow(ui.MenuGroupElement)
-class MenuGroup extends dn.Process {
+@:allow(ui.InteractiveGroupElement)
+class InteractiveGroup extends dn.Process {
 	static var UID = 0;
 
+	public var content : h2d.Flow;
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
-	var current : Null<MenuGroupElement>;
+	var current : Null<InteractiveGroupElement>;
 
-	var elements : Array<MenuGroupElement> = [];
-	var connectionsInvalidated = true;
-	var connectedGroups : Map<MenuDir, MenuGroup> = new Map();
+	var elements : Array<InteractiveGroupElement> = [];
+	var connectionsInvalidated = false;
+	var connectedGroups : Map<GroupDir, InteractiveGroup> = new Map();
 
 	var focused = true;
 
 
-	public function new(p:dn.Process) {
-		super(p);
+	public function new(parent:h2d.Object, process:dn.Process) {
+		super(process);
+
+		content = new h2d.Flow(parent);
+		content.layout = Vertical;
+		content.onAfterReflow = invalidateConnections;
+
 		uid = UID++;
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = isControllerLocked;
-	}
-
-	function isControllerLocked() {
-		return !focused;
+		ca.lockCondition = ()->!focused;
 	}
 
 
-	public function registerElement(f,cb) : MenuGroupElement {
-		var ge = new MenuGroupElement(this, f,cb);
+	public function addNonInteractive(f:h2d.Flow) {
+		content.addChild(f);
+		switch content.layout {
+			case Horizontal: f.fillHeight = true;
+			case Vertical: f.fillWidth = true;
+			case Stack:
+		}
+	}
+
+
+	public function addInteractive(f:h2d.Flow, cb:Void->Void) : InteractiveGroupElement {
+		content.addChild(f);
+		switch content.layout {
+			case Horizontal: f.fillHeight = true;
+			case Vertical: f.fillWidth = true;
+			case Stack:
+		}
+
+		var ge = new InteractiveGroupElement(this, f, cb);
 		elements.push(ge);
 		return ge;
 	}
@@ -68,7 +84,7 @@ class MenuGroup extends dn.Process {
 	public dynamic function onGroupFocus() {}
 	public dynamic function onGroupBlur() {}
 
-	function blurAllConnectedGroups(?ignoredGroup:MenuGroup) {
+	function blurAllConnectedGroups(?ignoredGroup:InteractiveGroup) {
 		var pending = [this];
 		var dones = new Map();
 		dones.set(uid,true);
@@ -85,11 +101,12 @@ class MenuGroup extends dn.Process {
 		}
 	}
 
-	inline function invalidateConnections() {
+	public inline function invalidateConnections() {
 		connectionsInvalidated = true;
 	}
 
 	function buildConnections() {
+		content.reflow();
 		for(t in elements)
 			t.clearConnections();
 
@@ -114,7 +131,7 @@ class MenuGroup extends dn.Process {
 
 
 	// Returns closest Element using an angle range
-	function findElementFromAng(from:MenuGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<MenuGroupElement> {
+	function findElementFromAng(from:InteractiveGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<InteractiveGroupElement> {
 		var best = null;
 		for( other in elements ) {
 			if( other==from || from.isConnectedTo(other) )
@@ -135,20 +152,20 @@ class MenuGroup extends dn.Process {
 	}
 
 	// Returns closest Element using a collider-raycast
-	function findElementRaycast(from:MenuGroupElement, dir:MenuDir) : Null<MenuGroupElement> {
-		var x = from.left;
-		var y = from.top;
+	function findElementRaycast(from:InteractiveGroupElement, dir:GroupDir) : Null<InteractiveGroupElement> {
 		var ang = dirToAng(dir);
-		var elapsedDist = 0.;
 		var step = switch dir {
 			case North, South: from.height;
 			case East,West: from.width;
 		}
+		var x = from.left + Math.cos(ang)*step;
+		var y = from.top + Math.sin(ang)*step;
+		var elapsedDist = step;
 
 		var possibleNexts = [];
 		while( elapsedDist<step*3 ) {
 			for( other in elements )
-				if( other!=from && dn.Geom.rectTouchesRect(x,y,from.width,from.height, other.left,other.top,other.width,other.height) )
+				if( other!=from && dn.Geom.rectOverlapsRect(x,y,from.width,from.height, other.left,other.top,other.width,other.height) )
 					possibleNexts.push(other);
 
 			if( possibleNexts.length>0 )
@@ -164,7 +181,7 @@ class MenuGroup extends dn.Process {
 	}
 
 
-	function findClosest(from:MenuGroupElement) : Null<MenuGroupElement> {
+	function findClosest(from:InteractiveGroupElement) : Null<InteractiveGroupElement> {
 		var best = null;
 		for(other in elements)
 			if( other!=from && ( best==null || from.distTo(other) < from.distTo(best) ) )
@@ -234,7 +251,7 @@ class MenuGroup extends dn.Process {
 			focusElement(best);
 	}
 
-	function focusElement(ge:MenuGroupElement) {
+	function focusElement(ge:InteractiveGroupElement) {
 		if( current==ge )
 			return;
 
@@ -244,15 +261,15 @@ class MenuGroup extends dn.Process {
 		current.onFocus();
 	}
 
-	public dynamic function defaultOnFocus(t:MenuGroupElement) {
-		t.f.filter = new dn.heaps.filter.PixelOutline(Red);
+	public dynamic function defaultOnFocus(ge:InteractiveGroupElement) {
+		ge.f.filter = new dn.heaps.filter.Invert();
 	}
 
-	public dynamic function defaultOnBlur(t:MenuGroupElement) {
-		t.f.filter = null;
+	public dynamic function defaultOnBlur(ge:InteractiveGroupElement) {
+		ge.f.filter = null;
 	}
 
-	inline function getOppositeDir(dir:MenuDir) {
+	inline function getOppositeDir(dir:GroupDir) {
 		return switch dir {
 			case North: South;
 			case East: West;
@@ -261,7 +278,7 @@ class MenuGroup extends dn.Process {
 		}
 	}
 
-	inline function dirToAng(dir:MenuDir) : Float {
+	inline function dirToAng(dir:GroupDir) : Float {
 		return switch dir {
 			case North: -M.PIHALF;
 			case East: 0;
@@ -270,7 +287,7 @@ class MenuGroup extends dn.Process {
 		}
 	}
 
-	function angToDir(ang:Float) : MenuDir {
+	function angToDir(ang:Float) : GroupDir {
 		return  M.radDistance(ang,0)<=M.PIHALF*0.5 ? East
 			: M.radDistance(ang,M.PIHALF)<=M.PIHALF*0.5 ? South
 			: M.radDistance(ang,M.PI)<=M.PIHALF*0.5 ? West
@@ -278,7 +295,7 @@ class MenuGroup extends dn.Process {
 	}
 
 
-	function gotoNextDir(dir:MenuDir) {
+	function gotoNextDir(dir:GroupDir) {
 		if( current==null )
 			return;
 
@@ -289,7 +306,7 @@ class MenuGroup extends dn.Process {
 	}
 
 
-	function gotoConnectedGroup(dir:MenuDir) : Bool {
+	function gotoConnectedGroup(dir:GroupDir) : Bool {
 		if( !connectedGroups.exists(dir) )
 			return false;
 
@@ -307,7 +324,7 @@ class MenuGroup extends dn.Process {
 	}
 
 
-	public function connectGroup(dir:MenuDir, targetGroup:MenuGroup, symetric=true) {
+	public function connectGroup(dir:GroupDir, targetGroup:InteractiveGroup, symetric=true) {
 		connectedGroups.set(dir,targetGroup);
 		if( symetric )
 			targetGroup.connectGroup(getOppositeDir(dir), this, false);
@@ -350,14 +367,14 @@ class MenuGroup extends dn.Process {
 
 
 
-class MenuGroupElement {
+private class InteractiveGroupElement {
 	var uid : Int;
-	var group : MenuGroup;
+	var group : InteractiveGroup;
 
 	public var f: h2d.Flow;
 	public var cb: Void->Void;
 
-	var connections : Map<MenuDir, MenuGroupElement> = new Map();
+	var connections : Map<GroupDir, InteractiveGroupElement> = new Map();
 
 	public var width(get,never) : Int;
 	public var height(get,never) : Int;
@@ -372,7 +389,7 @@ class MenuGroupElement {
 
 
 	public function new(g,f,cb) {
-		uid = MenuGroup.UID++;
+		uid = InteractiveGroup.UID++;
 		group = g;
 		this.f = f;
 		this.cb = cb;
@@ -380,7 +397,7 @@ class MenuGroupElement {
 	}
 
 	@:keep public function toString() {
-		return 'MenuGroupElement#$uid';
+		return 'InteractiveGroupElement#$uid';
 	}
 
 	inline function get_width() return f.outerWidth;
@@ -395,7 +412,7 @@ class MenuGroupElement {
 	inline function get_centerY() return top + height*0.5;
 
 
-	public function connectNext(dir:MenuDir, to:MenuGroupElement, symetric=true) {
+	public function connectNext(dir:GroupDir, to:InteractiveGroupElement, symetric=true) {
 		connections.set(dir, to);
 		if( symetric )
 			to.connections.set(group.getOppositeDir(dir), this);
@@ -412,26 +429,26 @@ class MenuGroupElement {
 		return n;
 	}
 
-	public inline function hasConnection(dir:MenuDir) {
+	public inline function hasConnection(dir:GroupDir) {
 		return connections.exists(dir);
 	}
 
-	public function isConnectedTo(ge:MenuGroupElement) {
+	public function isConnectedTo(ge:InteractiveGroupElement) {
 		for(next in connections)
 			if( next==ge )
 				return true;
 		return false;
 	}
 
-	public inline function getConnectedElement(dir:MenuDir) {
+	public inline function getConnectedElement(dir:GroupDir) {
 		return connections.get(dir);
 	}
 
-	public inline function angTo(t:MenuGroupElement) {
+	public inline function angTo(t:InteractiveGroupElement) {
 		return Math.atan2(t.centerY-centerY, t.centerX-centerX);
 	}
 
-	public inline function distTo(t:MenuGroupElement) {
+	public inline function distTo(t:InteractiveGroupElement) {
 		return M.dist(centerX, centerY, t.centerX, t.centerY);
 	}
 
