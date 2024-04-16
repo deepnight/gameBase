@@ -50,7 +50,7 @@ class InteractiveGroup extends dn.Process {
 	}
 
 
-	public function addInteractive(f:h2d.Flow, cb:Void->Void) : InteractiveGroupElement {
+	public function addInteractive<T:h2d.Flow>(f:T, cb:T->Void) : InteractiveGroupElement {
 		content.addChild(f);
 		switch content.layout {
 			case Horizontal: f.fillHeight = true;
@@ -58,7 +58,7 @@ class InteractiveGroup extends dn.Process {
 			case Stack:
 		}
 
-		var ge = new InteractiveGroupElement(this, f, cb);
+		var ge = new InteractiveGroupElement(this, f, cast cb);
 		elements.push(ge);
 
 		if( useMouse ) {
@@ -76,7 +76,7 @@ class InteractiveGroup extends dn.Process {
 
 			f.interactive.onClick = ev->{
 				if( ev.button==0 )
-					cb();
+					cb(f);
 			}
 
 			f.interactive.enableRightButton = true;
@@ -386,7 +386,7 @@ class InteractiveGroup extends dn.Process {
 		// Move current
 		if( current!=null ) {
 			if( ca.isPressed(MenuOk) )
-				current.cb();
+				current.cb(current.f);
 
 			if( ca.isPressedAutoFire(MenuLeft) )
 				gotoNextDir(West);
@@ -408,7 +408,7 @@ private class InteractiveGroupElement {
 	var group : InteractiveGroup;
 
 	public var f: h2d.Flow;
-	public var cb: Void->Void;
+	public var cb: h2d.Flow->Void;
 
 	var connections : Map<GroupDir, InteractiveGroupElement> = new Map();
 
@@ -426,9 +426,9 @@ private class InteractiveGroupElement {
 
 	public function new(g,f,cb) {
 		uid = InteractiveGroup.UID++;
+		this.cb = cb;
 		group = g;
 		this.f = f;
-		this.cb = cb;
 		f.onAfterReflow = group.invalidateConnections;
 	}
 
