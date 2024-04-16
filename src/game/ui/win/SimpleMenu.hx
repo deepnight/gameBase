@@ -2,7 +2,7 @@ package ui.win;
 
 class SimpleMenu extends ui.Window {
 	var useMouse : Bool; // TODO rework that
-	var group : InteractiveGroup;
+	public var group : InteractiveGroup;
 
 	public function new(useMouse=true) {
 		super(true);

@@ -22,10 +22,13 @@ class InteractiveGroup extends dn.Process {
 	var connectedGroups : Map<GroupDir, InteractiveGroup> = new Map();
 
 	var focused = true;
+	var useMouse : Bool;
 
 
-	public function new(parent:h2d.Object, process:dn.Process) {
+	public function new(parent:h2d.Object, process:dn.Process, useMouse=true) {
 		super(process);
+
+		this.useMouse = useMouse;
 
 		content = new h2d.Flow(parent);
 		content.layout = Vertical;
@@ -57,6 +60,28 @@ class InteractiveGroup extends dn.Process {
 
 		var ge = new InteractiveGroupElement(this, f, cb);
 		elements.push(ge);
+
+		if( useMouse ) {
+			f.enableInteractive = true;
+			f.interactive.cursor = Button;
+
+			f.interactive.onOver = _->{
+				focusElement(ge);
+				focusGroup();
+			}
+
+			f.interactive.onOut = _->{
+				blurElement(ge);
+			}
+
+			f.interactive.onClick = ev->{
+				if( ev.button==0 )
+					cb();
+			}
+
+			f.interactive.enableRightButton = true;
+		}
+
 		return ge;
 	}
 
@@ -251,6 +276,13 @@ class InteractiveGroup extends dn.Process {
 			focusElement(best);
 	}
 
+	function blurElement(ge:InteractiveGroupElement) {
+		if( current==ge ) {
+			current.onBlur();
+			current = null;
+		}
+	}
+
 	function focusElement(ge:InteractiveGroupElement) {
 		if( current==ge )
 			return;
@@ -345,9 +377,12 @@ class InteractiveGroup extends dn.Process {
 			connectionsInvalidated = false;
 		}
 
+		// Init current
 		if( current==null && elements.length>0 )
-			focusElement(elements[0]);
+			if( ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
+				focusElement(elements[0]);
 
+		// Move current
 		if( current!=null ) {
 			if( ca.isPressed(MenuOk) )
 				current.cb();
