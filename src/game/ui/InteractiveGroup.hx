@@ -372,6 +372,7 @@ class InteractiveGroup extends dn.Process {
 		if( !focused )
 			return;
 
+		// Build elements connections
 		if( connectionsInvalidated ) {
 			buildConnections();
 			connectionsInvalidated = false;
@@ -379,7 +380,7 @@ class InteractiveGroup extends dn.Process {
 
 		// Init current
 		if( current==null && elements.length>0 )
-			if( ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
+			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
 				focusElement(elements[0]);
 
 		// Move current
