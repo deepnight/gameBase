@@ -37,6 +37,7 @@ class InteractiveGroup extends dn.Process {
 		uid = UID++;
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->!focused;
+		ca.lock(0.1);
 	}
 
 
