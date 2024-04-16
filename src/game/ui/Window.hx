@@ -4,7 +4,7 @@ class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
 	static var MODAL_COUNT = 0;
 
-	public var win: h2d.Flow;
+	public var content: h2d.Flow;
 
 	var ca : ControllerAccess<GameAction>;
 	var mask : Null<h2d.Flow>;
@@ -13,24 +13,28 @@ class Window extends dn.Process {
 	public var isModal(default, null) = false;
 
 
-	public function new(?p:dn.Process) {
+	public function new(modal:Bool, ?p:dn.Process) {
 		super(p==null ? App.ME : p);
 
 		ALL.push(this);
 		createRootInLayers(Game.ME.root, Const.DP_UI);
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
-		win = new h2d.Flow(root);
-		win.backgroundTile = h2d.Tile.fromColor(0xffffff, 32,32);
-		win.borderWidth = 7;
-		win.borderHeight = 7;
-		win.layout = Vertical;
-		win.verticalSpacing = 2;
+		content = new h2d.Flow(root);
+		content.backgroundTile = h2d.Tile.fromColor(0xffffff, 32,32);
+		content.borderWidth = 7;
+		content.borderHeight = 7;
+		content.layout = Vertical;
+		content.verticalSpacing = 2;
 
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus() || !isLatestModal();
+		ca.lock(0.1);
 
 		emitResizeAtEndOfFrame();
+
+		if( modal )
+			makeModal();
 	}
 
 	override function onDispose() {
@@ -88,12 +92,12 @@ class Window extends dn.Process {
 		return false;
 	}
 
-	public function clearWindow() {
-		win.removeChildren();
+	public function clearContent() {
+		content.removeChildren();
 	}
 
-	public inline function add(e:h2d.Flow) {
-		win.addChild(e);
+	public inline function append(e:h2d.Flow) {
+		content.addChild(e);
 		onResize();
 	}
 
@@ -104,11 +108,8 @@ class Window extends dn.Process {
 
 		var wid = M.ceil( w()/Const.UI_SCALE );
 		var hei = M.ceil( h()/Const.UI_SCALE );
-		win.x = Std.int( wid*0.5 - win.outerWidth*0.5 );
-		win.y = Std.int( hei*0.5 - win.outerHeight*0.5 );
-
-		win.x += modalIdx * 8;
-		win.y += modalIdx * 4;
+		content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
+		content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
 
 		if( mask!=null ) {
 			var w = M.ceil( w()/Const.UI_SCALE );
@@ -130,7 +131,7 @@ class Window extends dn.Process {
 		super.postUpdate();
 		if( isModal ) {
 			mask.visible = modalIdx==0;
-			win.alpha = modalIdx==MODAL_COUNT-1 ? 1 : 0.6;
+			content.alpha = modalIdx==MODAL_COUNT-1 ? 1 : 0.6;
 		}
 	}
 
