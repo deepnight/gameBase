@@ -1,27 +1,19 @@
 package ui.win;
 
 class SimpleMenu extends ui.Window {
-	var useMouse : Bool; // TODO rework that
 	public var group : InteractiveGroup;
 
-	public function new(useMouse=true) {
+	public function new() {
 		super(true);
 
 		makeModal();
-		this.useMouse = useMouse;
 		content.padding = 1;
-		content.enableInteractive = useMouse;
+		content.enableInteractive = true;
 
 		group = new InteractiveGroup(content, this);
 		group.content.verticalSpacing = 1;
 		group.content.layout = Vertical;
-		group.content.maxWidth = 120;
-
-		mask.enableInteractive = useMouse;
-		if( useMouse ) {
-			mask.interactive.onClick = _->close();
-			mask.interactive.enableRightButton = true;
-		}
+		group.content.maxWidth = 150;
 	}
 
 	public function addSpacer() {
@@ -34,20 +26,24 @@ class SimpleMenu extends ui.Window {
 	}
 
 	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		group.addInteractive(new ui.comp.Button(label), ()->{
+		group.addInteractive(new ui.comp.Button(label), _->{
 			cb();
 			if( autoClose )
 				close();
 		});
 	}
 
-	// public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
-	// 	return addButton(
-	// 		Lib.padRight(label,labelPadLen-4) + '[${curValue?"ON":"  "}]',
-	// 		()->setter(!curValue),
-	// 		close
-	// 	);
-	// }
+	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
+		var v = curValue;
+		group.addInteractive( new ui.comp.FlagButton(label,curValue), fb->{
+			v = !v;
+			setter(v);
+			if( close )
+				this.close();
+			else
+				fb.setValue(v);
+		});
+	}
 
 	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
 	// 	return addButton(
@@ -55,18 +51,5 @@ class SimpleMenu extends ui.Window {
 	// 		()->onPick(),
 	// 		close
 	// 	);
-	// }
-
-	// override function update() {
-	// 	super.update();
-
-	// 	if( ca.isPressedAutoFire(MenuUp) && curIdx>0 )
-	// 		curIdx--;
-
-	// 	if( ca.isPressedAutoFire(MenuDown) && curIdx<items.allocated-1 )
-	// 		curIdx++;
-
-	// 	if( cur!=null && ca.isPressed(MenuOk) )
-	// 		validate(cur);
 	// }
 }
