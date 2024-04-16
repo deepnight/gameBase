@@ -11,10 +11,17 @@ class SimpleMenu extends ui.Window {
 		content.enableInteractive = true;
 
 		group = new InteractiveGroup(content, this);
+		group.content.horizontalSpacing = 4;
 		group.content.verticalSpacing = 1;
 		group.content.layout = Vertical;
-		group.content.maxWidth = 150;
+		group.content.multiline = true;
 		group.customControllerLock = ()->!isLatestModal();
+	}
+
+
+	override function onResize() {
+		super.onResize();
+		group.content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
 	}
 
 	public function addSpacer() {
