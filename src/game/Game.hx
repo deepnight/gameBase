@@ -202,7 +202,6 @@ class Game extends AppChildProcess {
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
-
 	/** Main loop **/
 	override function update() {
 		super.update();
@@ -212,8 +211,7 @@ class Game extends AppChildProcess {
 
 
 		// Global key shortcuts
-		if( !App.ME.anyInputHasFocus() && !ui.Modal.hasAny() && !Console.ME.isActive() ) {
-
+		if( !App.ME.anyInputHasFocus() && !ui.Window.hasAnyModal() && !Console.ME.isActive() ) {
 			// Exit by pressing ESC twice
 			#if hl
 			if( ca.isKeyboardPressed(K.ESCAPE) )

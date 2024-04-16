@@ -8,6 +8,8 @@ enum abstract GameAction(Int) to Int {
 	var Jump;
 	var Restart;
 
+	var MenuLeft;
+	var MenuRight;
 	var MenuUp;
 	var MenuDown;
 	var MenuOk;

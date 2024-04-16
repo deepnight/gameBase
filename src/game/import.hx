@@ -15,7 +15,7 @@ import dn.phys.Velocity;
 import Types;
 import ui.Console;
 import ui.Bar;
-import ui.Modal;
+import ui.Window;
 import tools.*;
 import assets.*;
 import en.*;

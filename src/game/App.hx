@@ -241,6 +241,8 @@ class App extends dn.Process {
 
 		controller.bindPad(MenuUp, [DPAD_UP, LSTICK_UP]);
 		controller.bindPad(MenuDown, [DPAD_DOWN, LSTICK_DOWN]);
+		controller.bindPad(MenuLeft, [DPAD_LEFT, LSTICK_LEFT]);
+		controller.bindPad(MenuRight, [DPAD_RIGHT, LSTICK_RIGHT]);
 		controller.bindPad(MenuOk, [A, X]);
 		controller.bindPad(MenuCancel, B);
 
@@ -257,6 +259,8 @@ class App extends dn.Process {
 
 		controller.bindKeyboard(MenuUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(MenuDown, [K.DOWN, K.S]);
+		controller.bindKeyboard(MenuLeft, [K.LEFT, K.Q, K.A]);
+		controller.bindKeyboard(MenuRight, [K.RIGHT, K.D]);
 		controller.bindKeyboard(MenuOk, [K.SPACE, K.ENTER, K.F]);
 		controller.bindKeyboard(MenuCancel, K.ESCAPE);
 
@@ -312,9 +316,6 @@ class App extends dn.Process {
 
 		if( ca.isPressed(Pause) )
 			toggleGamePause();
-
-		if( isGamePaused() && ca.isPressed(MenuCancel) )
-			setGamePause(false);
 
 		if( ca.isPressed(OpenConsoleFlags) )
 			Console.ME.runCommand("/flags");
