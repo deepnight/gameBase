@@ -14,6 +14,7 @@ class SimpleMenu extends ui.Window {
 		group.content.verticalSpacing = 1;
 		group.content.layout = Vertical;
 		group.content.maxWidth = 150;
+		group.customControllerLock = ()->!isLatestModal();
 	}
 
 	public function addSpacer() {

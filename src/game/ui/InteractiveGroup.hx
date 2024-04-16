@@ -36,9 +36,12 @@ class InteractiveGroup extends dn.Process {
 
 		uid = UID++;
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = ()->!focused;
+		ca.lockCondition = ()->!focused || customControllerLock();
 		ca.lock(0.1);
 	}
+
+
+	public dynamic function customControllerLock() return false;
 
 
 	public function addNonInteractive(f:h2d.Flow) {
