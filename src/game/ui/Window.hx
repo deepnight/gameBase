@@ -11,6 +11,7 @@ class Window extends dn.Process {
 	var modalIdx = 0;
 
 	public var isModal(default, null) = false;
+	public var canBeClosedManually = true;
 
 
 	public function new(modal:Bool, ?p:dn.Process) {
@@ -68,6 +69,12 @@ class Window extends dn.Process {
 
 		mask = new h2d.Flow(root);
 		mask.backgroundTile = h2d.Tile.fromColor(0x0, 1, 1, 0.8);
+		mask.enableInteractive = true;
+		mask.interactive.onClick = _->{
+			if( canBeClosedManually )
+				close();
+		}
+		mask.interactive.enableRightButton = true;
 		root.under(mask);
 	}
 
@@ -116,7 +123,8 @@ class Window extends dn.Process {
 		}
 	}
 
-	function onClose() {}
+	public dynamic function onClose() {}
+
 	public function close() {
 		if( !destroyed ) {
 			destroy();
@@ -124,17 +132,9 @@ class Window extends dn.Process {
 		}
 	}
 
-	override function postUpdate() {
-		super.postUpdate();
-		if( isModal ) {
-			mask.visible = modalIdx==0;
-			content.alpha = modalIdx==MODAL_COUNT-1 ? 1 : 0.6;
-		}
-	}
-
 	override function update() {
 		super.update();
-		if( isModal && ca.isPressed(MenuCancel) )
+		if( canBeClosedManually && isModal && ca.isPressed(MenuCancel) )
 			close();
 	}
 }
