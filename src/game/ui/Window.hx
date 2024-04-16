@@ -26,6 +26,7 @@ class Window extends dn.Process {
 		content.borderHeight = 7;
 		content.layout = Vertical;
 		content.verticalSpacing = 2;
+		content.onAfterReflow = onResize;
 
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus() || !isLatestModal();
@@ -96,10 +97,6 @@ class Window extends dn.Process {
 		content.removeChildren();
 	}
 
-	public inline function append(e:h2d.Flow) {
-		content.addChild(e);
-		onResize();
-	}
 
 	override function onResize() {
 		super.onResize();
