@@ -36,7 +36,7 @@ class Console extends h2d.Console {
 			allFlags.sort( (a,b)->Reflect.compare(a.name, b.name) );
 			this.addCommand("flags", "Open the console flags window", [], function() {
 				this.hide();
-				var w = new ui.win.Menu();
+				var w = new ui.win.SimpleMenu();
 				for(f in allFlags)
 					w.addButton("["+(hasFlag(f.value)?"X":" ")+"] "+f.name.substr(2), ()->{
 						setFlag( f.value, !hasFlag(f.value) );
