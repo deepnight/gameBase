@@ -317,9 +317,6 @@ class App extends dn.Process {
 		if( ca.isPressed(Pause) )
 			toggleGamePause();
 
-		if( isGamePaused() && ca.isPressed(MenuCancel) )
-			setGamePause(false);
-
 		if( ca.isPressed(OpenConsoleFlags) )
 			Console.ME.runCommand("/flags");
 
