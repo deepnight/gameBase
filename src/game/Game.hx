@@ -202,6 +202,24 @@ class Game extends AppChildProcess {
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
+	function createMenu() {
+		var m = new ui.win.SimpleMenu();
+		m.addTitle("Hello");
+		m.addButton("A", ()->{ m.close(); hud.notify("A"); });
+		m.addButton("B", ()->{ m.close(); hud.notify("B"); });
+		m.addButton("C", ()->{ m.close(); hud.notify("C"); });
+		// var w = new Window(true);
+
+		// var group = new ui.InteractiveGroup(w.content, w);
+		// group.defaultOnFocus = (ge)->ge.f.filter = new dn.heaps.filter.Invert();
+		// group.addNonInteractive( new ui.comp.Title("Modal #"+@:privateAccess w.modalIdx) );
+		// group.addInteractive( new ui.comp.Button("Open menu"), createMenu );
+		// group.addNonInteractive( new ui.comp.Title("-----------") );
+		// group.addInteractive( new ui.comp.Button("A"), ()->{ w.close(); hud.notify("A"); } );
+		// group.addInteractive( new ui.comp.Button("B"), ()->{ w.close(); hud.notify("B"); } );
+		// group.addInteractive( new ui.comp.Button("C"), ()->{ w.close(); hud.notify("C"); } );
+		// group.addInteractive( new ui.comp.Button("Close"), w.close );
+	}
 
 	/** Main loop **/
 	override function update() {
@@ -216,11 +234,14 @@ class Game extends AppChildProcess {
 
 			// Exit by pressing ESC twice
 			#if hl
-			if( ca.isKeyboardPressed(K.ESCAPE) )
-				if( !cd.hasSetS("exitWarn",3) )
-					hud.notify(Lang.t._("Press ESCAPE again to exit."));
-				else
-					App.ME.exit();
+			if( ca.isKeyboardPressed(K.ESCAPE) ) {
+				createMenu();
+			}
+			// if( ca.isKeyboardPressed(K.ESCAPE) )
+			// 	if( !cd.hasSetS("exitWarn",3) )
+			// 		hud.notify(Lang.t._("Press ESCAPE again to exit."));
+			// 	else
+			// 		App.ME.exit();
 			#end
 
 			// Attach debug drone (CTRL-SHIFT-D)
