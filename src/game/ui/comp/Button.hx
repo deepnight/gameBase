@@ -2,6 +2,7 @@ package ui.comp;
 
 class Button extends h2d.Flow {
 	var tf : h2d.Text;
+
 	public function new(?iconTile:h2d.Tile, ?label:String, col:dn.Col=Black, ?p) {
 		super(p);
 
