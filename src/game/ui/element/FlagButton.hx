@@ -1,6 +1,6 @@
 package ui.element;
 
-class FlagButton extends ui.comp.Button {
+class FlagButton extends ui.element.Button {
 	var curValue : Bool;
 	var lastLabel : String;
 
