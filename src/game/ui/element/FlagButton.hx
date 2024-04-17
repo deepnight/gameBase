@@ -1,4 +1,4 @@
-package ui.comp;
+package ui.element;
 
 class FlagButton extends ui.comp.Button {
 	var curValue : Bool;

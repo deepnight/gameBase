@@ -1,4 +1,4 @@
-package ui.comp;
+package ui.element;
 
 class Button extends h2d.Flow {
 	var tf : h2d.Text;

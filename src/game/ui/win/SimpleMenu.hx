@@ -30,11 +30,11 @@ class SimpleMenu extends ui.Window {
 	}
 
 	public function addTitle(str:String) {
-		group.addNonInteractive( new ui.comp.Title( str, Col.coldGray(0.6) ) );
+		group.addNonInteractive( new ui.element.Title( str, Col.coldGray(0.6) ) );
 	}
 
 	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		group.addInteractive(new ui.comp.Button(label), _->{
+		group.addInteractive(new ui.element.Button(label), _->{
 			cb();
 			if( autoClose )
 				close();
@@ -43,7 +43,7 @@ class SimpleMenu extends ui.Window {
 
 	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, autoClose=false) {
 		var v = curValue;
-		group.addInteractive( new ui.comp.FlagButton(label,curValue), fb->{
+		group.addInteractive( new ui.element.FlagButton(label,curValue), fb->{
 			v = !v;
 			setter(v);
 			if( autoClose )

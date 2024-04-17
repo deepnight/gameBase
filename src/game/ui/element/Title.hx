@@ -1,4 +1,4 @@
-package ui.comp;
+package ui.element;
 
 class Title extends h2d.Flow {
 	public function new(label:String, col:dn.Col=ColdLightGray, ?p) {
