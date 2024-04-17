@@ -37,6 +37,11 @@ class Console extends h2d.Console {
 			this.addCommand("flags", "Open the console flags window", [], function() {
 				this.hide();
 				var w = new ui.win.SimpleMenu();
+				w.addButton("Disable all", ()->{
+					for(f in allFlags)
+						if( hasFlag(f.value) )
+							setFlag(f.value, false);
+				});
 				for(f in allFlags)
 					w.addFlag(f.name.substr(2), hasFlag(f.value), v->setFlag(f.value,v));
 			});
