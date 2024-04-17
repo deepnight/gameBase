@@ -1,5 +1,12 @@
 package ui;
 
+enum WindowAlign {
+	Start;
+	End;
+	Center;
+	Fill;
+}
+
 class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
 	static var MODAL_COUNT = 0;
@@ -12,7 +19,8 @@ class Window extends dn.Process {
 
 	public var isModal(default, null) = false;
 	public var canBeClosedManually = true;
-	var fullscreen = false;
+	public var horizontalAlign(default,set) : WindowAlign = WindowAlign.Center;
+	public var verticalAlign(default,set) : WindowAlign = WindowAlign.Center;
 
 
 	public function new(modal:Bool, ?p:dn.Process) {
@@ -41,12 +49,20 @@ class Window extends dn.Process {
 			makeModal();
 	}
 
-	public function isActive() {
-		return !destroyed && ( !isModal || isLatestModal() );
+	function set_horizontalAlign(v:WindowAlign) {
+		horizontalAlign = v;
+		emitResizeAtEndOfFrame();
+		return v;
 	}
 
-	public function makeFullscreen() {
-		fullscreen = true;
+	function set_verticalAlign(v:WindowAlign) {
+		verticalAlign = v;
+		emitResizeAtEndOfFrame();
+		return v;
+	}
+
+	public function isActive() {
+		return !destroyed && ( !isModal || isLatestModal() );
 	}
 
 	public function makeTransparent() {
@@ -128,16 +144,33 @@ class Window extends dn.Process {
 		var wid = M.ceil( w()/Const.UI_SCALE );
 		var hei = M.ceil( h()/Const.UI_SCALE );
 
-		if( fullscreen ) {
-			content.setPosition(0,0);
+		// Horizontal
+		if( horizontalAlign==Fill )
 			content.minWidth = content.maxWidth = wid;
-			content.minHeight = content.maxHeight = hei;
-		}
-		else {
-			content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
-			content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+		else
+			content.minWidth = content.maxWidth = null;
+
+		switch horizontalAlign {
+			case Start: content.x = 0;
+			case End: content.x = wid-content.outerWidth;
+			case Center: content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
+			case Fill: content.x = 0; content.minWidth = content.maxWidth = wid;
 		}
 
+		// Vertical
+		if( verticalAlign==Fill )
+			content.minHeight = content.maxHeight = hei;
+		else
+			content.minHeight = content.maxHeight = null;
+
+		switch verticalAlign {
+			case Start: content.y = 0;
+			case End: content.y = hei-content.outerHeight;
+			case Center: content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+			case Fill: content.y = 0; content.minHeight = content.maxHeight = hei;
+		}
+
+		// Mask
 		if( mask!=null ) {
 			mask.minWidth = wid;
 			mask.minHeight = hei;
