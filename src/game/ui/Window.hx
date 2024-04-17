@@ -28,6 +28,7 @@ class Window extends dn.Process {
 		content.layout = Vertical;
 		content.verticalSpacing = 2;
 		content.onAfterReflow = onResize;
+		content.enableInteractive = true;
 
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus() || !isLatestModal();
