@@ -14,7 +14,7 @@ class SimpleMenu extends ui.Window {
 		content.maxWidth = 150;
 
 		group = new UiGroupController(this);
-		group.customControllerLock = ()->isActive();
+		group.customControllerLock = ()->!isActive();
 	}
 
 
