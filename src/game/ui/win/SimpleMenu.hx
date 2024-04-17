@@ -41,13 +41,13 @@ class SimpleMenu extends ui.Window {
 		});
 	}
 
-	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
+	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, autoClose=false) {
 		var v = curValue;
 		group.addInteractive( new ui.comp.FlagButton(label,curValue), fb->{
 			v = !v;
 			setter(v);
-			if( close )
-				this.close();
+			if( autoClose )
+				close();
 			else
 				fb.setValue(v);
 		});
