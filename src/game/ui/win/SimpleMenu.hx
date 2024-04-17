@@ -1,7 +1,7 @@
 package ui.win;
 
 class SimpleMenu extends ui.Window {
-	public var group : InteractiveGroup;
+	public var group : UiGroupController;
 
 	public function new() {
 		super(true);
@@ -14,7 +14,7 @@ class SimpleMenu extends ui.Window {
 		content.multiline = true;
 		content.maxWidth = 150;
 
-		group = new InteractiveGroup(this);
+		group = new UiGroupController(this);
 		group.customControllerLock = ()->!isLatestModal();
 	}
 

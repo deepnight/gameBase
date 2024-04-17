@@ -224,7 +224,7 @@ class Game extends AppChildProcess {
 			#if debug
 			if( ca.isKeyboardPressed(K.T) ) {
 				var w = new ui.win.SimpleMenu();
-				// var group = new ui.InteractiveGroup(w.content, w);
+				// var group = new ui.UiGroupController(w);
 				var g = new h2d.Graphics(App.ME.root);
 
 				for(i in 0...3)

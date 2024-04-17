@@ -8,17 +8,17 @@ enum abstract GroupDir(Int) {
 }
 
 
-@:allow(ui.InteractiveGroupElement)
-class InteractiveGroup extends dn.Process {
+@:allow(ui.UiGroupElement)
+class UiGroupController extends dn.Process {
 	static var UID = 0;
 
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
-	var current : Null<InteractiveGroupElement>;
+	var current : Null<UiGroupElement>;
 
-	var elements : Array<InteractiveGroupElement> = [];
+	var elements : Array<UiGroupElement> = [];
 	var connectionsInvalidated = false;
-	var connectedGroups : Map<GroupDir, InteractiveGroup> = new Map();
+	var connectedGroups : Map<GroupDir, UiGroupController> = new Map();
 
 	var focused = true;
 	var useMouse : Bool;
@@ -39,8 +39,8 @@ class InteractiveGroup extends dn.Process {
 	public dynamic function customControllerLock() return false;
 
 
-	public function register<T:ui.UiComponent>(comp:T) : InteractiveGroupElement {
-		var ge = new InteractiveGroupElement(this, comp);
+	public function register<T:ui.UiComponent>(comp:T) : UiGroupElement {
+		var ge = new UiGroupElement(this, comp);
 		elements.push(ge);
 		comp.onAfterReflow = invalidateConnections;
 
@@ -92,7 +92,7 @@ class InteractiveGroup extends dn.Process {
 	public dynamic function onGroupFocus() {}
 	public dynamic function onGroupBlur() {}
 
-	function blurAllConnectedGroups(?ignoredGroup:InteractiveGroup) {
+	function blurAllConnectedGroups(?ignoredGroup:UiGroupController) {
 		var pending = [this];
 		var dones = new Map();
 		dones.set(uid,true);
@@ -139,7 +139,7 @@ class InteractiveGroup extends dn.Process {
 
 
 	// Returns closest Element using an angle range
-	function findElementFromAng(from:InteractiveGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<InteractiveGroupElement> {
+	function findElementFromAng(from:UiGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<UiGroupElement> {
 		var best = null;
 		for( other in elements ) {
 			if( other==from || from.isConnectedTo(other) )
@@ -160,7 +160,7 @@ class InteractiveGroup extends dn.Process {
 	}
 
 	// Returns closest Element using a collider-raycast
-	function findElementRaycast(from:InteractiveGroupElement, dir:GroupDir) : Null<InteractiveGroupElement> {
+	function findElementRaycast(from:UiGroupElement, dir:GroupDir) : Null<UiGroupElement> {
 		var ang = dirToAng(dir);
 		var step = switch dir {
 			case North, South: from.globalHeight;
@@ -189,7 +189,7 @@ class InteractiveGroup extends dn.Process {
 	}
 
 
-	function findClosest(from:InteractiveGroupElement) : Null<InteractiveGroupElement> {
+	function findClosest(from:UiGroupElement) : Null<UiGroupElement> {
 		var best = null;
 		for(other in elements)
 			if( other!=from && ( best==null || from.globalDistTo(other) < from.globalDistTo(best) ) )
@@ -278,14 +278,14 @@ class InteractiveGroup extends dn.Process {
 			focusElement(best);
 	}
 
-	function blurElement(ge:InteractiveGroupElement) {
+	function blurElement(ge:UiGroupElement) {
 		if( current==ge ) {
 			current.onBlur();
 			current = null;
 		}
 	}
 
-	function focusElement(ge:InteractiveGroupElement) {
+	function focusElement(ge:UiGroupElement) {
 		if( current==ge )
 			return;
 
@@ -295,11 +295,11 @@ class InteractiveGroup extends dn.Process {
 		current.onFocus();
 	}
 
-	public dynamic function defaultOnFocus(ge:InteractiveGroupElement) {
+	public dynamic function defaultOnFocus(ge:UiGroupElement) {
 		ge.comp.filter = new dn.heaps.filter.Invert();
 	}
 
-	public dynamic function defaultOnBlur(ge:InteractiveGroupElement) {
+	public dynamic function defaultOnBlur(ge:UiGroupElement) {
 		ge.comp.filter = null;
 	}
 
@@ -358,7 +358,7 @@ class InteractiveGroup extends dn.Process {
 	}
 
 
-	public function connectGroup(dir:GroupDir, targetGroup:InteractiveGroup, symetric=true) {
+	public function connectGroup(dir:GroupDir, targetGroup:UiGroupController, symetric=true) {
 		connectedGroups.set(dir,targetGroup);
 		if( symetric )
 			targetGroup.connectGroup(getOppositeDir(dir), this, false);
@@ -405,15 +405,15 @@ class InteractiveGroup extends dn.Process {
 
 
 
-private class InteractiveGroupElement {
+private class UiGroupElement {
 	var _pt : h2d.col.Point;
 
 	var uid : Int;
-	var group : InteractiveGroup;
+	var group : UiGroupController;
 
 	public var comp: UiComponent;
 
-	var connections : Map<GroupDir, InteractiveGroupElement> = new Map();
+	var connections : Map<GroupDir, UiGroupElement> = new Map();
 
 	public var globalLeft(get,never) : Float;
 	public var globalRight(get,never) : Float;
@@ -427,15 +427,15 @@ private class InteractiveGroupElement {
 	public var globalCenterY(get,never) : Float;
 
 
-	public function new(g:InteractiveGroup, comp:UiComponent) {
-		uid = InteractiveGroup.UID++;
+	public function new(g:UiGroupController, comp:UiComponent) {
+		uid = UiGroupController.UID++;
 		_pt = new h2d.col.Point();
 		group = g;
 		this.comp = comp;
 	}
 
 	@:keep public function toString() {
-		return 'InteractiveGroupElement#$uid';
+		return 'UiGroupElement#$uid';
 	}
 
 	function get_globalLeft() {
@@ -468,7 +468,7 @@ private class InteractiveGroupElement {
 	inline function get_globalCenterY() return ( globalTop + globalBottom ) * 0.5;
 
 
-	public function connectNext(dir:GroupDir, to:InteractiveGroupElement, symetric=true) {
+	public function connectNext(dir:GroupDir, to:UiGroupElement, symetric=true) {
 		connections.set(dir, to);
 		if( symetric )
 			to.connections.set(group.getOppositeDir(dir), this);
@@ -489,7 +489,7 @@ private class InteractiveGroupElement {
 		return connections.exists(dir);
 	}
 
-	public function isConnectedTo(ge:InteractiveGroupElement) {
+	public function isConnectedTo(ge:UiGroupElement) {
 		for(next in connections)
 			if( next==ge )
 				return true;
@@ -500,11 +500,11 @@ private class InteractiveGroupElement {
 		return connections.get(dir);
 	}
 
-	public inline function angTo(t:InteractiveGroupElement) {
+	public inline function angTo(t:UiGroupElement) {
 		return Math.atan2(t.globalCenterY-globalCenterY, t.globalCenterX-globalCenterX);
 	}
 
-	public inline function globalDistTo(t:InteractiveGroupElement) {
+	public inline function globalDistTo(t:UiGroupElement) {
 		return M.dist(globalCenterX, globalCenterY, t.globalCenterX, t.globalCenterY);
 	}
 
@@ -516,7 +516,7 @@ private class InteractiveGroupElement {
 		group.defaultOnBlur(this);
 	}
 
-	public function overlapsElement(other:InteractiveGroupElement) {
+	public function overlapsElement(other:UiGroupElement) {
 		return dn.Geom.rectOverlapsRect(
 			globalLeft, globalTop, globalWidth, globalHeight,
 			other.globalLeft, other.globalTop, other.globalWidth, other.globalHeight
