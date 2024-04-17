@@ -276,8 +276,8 @@ class App extends dn.Process {
 		controller.bindKeyboard(DebugTurbo, [K.END, K.NUMPAD_ADD]);
 		controller.bindKeyboard(DebugSlowMo, [K.HOME, K.NUMPAD_SUB]);
 		controller.bindPadCombo(ToggleDebugDrone, [LSTICK_PUSH, RSTICK_PUSH]);
-		controller.bindKeyboardCombo(ToggleDebugDrone, [K.D, K.CTRL, K.SHIFT]);
-		controller.bindKeyboardCombo(OpenConsoleFlags, [K.F, K.CTRL, K.SHIFT]);
+		controller.bindKeyboardCombo(ToggleDebugDrone, [K.CTRL,K.SHIFT, K.D]);
+		controller.bindKeyboardCombo(OpenConsoleFlags, [[K.QWERTY_TILDE], [K.QWERTY_QUOTE], ["²".code], [K.CTRL,K.SHIFT, K.F]]);
 		#end
 	}
 
@@ -311,14 +311,16 @@ class App extends dn.Process {
 
         super.update();
 
-		if( ca.isPressed(ScreenshotMode) )
-			setScreenshotMode( !screenshotMode );
+		if( !Window.hasAnyModal() ) {
+			if( ca.isPressed(ScreenshotMode) )
+				setScreenshotMode( !screenshotMode );
 
-		if( ca.isPressed(Pause) )
-			toggleGamePause();
+			if( ca.isPressed(Pause) )
+				toggleGamePause();
 
-		if( ca.isPressed(OpenConsoleFlags) )
-			Console.ME.runCommand("/flags");
+			if( ca.isPressed(OpenConsoleFlags) )
+				Console.ME.runCommand("/flags");
+		}
 
 		if( ui.Console.ME.isActive() )
 			cd.setF("consoleRecentlyActive",2);
