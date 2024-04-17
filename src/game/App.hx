@@ -251,7 +251,7 @@ class App extends dn.Process {
 		controller.bindKeyboard(MoveRight, [K.RIGHT, K.D]);
 		controller.bindKeyboard(MoveUp, [K.UP, K.Z, K.W]);
 		controller.bindKeyboard(MoveDown, [K.DOWN, K.S]);
-		controller.bindKeyboard(Jump, K.SPACE);
+		controller.bindKeyboard(Jump, [K.SPACE,K.UP]);
 		controller.bindKeyboard(Restart, K.R);
 		controller.bindKeyboard(ScreenshotMode, K.F9);
 		controller.bindKeyboard(Pause, K.P);
