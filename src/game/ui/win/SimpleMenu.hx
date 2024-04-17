@@ -6,7 +6,6 @@ class SimpleMenu extends ui.Window {
 	public function new() {
 		super(true);
 
-		makeModal();
 		content.padding = 1;
 		content.horizontalSpacing = 4;
 		content.verticalSpacing = 0;
