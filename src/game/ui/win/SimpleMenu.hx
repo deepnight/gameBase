@@ -44,8 +44,8 @@ class SimpleMenu extends ui.Window {
 		group.register(bt);
 	}
 
-	public function addFlag(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
-		var bt = new ui.component.FlagButton(label,getter,setter,content);
+	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
+		var bt = new ui.component.CheckBox(label,getter,setter,content);
 		bt.fillWidth = true;
 		bt.onUseCb = ()->{
 			if( autoClose )

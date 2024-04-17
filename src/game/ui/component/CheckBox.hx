@@ -1,6 +1,6 @@
 package ui.component;
 
-class FlagButton extends ui.component.Button {
+class CheckBox extends ui.component.Button {
 	var label : String;
 	var lastDisplayedValue : Bool;
 	var getter : Void->Bool;

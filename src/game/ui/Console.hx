@@ -43,7 +43,7 @@ class Console extends h2d.Console {
 							setFlag(f.value, false);
 				});
 				for(f in allFlags)
-					w.addFlag(f.name.substr(2), ()->hasFlag(f.value), v->setFlag(f.value,v));
+					w.addCheckBox(f.name.substr(2), ()->hasFlag(f.value), v->setFlag(f.value,v));
 			});
 			this.addAlias("f","flags");
 			this.addAlias("flag","flags");
