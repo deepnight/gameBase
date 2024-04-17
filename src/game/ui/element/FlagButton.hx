@@ -6,7 +6,7 @@ class FlagButton extends ui.element.Button {
 
 	public function new(label:String, curValue:Bool, ?p) {
 		this.curValue = curValue;
-		super(p, label);
+		super(label, p);
 	}
 
 	public function setValue(v:Bool) {
