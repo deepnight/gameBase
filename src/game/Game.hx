@@ -221,6 +221,18 @@ class Game extends AppChildProcess {
 					App.ME.exit();
 			#end
 
+			#if debug
+			if( ca.isKeyboardPressed(K.T) ) {
+				var w = new Window(true);
+				var group = new ui.InteractiveGroup(w.content, w);
+
+				for(label in ["A","B"]) {
+					var bt = new ui.element.Button("Test button "+label);
+					group.addInteractive(bt, _->trace('Button $label clicked'));
+				}
+			}
+			#end
+
 			// Attach debug drone (CTRL-SHIFT-D)
 			#if debug
 			if( ca.isPressed(ToggleDebugDrone) )

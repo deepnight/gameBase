@@ -165,7 +165,7 @@ class InteractiveGroup extends dn.Process {
 				if( best==null )
 					best = other;
 				else {
-					if( from.distTo(other) < from.distTo(best) )
+					if( from.globalDistTo(other) < from.globalDistTo(best) )
 						best = other;
 				}
 			}
@@ -179,21 +179,21 @@ class InteractiveGroup extends dn.Process {
 	function findElementRaycast(from:InteractiveGroupElement, dir:GroupDir) : Null<InteractiveGroupElement> {
 		var ang = dirToAng(dir);
 		var step = switch dir {
-			case North, South: from.height;
-			case East,West: from.width;
+			case North, South: from.globalHeight;
+			case East,West: from.globalWidth;
 		}
-		var x = from.left + Math.cos(ang)*step;
-		var y = from.top + Math.sin(ang)*step;
+		var x = from.globalLeft + Math.cos(ang)*step;
+		var y = from.globalTop + Math.sin(ang)*step;
 		var elapsedDist = step;
 
 		var possibleNexts = [];
 		while( elapsedDist<step*3 ) {
 			for( other in elements )
-				if( other!=from && dn.Geom.rectOverlapsRect(x,y,from.width,from.height, other.left,other.top,other.width,other.height) )
+				if( other!=from && other.overlapsRect(x, y, from.globalWidth, from.globalHeight ) )
 					possibleNexts.push(other);
 
 			if( possibleNexts.length>0 )
-				return dn.Lib.findBestInArray(possibleNexts, (t)->-t.distTo(from) );
+				return dn.Lib.findBestInArray(possibleNexts, (t)->-t.globalDistTo(from) );
 
 			x += Math.cos(ang)*step;
 			y += Math.sin(ang)*step;
@@ -208,18 +208,40 @@ class InteractiveGroup extends dn.Process {
 	function findClosest(from:InteractiveGroupElement) : Null<InteractiveGroupElement> {
 		var best = null;
 		for(other in elements)
-			if( other!=from && ( best==null || from.distTo(other) < from.distTo(best) ) )
+			if( other!=from && ( best==null || from.globalDistTo(other) < from.globalDistTo(best) ) )
 				best = other;
 		return best;
 	}
 
 
-	public function renderConnectionsDebug(g:h2d.Graphics) {
+	public function createDebugger() {
+		var g = new h2d.Graphics(App.ME.root);
+		var debugProc = createChildProcess();
+		debugProc.onUpdateCb = ()->{
+			if( !debugProc.cd.hasSetS("tick",0.1) )
+				renderDebugToGraphics(g);
+		}
+		debugProc.onDisposeCb = ()->{
+			g.remove();
+		}
+	}
+
+	/**
+		Draw a debug render of the group structure into an existing Graphics object.
+		NOTE: the render uses global coordinates, so the Graphics object should be attached to the scene root.
+	**/
+	public function renderDebugToGraphics(g:h2d.Graphics) {
 		g.clear();
 		g.removeChildren();
 		buildConnections();
 		var font = hxd.res.DefaultFont.get();
 		for(from in elements) {
+			// Bounds
+			g.lineStyle(2, Pink);
+			g.beginFill(Pink, 0.5);
+			g.drawRect(from.globalLeft, from.globalTop, from.globalWidth, from.globalHeight);
+			g.endFill();
+			// Connections
 			for(dir in [North,East,South,West]) {
 				if( !from.hasConnection(dir) )
 					continue;
@@ -227,17 +249,17 @@ class InteractiveGroup extends dn.Process {
 				var next = from.getConnectedElement(dir);
 				var ang = from.angTo(next);
 				g.lineStyle(2, Yellow);
-				g.moveTo(from.centerX, from.centerY);
-				g.lineTo(next.centerX, next.centerY);
+				g.moveTo(from.globalCenterX, from.globalCenterY);
+				g.lineTo(next.globalCenterX, next.globalCenterY);
 
 				// Arrow head
 				var arrowDist = 16;
 				var arrowAng = M.PI*0.95;
-				g.moveTo(next.centerX, next.centerY);
-				g.lineTo(next.centerX+Math.cos(ang+arrowAng)*arrowDist, next.centerY+Math.sin(ang+arrowAng)*arrowDist);
+				g.moveTo(next.globalCenterX, next.globalCenterY);
+				g.lineTo(next.globalCenterX+Math.cos(ang+arrowAng)*arrowDist, next.globalCenterY+Math.sin(ang+arrowAng)*arrowDist);
 
-				g.moveTo(next.centerX, next.centerY);
-				g.lineTo(next.centerX+Math.cos(ang-arrowAng)*arrowDist, next.centerY+Math.sin(ang-arrowAng)*arrowDist);
+				g.moveTo(next.globalCenterX, next.globalCenterY);
+				g.lineTo(next.globalCenterX+Math.cos(ang-arrowAng)*arrowDist, next.globalCenterY+Math.sin(ang-arrowAng)*arrowDist);
 
 				var tf = new h2d.Text(font,g);
 				tf.text = switch dir {
@@ -246,8 +268,8 @@ class InteractiveGroup extends dn.Process {
 					case South: 'S';
 					case West: 'W';
 				}
-				tf.x = Std.int( ( from.centerX*0.3 + next.centerX*0.7 ) - tf.textWidth*0.5 );
-				tf.y = Std.int( ( from.centerY*0.3 + next.centerY*0.7 ) - tf.textHeight*0.5 );
+				tf.x = Std.int( ( from.globalCenterX*0.3 + next.globalCenterX*0.7 ) - tf.textWidth*0.5 );
+				tf.y = Std.int( ( from.globalCenterY*0.3 + next.globalCenterY*0.7 ) - tf.textHeight*0.5 );
 				tf.filter = new dn.heaps.filter.PixelOutline();
 			}
 		}
@@ -265,11 +287,8 @@ class InteractiveGroup extends dn.Process {
 	}
 
 	function focusClosestElementFromGlobal(x:Float, y:Float) {
-		var pt = new h2d.col.Point(0,0);
 		var best = Lib.findBestInArray(elements, e->{
-			pt.set(e.width*0.5, e.height*0.5);
-			e.f.localToGlobal(pt);
-			return -M.dist(x, y, pt.x, pt.y);
+			return -M.dist(x, y, e.globalCenterX, e.globalCenterY);
 		});
 		if( best!=null )
 			focusElement(best);
@@ -346,11 +365,11 @@ class InteractiveGroup extends dn.Process {
 
 		var g = connectedGroups.get(dir);
 		var from = current;
-		var pt = new h2d.col.Point(from.width*0.5, from.height*0.5);
-		from.f.localToGlobal(pt);
+		// var pt = new h2d.col.Point(from.width*0.5, from.height*0.5);
+		// from.f.localToGlobal(pt);
 		blurGroup();
 		g.focusGroup();
-		g.focusClosestElementFromGlobal(pt.x, pt.y);
+		g.focusClosestElementFromGlobal(from.globalCenterX, from.globalCenterY);
 		return true;
 	}
 
@@ -403,6 +422,8 @@ class InteractiveGroup extends dn.Process {
 
 
 private class InteractiveGroupElement {
+	var _pt : h2d.col.Point;
+
 	var uid : Int;
 	var group : InteractiveGroup;
 
@@ -411,20 +432,21 @@ private class InteractiveGroupElement {
 
 	var connections : Map<GroupDir, InteractiveGroupElement> = new Map();
 
-	public var width(get,never) : Int;
-	public var height(get,never) : Int;
+	public var globalLeft(get,never) : Float;
+	public var globalRight(get,never) : Float;
+	public var globalTop(get,never) : Float;
+	public var globalBottom(get,never) : Float;
 
-	public var left(get,never) : Float;
-	public var right(get,never) : Float;
-	public var top(get,never) : Float;
-	public var bottom(get,never) : Float;
+	public var globalWidth(get,never) : Int;
+	public var globalHeight(get,never) : Int;
 
-	public var centerX(get,never) : Float;
-	public var centerY(get,never) : Float;
+	public var globalCenterX(get,never) : Float;
+	public var globalCenterY(get,never) : Float;
 
 
 	public function new(g,f,cb) {
 		uid = InteractiveGroup.UID++;
+		_pt = new h2d.col.Point();
 		this.cb = cb;
 		group = g;
 		this.f = f;
@@ -435,16 +457,34 @@ private class InteractiveGroupElement {
 		return 'InteractiveGroupElement#$uid';
 	}
 
-	inline function get_width() return f.outerWidth;
-	inline function get_height() return f.outerHeight;
+	function get_globalLeft() {
+		_pt.set();
+		f.localToGlobal(_pt);
+		return _pt.x;
+	}
 
-	inline function get_left() return f.x;
-	inline function get_right() return left+width;
-	inline function get_top() return f.y;
-	inline function get_bottom() return top+height;
+	function get_globalRight() {
+		_pt.set(f.outerWidth,f.outerHeight);
+		f.localToGlobal(_pt);
+		return _pt.x;
+	}
 
-	inline function get_centerX() return left + width*0.5;
-	inline function get_centerY() return top + height*0.5;
+	function get_globalTop() {
+		_pt.set();
+		f.localToGlobal(_pt);
+		return _pt.y;
+	}
+
+	function get_globalBottom() {
+		_pt.set(f.outerWidth,f.outerHeight);
+		f.localToGlobal(_pt);
+		return _pt.y;
+	}
+
+	inline function get_globalWidth() return Std.int( globalRight - globalLeft );
+	inline function get_globalHeight() return Std.int( globalBottom - globalTop );
+	inline function get_globalCenterX() return ( globalLeft + globalRight ) * 0.5;
+	inline function get_globalCenterY() return ( globalTop + globalBottom ) * 0.5;
 
 
 	public function connectNext(dir:GroupDir, to:InteractiveGroupElement, symetric=true) {
@@ -480,11 +520,11 @@ private class InteractiveGroupElement {
 	}
 
 	public inline function angTo(t:InteractiveGroupElement) {
-		return Math.atan2(t.centerY-centerY, t.centerX-centerX);
+		return Math.atan2(t.globalCenterY-globalCenterY, t.globalCenterX-globalCenterX);
 	}
 
-	public inline function distTo(t:InteractiveGroupElement) {
-		return M.dist(centerX, centerY, t.centerX, t.centerY);
+	public inline function globalDistTo(t:InteractiveGroupElement) {
+		return M.dist(globalCenterX, globalCenterY, t.globalCenterX, t.globalCenterY);
 	}
 
 	public dynamic function onFocus() {
@@ -494,4 +534,19 @@ private class InteractiveGroupElement {
 	public dynamic function onBlur() {
 		group.defaultOnBlur(this);
 	}
+
+	public function overlapsElement(other:InteractiveGroupElement) {
+		return dn.Geom.rectOverlapsRect(
+			globalLeft, globalTop, globalWidth, globalHeight,
+			other.globalLeft, other.globalTop, other.globalWidth, other.globalHeight
+		);
+	}
+
+	public function overlapsRect(x:Float, y:Float, w:Int, h:Int) {
+		return dn.Geom.rectOverlapsRect(
+			globalLeft, globalTop, globalWidth, globalHeight,
+			x, y, w, h
+		);
+	}
+
 }
