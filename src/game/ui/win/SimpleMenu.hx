@@ -11,7 +11,7 @@ class SimpleMenu extends ui.Window {
 		content.verticalSpacing = 0;
 		content.layout = Vertical;
 		content.multiline = true;
-		content.maxWidth = 150;
+		content.colWidth = 150;
 
 		group = new UiGroupController(this);
 		group.customControllerLock = ()->!isActive();
@@ -19,12 +19,16 @@ class SimpleMenu extends ui.Window {
 
 
 	public function setColumnWidth(w:Int) {
-		content.maxWidth = w;
+		content.colWidth = w;
 	}
 
 	override function onResize() {
 		super.onResize();
-		content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
+		switch verticalAlign {
+			case Start,End: content.maxHeight = Std.int( 0.4 * h()/Const.UI_SCALE );
+			case Center: content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
+			case Fill: content.maxHeight = Std.int( h()/Const.UI_SCALE );
+		}
 	}
 
 	public function addSpacer() {
@@ -38,7 +42,7 @@ class SimpleMenu extends ui.Window {
 
 	public function addButton(label:String, ?tile:h2d.Tile, autoClose=true, cb:Void->Void) {
 		var bt = new ui.component.Button(label, tile, content);
-		bt.fillWidth = true;
+		bt.minWidth = content.colWidth;
 		bt.onUseCb = ()->{
 			cb();
 			if( autoClose )
@@ -49,19 +53,11 @@ class SimpleMenu extends ui.Window {
 
 	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
 		var bt = new ui.component.CheckBox(label,getter,setter,content);
-		bt.fillWidth = true;
+		bt.minWidth = content.colWidth;
 		bt.onUseCb = ()->{
 			if( autoClose )
 				close();
 		}
-		// bt.onUse = ()->{
-		// 	v = !v;
-		// 	setter(v);
-		// 	if( autoClose )
-		// 		close();
-		// 	else
-		// 		bt.setValue(v);
-		// }
 
 		group.register(bt);
 	}
