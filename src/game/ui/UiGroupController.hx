@@ -39,7 +39,7 @@ class UiGroupController extends dn.Process {
 	public dynamic function customControllerLock() return false;
 
 
-	public function register<T:ui.UiComponent>(comp:T) : UiGroupElement {
+	public function register(comp:ui.UiComponent) : UiGroupElement {
 		var ge = new UiGroupElement(this, comp);
 		elements.push(ge);
 		comp.onAfterReflow = invalidateConnections;
