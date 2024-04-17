@@ -31,13 +31,17 @@ class Window extends dn.Process {
 		content.enableInteractive = true;
 
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = ()->!isModal || App.ME.anyInputHasFocus() || !isLatestModal();
+		ca.lockCondition = ()->App.ME.anyInputHasFocus() || !isActive();
 		ca.lock(0.1);
 
 		emitResizeAtEndOfFrame();
 
 		if( modal )
 			makeModal();
+	}
+
+	public function isActive() {
+		return !isModal || isLatestModal();
 	}
 
 	override function onDispose() {
@@ -55,7 +59,7 @@ class Window extends dn.Process {
 	}
 
 	@:keep override function toString():String {
-		return isModal ? 'ModalWin${isLatestModal()?"*":""}($modalIdx)' : 'Win';
+		return isModal ? 'ModalWin${isActive()?"*":""}($modalIdx)' : 'Win';
 	}
 
 	public function makeModal() {
@@ -79,7 +83,7 @@ class Window extends dn.Process {
 		root.under(mask);
 	}
 
-	public function isLatestModal() {
+	function isLatestModal() {
 		var idx = ALL.length-1;
 		while( idx>=0 ) {
 			var w = ALL[idx];
