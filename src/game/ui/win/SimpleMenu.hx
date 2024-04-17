@@ -18,6 +18,10 @@ class SimpleMenu extends ui.Window {
 	}
 
 
+	public function setColumnWidth(w:Int) {
+		content.maxWidth = w;
+	}
+
 	override function onResize() {
 		super.onResize();
 		content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
