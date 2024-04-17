@@ -32,8 +32,8 @@ class SimpleMenu extends ui.Window {
 		new ui.component.Title( str, Col.coldGray(0.6), content );
 	}
 
-	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		var bt = new ui.component.Button(label, content);
+	public function addButton(label:String, ?tile:h2d.Tile, autoClose=true, cb:Void->Void) {
+		var bt = new ui.component.Button(label, tile, content);
 		bt.fillWidth = true;
 		bt.onUseCb = ()->{
 			cb();

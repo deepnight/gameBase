@@ -3,7 +3,7 @@ package ui.component;
 class Button extends ui.UiComponent {
 	var tf : h2d.Text;
 
-	public function new(?iconTile:h2d.Tile, ?label:String, col:dn.Col=Black, ?p:h2d.Object) {
+	public function new(?label:String, ?iconTile:h2d.Tile, col:dn.Col=Black, ?p:h2d.Object) {
 		super(p);
 
 		verticalAlign = Middle;
