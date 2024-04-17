@@ -12,6 +12,7 @@ class Window extends dn.Process {
 
 	public var isModal(default, null) = false;
 	public var canBeClosedManually = true;
+	var fullscreen = false;
 
 
 	public function new(modal:Bool, ?p:dn.Process) {
@@ -44,6 +45,15 @@ class Window extends dn.Process {
 		return !destroyed && ( !isModal || isLatestModal() );
 	}
 
+	public function makeFullscreen() {
+		fullscreen = true;
+	}
+
+	public function makeTransparent() {
+		content.backgroundTile = null;
+		content.enableInteractive = false;
+	}
+
 	override function onDispose() {
 		super.onDispose();
 
@@ -62,7 +72,7 @@ class Window extends dn.Process {
 		return isModal ? 'ModalWin${isActive()?"*":""}($modalIdx)' : 'Win';
 	}
 
-	public function makeModal() {
+	function makeModal() {
 		if( isModal )
 			return;
 
@@ -117,14 +127,20 @@ class Window extends dn.Process {
 
 		var wid = M.ceil( w()/Const.UI_SCALE );
 		var hei = M.ceil( h()/Const.UI_SCALE );
-		content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
-		content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+
+		if( fullscreen ) {
+			content.setPosition(0,0);
+			content.minWidth = content.maxWidth = wid;
+			content.minHeight = content.maxHeight = hei;
+		}
+		else {
+			content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
+			content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+		}
 
 		if( mask!=null ) {
-			var w = M.ceil( w()/Const.UI_SCALE );
-			var h = M.ceil( h()/Const.UI_SCALE );
-			mask.minWidth = w;
-			mask.minHeight = h;
+			mask.minWidth = wid;
+			mask.minHeight = hei;
 		}
 	}
 
