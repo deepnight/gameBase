@@ -12,7 +12,6 @@ enum abstract GroupDir(Int) {
 class InteractiveGroup extends dn.Process {
 	static var UID = 0;
 
-	public var content : h2d.Flow;
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
 	var current : Null<InteractiveGroupElement>;
@@ -25,14 +24,10 @@ class InteractiveGroup extends dn.Process {
 	var useMouse : Bool;
 
 
-	public function new(parent:h2d.Object, process:dn.Process, useMouse=true) {
+	public function new(process:dn.Process, useMouse=true) {
 		super(process);
 
 		this.useMouse = useMouse;
-
-		content = new h2d.Flow(parent);
-		content.layout = Vertical;
-		content.onAfterReflow = invalidateConnections;
 
 		uid = UID++;
 		ca = App.ME.controller.createAccess();
@@ -44,41 +39,30 @@ class InteractiveGroup extends dn.Process {
 	public dynamic function customControllerLock() return false;
 
 
-	public function addNonInteractive(f:h2d.Flow) {
-		content.addChild(f);
-		switch content.layout {
-			case Horizontal: f.fillHeight = true;
-			case Vertical: f.fillWidth = true;
-			case Stack:
-		}
-	}
-
-
-	public function addInteractive<T:h2d.Flow>(f:T, cb:T->Void) : InteractiveGroupElement {
-		content.addChild(f);
-
-		var ge = new InteractiveGroupElement(this, f, cast cb);
+	public function register<T:ui.UiComponent>(comp:T) : InteractiveGroupElement {
+		var ge = new InteractiveGroupElement(this, comp);
 		elements.push(ge);
+		comp.onAfterReflow = invalidateConnections;
 
 		if( useMouse ) {
-			f.enableInteractive = true;
-			f.interactive.cursor = Button;
+			comp.enableInteractive = true;
+			comp.interactive.cursor = Button;
 
-			f.interactive.onOver = _->{
+			comp.interactive.onOver = _->{
 				focusElement(ge);
 				focusGroup();
 			}
 
-			f.interactive.onOut = _->{
+			comp.interactive.onOut = _->{
 				blurElement(ge);
 			}
 
-			f.interactive.onClick = ev->{
+			comp.interactive.onClick = ev->{
 				if( ev.button==0 )
-					cb(f);
+					comp.doUse();
 			}
 
-			f.interactive.enableRightButton = true;
+			comp.interactive.enableRightButton = true;
 		}
 
 		return ge;
@@ -130,7 +114,7 @@ class InteractiveGroup extends dn.Process {
 	}
 
 	function buildConnections() {
-		content.reflow();
+		trace('built at $stime sec');
 		for(t in elements)
 			t.clearConnections();
 
@@ -312,11 +296,11 @@ class InteractiveGroup extends dn.Process {
 	}
 
 	public dynamic function defaultOnFocus(ge:InteractiveGroupElement) {
-		ge.f.filter = new dn.heaps.filter.Invert();
+		ge.comp.filter = new dn.heaps.filter.Invert();
 	}
 
 	public dynamic function defaultOnBlur(ge:InteractiveGroupElement) {
-		ge.f.filter = null;
+		ge.comp.filter = null;
 	}
 
 	inline function getOppositeDir(dir:GroupDir) {
@@ -404,7 +388,7 @@ class InteractiveGroup extends dn.Process {
 		// Move current
 		if( current!=null ) {
 			if( ca.isPressed(MenuOk) )
-				current.cb(current.f);
+				current.comp.doUse();
 
 			if( ca.isPressedAutoFire(MenuLeft) )
 				gotoNextDir(West);
@@ -427,8 +411,7 @@ private class InteractiveGroupElement {
 	var uid : Int;
 	var group : InteractiveGroup;
 
-	public var f: h2d.Flow;
-	public var cb: h2d.Flow->Void;
+	public var comp: UiComponent;
 
 	var connections : Map<GroupDir, InteractiveGroupElement> = new Map();
 
@@ -444,13 +427,11 @@ private class InteractiveGroupElement {
 	public var globalCenterY(get,never) : Float;
 
 
-	public function new(g,f,cb) {
+	public function new(g:InteractiveGroup, comp:UiComponent) {
 		uid = InteractiveGroup.UID++;
 		_pt = new h2d.col.Point();
-		this.cb = cb;
 		group = g;
-		this.f = f;
-		f.onAfterReflow = group.invalidateConnections;
+		this.comp = comp;
 	}
 
 	@:keep public function toString() {
@@ -459,25 +440,25 @@ private class InteractiveGroupElement {
 
 	function get_globalLeft() {
 		_pt.set();
-		f.localToGlobal(_pt);
+		comp.localToGlobal(_pt);
 		return _pt.x;
 	}
 
 	function get_globalRight() {
-		_pt.set(f.outerWidth,f.outerHeight);
-		f.localToGlobal(_pt);
+		_pt.set(comp.outerWidth, comp.outerHeight);
+		comp.localToGlobal(_pt);
 		return _pt.x;
 	}
 
 	function get_globalTop() {
 		_pt.set();
-		f.localToGlobal(_pt);
+		comp.localToGlobal(_pt);
 		return _pt.y;
 	}
 
 	function get_globalBottom() {
-		_pt.set(f.outerWidth,f.outerHeight);
-		f.localToGlobal(_pt);
+		_pt.set(comp.outerWidth, comp.outerHeight);
+		comp.localToGlobal(_pt);
 		return _pt.y;
 	}
 

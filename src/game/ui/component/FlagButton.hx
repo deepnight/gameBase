@@ -1,10 +1,10 @@
-package ui.element;
+package ui.component;
 
-class FlagButton extends ui.element.Button {
+class FlagButton extends ui.component.Button {
 	var curValue : Bool;
 	var lastLabel : String;
 
-	public function new(label:String, curValue:Bool, ?p) {
+	public function new(label:String, curValue:Bool, ?p:h2d.Object) {
 		this.curValue = curValue;
 		super(label, p);
 	}

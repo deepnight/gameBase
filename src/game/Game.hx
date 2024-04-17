@@ -223,13 +223,17 @@ class Game extends AppChildProcess {
 
 			#if debug
 			if( ca.isKeyboardPressed(K.T) ) {
-				var w = new Window(true);
-				var group = new ui.InteractiveGroup(w.content, w);
+				var w = new ui.win.SimpleMenu();
+				// var group = new ui.InteractiveGroup(w.content, w);
+				var g = new h2d.Graphics(App.ME.root);
 
-				for(label in ["A","B"]) {
-					var bt = new ui.element.Button("Test button "+label);
-					group.addInteractive(bt, _->trace('Button $label clicked'));
+				for(i in 0...3)
+				for(label in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]) {
+					w.addButton("Test button "+label+i, ()->trace('Button $label$i clicked'));
+					// var bt = new ui.element.Button("Test button "+label);
+					// group.addInteractive(bt, _->trace('Button $label clicked'));
 				}
+				w.group.createDebugger();
 			}
 			#end
 

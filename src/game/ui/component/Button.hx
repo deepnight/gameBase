@@ -1,6 +1,6 @@
-package ui.element;
+package ui.component;
 
-class Button extends h2d.Flow {
+class Button extends ui.UiComponent {
 	var tf : h2d.Text;
 
 	public function new(?iconTile:h2d.Tile, ?label:String, col:dn.Col=Black, ?p:h2d.Object) {
