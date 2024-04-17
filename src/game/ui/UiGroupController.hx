@@ -114,7 +114,6 @@ class UiGroupController extends dn.Process {
 	}
 
 	function buildConnections() {
-		trace('built at $stime sec');
 		for(t in elements)
 			t.clearConnections();
 
