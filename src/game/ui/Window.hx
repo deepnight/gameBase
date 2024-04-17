@@ -41,7 +41,7 @@ class Window extends dn.Process {
 	}
 
 	public function isActive() {
-		return !isModal || isLatestModal();
+		return !destroyed && ( !isModal || isLatestModal() );
 	}
 
 	override function onDispose() {
