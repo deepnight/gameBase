@@ -1,21 +1,33 @@
 package ui.component;
 
 class FlagButton extends ui.component.Button {
-	var curValue : Bool;
-	var lastLabel : String;
+	var label : String;
+	var lastDisplayedValue : Bool;
+	var getter : Void->Bool;
+	var setter : Bool->Void;
 
-	public function new(label:String, curValue:Bool, ?p:h2d.Object) {
-		this.curValue = curValue;
+	public function new(label:String, getter:Void->Bool, setter:Bool->Void, ?p:h2d.Object) {
+		this.getter = getter;
+		this.setter = setter;
 		super(label, p);
 	}
 
-	public function setValue(v:Bool) {
-		curValue = v;
-		setLabel(lastLabel);
+	override function onUse() {
+		super.onUse();
+
+		setter(!getter());
+		setLabel(label);
 	}
 
 	override function setLabel(str:String, col:Col = Black) {
-		lastLabel = str;
-		super.setLabel( (curValue?"[ON]":"[  ]")+" "+str, col );
+		label = str;
+		lastDisplayedValue = getter();
+		super.setLabel( (getter()?"[ON]":"[  ]")+" "+label, col );
+	}
+
+	override function sync(ctx:h2d.RenderContext) {
+		super.sync(ctx);
+		if( lastDisplayedValue!=getter() )
+			setLabel(label);
 	}
 }
