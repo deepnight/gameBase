@@ -56,11 +56,6 @@ class InteractiveGroup extends dn.Process {
 
 	public function addInteractive<T:h2d.Flow>(f:T, cb:T->Void) : InteractiveGroupElement {
 		content.addChild(f);
-		switch content.layout {
-			case Horizontal: f.fillHeight = true;
-			case Vertical: f.fillWidth = true;
-			case Stack:
-		}
 
 		var ge = new InteractiveGroupElement(this, f, cast cb);
 		elements.push(ge);

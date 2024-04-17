@@ -15,6 +15,7 @@ class SimpleMenu extends ui.Window {
 		group.content.verticalSpacing = 1;
 		group.content.layout = Vertical;
 		group.content.multiline = true;
+		group.content.maxWidth = 150;
 		group.customControllerLock = ()->!isLatestModal();
 	}
 
@@ -34,7 +35,9 @@ class SimpleMenu extends ui.Window {
 	}
 
 	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		group.addInteractive(new ui.element.Button(label), _->{
+		var e = new ui.element.Button(label);
+		e.fillWidth = true;
+		group.addInteractive(e, _->{
 			cb();
 			if( autoClose )
 				close();
@@ -43,7 +46,9 @@ class SimpleMenu extends ui.Window {
 
 	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, autoClose=false) {
 		var v = curValue;
-		group.addInteractive( new ui.element.FlagButton(label,curValue), fb->{
+		var e = new ui.element.FlagButton(label,curValue);
+		e.fillWidth = true;
+		group.addInteractive( e, fb->{
 			v = !v;
 			setter(v);
 			if( autoClose )
