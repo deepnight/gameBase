@@ -1,7 +1,7 @@
 package ui.win;
 
 class SimpleMenu extends ui.Window {
-	public var group : UiGroupController;
+	public var uiCtrl : UiGroupController;
 
 	public function new() {
 		super(true);
@@ -13,8 +13,8 @@ class SimpleMenu extends ui.Window {
 		content.multiline = true;
 		content.colWidth = 150;
 
-		group = new UiGroupController(this);
-		group.customControllerLock = ()->!isActive();
+		uiCtrl = new UiGroupController(this);
+		uiCtrl.customControllerLock = ()->!isActive();
 	}
 
 
@@ -48,7 +48,7 @@ class SimpleMenu extends ui.Window {
 			if( autoClose )
 				close();
 		}
-		group.register(bt);
+		uiCtrl.register(bt);
 	}
 
 	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
@@ -59,7 +59,7 @@ class SimpleMenu extends ui.Window {
 				close();
 		}
 
-		group.register(bt);
+		uiCtrl.register(bt);
 	}
 
 	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
