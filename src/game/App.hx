@@ -282,11 +282,6 @@ class App extends dn.Process {
 	}
 
 
-	public function onLastModalClosed() {
-		cd.setS("modalClosedRecently", 0.1);
-	}
-
-
 	/** Return TRUE if an App instance exists **/
 	public static inline function exists() return ME!=null && !ME.destroyed;
 
