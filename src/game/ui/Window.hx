@@ -81,8 +81,10 @@ class Window extends dn.Process {
 		ca.dispose();
 		ca = null;
 
-		if( !hasAnyModal() )
+		if( !hasAnyModal() ) {
+			App.ME.onLastModalClosed();
 			Game.ME.resume();
+		}
 	}
 
 	@:keep override function toString():String {

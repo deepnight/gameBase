@@ -122,7 +122,7 @@ class App extends dn.Process {
 
 
 	public function anyInputHasFocus() {
-		return Console.ME.isActive() || cd.has("consoleRecentlyActive");
+		return Console.ME.isActive() || cd.has("consoleRecentlyActive") || cd.has("modalClosedRecently");
 	}
 
 
@@ -279,6 +279,11 @@ class App extends dn.Process {
 		controller.bindKeyboardCombo(ToggleDebugDrone, [K.CTRL,K.SHIFT, K.D]);
 		controller.bindKeyboardCombo(OpenConsoleFlags, [[K.QWERTY_TILDE], [K.QWERTY_QUOTE], ["²".code], [K.CTRL,K.SHIFT, K.F]]);
 		#end
+	}
+
+
+	public function onLastModalClosed() {
+		cd.setS("modalClosedRecently", 0.1);
 	}
 
 
