@@ -24,10 +24,11 @@ class Window extends dn.Process {
 
 
 	public function new(modal:Bool, ?p:dn.Process) {
-		super(p==null ? App.ME : p);
+		var parentProc = p==null ? App.ME : p;
+		super(parentProc);
 
 		ALL.push(this);
-		createRootInLayers(Game.ME.root, Const.DP_UI);
+		createRootInLayers(parentProc.root, Const.DP_UI);
 		root.filter = new h2d.filter.Nothing(); // force pixel perfect rendering
 
 		content = new h2d.Flow(root);
