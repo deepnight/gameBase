@@ -11,7 +11,7 @@ enum abstract GroupDir(Int) {
 class UiGroupController extends dn.Process {
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
-	var current : Null<UiComponent>;
+	var currentComp : Null<UiComponent>;
 
 	var components : Array<UiComponent> = [];
 
@@ -77,9 +77,9 @@ class UiGroupController extends dn.Process {
 	public function blurGroup() {
 		var wasFocused = groupFocused;
 		groupFocused = false;
-		if( current!=null ) {
-			current.onBlur();
-			current = null;
+		if( currentComp!=null ) {
+			currentComp.onBlur();
+			currentComp = null;
 		}
 		if( wasFocused )
 			onGroupBlur();
@@ -302,7 +302,7 @@ class UiGroupController extends dn.Process {
 		ca = null;
 
 		components = null;
-		current = null;
+		currentComp = null;
 	}
 
 	function focusClosestComponentFromGlobalCoord(x:Float, y:Float) {
@@ -314,20 +314,20 @@ class UiGroupController extends dn.Process {
 	}
 
 	function blurComponent(ge:UiComponent) {
-		if( current==ge ) {
-			current.onBlur();
-			current = null;
+		if( currentComp==ge ) {
+			currentComp.onBlur();
+			currentComp = null;
 		}
 	}
 
 	function focusComponent(ge:UiComponent) {
-		if( current==ge )
+		if( currentComp==ge )
 			return;
 
-		if( current!=null )
-			current.onBlur();
-		current = ge;
-		current.onFocus();
+		if( currentComp!=null )
+			currentComp.onBlur();
+		currentComp = ge;
+		currentComp.onFocus();
 	}
 
 	inline function getOppositeDir(dir:GroupDir) {
@@ -357,11 +357,11 @@ class UiGroupController extends dn.Process {
 
 
 	function gotoNextDir(dir:GroupDir) {
-		if( current==null )
+		if( currentComp==null )
 			return;
 
-		if( hasComponentConnectionDir(current,dir) )
-			focusComponent( getComponentConnectionDir(current,dir) );
+		if( hasComponentConnectionDir(currentComp,dir) )
+			focusComponent( getComponentConnectionDir(currentComp,dir) );
 		else
 			gotoConnectedGroup(dir);
 	}
@@ -375,7 +375,7 @@ class UiGroupController extends dn.Process {
 			return false;
 
 		var g = uiGroupsConnections.get(dir);
-		var from = current;
+		var from = currentComp;
 		// var pt = new h2d.col.Point(from.width*0.5, from.height*0.5);
 		// from.f.localToGlobal(pt);
 		blurGroup();
@@ -407,15 +407,15 @@ class UiGroupController extends dn.Process {
 			connectionsNeedRebuild = false;
 		}
 
-		// Init current
-		if( current==null && components.length>0 )
+		// Init currentComp
+		if( currentComp==null && components.length>0 )
 			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
 				focusComponent(components[0]);
 
-		// Move current
-		if( current!=null ) {
+		// Move currentComp
+		if( currentComp!=null ) {
 			if( ca.isPressed(MenuOk) )
-				current.use();
+				currentComp.use();
 
 			if( ca.isPressedAutoFire(MenuLeft) )
 				gotoNextDir(West);
