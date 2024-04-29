@@ -16,11 +16,12 @@ class UiGroupController extends dn.Process {
 	var current : Null<UiComponent>;
 
 	var components : Array<UiComponent> = [];
+
 	var connectionsNeedRebuild = false;
 	var uiGroupsConnections : Map<GroupDir, UiGroupController> = new Map();
 	var componentsConnections : Map<Int, Map<GroupDir, UiComponent>> = new Map();
 
-	var focused = true;
+	var groupFocused = true;
 	var useMouse : Bool;
 
 
@@ -31,7 +32,7 @@ class UiGroupController extends dn.Process {
 
 		uid = UID++;
 		ca = App.ME.controller.createAccess();
-		ca.lockCondition = ()->!focused || customControllerLock();
+		ca.lockCondition = ()->!groupFocused || customControllerLock();
 		ca.lock(0.1);
 	}
 
@@ -67,22 +68,22 @@ class UiGroupController extends dn.Process {
 
 
 	public function focusGroup() {
-		var wasFocus = focused;
-		focused = true;
+		var wasFocused = groupFocused;
+		groupFocused = true;
 		ca.lock(0.2);
 		blurAllConnectedGroups();
-		if( !wasFocus )
+		if( !wasFocused )
 			onGroupFocus();
 	}
 
 	public function blurGroup() {
-		var wasFocus = focused;
-		focused = false;
+		var wasFocused = groupFocused;
+		groupFocused = false;
 		if( current!=null ) {
 			current.onBlur();
 			current = null;
 		}
-		if( wasFocus )
+		if( wasFocused )
 			onGroupBlur();
 	}
 
@@ -391,7 +392,7 @@ class UiGroupController extends dn.Process {
 		if( symetric )
 			targetGroup.connectGroup(getOppositeDir(dir), this, false);
 
-		if( focused )
+		if( groupFocused )
 			blurAllConnectedGroups();
 	}
 
@@ -399,7 +400,7 @@ class UiGroupController extends dn.Process {
 	override function preUpdate() {
 		super.preUpdate();
 
-		if( !focused )
+		if( !groupFocused )
 			return;
 
 		// Build components connections
