@@ -116,14 +116,6 @@ class UiGroupController extends dn.Process {
 		componentsConnections.get(from.uid).set(dir, to);
 	}
 
-	public function clearAllComponentConnections() {
-		componentsConnections = new Map();
-	}
-
-	public function clearComponentConnections(c:UiGroupElement) {
-		componentsConnections.remove(c.uid);
-	}
-
 	public function countComponentConnections(c:UiGroupElement) {
 		if( !componentsConnections.exists(c.uid) )
 			return 0;
@@ -134,11 +126,11 @@ class UiGroupController extends dn.Process {
 		return n;
 	}
 
-	public inline function hasComponentConnection(c:UiGroupElement, dir:GroupDir) {
+	public inline function hasComponentConnectionDir(c:UiGroupElement, dir:GroupDir) {
 		return componentsConnections.exists(c.uid) && componentsConnections.get(c.uid).exists(dir);
 	}
 
-	public function isComponentConnectedTo(from:UiGroupElement, to:UiGroupElement) {
+	public function hasComponentConnection(from:UiGroupElement, to:UiGroupElement) {
 		if( !componentsConnections.exists(from.uid) )
 			return false;
 
@@ -148,7 +140,7 @@ class UiGroupController extends dn.Process {
 		return false;
 	}
 
-	public inline function getComponentConnected(from:UiGroupElement, dir:GroupDir) {
+	public inline function getComponentConnectionDir(from:UiGroupElement, dir:GroupDir) {
 		return componentsConnections.exists(from.uid)
 			? componentsConnections.get(from.uid).get(dir)
 			: null;
@@ -161,7 +153,8 @@ class UiGroupController extends dn.Process {
 	}
 
 	function buildConnections() {
-		clearAllComponentConnections();
+		// Clear
+		componentsConnections = new Map();
 
 		// Build connections with closest aligned elements
 		for(from in elements)
@@ -176,7 +169,7 @@ class UiGroupController extends dn.Process {
 		// Fix missing connections
 		for(from in elements)
 			for(dir in [North,East,South,West]) {
-				if( hasComponentConnection(from,dir) )
+				if( hasComponentConnectionDir(from,dir) )
 					continue;
 				var next = findElementFromAng(from, dirToAng(dir), M.PI*0.8, true);
 				if( next!=null )
@@ -189,7 +182,7 @@ class UiGroupController extends dn.Process {
 	function findElementFromAng(from:UiGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<UiGroupElement> {
 		var best = null;
 		for( other in elements ) {
-			if( other==from || isComponentConnectedTo(from,other) )
+			if( other==from || hasComponentConnection(from,other) )
 				continue;
 
 			if( M.radDistance(ang, from.angTo(other)) < angRange*0.5 ) {
@@ -274,10 +267,10 @@ class UiGroupController extends dn.Process {
 			g.endFill();
 			// Connections
 			for(dir in [North,East,South,West]) {
-				if( !hasComponentConnection(from,dir) )
+				if( !hasComponentConnectionDir(from,dir) )
 					continue;
 
-				var next = getComponentConnected(from,dir);
+				var next = getComponentConnectionDir(from,dir);
 				var ang = from.angTo(next);
 				g.lineStyle(2, Yellow);
 				g.moveTo(from.globalCenterX, from.globalCenterY);
@@ -372,8 +365,8 @@ class UiGroupController extends dn.Process {
 		if( current==null )
 			return;
 
-		if( hasComponentConnection(current,dir) )
-			focusElement( getComponentConnected(current,dir) );
+		if( hasComponentConnectionDir(current,dir) )
+			focusElement( getComponentConnectionDir(current,dir) );
 		else
 			gotoConnectedGroup(dir);
 	}
