@@ -9,8 +9,6 @@ enum abstract GroupDir(Int) {
 
 
 class UiGroupController extends dn.Process {
-	static var UID = 0;
-
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
 	var current : Null<UiComponent>;
@@ -30,7 +28,7 @@ class UiGroupController extends dn.Process {
 
 		this.useMouse = useMouse;
 
-		uid = UID++;
+		uid = Const.makeUniqueId();
 		ca = App.ME.controller.createAccess();
 		ca.lockCondition = ()->!groupFocused || customControllerLock();
 		ca.lock(0.1);
