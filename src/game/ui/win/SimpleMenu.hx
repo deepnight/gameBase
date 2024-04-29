@@ -61,12 +61,4 @@ class SimpleMenu extends ui.Window {
 
 		uiCtrl.registerComponent(bt);
 	}
-
-	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
-	// 	return addButton(
-	// 		Lib.padRight(label,labelPadLen-3) + '<${isActive?"X":" "}>',
-	// 		()->onPick(),
-	// 		close
-	// 	);
-	// }
 }
