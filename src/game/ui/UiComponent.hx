@@ -88,4 +88,11 @@ class UiComponent extends h2d.Flow {
 			x, y, w, h
 		);
 	}
+
+	override function sync(ctx:h2d.RenderContext) {
+		super.sync(ctx);
+		update();
+	}
+
+	function update() {}
 }
