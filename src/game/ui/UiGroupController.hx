@@ -15,7 +15,7 @@ class UiGroupController extends dn.Process {
 	var ca : ControllerAccess<GameAction>;
 	var current : Null<UiComponent>;
 
-	var elements : Array<UiComponent> = [];
+	var components : Array<UiComponent> = [];
 	var connectionsNeedRebuild = false;
 	var uiGroupsConnections : Map<GroupDir, UiGroupController> = new Map();
 	var componentsConnections : Map<Int, Map<GroupDir, UiComponent>> = new Map();
@@ -40,7 +40,7 @@ class UiGroupController extends dn.Process {
 
 
 	public function registerComponent(comp:ui.UiComponent) {
-		elements.push(comp);
+		components.push(comp);
 		comp.onAfterReflow = invalidateConnections; // TODO not a reliable solution
 
 		if( useMouse ) {
@@ -48,12 +48,12 @@ class UiGroupController extends dn.Process {
 			comp.interactive.cursor = Button;
 
 			comp.interactive.onOver = _->{
-				focusElement(comp);
+				focusComponent(comp);
 				focusGroup();
 			}
 
 			comp.interactive.onOut = _->{
-				blurElement(comp);
+				blurComponent(comp);
 			}
 
 			comp.interactive.onClick = ev->{
@@ -152,10 +152,10 @@ class UiGroupController extends dn.Process {
 		// Clear
 		componentsConnections = new Map();
 
-		// Build connections with closest aligned elements
-		for(from in elements)
+		// Build connections with closest aligned components
+		for(from in components)
 			for(dir in [North,East,South,West]) {
-				var other = findElementRaycast(from,dir);
+				var other = findComponentRaycast(from,dir);
 				if( other!=null ) {
 					connectComponents(from, other, dir);
 					connectComponents(other, from, getOppositeDir(dir));
@@ -163,21 +163,21 @@ class UiGroupController extends dn.Process {
 			}
 
 		// Fix missing connections
-		for(from in elements)
+		for(from in components)
 			for(dir in [North,East,South,West]) {
 				if( hasComponentConnectionDir(from,dir) )
 					continue;
-				var next = findElementFromAng(from, dirToAng(dir), M.PI*0.8, true);
+				var next = findComponentFromAng(from, dirToAng(dir), M.PI*0.8, true);
 				if( next!=null )
 					connectComponents(from,next,dir);
 			}
 	}
 
 
-	// Returns closest Element using an angle range
-	function findElementFromAng(from:UiComponent, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<UiComponent> {
+	// Returns closest UiComponent using an angle range
+	function findComponentFromAng(from:UiComponent, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<UiComponent> {
 		var best = null;
-		for( other in elements ) {
+		for( other in components ) {
 			if( other==from || hasComponentConnection(from,other) )
 				continue;
 
@@ -195,8 +195,8 @@ class UiGroupController extends dn.Process {
 
 	}
 
-	// Returns closest Element using a collider-raycast
-	function findElementRaycast(from:UiComponent, dir:GroupDir) : Null<UiComponent> {
+	// Returns closest UiComponent using a collider-raycast
+	function findComponentRaycast(from:UiComponent, dir:GroupDir) : Null<UiComponent> {
 		var ang = dirToAng(dir);
 		var step = switch dir {
 			case North, South: from.globalHeight;
@@ -208,7 +208,7 @@ class UiGroupController extends dn.Process {
 
 		var possibleNexts = [];
 		while( elapsedDist<step*3 ) {
-			for( other in elements )
+			for( other in components )
 				if( other!=from && other.overlapsRect(x, y, from.globalWidth, from.globalHeight ) )
 					possibleNexts.push(other);
 
@@ -227,7 +227,7 @@ class UiGroupController extends dn.Process {
 
 	function findClosest(from:UiComponent) : Null<UiComponent> {
 		var best = null;
-		for(other in elements)
+		for(other in components)
 			if( other!=from && ( best==null || from.globalDistTo(other) < from.globalDistTo(best) ) )
 				best = other;
 		return best;
@@ -255,7 +255,7 @@ class UiGroupController extends dn.Process {
 		g.removeChildren();
 		buildConnections();
 		var font = hxd.res.DefaultFont.get();
-		for(from in elements) {
+		for(from in components) {
 			// Bounds
 			g.lineStyle(2, Pink);
 			g.beginFill(Pink, 0.5);
@@ -302,26 +302,26 @@ class UiGroupController extends dn.Process {
 		ca.dispose();
 		ca = null;
 
-		elements = null;
+		components = null;
 		current = null;
 	}
 
-	function focusClosestElementFromGlobal(x:Float, y:Float) {
-		var best = Lib.findBestInArray(elements, e->{
+	function focusClosestComponentFromGlobalCoord(x:Float, y:Float) {
+		var best = Lib.findBestInArray(components, e->{
 			return -M.dist(x, y, e.globalCenterX, e.globalCenterY);
 		});
 		if( best!=null )
-			focusElement(best);
+			focusComponent(best);
 	}
 
-	function blurElement(ge:UiComponent) {
+	function blurComponent(ge:UiComponent) {
 		if( current==ge ) {
 			current.onBlur();
 			current = null;
 		}
 	}
 
-	function focusElement(ge:UiComponent) {
+	function focusComponent(ge:UiComponent) {
 		if( current==ge )
 			return;
 
@@ -362,7 +362,7 @@ class UiGroupController extends dn.Process {
 			return;
 
 		if( hasComponentConnectionDir(current,dir) )
-			focusElement( getComponentConnectionDir(current,dir) );
+			focusComponent( getComponentConnectionDir(current,dir) );
 		else
 			gotoConnectedGroup(dir);
 	}
@@ -372,7 +372,7 @@ class UiGroupController extends dn.Process {
 		if( !uiGroupsConnections.exists(dir) )
 			return false;
 
-		if( uiGroupsConnections.get(dir).elements.length==0 )
+		if( uiGroupsConnections.get(dir).components.length==0 )
 			return false;
 
 		var g = uiGroupsConnections.get(dir);
@@ -381,7 +381,7 @@ class UiGroupController extends dn.Process {
 		// from.f.localToGlobal(pt);
 		blurGroup();
 		g.focusGroup();
-		g.focusClosestElementFromGlobal(from.globalCenterX, from.globalCenterY);
+		g.focusClosestComponentFromGlobalCoord(from.globalCenterX, from.globalCenterY);
 		return true;
 	}
 
@@ -402,16 +402,16 @@ class UiGroupController extends dn.Process {
 		if( !focused )
 			return;
 
-		// Build elements connections
+		// Build components connections
 		if( connectionsNeedRebuild ) {
 			buildConnections();
 			connectionsNeedRebuild = false;
 		}
 
 		// Init current
-		if( current==null && elements.length>0 )
+		if( current==null && components.length>0 )
 			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
-				focusElement(elements[0]);
+				focusComponent(components[0]);
 
 		// Move current
 		if( current!=null ) {
