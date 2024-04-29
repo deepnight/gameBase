@@ -40,7 +40,7 @@ class UiGroupController extends dn.Process {
 
 
 	public function register(comp:ui.UiComponent) : UiGroupElement {
-		var ge = new UiGroupElement(this, comp);
+		var ge = new UiGroupElement(comp);
 		elements.push(ge);
 		comp.onAfterReflow = invalidateConnections;
 
@@ -121,8 +121,10 @@ class UiGroupController extends dn.Process {
 		for(from in elements)
 			for(dir in [North,East,South,West]) {
 				var other = findElementRaycast(from,dir);
-				if( other!=null )
+				if( other!=null ) {
 					from.connectNext(dir,other);
+					other.connectNext(getOppositeDir(dir), from);
+				}
 			}
 
 		// Fix missing connections
@@ -132,7 +134,7 @@ class UiGroupController extends dn.Process {
 					continue;
 				var next = findElementFromAng(from, dirToAng(dir), M.PI*0.8, true);
 				if( next!=null )
-					from.connectNext(dir, next, false);
+					from.connectNext(dir, next);
 			}
 	}
 
@@ -400,7 +402,6 @@ private class UiGroupElement {
 	var _pt : h2d.col.Point;
 
 	var uid : Int;
-	var group : UiGroupController;
 
 	public var comp: UiComponent;
 
@@ -418,10 +419,9 @@ private class UiGroupElement {
 	public var globalCenterY(get,never) : Float;
 
 
-	public function new(g:UiGroupController, comp:UiComponent) {
+	public function new(comp:UiComponent) {
 		uid = UiGroupController.UID++;
 		_pt = new h2d.col.Point();
-		group = g;
 		this.comp = comp;
 	}
 
@@ -459,10 +459,8 @@ private class UiGroupElement {
 	inline function get_globalCenterY() return ( globalTop + globalBottom ) * 0.5;
 
 
-	public function connectNext(dir:GroupDir, to:UiGroupElement, symetric=true) {
+	public function connectNext(dir:GroupDir, to:UiGroupElement) {
 		connections.set(dir, to);
-		if( symetric )
-			to.connections.set(group.getOppositeDir(dir), this);
 	}
 
 	public function clearConnections() {
