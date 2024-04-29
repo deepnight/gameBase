@@ -48,7 +48,7 @@ class SimpleMenu extends ui.Window {
 			if( autoClose )
 				close();
 		}
-		uiCtrl.register(bt);
+		uiCtrl.registerComponent(bt);
 	}
 
 	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
@@ -59,7 +59,7 @@ class SimpleMenu extends ui.Window {
 				close();
 		}
 
-		uiCtrl.register(bt);
+		uiCtrl.registerComponent(bt);
 	}
 
 	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {
