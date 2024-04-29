@@ -59,7 +59,7 @@ class UiGroupController extends dn.Process {
 
 			comp.interactive.onClick = ev->{
 				if( ev.button==0 )
-					comp.doUse();
+					comp.use();
 			}
 
 			comp.interactive.enableRightButton = true;
@@ -82,7 +82,7 @@ class UiGroupController extends dn.Process {
 		var wasFocus = focused;
 		focused = false;
 		if( current!=null ) {
-			current.onBlur();
+			current.comp.onBlur();
 			current = null;
 		}
 		if( wasFocus )
@@ -279,7 +279,7 @@ class UiGroupController extends dn.Process {
 
 	function blurElement(ge:UiGroupElement) {
 		if( current==ge ) {
-			current.onBlur();
+			current.comp.onBlur();
 			current = null;
 		}
 	}
@@ -289,17 +289,9 @@ class UiGroupController extends dn.Process {
 			return;
 
 		if( current!=null )
-			current.onBlur();
+			current.comp.onBlur();
 		current = ge;
-		current.onFocus();
-	}
-
-	public dynamic function defaultOnFocus(ge:UiGroupElement) {
-		ge.comp.filter = new dn.heaps.filter.Invert();
-	}
-
-	public dynamic function defaultOnBlur(ge:UiGroupElement) {
-		ge.comp.filter = null;
+		current.comp.onFocus();
 	}
 
 	inline function getOppositeDir(dir:GroupDir) {
@@ -387,7 +379,7 @@ class UiGroupController extends dn.Process {
 		// Move current
 		if( current!=null ) {
 			if( ca.isPressed(MenuOk) )
-				current.comp.doUse();
+				current.comp.use();
 
 			if( ca.isPressedAutoFire(MenuLeft) )
 				gotoNextDir(West);
@@ -505,14 +497,6 @@ private class UiGroupElement {
 
 	public inline function globalDistTo(t:UiGroupElement) {
 		return M.dist(globalCenterX, globalCenterY, t.globalCenterX, t.globalCenterY);
-	}
-
-	public dynamic function onFocus() {
-		group.defaultOnFocus(this);
-	}
-
-	public dynamic function onBlur() {
-		group.defaultOnBlur(this);
 	}
 
 	public function overlapsElement(other:UiGroupElement) {
