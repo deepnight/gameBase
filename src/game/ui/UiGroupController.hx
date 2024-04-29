@@ -19,6 +19,7 @@ class UiGroupController extends dn.Process {
 	var elements : Array<UiGroupElement> = [];
 	var connectionsInvalidated = false;
 	var connectedGroups : Map<GroupDir, UiGroupController> = new Map();
+	var componentsConnections : Map<Int, Map<GroupDir, UiGroupElement>> = new Map();
 
 	var focused = true;
 	var useMouse : Bool;
@@ -109,32 +110,77 @@ class UiGroupController extends dn.Process {
 		}
 	}
 
+	public function connectComponents(from:UiGroupElement, to:UiGroupElement, dir:GroupDir) {
+		if( !componentsConnections.exists(from.uid) )
+			componentsConnections.set(from.uid, new Map());
+		componentsConnections.get(from.uid).set(dir, to);
+	}
+
+	public function clearAllComponentConnections() {
+		componentsConnections = new Map();
+	}
+
+	public function clearComponentConnections(c:UiGroupElement) {
+		componentsConnections.remove(c.uid);
+	}
+
+	public function countComponentConnections(c:UiGroupElement) {
+		if( !componentsConnections.exists(c.uid) )
+			return 0;
+
+		var n = 0;
+		for( next in componentsConnections.get(c.uid) )
+			n++;
+		return n;
+	}
+
+	public inline function hasComponentConnection(c:UiGroupElement, dir:GroupDir) {
+		return componentsConnections.exists(c.uid) && componentsConnections.get(c.uid).exists(dir);
+	}
+
+	public function isComponentConnectedTo(from:UiGroupElement, to:UiGroupElement) {
+		if( !componentsConnections.exists(from.uid) )
+			return false;
+
+		for(next in componentsConnections.get(from.uid))
+			if( next==to )
+				return true;
+		return false;
+	}
+
+	public inline function getComponentConnected(from:UiGroupElement, dir:GroupDir) {
+		return componentsConnections.exists(from.uid)
+			? componentsConnections.get(from.uid).get(dir)
+			: null;
+	}
+
+
+
 	public inline function invalidateConnections() {
 		connectionsInvalidated = true;
 	}
 
 	function buildConnections() {
-		for(t in elements)
-			t.clearConnections();
+		clearAllComponentConnections();
 
 		// Build connections with closest aligned elements
 		for(from in elements)
 			for(dir in [North,East,South,West]) {
 				var other = findElementRaycast(from,dir);
 				if( other!=null ) {
-					from.connectNext(dir,other);
-					other.connectNext(getOppositeDir(dir), from);
+					connectComponents(from, other, dir);
+					connectComponents(other, from, getOppositeDir(dir));
 				}
 			}
 
 		// Fix missing connections
 		for(from in elements)
 			for(dir in [North,East,South,West]) {
-				if( from.hasConnection(dir) )
+				if( hasComponentConnection(from,dir) )
 					continue;
 				var next = findElementFromAng(from, dirToAng(dir), M.PI*0.8, true);
 				if( next!=null )
-					from.connectNext(dir, next);
+					connectComponents(from,next,dir);
 			}
 	}
 
@@ -143,7 +189,7 @@ class UiGroupController extends dn.Process {
 	function findElementFromAng(from:UiGroupElement, ang:Float, angRange:Float, ignoreConnecteds:Bool) : Null<UiGroupElement> {
 		var best = null;
 		for( other in elements ) {
-			if( other==from || from.isConnectedTo(other) )
+			if( other==from || isComponentConnectedTo(from,other) )
 				continue;
 
 			if( M.radDistance(ang, from.angTo(other)) < angRange*0.5 ) {
@@ -228,10 +274,10 @@ class UiGroupController extends dn.Process {
 			g.endFill();
 			// Connections
 			for(dir in [North,East,South,West]) {
-				if( !from.hasConnection(dir) )
+				if( !hasComponentConnection(from,dir) )
 					continue;
 
-				var next = from.getConnectedElement(dir);
+				var next = getComponentConnected(from,dir);
 				var ang = from.angTo(next);
 				g.lineStyle(2, Yellow);
 				g.moveTo(from.globalCenterX, from.globalCenterY);
@@ -326,8 +372,8 @@ class UiGroupController extends dn.Process {
 		if( current==null )
 			return;
 
-		if( current.hasConnection(dir) )
-			focusElement( current.getConnectedElement(dir) );
+		if( hasComponentConnection(current,dir) )
+			focusElement( getComponentConnected(current,dir) );
 		else
 			gotoConnectedGroup(dir);
 	}
@@ -401,11 +447,9 @@ class UiGroupController extends dn.Process {
 private class UiGroupElement {
 	var _pt : h2d.col.Point;
 
-	var uid : Int;
+	public var uid(default,null) : Int;
 
 	public var comp: UiComponent;
-
-	var connections : Map<GroupDir, UiGroupElement> = new Map();
 
 	public var globalLeft(get,never) : Float;
 	public var globalRight(get,never) : Float;
@@ -459,49 +503,12 @@ private class UiGroupElement {
 	inline function get_globalCenterY() return ( globalTop + globalBottom ) * 0.5;
 
 
-	public function connectNext(dir:GroupDir, to:UiGroupElement) {
-		connections.set(dir, to);
-	}
-
-	public function clearConnections() {
-		connections = new Map();
-	}
-
-	public function countConnections() {
-		var n = 0;
-		for(next in connections)
-			n++;
-		return n;
-	}
-
-	public inline function hasConnection(dir:GroupDir) {
-		return connections.exists(dir);
-	}
-
-	public function isConnectedTo(ge:UiGroupElement) {
-		for(next in connections)
-			if( next==ge )
-				return true;
-		return false;
-	}
-
-	public inline function getConnectedElement(dir:GroupDir) {
-		return connections.get(dir);
-	}
-
 	public inline function angTo(t:UiGroupElement) {
 		return Math.atan2(t.globalCenterY-globalCenterY, t.globalCenterX-globalCenterX);
 	}
 
 	public inline function globalDistTo(t:UiGroupElement) {
 		return M.dist(globalCenterX, globalCenterY, t.globalCenterX, t.globalCenterY);
-	}
-
-	public function overlapsElement(other:UiGroupElement) {
-		return dn.Geom.rectOverlapsRect(
-			globalLeft, globalTop, globalWidth, globalHeight,
-			other.globalLeft, other.globalTop, other.globalWidth, other.globalHeight
-		);
 	}
 
 	public function overlapsRect(x:Float, y:Float, w:Int, h:Int) {
