@@ -17,8 +17,8 @@ class UiGroupController extends dn.Process {
 	var current : Null<UiGroupElement>;
 
 	var elements : Array<UiGroupElement> = [];
-	var connectionsInvalidated = false;
-	var connectedGroups : Map<GroupDir, UiGroupController> = new Map();
+	var connectionsNeedRebuild = false;
+	var uiGroupsConnections : Map<GroupDir, UiGroupController> = new Map();
 	var componentsConnections : Map<Int, Map<GroupDir, UiGroupElement>> = new Map();
 
 	var focused = true;
@@ -101,7 +101,7 @@ class UiGroupController extends dn.Process {
 		while( pending.length>0 ) {
 			var cur = pending.pop();
 			dones.set(cur.uid, true);
-			for(g in cur.connectedGroups) {
+			for(g in cur.uiGroupsConnections) {
 				if( dones.exists(g.uid) )
 					continue;
 				g.blurGroup();
@@ -149,7 +149,7 @@ class UiGroupController extends dn.Process {
 
 
 	public inline function invalidateConnections() {
-		connectionsInvalidated = true;
+		connectionsNeedRebuild = true;
 	}
 
 	function buildConnections() {
@@ -373,13 +373,13 @@ class UiGroupController extends dn.Process {
 
 
 	function gotoConnectedGroup(dir:GroupDir) : Bool {
-		if( !connectedGroups.exists(dir) )
+		if( !uiGroupsConnections.exists(dir) )
 			return false;
 
-		if( connectedGroups.get(dir).elements.length==0 )
+		if( uiGroupsConnections.get(dir).elements.length==0 )
 			return false;
 
-		var g = connectedGroups.get(dir);
+		var g = uiGroupsConnections.get(dir);
 		var from = current;
 		// var pt = new h2d.col.Point(from.width*0.5, from.height*0.5);
 		// from.f.localToGlobal(pt);
@@ -391,7 +391,7 @@ class UiGroupController extends dn.Process {
 
 
 	public function connectGroup(dir:GroupDir, targetGroup:UiGroupController, symetric=true) {
-		connectedGroups.set(dir,targetGroup);
+		uiGroupsConnections.set(dir,targetGroup);
 		if( symetric )
 			targetGroup.connectGroup(getOppositeDir(dir), this, false);
 
@@ -407,9 +407,9 @@ class UiGroupController extends dn.Process {
 			return;
 
 		// Build elements connections
-		if( connectionsInvalidated ) {
+		if( connectionsNeedRebuild ) {
 			buildConnections();
-			connectionsInvalidated = false;
+			connectionsNeedRebuild = false;
 		}
 
 		// Init current
