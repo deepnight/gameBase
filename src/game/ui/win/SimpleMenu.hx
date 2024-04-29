@@ -1,27 +1,34 @@
 package ui.win;
 
 class SimpleMenu extends ui.Window {
-	public var group : InteractiveGroup;
+	public var uiCtrl : UiGroupController;
 
 	public function new() {
 		super(true);
 
-		makeModal();
 		content.padding = 1;
-		content.enableInteractive = true;
+		content.horizontalSpacing = 4;
+		content.verticalSpacing = 0;
+		content.layout = Vertical;
+		content.multiline = true;
+		content.colWidth = 150;
 
-		group = new InteractiveGroup(content, this);
-		group.content.horizontalSpacing = 4;
-		group.content.verticalSpacing = 1;
-		group.content.layout = Vertical;
-		group.content.multiline = true;
-		group.customControllerLock = ()->!isLatestModal();
+		uiCtrl = new UiGroupController(this);
+		uiCtrl.customControllerLock = ()->!isActive();
 	}
 
 
+	public function setColumnWidth(w:Int) {
+		content.colWidth = w;
+	}
+
 	override function onResize() {
 		super.onResize();
-		group.content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
+		switch verticalAlign {
+			case Start,End: content.maxHeight = Std.int( 0.4 * h()/Const.UI_SCALE );
+			case Center: content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
+			case Fill: content.maxHeight = Std.int( h()/Const.UI_SCALE );
+		}
 	}
 
 	public function addSpacer() {
@@ -30,27 +37,29 @@ class SimpleMenu extends ui.Window {
 	}
 
 	public function addTitle(str:String) {
-		group.addNonInteractive( new ui.comp.Title( str, Col.coldGray(0.6) ) );
+		new ui.component.Title( str, Col.coldGray(0.6), content );
 	}
 
-	public function addButton(label:String, autoClose=true, cb:Void->Void) {
-		group.addInteractive(new ui.comp.Button(label), _->{
+	public function addButton(label:String, ?tile:h2d.Tile, autoClose=true, cb:Void->Void) {
+		var bt = new ui.component.Button(label, tile, content);
+		bt.minWidth = content.colWidth;
+		bt.onUseCb = ()->{
 			cb();
 			if( autoClose )
 				close();
-		});
+		}
+		uiCtrl.registerComponent(bt);
 	}
 
-	public function addFlag(label:String, curValue:Bool, setter:Bool->Void, close=false) {
-		var v = curValue;
-		group.addInteractive( new ui.comp.FlagButton(label,curValue), fb->{
-			v = !v;
-			setter(v);
-			if( close )
-				this.close();
-			else
-				fb.setValue(v);
-		});
+	public function addCheckBox(label:String, getter:Void->Bool, setter:Bool->Void, autoClose=false) {
+		var bt = new ui.component.CheckBox(label,getter,setter,content);
+		bt.minWidth = content.colWidth;
+		bt.onUseCb = ()->{
+			if( autoClose )
+				close();
+		}
+
+		uiCtrl.registerComponent(bt);
 	}
 
 	// public function addRadio(label:String, isActive:Bool, onPick:Void->Void, close=false) {

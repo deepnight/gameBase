@@ -1,6 +1,6 @@
-package ui.comp;
+package ui.component;
 
-class Title extends h2d.Flow {
+class Title extends ui.UiComponent {
 	public function new(label:String, col:dn.Col=ColdLightGray, ?p) {
 		super(p);
 

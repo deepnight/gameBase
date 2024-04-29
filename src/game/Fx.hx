@@ -62,10 +62,22 @@ class Fx extends GameChildProcess {
 	public inline function allocMain_normal(id,x,y) return pool.alloc(main_normal, Assets.tiles.getTileRandom(id), x, y);
 
 
-	public inline function markerEntity(e:Entity, c:Col=Pink, short=false) {
+	public inline function markerEntity(e:Entity, c:Col=Pink, sec=3.0) {
 		#if debug
-		if( e!=null && e.isAlive() )
-			markerCase(e.cx, e.cy, short?0.03:3, c);
+		if( e!=null && e.isAlive() ) {
+			var p = allocMain_add(D.tiles.fxCircle15, e.attachX, e.attachY);
+			p.setCenterRatio(e.pivotX, e.pivotY);
+			p.scaleTo(e.wid, e.hei);
+			p.setFadeS(1, 0, 0.06);
+			p.colorize(c);
+			p.lifeS = sec;
+
+			var p = allocMain_add(D.tiles.pixel, e.attachX, e.attachY);
+			p.setFadeS(1, 0, 0.06);
+			p.colorize(c);
+			p.setScale(2);
+			p.lifeS = sec;
+		}
 		#end
 	}
 
