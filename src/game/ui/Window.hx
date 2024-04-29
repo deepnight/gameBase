@@ -51,12 +51,20 @@ class Window extends dn.Process {
 	}
 
 	function set_horizontalAlign(v:WindowAlign) {
+		switch horizontalAlign {
+			case Fill: content.minWidth = content.maxWidth = null; // clear previous constraint from onResize()
+			case _:
+		}
 		horizontalAlign = v;
 		emitResizeAtEndOfFrame();
 		return v;
 	}
 
 	function set_verticalAlign(v:WindowAlign) {
+		switch verticalAlign {
+			case Fill: content.minHeight = content.maxHeight = null; // clear previous constraint from onResize()
+			case _:
+		}
 		verticalAlign = v;
 		emitResizeAtEndOfFrame();
 		return v;
@@ -148,8 +156,6 @@ class Window extends dn.Process {
 		// Horizontal
 		if( horizontalAlign==Fill )
 			content.minWidth = content.maxWidth = wid;
-		else
-			content.minWidth = content.maxWidth = null;
 
 		switch horizontalAlign {
 			case Start: content.x = 0;
@@ -161,8 +167,6 @@ class Window extends dn.Process {
 		// Vertical
 		if( verticalAlign==Fill )
 			content.minHeight = content.maxHeight = hei;
-		else
-			content.minHeight = content.maxHeight = null;
 
 		switch verticalAlign {
 			case Start: content.y = 0;
