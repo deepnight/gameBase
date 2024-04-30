@@ -9,13 +9,11 @@ enum WindowAlign {
 
 class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
-	static var MODAL_COUNT = 0;
 
 	public var content: h2d.Flow;
 
 	var ca : ControllerAccess<GameAction>;
 	var mask : Null<h2d.Flow>;
-	var modalIdx = 0;
 
 	public var isModal(default, null) = false;
 	public var canBeClosedManually = true;
@@ -50,23 +48,42 @@ class Window extends dn.Process {
 			makeModal();
 	}
 
+	function getModalIndex() {
+		if( !isModal )
+			return -1;
+
+		var i = 0;
+		for( w in ALL )
+			if( w.isModal ) {
+				if( w==this )
+					return i;
+				i++;
+			}
+		Console.ME.error('$this has no valid modalIndex');
+		return -1;
+	}
+
 	function set_horizontalAlign(v:WindowAlign) {
-		switch horizontalAlign {
-			case Fill: content.minWidth = content.maxWidth = null; // clear previous constraint from onResize()
-			case _:
+		if( v!=horizontalAlign ) {
+			switch horizontalAlign {
+				case Fill: content.minWidth = content.maxWidth = null; // clear previous constraint from onResize()
+				case _:
+			}
+			horizontalAlign = v;
+			emitResizeAtEndOfFrame();
 		}
-		horizontalAlign = v;
-		emitResizeAtEndOfFrame();
 		return v;
 	}
 
 	function set_verticalAlign(v:WindowAlign) {
-		switch verticalAlign {
-			case Fill: content.minHeight = content.maxHeight = null; // clear previous constraint from onResize()
-			case _:
+		if( v!=verticalAlign ) {
+			switch verticalAlign {
+				case Fill: content.minHeight = content.maxHeight = null; // clear previous constraint from onResize()
+				case _:
+			}
+			verticalAlign = v;
+			emitResizeAtEndOfFrame();
 		}
-		verticalAlign = v;
-		emitResizeAtEndOfFrame();
 		return v;
 	}
 
@@ -76,25 +93,24 @@ class Window extends dn.Process {
 
 	public function makeTransparent() {
 		content.backgroundTile = null;
-		content.enableInteractive = false;
 	}
 
 	override function onDispose() {
 		super.onDispose();
 
 		ALL.remove(this);
-		if( isModal )
-			MODAL_COUNT--;
 
 		ca.dispose();
 		ca = null;
 
 		if( !hasAnyModal() )
 			Game.ME.resume();
+
+		emitResizeAtEndOfFrame();
 	}
 
 	@:keep override function toString():String {
-		return isModal ? 'ModalWin${isActive()?"*":""}($modalIdx)' : 'Win';
+		return isModal ? 'ModalWin${isActive()?"*":""}(${getModalIndex()})' : 'Win';
 	}
 
 	function makeModal() {
@@ -103,8 +119,7 @@ class Window extends dn.Process {
 
 		isModal = true;
 
-		modalIdx = MODAL_COUNT++;
-		if( modalIdx==0 )
+		if( getModalIndex()==0 )
 			Game.ME.pause();
 
 		mask = new h2d.Flow(root);
@@ -160,7 +175,7 @@ class Window extends dn.Process {
 		switch horizontalAlign {
 			case Start: content.x = 0;
 			case End: content.x = wid-content.outerWidth;
-			case Center: content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
+			case Center: content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + getModalIndex()*8 );
 			case Fill: content.x = 0; content.minWidth = content.maxWidth = wid;
 		}
 
@@ -171,7 +186,7 @@ class Window extends dn.Process {
 		switch verticalAlign {
 			case Start: content.y = 0;
 			case End: content.y = hei-content.outerHeight;
-			case Center: content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+			case Center: content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + getModalIndex()*4 );
 			case Fill: content.y = 0; content.minHeight = content.maxHeight = hei;
 		}
 
