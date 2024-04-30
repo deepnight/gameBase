@@ -34,8 +34,8 @@ class UiGroupController extends dn.Process {
 	var useMouse : Bool;
 
 
-	public function new(process:dn.Process, useMouse=true) {
-		super(process);
+	public function new(parentProcess:dn.Process, useMouse=true) {
+		super(parentProcess);
 
 		this.useMouse = useMouse;
 
@@ -82,7 +82,7 @@ class UiGroupController extends dn.Process {
 		ca.lock(0.2);
 		blurAllConnectedGroups();
 		if( !wasFocused )
-			onGroupFocus();
+			onGroupFocusCb();
 	}
 
 	public function blurGroup() {
@@ -93,11 +93,11 @@ class UiGroupController extends dn.Process {
 			currentComp = null;
 		}
 		if( wasFocused )
-			onGroupBlur();
+			onGroupBlurCb();
 	}
 
-	public dynamic function onGroupFocus() {}
-	public dynamic function onGroupBlur() {}
+	public dynamic function onGroupFocusCb() {}
+	public dynamic function onGroupBlurCb() {}
 
 	function blurAllConnectedGroups(?ignoredGroup:UiGroupController) {
 		var pending = [this];
@@ -414,20 +414,21 @@ class UiGroupController extends dn.Process {
 
 		// Build components connections
 		if( connectionsNeedRebuild ) {
-			buildConnections();
 			connectionsNeedRebuild = false;
+			buildConnections();
 		}
 
-		// Init currentComp
+		// Init default currentComp
 		if( currentComp==null && components.length>0 )
 			if( !cd.hasSetS("firstInitDone",Const.INFINITE) || ca.isDown(MenuLeft) || ca.isDown(MenuRight) || ca.isDown(MenuUp) || ca.isDown(MenuDown) )
 				focusComponent(components[0]);
 
-		// Move currentComp
 		if( currentComp!=null ) {
+			// Use current
 			if( ca.isPressed(MenuOk) )
 				currentComp.use();
 
+			// Move current
 			if( ca.isPressedAutoFire(MenuLeft) )
 				gotoNextDir(West);
 			else if( ca.isPressedAutoFire(MenuRight) )
