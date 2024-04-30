@@ -87,6 +87,11 @@ class Window extends dn.Process {
 		return v;
 	}
 
+	public function setAlign(h:WindowAlign, ?v:WindowAlign) {
+		horizontalAlign = h;
+		verticalAlign = v!=null ? v : h;
+	}
+
 	public function isActive() {
 		return !destroyed && ( !isModal || isLatestModal() );
 	}
@@ -205,6 +210,23 @@ class Window extends dn.Process {
 			onClose();
 		}
 	}
+
+
+	public function addSpacer(pixels=4) {
+		var f = new h2d.Flow(content);
+		f.minWidth = f.minHeight = pixels;
+	}
+
+	public function addTitle(str:String) {
+		new ui.component.Text( str.toUpperCase(), Col.coldGray(0.5), content );
+		addSpacer();
+	}
+
+	public function addText(str:String, col:Col=Black) {
+		new ui.component.Text( str, col, content );
+	}
+
+
 
 	override function update() {
 		super.update();

@@ -1,7 +1,7 @@
 package ui.component;
 
-class Title extends ui.UiComponent {
-	public function new(label:String, col:dn.Col=ColdLightGray, ?p) {
+class Text extends ui.UiComponent {
+	public function new(label:String, col:dn.Col=Black, ?p) {
 		super(p);
 
 		paddingTop = 4;

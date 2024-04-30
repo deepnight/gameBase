@@ -31,15 +31,6 @@ class SimpleMenu extends ui.Window {
 		}
 	}
 
-	public function addSpacer() {
-		var f = new h2d.Flow(content);
-		f.minWidth = f.minHeight = 4;
-	}
-
-	public function addTitle(str:String) {
-		new ui.component.Title( str, Col.coldGray(0.6), content );
-	}
-
 	public function addButton(label:String, ?tile:h2d.Tile, autoClose=true, cb:Void->Void) {
 		var bt = new ui.component.Button(label, tile, content);
 		bt.minWidth = content.colWidth;
