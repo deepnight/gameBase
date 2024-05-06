@@ -7,11 +7,22 @@ enum abstract GroupDir(Int) {
 	var West;
 }
 
+/**
+	This process takes care of interactions with a group of UiComponents.
+	This includes:
+	- focus/blur on a component,
+	- user interaction with a component,
+	- supports gamepad, keyboard and mouse.
 
+	USAGE:
+	- Add some UiComponents to your scene,
+	- Create a UiGroupController instance,
+	- Register the UiComponents in the UiGroupController.
+**/
 class UiGroupController extends dn.Process {
 	var uid : Int;
 	var ca : ControllerAccess<GameAction>;
-	var currentComp : Null<UiComponent>;
+	public var currentComp(default,null) : Null<UiComponent>;
 
 	var components : Array<UiComponent> = [];
 
@@ -303,6 +314,12 @@ class UiGroupController extends dn.Process {
 
 		components = null;
 		currentComp = null;
+	}
+
+	public function clearAllRegisteredComponents() {
+		currentComp = null;
+		components = [];
+		invalidateConnections();
 	}
 
 	function focusClosestComponentFromGlobalCoord(x:Float, y:Float) {
