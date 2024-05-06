@@ -11,6 +11,9 @@ class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
 	static var MODAL_COUNT = 0;
 
+	var uiWid(get,never) : Int; inline function get_uiWid() return M.ceil( w()/Const.UI_SCALE );
+	var uiHei(get,never) : Int; inline function get_uiHei() return M.ceil( h()/Const.UI_SCALE );
+
 	public var content: h2d.Flow;
 
 	var ca : ControllerAccess<GameAction>;
@@ -150,35 +153,32 @@ class Window extends dn.Process {
 
 		root.setScale(Const.UI_SCALE);
 
-		var wid = M.ceil( w()/Const.UI_SCALE );
-		var hei = M.ceil( h()/Const.UI_SCALE );
-
 		// Horizontal
 		if( horizontalAlign==Fill )
-			content.minWidth = content.maxWidth = wid;
+			content.minWidth = content.maxWidth = uiWid;
 
 		switch horizontalAlign {
 			case Start: content.x = 0;
-			case End: content.x = wid-content.outerWidth;
-			case Center: content.x = Std.int( wid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
-			case Fill: content.x = 0; content.minWidth = content.maxWidth = wid;
+			case End: content.x = uiWid-content.outerWidth;
+			case Center: content.x = Std.int( uiWid*0.5 - content.outerWidth*0.5 + modalIdx*8 );
+			case Fill: content.x = 0; content.minWidth = content.maxWidth = uiWid;
 		}
 
 		// Vertical
 		if( verticalAlign==Fill )
-			content.minHeight = content.maxHeight = hei;
+			content.minHeight = content.maxHeight = uiHei;
 
 		switch verticalAlign {
 			case Start: content.y = 0;
-			case End: content.y = hei-content.outerHeight;
-			case Center: content.y = Std.int( hei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
-			case Fill: content.y = 0; content.minHeight = content.maxHeight = hei;
+			case End: content.y = uiHei-content.outerHeight;
+			case Center: content.y = Std.int( uiHei*0.5 - content.outerHeight*0.5 + modalIdx*4 );
+			case Fill: content.y = 0; content.minHeight = content.maxHeight = uiHei;
 		}
 
 		// Mask
 		if( mask!=null ) {
-			mask.minWidth = wid;
-			mask.minHeight = hei;
+			mask.minWidth = uiWid;
+			mask.minHeight = uiHei;
 		}
 	}
 
