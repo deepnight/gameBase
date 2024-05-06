@@ -76,6 +76,19 @@ class UiComponent extends h2d.Flow {
 	inline function get_globalCenterY() return ( globalTop + globalBottom ) * 0.5;
 
 
+	public function getRelativeX(relativeTo:h2d.Object) {
+		_tmpPt.set();
+		localToGlobal(_tmpPt);
+		relativeTo.globalToLocal(_tmpPt);
+		return _tmpPt.x;
+	}
+
+	public function getRelativeY(relativeTo:h2d.Object) {
+		_tmpPt.set();
+		localToGlobal(_tmpPt);
+		relativeTo.globalToLocal(_tmpPt);
+		return _tmpPt.y;
+	}
 
 	public inline function globalAngTo(to:UiComponent) {
 		return Math.atan2(to.globalCenterY-globalCenterY, to.globalCenterX-globalCenterX);
