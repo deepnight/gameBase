@@ -34,10 +34,13 @@ class UiComponent extends h2d.Flow {
 	function onUse() {}
 	public dynamic function onUseCb() {}
 
-	public dynamic function onFocus() {
+	@:allow(ui.UiGroupController)
+	function onFocus() {
 		filter = new dn.heaps.filter.Invert();
 	}
-	public dynamic function onBlur() {
+
+	@:allow(ui.UiGroupController)
+	function onBlur() {
 		filter = null;
 	}
 
