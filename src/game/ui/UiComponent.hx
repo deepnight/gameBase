@@ -99,7 +99,7 @@ class UiComponent extends h2d.Flow {
 	}
 
 	public function overlapsRect(x:Float, y:Float, w:Int, h:Int) {
-		return dn.Geom.rectOverlapsRect(
+		return dn.geom.Geom.rectOverlapsRect(
 			globalLeft, globalTop, globalWidth, globalHeight,
 			x, y, w, h
 		);
