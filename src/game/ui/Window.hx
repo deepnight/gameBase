@@ -10,8 +10,8 @@ enum WindowAlign {
 class Window extends dn.Process {
 	public static var ALL : Array<Window> = [];
 
-	var uiWid(get,never) : Int; inline function get_uiWid() return M.ceil( w()/Const.UI_SCALE );
-	var uiHei(get,never) : Int; inline function get_uiHei() return M.ceil( h()/Const.UI_SCALE );
+	var uiWid(get,never) : Int; inline function get_uiWid() return M.ceil( stageWid/Const.UI_SCALE );
+	var uiHei(get,never) : Int; inline function get_uiHei() return M.ceil( stageHei/Const.UI_SCALE );
 
 	public var content: h2d.Flow;
 

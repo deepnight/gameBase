@@ -25,9 +25,9 @@ class SimpleMenu extends ui.Window {
 	override function onResize() {
 		super.onResize();
 		switch verticalAlign {
-			case Start,End: content.maxHeight = Std.int( 0.4 * h()/Const.UI_SCALE );
-			case Center: content.maxHeight = Std.int( 0.8 * h()/Const.UI_SCALE );
-			case Fill: content.maxHeight = Std.int( h()/Const.UI_SCALE );
+			case Start,End: content.maxHeight = Std.int( 0.4 * stageHei/Const.UI_SCALE );
+			case Center: content.maxHeight = Std.int( 0.8 * stageHei/Const.UI_SCALE );
+			case Fill: content.maxHeight = Std.int( stageHei/Const.UI_SCALE );
 		}
 	}
 

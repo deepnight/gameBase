@@ -116,11 +116,11 @@ class Camera extends GameChildProcess {
 	}
 
 	function get_pxWid() {
-		return M.ceil( Game.ME.w() / Const.SCALE / zoom );
+		return M.ceil( Game.ME.stageWid / Const.SCALE / zoom );
 	}
 
 	function get_pxHei() {
-		return M.ceil( Game.ME.h() / Const.SCALE / zoom );
+		return M.ceil( Game.ME.stageHei / Const.SCALE / zoom );
 	}
 
 

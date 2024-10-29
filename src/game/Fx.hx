@@ -143,8 +143,8 @@ class Fx extends GameChildProcess {
 	public inline function flashBangS(c:Col, a:Float, t=0.1) {
 		var e = new h2d.Bitmap(h2d.Tile.fromColor(c,1,1,a));
 		game.root.add(e, Const.DP_FX_FRONT);
-		e.scaleX = game.w();
-		e.scaleY = game.h();
+		e.scaleX = game.stageWid;
+		e.scaleY = game.stageHei;
 		e.blendMode = Add;
 		game.tw.createS(e.alpha, 0, t).end( function() {
 			e.remove();
